@@ -1,0 +1,11 @@
+{
+  "name": "nahtnam",
+  "alias": "www.nahtnam.com",
+  "type": "static",
+  "engines": {
+    "node": "^8.0.0"
+  },
+  "env": {
+    "BASE_URL": "https://www.nahtnam.com"
+  }
+}
