@@ -2,7 +2,7 @@
   <nav class="navbar is-white has-shadow" id="main-navbar">
     <div class="container">
       <div class="navbar-brand">
-        <router-link class="navbar-item bold" to="/">
+        <router-link class="navbar-item has-text-weight-bold" to="/">
           <span class="is-size-5">nahtnam</span>
         </router-link>
 
