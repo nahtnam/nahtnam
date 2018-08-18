@@ -2,31 +2,25 @@
   "projects": [
     {
       "name": "nahtnam",
-      "description": "My personal portfolio where I host my projects and photos.",
+      "description": "My personal portfolio where I host my projects, photos, and blog.",
       "url": "https://www.nahtnam.com",
       "github": "https://github.com/nahtnam/nahtnam"
     },
     {
-      "name": "konstructor",
-      "description": "A simple and intuitive framework to help you build out large applications.",
-      "url": "https://konstructor.js.org/",
-      "github": "https://github.com/konstructorjs/konstructor"
+      "name": "@srvr/srvr",
+      "description": "A simple, component-based framework for building Node.js API's.",
+      "github": "https://github.com/srvrjs/srvr"
     },
     {
-      "name": "kolony",
-      "description": "A new self hosted deployment tool for Node.js apps based off of PM2.",
-      "github": "https://github.com/konstructorjs/kolony"
+      "name": "ludicrous tab",
+      "description": "A chrome extension to show the data that matters to you.",
+      "github": "https://github.com/ludicrousxyz/tab"
     },
     {
-      "name": "konstructor-cli",
+      "name": "ebates-chat-kit",
       "description": "konstructor-cli makes setting up a new konstructor app super simple.",
-      "github": "https://github.com/konstructorjs/konstructor-cli"
-    },
-    {
-      "name": "JV",
-      "description": "A very basic CLI to compile and run java programs for my CS class.",
-      "url": "https://crates.io/crates/jv",
-      "github": "https://github.com/nahtnam/jv"
+      "url": "https://opensource.ebates.com/ebates-chat-kit/",
+      "github": "https://github.com/ebates-inc/ebates-chat-kit"
     },
     {
       "name": "json-diff-cli",
@@ -45,6 +39,12 @@
       "description": "A website to track users and bets made on primedice.com.",
       "url": "https://www.pdstats.co/",
       "github": "https://github.com/nahtnam/pdstats"
+    },
+    {
+      "name": "JV",
+      "description": "A very basic CLI to compile and run java programs for my CS class.",
+      "url": "https://crates.io/crates/jv",
+      "github": "https://github.com/nahtnam/jv"
     }
   ]
 }
