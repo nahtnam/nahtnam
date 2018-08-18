@@ -166,7 +166,7 @@ export default {
 
   methods: {
     shuffle(array) {
-      const result = array;
+      const result = array.slice();
       let i = 0;
       let j = 0;
       let temp = null;
