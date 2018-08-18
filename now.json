@@ -2,6 +2,14 @@
   "name": "nahtnam",
   "alias": "www.nahtnam.com",
   "type": "static",
+  "static": {
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
   "engines": {
     "node": "^8.0.0"
   },
