@@ -14,9 +14,7 @@
       </div>
 
       <div class="navbar-menu" :class="{ 'is-active': active }">
-        <div class="navbar-end">
-          <MenuItems />
-        </div>
+        <MenuItems class="navbar-end" />
       </div>
     </div>
   </nav>
