@@ -79,11 +79,107 @@
         </div>
       </div>
     </section>
+    <hr>
+    <section class="section">
+      <div class="container">
+        <div class="title underline">Here are some of my projects.</div>
+        <div class="columns">
+          <div class="column is-one-third" v-for="project in this.projects" :key="project.name">
+            <div class="card">
+              <div class="card-content">
+                <p class="title no-pad-bottom">
+                  {{ project.name }}
+                </p>
+                <p class="is-size-6">
+                  {{ project.description }}
+                </p>
+              </div>
+              <footer class="card-footer">
+                <a :href="project.github" v-if="project.github" target="_blank" class="card-footer-item">View on GitHub</a>
+                <a :href="project.url" v-if="project.url" target="_blank" class="card-footer-item">View Project</a>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <div class="has-text-centered">
+          <a href="/projects" class="button is-info is-medium">
+            <span class="icon">
+              <font-awesome-icon :icon="['fa', 'code']" />
+            </span>
+            <span>View All Projects</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <hr>
+    <section class="section">
+      <div class="container">
+        <div class="title">Enjoy some of the photos I took on vacation.</div>
+        <div class="columns">
+          <div class="column is-one-third" v-for="photo in this.photos" :key="photo.caption">
+            <a href="${photo.url}" target="_blank">
+              <div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img :src="photo.url" alt="Image">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="media-content">
+                    <p class="title is-4">{{ photo.caption }}</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="has-text-centered">
+          <a href="/photos" class="button is-info is-medium">
+            <span class="icon">
+              <font-awesome-icon :icon="['fa', 'camera']" />
+            </span>
+            <span>View All Photos</span>
+          </a>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import { projects } from '@/../public/projects.json';
+import { photos } from '@/../public/photos.json';
+
 export default {
   name: 'home',
+  data() {
+    return {
+      projects: [],
+      photos: [],
+    };
+  },
+
+  created() {
+    this.projects = this.shuffle(projects).slice(0, 3);
+    this.photos = this.shuffle(photos).slice(0, 3);
+  },
+
+  methods: {
+    shuffle(array) {
+      const result = array;
+      let i = 0;
+      let j = 0;
+      let temp = null;
+
+      for (i = array.length - 1; i > 0; i -= 1) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = array[i];
+        result[i] = result[j];
+        result[j] = temp;
+      }
+
+      return result;
+    },
+  },
 };
 </script>

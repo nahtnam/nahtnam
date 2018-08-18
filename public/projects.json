@@ -1,0 +1,50 @@
+{
+  "projects": [
+    {
+      "name": "nahtnam",
+      "description": "My personal portfolio where I host my projects and photos.",
+      "url": "https://www.nahtnam.com",
+      "github": "https://github.com/nahtnam/nahtnam"
+    },
+    {
+      "name": "konstructor",
+      "description": "A simple and intuitive framework to help you build out large applications.",
+      "url": "https://konstructor.js.org/",
+      "github": "https://github.com/konstructorjs/konstructor"
+    },
+    {
+      "name": "kolony",
+      "description": "A new self hosted deployment tool for Node.js apps based off of PM2.",
+      "github": "https://github.com/konstructorjs/kolony"
+    },
+    {
+      "name": "konstructor-cli",
+      "description": "konstructor-cli makes setting up a new konstructor app super simple.",
+      "github": "https://github.com/konstructorjs/konstructor-cli"
+    },
+    {
+      "name": "JV",
+      "description": "A very basic CLI to compile and run java programs for my CS class.",
+      "url": "https://crates.io/crates/jv",
+      "github": "https://github.com/nahtnam/jv"
+    },
+    {
+      "name": "json-diff-cli",
+      "description": "A CLI program to diff API responses. Used by a large ecommerce website.",
+      "url": "https://www.jtester.com",
+      "github": "https://github.com/j-tester/json-diff-cli"
+    },
+    {
+      "name": "btcp.co",
+      "description": "A website to get the current bitcoin price, with some extra tools.",
+      "url": "https://www.btcp.co",
+      "github": "https://github.com/nahtnam/btcp"
+    },
+    {
+      "name": "pdstats.co",
+      "description": "A website to track users and bets made on primedice.com.",
+      "url": "https://www.pdstats.co/",
+      "github": "https://github.com/nahtnam/pdstats"
+    }
+  ]
+}
