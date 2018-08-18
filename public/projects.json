@@ -19,7 +19,7 @@
     {
       "name": "ebates-chat-kit",
       "description": "konstructor-cli makes setting up a new konstructor app super simple.",
-      "url": "https://opensource.ebates.com/ebates-chat-kit/",
+      "url": "https://opensource.ebates.com/ebates-chat-kit",
       "github": "https://github.com/ebates-inc/ebates-chat-kit"
     },
     {
@@ -37,7 +37,7 @@
     {
       "name": "pdstats.co",
       "description": "A website to track users and bets made on primedice.com.",
-      "url": "https://www.pdstats.co/",
+      "url": "https://www.pdstats.co",
       "github": "https://github.com/nahtnam/pdstats"
     },
     {
