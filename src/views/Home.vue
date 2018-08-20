@@ -102,12 +102,12 @@
           </div>
         </div>
         <div class="has-text-centered">
-          <a href="/projects" class="button is-info is-medium">
+          <router-link to="/projects" class="button is-info is-medium">
             <span class="icon">
               <font-awesome-icon :icon="['fa', 'code']" />
             </span>
             <span>View All Projects</span>
-          </a>
+          </router-link>
         </div>
       </div>
     </section>
@@ -134,12 +134,12 @@
           </div>
         </div>
         <div class="has-text-centered">
-          <a href="/photos" class="button is-info is-medium">
+          <router-link to="/photos" class="button is-info is-medium">
             <span class="icon">
               <font-awesome-icon :icon="['fa', 'camera']" />
             </span>
             <span>View All Photos</span>
-          </a>
+          </router-link>
         </div>
       </div>
     </section>
