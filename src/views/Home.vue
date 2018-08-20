@@ -160,26 +160,8 @@ export default {
   },
 
   created() {
-    this.projects = this.shuffle(projects).slice(0, 3);
-    this.photos = this.shuffle(photos).slice(0, 3);
-  },
-
-  methods: {
-    shuffle(array) {
-      const result = array.slice();
-      let i = 0;
-      let j = 0;
-      let temp = null;
-
-      for (i = array.length - 1; i > 0; i -= 1) {
-        j = Math.floor(Math.random() * (i + 1));
-        temp = array[i];
-        result[i] = result[j];
-        result[j] = temp;
-      }
-
-      return result;
-    },
+    this.projects = projects.slice().sort(() => 0.5 - Math.random()).slice(0, 3);
+    this.photos = photos.slice().sort(() => 0.5 - Math.random()).slice(0, 3);
   },
 };
 </script>

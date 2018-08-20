@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import VueAnalytics from 'vue-analytics'
+import VueAnalytics from 'vue-analytics';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCode, faCamera } from '@fortawesome/free-solid-svg-icons';
