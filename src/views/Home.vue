@@ -23,7 +23,7 @@
               </h1>
               <h2 class="subtitle">
                   but I'm known online as <a href="https://keybase.io/nahtnam" target="_blank">@nahtnam</a>.
-                  I enjoy programming in languages like <strong>JavaScript</strong> (<strong>Node</strong>), and <strong>Ruby</strong>, exploring frameworks like <strong>Vue</strong>, and researching emerging technology like <strong>Bitcoin</strong>.
+                  I enjoy programming in languages like <strong>JavaScript</strong> (<strong>Node</strong>), exploring frameworks like <strong>Vue</strong>, and researching emerging technology like <strong>Bitcoin</strong>.
                   I also take photos when I find the time.
                   I am currently working on a few projects, including <strong><a href="https://github.com/srvrjs/srvr" target="_blank">srvr</a></strong>, and <strong><a href="https://github.com/ludicrousxyz/tab" target="_blank">ludicrous tab</a></strong>, as well as conducting research on cryptocurrencies like <strong>Ethereum</strong> at UC Santa Cruz.
               </h2>
