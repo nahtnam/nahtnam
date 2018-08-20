@@ -6,7 +6,7 @@
           <span class="is-size-5">nahtnam</span>
         </router-link>
 
-        <div class="navbar-burger burger" :class="{ 'is-active': active }" @click="toggleActive">
+        <div class="navbar-burger burger" :class="{ 'is-active': active }" @click="toggleMenu">
           <span></span>
           <span></span>
           <span></span>
@@ -14,27 +14,31 @@
       </div>
 
       <div class="navbar-menu" :class="{ 'is-active': active }">
-        <MenuItems class="navbar-end" />
+        <div class="navbar-end">
+          <router-link to="/" class="navbar-item" active-class="is-active" exact @click.native="closeMenu">Home</router-link>
+          <router-link to="/projects" class="navbar-item" active-class="is-active" @click.native="closeMenu">Projects</router-link>
+          <router-link to="/photos" class="navbar-item" active-class="is-active" @click.native="closeMenu">Photos</router-link>
+          <a href="https://blog.nahtnam.com" class="navbar-item">Blog</a>
+          <a href="/resume.pdf" class="navbar-item">Résumé</a>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
-import MenuItems from '@/components/MenuItems.vue';
-
 export default {
   name: 'Navigation',
-  components: {
-    MenuItems,
-  },
   data() {
     return {
       active: false,
     };
   },
   methods: {
-    toggleActive() {
+    closeMenu() {
+      this.active = false;
+    },
+    toggleMenu() {
       this.active = !this.active;
     },
   },
