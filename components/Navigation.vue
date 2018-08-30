@@ -3,7 +3,7 @@
     <div class="container">
       <div class="navbar-brand">
         <router-link class="navbar-item has-text-weight-bold" to="/">
-          <span class="is-size-5">Fight FUSD</span>
+          <span class="is-size-5">nahtnam</span>
         </router-link>
 
         <div class="navbar-burger burger" :class="{ 'is-active': active }" @click="toggleMenu">
@@ -16,8 +16,9 @@
       <div class="navbar-menu" :class="{ 'is-active': active }">
         <div class="navbar-end">
           <nuxt-link to="/" class="navbar-item" active-class="is-active" @click.native="closeMenu" exact>Home</nuxt-link>
-          <nuxt-link to="/qanda" class="navbar-item" active-class="is-active" @click.native="closeMenu">Q and A</nuxt-link>
-          <nuxt-link to="/contact" class="navbar-item" active-class="is-active" @click.native="closeMenu">Contact</nuxt-link>
+          <nuxt-link to="/projects" class="navbar-item" active-class="is-active" @click.native="closeMenu">Projects</nuxt-link>
+          <nuxt-link to="/photos" class="navbar-item" active-class="is-active" @click.native="closeMenu">Photos</nuxt-link>
+          <a href="/resume.pdf" class="navbar-item">Résumé</a>
         </div>
       </div>
     </div>
