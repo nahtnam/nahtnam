@@ -9,6 +9,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
+    "test": "npm run lint",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
@@ -25,8 +26,10 @@
     "babel-eslint": "^8.2.1",
     "bulma": "^0.7.1",
     "cross-env": "^5.0.1",
-    "eslint": "^5.0.1",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-loader": "^2.0.0",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-vue": "^4.0.0",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0"

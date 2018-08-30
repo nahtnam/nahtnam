@@ -168,7 +168,7 @@ import Spinner from '~/components/Spinner.vue';
 
 export default {
   name: 'home',
-  
+
   data() {
     return {
       projects: [],
