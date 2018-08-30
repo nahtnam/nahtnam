@@ -1,0 +1,11 @@
+*
+!assets
+!components
+!layouts
+!middleware
+!pages
+!plugins
+!static
+!store
+!package.json
+!package-lock.json

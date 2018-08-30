@@ -1,0 +1,11 @@
+{
+  "name": "nahtnam",
+  "alias": "www.nahtnam.com",
+  "type": "docker",
+  "features": {
+    "cloud": "v2"
+  },
+  "engines": {
+    "node": "^8.0.0"
+  }
+}
