@@ -1,0 +1,50 @@
+{
+  "projects": [
+    {
+      "name": "nahtnam",
+      "description": "My personal portfolio where I host my projects, photos, and blog.",
+      "url": "https://www.nahtnam.com",
+      "github": "https://github.com/nahtnam/nahtnam"
+    },
+    {
+      "name": "@srvr/srvr",
+      "description": "A simple, component-based framework for building Node.js API's.",
+      "github": "https://github.com/srvrjs/srvr"
+    },
+    {
+      "name": "ludicrous tab",
+      "description": "A chrome extension to show the data that matters to you.",
+      "github": "https://github.com/ludicrousxyz/tab"
+    },
+    {
+      "name": "ebates-chat-kit",
+      "description": "konstructor-cli makes setting up a new konstructor app super simple.",
+      "url": "https://opensource.ebates.com/ebates-chat-kit",
+      "github": "https://github.com/ebates-inc/ebates-chat-kit"
+    },
+    {
+      "name": "json-diff-cli",
+      "description": "A CLI program to diff API responses. Used by a large ecommerce website.",
+      "url": "https://www.jtester.com",
+      "github": "https://github.com/j-tester/json-diff-cli"
+    },
+    {
+      "name": "btcp.co",
+      "description": "A website to get the current bitcoin price, with some extra tools.",
+      "url": "https://www.btcp.co",
+      "github": "https://github.com/nahtnam/btcp"
+    },
+    {
+      "name": "pdstats.co",
+      "description": "A website to track users and bets made on primedice.com.",
+      "url": "https://www.pdstats.co",
+      "github": "https://github.com/nahtnam/pdstats"
+    },
+    {
+      "name": "JV",
+      "description": "A very basic CLI to compile and run java programs for my CS class.",
+      "url": "https://crates.io/crates/jv",
+      "github": "https://github.com/nahtnam/jv"
+    }
+  ]
+}

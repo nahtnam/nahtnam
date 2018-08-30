@@ -27,18 +27,28 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '@fortawesome/fontawesome/styles.css',
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/font-awesome',
   ],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/redirect-module',
+  ],
+
+  redirect: [
+    {
+      from: '/resume',
+      to: '/resume.pdf',
+    },
   ],
 
   /*
