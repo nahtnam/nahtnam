@@ -18,6 +18,7 @@
           <router-link to="/" class="navbar-item" active-class="is-active" exact @click.native="closeMenu">Home</router-link>
           <router-link to="/projects" class="navbar-item" active-class="is-active" @click.native="closeMenu">Projects</router-link>
           <router-link to="/photos" class="navbar-item" active-class="is-active" @click.native="closeMenu">Photos</router-link>
+          <a href="https://blog.nahtnam.com" target="_blank" rel="noopener noreferrer" class="navbar-item">Blog</a>
           <a href="/resume.pdf" class="navbar-item">Résumé</a>
         </div>
       </div>
