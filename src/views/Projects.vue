@@ -26,8 +26,8 @@
                 </p>
               </div>
               <footer class="card-footer">
-                <a :href="project.github" v-if="project.github" target="_blank" class="card-footer-item">View on GitHub</a>
                 <a :href="project.url" v-if="project.url" target="_blank" class="card-footer-item">View Project</a>
+                <a :href="project.github" v-if="project.github" target="_blank" class="card-footer-item">View on GitHub</a>
               </footer>
             </div>
           </div>
