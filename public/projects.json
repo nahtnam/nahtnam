@@ -25,8 +25,13 @@
     {
       "name": "json-diff-cli",
       "description": "A CLI program to diff API responses. Used by a large ecommerce website.",
-      "url": "https://www.jtester.com",
       "github": "https://github.com/j-tester/json-diff-cli"
+    },
+    {
+      "name": "JTester",
+      "description": "An online extension of json-diff-cli to help diff and lint your JSON.",
+      "url": "https://www.jtester.com",
+      "github": "https://github.com/j-tester/jtester"
     },
     {
       "name": "btcp.co",
