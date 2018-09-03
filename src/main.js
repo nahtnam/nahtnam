@@ -16,6 +16,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(VueAnalytics, {
   id: 'UA-124193870-1',
+  router,
 });
 
 Vue.config.productionTip = false;
