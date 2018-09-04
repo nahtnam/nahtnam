@@ -3,6 +3,12 @@
   "alias": "www.nahtnam.com",
   "type": "static",
   "static": {
+    "redirects": [
+      {
+        "source": "/resume",
+        "destination": "/resume.pdf"
+      }
+    ],
     "rewrites": [
       {
         "source": "**",
