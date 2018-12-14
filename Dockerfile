@@ -1,10 +1,8 @@
 FROM node:10-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
-ENV NODE_ENV=development
 RUN npm ci
 COPY . .
-ENV NODE_ENV=production
 RUN npm run build
 
 # production stage
