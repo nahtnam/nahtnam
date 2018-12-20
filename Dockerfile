@@ -1,12 +1,6 @@
-FROM node:10-alpine as build-stage
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+FROM mhart/alpine-node:10
+WORKDIR /usr/src
+COPY package.json package-lock.json /usr/src/
+RUN npm install
 COPY . .
-RUN npm run build
-
-# production stage
-FROM nginx:1.13.12-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+RUN npm run build -- --dest /public
