@@ -1,4 +1,4 @@
-workflow "New workflow" {
+workflow "build" {
   on = "push"
   resolves = ["alias"]
 }
