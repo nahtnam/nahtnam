@@ -14,5 +14,6 @@ module.exports = {
   // add your custom rules here
   rules: {
     'import/no-unresolved': 0,
+    'import/no-extraneous-dependencies': 0,
   },
 }
