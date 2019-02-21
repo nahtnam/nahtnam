@@ -2,14 +2,17 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
+    node: true,
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
   },
   extends: [
-    '@nuxtjs'
+    '@nuxtjs',
+    'airbnb-base',
   ],
   // add your custom rules here
-  rules: {}
+  rules: {
+    'import/no-unresolved': 0,
+  },
 }
