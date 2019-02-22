@@ -12,23 +12,25 @@
         </div>
       </div>
       <div class="hero-foot has-text-centered">
-        <span class="icon">
+        <a @click="scroll" class="icon">
           <font-awesome-icon icon="chevron-down" size="lg" />
-        </span>
+        </a>
         <br>
         <br>
       </div>
     </section>
-    <section class="section">
-      <div class="container">
-        <div class="columns">
-          <div class="column is-one-third is-offset-two-thirds">
-            <h1 class="header subtitle has-text-centered">Work Experience</h1>
-            <Timeline />
+    <div id="content">
+      <section id="first-section" class="section">
+        <div class="container">
+          <div class="columns">
+            <div class="column is-one-third is-offset-two-thirds">
+              <h1 class="header subtitle has-text-centered">Work Experience</h1>
+              <Timeline />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -38,6 +40,15 @@ import Timeline from '@/components/resume/Timeline.vue';
 export default {
   components: {
     Timeline,
+  },
+
+  methods: {
+    scroll() {
+      this.$el.querySelector('#content').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    },
   },
 };
 </script>
