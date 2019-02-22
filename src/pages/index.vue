@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-fullheight-with-navbar is-black">
+    <section class="hero is-medium is-black">
       <div class="hero-body">
         <div class="container has-text-centered">
           <h1 class="header title">
@@ -11,20 +11,15 @@
           </h2>
         </div>
       </div>
-      <div class="hero-foot has-text-centered">
-        <a @click="scroll" class="icon">
-          <font-awesome-icon icon="chevron-down" size="lg" />
-        </a>
-        <br>
-        <br>
-      </div>
     </section>
     <div id="content">
       <section id="first-section" class="section">
         <div class="container">
           <div class="columns">
-            <div class="column is-one-third is-offset-two-thirds">
-              <h1 class="header subtitle has-text-centered">Work Experience</h1>
+            <div class="column is-one-quarter is-offset-three-quarters">
+              <h1 class="header subtitle has-text-centered">
+                Work Experience
+              </h1>
               <Timeline />
             </div>
           </div>
@@ -40,15 +35,6 @@ import Timeline from '@/components/resume/Timeline.vue';
 export default {
   components: {
     Timeline,
-  },
-
-  methods: {
-    scroll() {
-      this.$el.querySelector('#content').scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    },
   },
 };
 </script>

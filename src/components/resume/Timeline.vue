@@ -8,9 +8,10 @@
         <font-awesome-icon icon="bicycle" />
       </div>
       <div class="timeline-content">
-        <p class="heading"><strong>Lime</strong> - Software Engineering Intern</p>
-        <p>
-          FUTURE
+        <p class="heading">
+          <strong>Lime</strong> - Software Engineering Intern
+          <br>
+          <i>FUTURE (2019)</i>
         </p>
       </div>
     </div>
@@ -24,9 +25,8 @@
       <div class="timeline-content">
         <p class="heading">
           <strong>Ebates/Rakuten</strong> - Software Engineering Intern
-        </p>
-        <p>
-          June to September 2015
+          <br>
+          <i>June 2015 - September 2018</i>
         </p>
       </div>
     </div>
@@ -40,9 +40,8 @@
       <div class="timeline-content">
         <p class="heading">
           <strong>Roambee</strong> - Software Engineering Intern
-        </p>
-        <p>
-          July to August 2015
+          <br>
+          <i>July 2016 - August 2015</i>
         </p>
       </div>
     </div>
@@ -54,9 +53,10 @@
         <font-awesome-icon :icon="['fab', 'bitcoin']" />
       </div>
       <div class="timeline-content">
-        <p class="heading"><strong>Card for Coin</strong> - Software Engineering Intern</p>
-        <p>
-          June to August 2015
+        <p class="heading">
+          <strong>Card for Coin</strong> - Software Engineering Intern
+          <br>
+          <i>June 2015 - August 2015</i>
         </p>
       </div>
     </div>
