@@ -3,11 +3,11 @@
     <section class="hero is-fullheight-with-navbar is-black">
       <div class="hero-body">
         <div class="container has-text-centered">
-          <h1 class="title is-1">
-            Hi, I am Manthan.
+          <h1 class="header title">
+            Hi, I'm Manthan.
           </h1>
-          <h2 class="subtitle">
-            I am known online as <a href="https://keybase.io/nahtnam" class="has-text-weight-bold" target="_blank" rel="noopener noreferrer">@nahtnam</a>.
+          <h2 class="header subtitle is-6 has-text-weight-light">
+            I'm known online as <a href="https://keybase.io/nahtnam" class="has-text-weight-bold is-lowercase" target="_blank" rel="noopener noreferrer">@nahtnam</a>.
           </h2>
         </div>
       </div>
@@ -19,10 +19,25 @@
         <br>
       </div>
     </section>
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-third is-offset-two-thirds">
+            <h1 class="header subtitle has-text-centered">Work Experience</h1>
+            <Timeline />
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import Timeline from '@/components/resume/Timeline.vue';
+
 export default {
+  components: {
+    Timeline,
+  },
 };
 </script>
