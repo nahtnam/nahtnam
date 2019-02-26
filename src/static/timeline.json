@@ -1,0 +1,73 @@
+{
+  "layout": [
+    {
+      "type": "item",
+      "color": "is-success",
+      "icon": ["fas", "bicycle"],
+      "company": "Lime",
+      "role": "Software Engineering Intern",
+      "startDate": "June 2019"
+    },
+    {
+      "type": "tag",
+      "text": "2019",
+      "color": "is-success"
+    },
+    {
+      "type": "item",
+      "color": "is-danger",
+      "icon": ["fas", "shopping-bag"],
+      "company": "Ebates/Rakuten",
+      "role": "Software Engineering Intern",
+      "startDate": "June 2018",
+      "endDate": "September 2018"
+    },
+    {
+      "type": "tag",
+      "text": "2018",
+      "color": "is-danger"
+    },
+    {
+      "type": "item",
+      "color": "is-primary",
+      "icon": ["fas", "graduation-cap"],
+      "company": "UC Santa Cruz",
+      "role": "Researcher",
+      "startDate": "October 2017"
+    },
+    {
+      "type": "tag",
+      "text": "2017",
+      "color": "is-primary"
+    },
+    {
+      "type": "item",
+      "color": "is-warning has-text-grey-dark",
+      "icon": ["fas", "shipping-fast"],
+      "company": "Roambee",
+      "role": "Software Engineering Intern",
+      "startDate": "July 2016",
+      "endDate": "August 2016"
+    },
+    {
+      "type": "tag",
+      "text": "2016",
+      "color": "is-warning"
+    },
+    {
+      "type": "item",
+      "color": "color-bitcoin",
+      "icon": ["fab", "bitcoin"],
+      "company": "Card for Coin",
+      "role": "Software Engineering Intern",
+      "startDate": "June 2015",
+      "endDate": "August 2015"
+    },
+    {
+      "type": "tag",
+      "text": "2015",
+      "size": "is-medium",
+      "color": "color-bitcoin"
+    }
+  ]
+}
