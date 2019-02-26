@@ -4,10 +4,10 @@
       <span class="tag is-medium is-primary">{{ year + 1 }}</span>
     </header>
     <div v-for="item in layout" :key="item.text || item.company">
-      <header class="timeline-header" v-if="item.type === 'tag'">
+      <header v-if="item.type === 'tag'" class="timeline-header">
         <span class="tag" :class="[item.color, item.size].join(' ')">{{ item.text }}</span>
       </header>
-      <div class="timeline-item" :class="item.color" v-else-if="item.type === 'item'">
+      <div v-else-if="item.type === 'item'" class="timeline-item" :class="item.color">
         <div class="timeline-marker is-icon has-text-white" :class="item.color">
           <font-awesome-icon :icon="item.icon" />
         </div>
