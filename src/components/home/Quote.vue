@@ -8,7 +8,7 @@
       </div>
     </nav>
     <p class="content is-large quote">
-      &ldquo;Excited to see new developers like <a href="https://twitter.com/nahtnam" target="_blank" rel="noopener noreferrer">@nahtnam</a> using the Coinbase API <a href="http://nahtnam.com" target="_blank" rel="noopener noreferrer">nahtnam.com</a>&rdquo;
+      &ldquo;Excited to see new developers like <a href="https://twitter.com/nahtnam" target="_blank" rel="noopener noreferrer">@nahtnam</a> using the Coinbase API <nuxt-link to="/">nahtnam.com</nuxt-link>&rdquo;
     </p>
     <p class="content is-medium">
       <strong><a href="https://twitter.com/brian_armstrong" target="_blank" rel="noopener noreferrer">Brian Armstrong</a></strong> <small>(CEO of <a href="https://www.coinbase.com/" target="_blank" rel="noopener noreferrer">Coinbase</a>)</small>
