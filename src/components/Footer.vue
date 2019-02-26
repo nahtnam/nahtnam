@@ -3,7 +3,7 @@
     <footer class="footer">
       <div class="content has-text-centered">
         <p>
-          &copy; {{ this.year }} nahtnam.
+          &copy; {{ year }} nahtnam.
         </p>
       </div>
     </footer>
