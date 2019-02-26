@@ -16,7 +16,15 @@
       <section id="first-section" class="section">
         <div class="container">
           <div class="columns">
-            <div class="column is-one-quarter is-offset-three-quarters">
+            <div class="column is-three-quarters">
+              <div class="has-text-centered">
+                <h1 class="header subtitle">
+                  Shout-Outs
+                </h1>
+                <Quote />
+              </div>
+            </div>
+            <div class="column is-one-quarter">
               <h1 class="header subtitle has-text-centered">
                 Work Experience
               </h1>
@@ -30,11 +38,13 @@
 </template>
 
 <script>
-import Timeline from '@/components/resume/Timeline.vue';
+import Timeline from '@/components/home/Timeline.vue';
+import Quote from '@/components/home/Quote.vue';
 
 export default {
   components: {
     Timeline,
+    Quote,
   },
 };
 </script>
