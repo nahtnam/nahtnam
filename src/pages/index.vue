@@ -35,7 +35,7 @@
                 <h1 class="header title is-4">
                   Social Media
                 </h1>
-                TODO
+                <Social />
               </div>
               <hr>
               <div class="has-text-centered">
@@ -78,6 +78,7 @@
 <script>
 import AboutMe from '@/components/home/AboutMe.vue';
 import Statistics from '@/components/home/Statistics.vue';
+import Social from '@/components/home/Social.vue';
 import Projects from '@/components/home/Projects.vue';
 import Quote from '@/components/home/Quote.vue';
 import Timeline from '@/components/home/Timeline.vue';
@@ -86,6 +87,7 @@ export default {
   components: {
     AboutMe,
     Statistics,
+    Social,
     Projects,
     Quote,
     Timeline,

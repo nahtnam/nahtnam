@@ -56,7 +56,7 @@
     },
     {
       "type": "item",
-      "color": "color-bitcoin",
+      "color": "icon-bitcoin",
       "icon": ["fab", "bitcoin"],
       "company": "Card for Coin",
       "role": "Software Engineering Intern",
@@ -67,7 +67,7 @@
       "type": "tag",
       "text": "2015",
       "size": "is-medium",
-      "color": "color-bitcoin"
+      "color": "icon-bitcoin"
     }
   ]
 }

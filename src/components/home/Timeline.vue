@@ -43,16 +43,17 @@ export default {
 
 <style lang="scss" scoped>
 // Bitcoin
-.timeline .timeline-item.color-bitcoin::before {
+.timeline .timeline-item.icon-bitcoin::before {
   background-color: #ff9900;
-
 }
-.timeline .timeline-item .timeline-marker.color-bitcoin.is-icon {
+
+.timeline .timeline-item .timeline-marker.icon-bitcoin.is-icon {
   border-color: #ff9900;
   background-color: #ff9900;
   color: #ffffff;
 }
-.tag:not(body).color-bitcoin {
+
+.tag:not(body).icon-bitcoin {
   background-color: #ff9900;
   color: #ffffff;
 }
