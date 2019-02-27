@@ -18,14 +18,14 @@
           <div class="columns">
             <div class="column is-three-quarters">
               <div class="has-text-centered">
-                <h1 class="header subtitle">
+                <h1 class="header title is-4">
                   Shout-Outs
                 </h1>
                 <Quote />
               </div>
             </div>
             <div class="column is-one-quarter">
-              <h1 class="header subtitle has-text-centered">
+              <h1 class="header title is-4 has-text-centered">
                 Work Experience
               </h1>
               <Timeline />
