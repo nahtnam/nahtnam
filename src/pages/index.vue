@@ -33,16 +33,16 @@
               <hr>
               <div class="has-text-centered">
                 <h1 class="header title is-4">
-                  Social Media
+                  Projects
                 </h1>
-                <Social />
+                <Projects />
               </div>
               <hr>
               <div class="has-text-centered">
                 <h1 class="header title is-4">
-                  Projects
+                  Social Media
                 </h1>
-                <Projects />
+                <Social />
               </div>
               <hr>
               <div class="has-text-centered">
@@ -78,8 +78,8 @@
 <script>
 import AboutMe from '@/components/home/AboutMe.vue';
 import Statistics from '@/components/home/Statistics.vue';
-import Social from '@/components/home/Social.vue';
 import Projects from '@/components/home/Projects.vue';
+import Social from '@/components/home/Social.vue';
 import Quote from '@/components/home/Quote.vue';
 import Timeline from '@/components/home/Timeline.vue';
 
@@ -87,8 +87,8 @@ export default {
   components: {
     AboutMe,
     Statistics,
-    Social,
     Projects,
+    Social,
     Quote,
     Timeline,
   },
