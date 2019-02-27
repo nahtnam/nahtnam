@@ -33,6 +33,13 @@
               <hr>
               <div class="has-text-centered">
                 <h1 class="header title is-4">
+                  Social Media
+                </h1>
+                TODO
+              </div>
+              <hr>
+              <div class="has-text-centered">
+                <h1 class="header title is-4">
                   Projects
                 </h1>
                 <Projects />
