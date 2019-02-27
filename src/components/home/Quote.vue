@@ -11,7 +11,7 @@
       &ldquo;Excited to see new developers like <a href="https://twitter.com/nahtnam" target="_blank" rel="noopener noreferrer">@nahtnam</a> using the Coinbase API
       <nuxt-link to="/">nahtnam.com</nuxt-link>&rdquo;
     </p>
-    <p class="content is-medium">
+    <p class="content is-medium quote">
       <strong><a href="https://twitter.com/brian_armstrong" target="_blank" rel="noopener noreferrer">Brian Armstrong</a></strong> <small>(CEO of <a href="https://www.coinbase.com/" target="_blank" rel="noopener noreferrer">Coinbase</a>)</small>
       <br>
       on <a href="https://twitter.com/brian_armstrong/status/473292847639048192" target="_blank" rel="noopener noreferrer">June 2, 2014</a>

@@ -16,7 +16,28 @@
       <section id="first-section" class="section">
         <div class="container">
           <div class="columns">
-            <div class="column is-three-quarters">
+            <div class="column no-pad-bottom is-three-quarters">
+              <div class="has-text-centered">
+                <h1 class="header title is-4">
+                  About Me
+                </h1>
+                <AboutMe />
+              </div>
+              <hr>
+              <div class="has-text-centered">
+                <h1 class="header title is-4">
+                  Statistics
+                </h1>
+                <Statistics />
+              </div>
+              <hr>
+              <div class="has-text-centered">
+                <h1 class="header title is-4">
+                  Projects
+                </h1>
+                <Projects />
+              </div>
+              <hr>
               <div class="has-text-centered">
                 <h1 class="header title is-4">
                   Shout-Outs
@@ -24,11 +45,21 @@
                 <Quote />
               </div>
             </div>
-            <div class="column is-one-quarter">
-              <h1 class="header title is-4 has-text-centered">
-                Work Experience
-              </h1>
-              <Timeline />
+            <div class="column no-pad-bottom is-one-quarter">
+              <hr class="is-hidden-tablet">
+              <div>
+                <h1 class="header title is-4 has-text-centered">
+                  Work Experience
+                </h1>
+                <Timeline />
+              </div>
+              <hr>
+              <div class="has-text-centered">
+                <h1 class="header title is-4">
+                  Languages
+                </h1>
+                TODO
+              </div>
             </div>
           </div>
         </div>
@@ -38,13 +69,19 @@
 </template>
 
 <script>
-import Timeline from '@/components/home/Timeline.vue';
+import AboutMe from '@/components/home/AboutMe.vue';
+import Statistics from '@/components/home/Statistics.vue';
+import Projects from '@/components/home/Projects.vue';
 import Quote from '@/components/home/Quote.vue';
+import Timeline from '@/components/home/Timeline.vue';
 
 export default {
   components: {
-    Timeline,
+    AboutMe,
+    Statistics,
+    Projects,
     Quote,
+    Timeline,
   },
 };
 </script>
