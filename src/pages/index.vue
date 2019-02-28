@@ -56,16 +56,16 @@
               <hr class="is-hidden-tablet">
               <div>
                 <h1 class="header title is-4 has-text-centered">
-                  Work Experience
+                  Work History
                 </h1>
                 <Timeline />
               </div>
               <hr>
               <div class="has-text-centered">
                 <h1 class="header title is-4">
-                  Languages
+                  Experience
                 </h1>
-                TODO
+                <Languages />
               </div>
             </div>
           </div>
@@ -82,6 +82,7 @@ import Projects from '@/components/home/Projects.vue';
 import Social from '@/components/home/Social.vue';
 import Quote from '@/components/home/Quote.vue';
 import Timeline from '@/components/home/Timeline.vue';
+import Languages from '@/components/home/Languages.vue';
 
 export default {
   components: {
@@ -91,6 +92,7 @@ export default {
     Social,
     Quote,
     Timeline,
+    Languages,
   },
 };
 </script>
