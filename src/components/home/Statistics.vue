@@ -7,7 +7,7 @@
             {{ contributions.text }}+
           </p>
           <p class="heading">
-            Contributions
+            Contributions on GitHub
           </p>
         </div>
       </div>
@@ -27,7 +27,7 @@
             {{ repos.text }}+
           </p>
           <p class="heading">
-            Repos
+            Repos Created
           </p>
         </div>
       </div>
