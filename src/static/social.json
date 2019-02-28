@@ -1,11 +1,6 @@
 {
   "media": [
     {
-      "color": "icon-github",
-      "icon": ["fab", "github"],
-      "url": "https://github.com/nahtnam"
-    },
-    {
       "color": "icon-twitter",
       "icon": ["fab", "twitter"],
       "url": "https://twitter.com/nahtnam"
@@ -19,6 +14,11 @@
       "color": "icon-facebook",
       "icon": ["fab", "facebook-square"],
       "url": "https://www.facebook.com/nahtnam"
+    },
+    {
+      "color": "icon-github",
+      "icon": ["fab", "github"],
+      "url": "https://github.com/nahtnam"
     },
     {
       "color": "icon-linkedin",
