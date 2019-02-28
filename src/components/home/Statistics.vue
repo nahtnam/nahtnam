@@ -1,39 +1,19 @@
 <template>
   <div>
-    <nav class="level">
-      <div class="level-item has-text-centered">
+    <div class="columns">
+      <div class="column">
         <div>
-          <p class="title" :class="{ 'is-loading': contributions.loading }">
-            {{ contributions.text }}
+          <p class="title is-marginless" :class="{ 'is-loading': contributions.loading }">
+            {{ contributions.text }}+
           </p>
           <p class="heading">
             Contributions
           </p>
         </div>
       </div>
-      <div class="level-item has-text-centered">
+      <div class="column">
         <div>
-          <p class="title" :class="{ 'is-loading': contributions.loading }">
-            TODO
-          </p>
-          <p class="heading">
-            Posts Online
-          </p>
-        </div>
-      </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="title" :class="{ 'is-loading': contributions.loading }">
-            TODO
-          </p>
-          <p class="heading">
-            Followers
-          </p>
-        </div>
-      </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="title" :class="{ 'is-loading': age.loading }">
+          <p class="title is-marginless" :class="{ 'is-loading': age.loading }">
             {{ age.text }}
           </p>
           <p class="heading">
@@ -41,7 +21,17 @@
           </p>
         </div>
       </div>
-    </nav>
+      <div class="column">
+        <div>
+          <p class="title is-marginless" :class="{ 'is-loading': repos.loading }">
+            {{ repos.text }}+
+          </p>
+          <p class="heading">
+            Repos
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,6 +47,10 @@ export default {
         text: '---',
         loading: true,
       },
+      repos: {
+        text: '---',
+        loading: true,
+      },
     };
   },
 
@@ -69,12 +63,7 @@ export default {
     }
     this.age.loading = false;
 
-    try {
-      await this.getContributions();
-    } catch (_) {
-      // do nothing
-    }
-    this.contributions.loading = false;
+    await Promise.all([this.getContributions(), this.getRepos()]);
   },
 
   beforeDestroy() {
@@ -85,11 +74,30 @@ export default {
   },
 
   methods: {
+    async getRepos() {
+      try {
+        const users = ['nahtnam', 'j-tester', 'ludicrousxyz', 'srvrjs'];
+        const reqsArr = users.map(usr => fetch(`https://api.github.com/users/${usr}`));
+        const reqs = await Promise.all(reqsArr);
+        const res = await Promise.all(reqs.map(r => r.json()));
+        const reposCount = res.reduce((acc, val) => acc + val.public_repos, 0);
+        this.repos.text = reposCount;
+      } catch (_) {
+        // do nothing
+      }
+      this.repos.loading = false;
+    },
+
     async getContributions() {
-      const req = await fetch('https://github-contributions-api.now.sh/v1/nahtnam');
-      const { years } = await req.json();
-      const total = years.reduce((acc, val) => acc + val.total, 0);
-      this.contributions.text = total.toLocaleString();
+      try {
+        const req = await fetch('https://github-contributions-api.now.sh/v1/nahtnam');
+        const { years } = await req.json();
+        const total = years.reduce((acc, val) => acc + val.total, 0);
+        this.contributions.text = total.toLocaleString();
+      } catch (_) {
+        // do nothing
+      }
+      this.contributions.loading = false;
     },
 
     getAge(birthday = 'October 10, 1999') {
