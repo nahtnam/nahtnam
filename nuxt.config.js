@@ -50,6 +50,9 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+    parallel: true,
+    cache: true,
+    hardSource: true,
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
