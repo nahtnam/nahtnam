@@ -56,7 +56,7 @@
               <hr class="is-hidden-tablet">
               <div>
                 <h1 class="header title is-4 has-text-centered">
-                  Work History
+                  Work
                 </h1>
                 <Timeline />
               </div>
