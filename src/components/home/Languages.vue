@@ -31,7 +31,7 @@ export default {
   methods: {
     getColor(experience) {
       if (experience < 33) {
-        return 'is-warning';
+        return 'is-danger';
       }
       if (experience < 66) {
         return 'is-info';
