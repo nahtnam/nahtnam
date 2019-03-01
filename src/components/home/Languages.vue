@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import orderBy from 'lodash/orderby';
+import orderBy from 'lodash.orderby';
 import { languages } from '@/static/languages.json';
 
 export default {
