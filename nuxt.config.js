@@ -54,6 +54,9 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    parallel: true,
+    cache: true,
+    hardSource: true,
     transpile: ['vuetify/lib'],
     plugins: [new VuetifyLoaderPlugin()],
     loaders: {
