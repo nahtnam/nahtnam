@@ -13,8 +13,9 @@
     },
     {
       "name": "ctrl tab",
-      "description": "A chrome extension to show the data that matters to you.",
+      "description": "A new tab page to show the data that matters to you from over 20 different providers.",
       "github": "https://github.com/ludicrousxyz/tab",
+      "stack": ["vue", "fastify", "bulma"],
       "url": "https://ctrltab.io",
       "showcase": true
     },
@@ -22,6 +23,7 @@
       "name": "btcp.co",
       "description": "A website to get the current bitcoin price, with some extra tools.",
       "url": "https://www.btcp.co",
+      "stack": ["vue", "coinbase", "bulma"],
       "github": "https://github.com/nahtnam/btcp",
       "showcase": true
     },
@@ -29,8 +31,7 @@
       "name": "ebates-chat-kit",
       "description": "A UI kit for building chat widgets in React.",
       "url": "https://opensource.ebates.com/ebates-chat-kit",
-      "github": "https://github.com/ebates-inc/ebates-chat-kit",
-      "showcase": true
+      "github": "https://github.com/ebates-inc/ebates-chat-kit"
     },
     {
       "name": "json-diff-cli",
@@ -41,7 +42,9 @@
       "name": "JTester",
       "description": "An online extension of json-diff-cli to help diff and lint your JSON.",
       "url": "https://www.jtester.com",
-      "github": "https://github.com/j-tester/jtester"
+      "github": "https://github.com/j-tester/jtester",
+      "stack": ["vue", "fetch"],
+      "showcase": true
     },
     {
       "name": "pdstats.co",

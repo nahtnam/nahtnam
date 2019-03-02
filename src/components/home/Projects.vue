@@ -1,31 +1,61 @@
 <template>
   <div>
-    <div class="tabs is-centered is-boxed">
-      <ul>
-        <li v-for="project in projects" :key="project.name" :class="{ 'is-active': project.name === selected }">
-          <a @click="select(project.name)">{{ project.name }}</a>
-        </li>
-      </ul>
+    <div class="columns">
+      <div class="column" v-for="project in projects" :key="project.name">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title is-centered">
+              {{ project.name }}
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <p>{{ project.description }}</p>
+              <div class="tags">
+                <span class="tag" v-for="tag in project.stack" :key="tag">{{ tag }}</span>
+              </div>
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a :href="project.url" v-if="project.url" target="_blank" rel="noopener noreferrer" class="card-footer-item">
+              <span class="icon">
+                <font-awesome-icon icon="eye" />
+              </span>
+              View
+            </a>
+            <a :href="project.github" v-if="project.github" target="_blank" rel="noopener noreferrer" class="card-footer-item">
+              <span class="icon">
+                <font-awesome-icon :icon="['fab', 'github']" />
+              </span>
+              Source
+            </a>
+          </footer>
+        </div>
+      </div>
     </div>
-    TODO
+    <a class="button is-fullwidth is-info is-outlined">
+      <span class="icon">
+        <font-awesome-icon icon="code" />
+      </span>
+      <span>View All Projects</span>
+    </a>
   </div>
 </template>
 
 <script>
-import { projects } from '@/static/projects.json';
+import { projects } from '@/static/home/projects.json';
 
 export default {
   data() {
     return {
-      selected: 'ctrl tab',
       projects: Object.keys(projects).map(key => projects[key]).filter(obj => obj.showcase),
     };
   },
-
-  methods: {
-    select(name) {
-      this.selected = name;
-    },
-  },
 };
 </script>
+
+<style lang="scss" scoped>
+.card-footer-item .icon {
+  padding-right: 1em;
+}
+</style>

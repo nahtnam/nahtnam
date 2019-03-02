@@ -15,7 +15,7 @@
 
 <script>
 import orderBy from 'lodash.orderby';
-import { languages } from '@/static/languages.json';
+import { languages } from '@/static/home/languages.json';
 
 export default {
   data() {

@@ -16,6 +16,8 @@ import {
   faShoppingBag,
   faBicycle,
   faGraduationCap,
+  faCode,
+  faEye,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -32,6 +34,8 @@ library.add(
   faLinkedin,
   faStackOverflow,
   faSteam,
+  faCode,
+  faEye,
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
