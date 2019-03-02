@@ -12,7 +12,7 @@
             <div class="content">
               <p>{{ project.description }}</p>
               <div class="tags">
-                <span class="tag" v-for="tag in project.stack" :key="tag">{{ tag }}</span>
+                <span class="tag is-black" v-for="tag in project.stack.concat().sort()" :key="tag" :style="{ 'background-color': color(tag) }">{{ tag }}</span>
               </div>
             </div>
           </div>
@@ -44,12 +44,17 @@
 
 <script>
 import { projects } from '@/static/home/projects.json';
+import color from '@/utils/projects/tag-color';
 
 export default {
   data() {
     return {
       projects: Object.keys(projects).map(key => projects[key]).filter(obj => obj.showcase),
     };
+  },
+
+  methods: {
+    color,
   },
 };
 </script>
