@@ -13,7 +13,7 @@
     },
     {
       "name": "ctrl tab",
-      "description": "A new tab page to show the data that matters to you from over 20 different providers.",
+      "description": "A new tab page extension to show the data that matters to you.",
       "github": "https://github.com/ludicrousxyz/tab",
       "stack": ["vue", "fastify", "bulma"],
       "url": "https://ctrltab.io",
