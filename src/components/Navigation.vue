@@ -24,6 +24,7 @@
           >
             Home
           </nuxt-link>
+          <a href="/resume" class="navbar-item">Résumé</a>
         </div>
       </div>
     </div>

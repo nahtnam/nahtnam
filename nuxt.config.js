@@ -41,6 +41,14 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/redirect-module',
+  ],
+
+  /**
+   * Redirect plugin
+   */
+  redirect: [
+    { from: '/resume', to: '/resume.pdf' },
   ],
 
   /*
