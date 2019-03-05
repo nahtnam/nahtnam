@@ -2,7 +2,7 @@
   <div>
     <div v-for="project in projects" :key="project.name" class="columns is-vcentered project">
       <div class="column">
-        <span class="title">{{ project.name }}</span>
+        <a :href="project.url || project.github" target="_blank" rel="noopener noreferrer" class="title">{{ project.name }}</a>
       </div>
       <div class="column is-one-third">
         {{ project.description }}
