@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="columns is-gapless is-multiline">
-      <div class="column is-one-third photo" v-for="photo in photos" :key="photo.url">
+      <div v-for="photo in photos" :key="photo.url" class="column is-one-third photo">
         <a :href="photo.url" target="_blank" rel="noopener noreferrer">
           <div class="card">
             <div class="card-image">
