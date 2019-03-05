@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <div class="navbar-menu header" :class="{ 'is-active': active }">
+      <div class="navbar-menu header is-black" :class="{ 'is-active': active }">
         <div class="navbar-end">
           <nuxt-link
             to="/"

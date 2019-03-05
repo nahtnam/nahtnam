@@ -18,7 +18,7 @@
       "name": "ctrl tab",
       "description": "A new tab page extension to show the data that matters to you.",
       "github": "https://github.com/ludicrousxyz/tab",
-      "stack": ["vue", "fastify", "bulma", "news api", "docker"],
+      "stack": ["vue", "fastify", "bulma", "docker"],
       "url": "https://ctrltab.io",
       "showcase": true
     },

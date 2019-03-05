@@ -7,7 +7,7 @@
             Hi, I'm Manthan.
           </h1>
           <h2 class="header subtitle is-6 has-text-weight-light">
-            I'm known online as <a href="https://keybase.io/nahtnam" class="has-text-weight-bold is-lowercase" target="_blank" rel="noopener noreferrer">@nahtnam</a>.
+            You can find me online <a href="https://keybase.io/nahtnam" class="has-text-weight-bold is-lowercase" target="_blank" rel="noopener noreferrer">@nahtnam</a>.
           </h2>
         </div>
       </div>

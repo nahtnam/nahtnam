@@ -3,7 +3,6 @@ const colors = {
   bulma: '#00d1b2',
   coinbase: '#1652f0',
   react: '#00d8ff',
-  'news api': '#538ae4',
   docker: '#0db7ed',
   npm: '#cb3837',
   typescript: '#294e80',
