@@ -1,5 +1,6 @@
 *
-!public
 !src
+!.babelrc
+!nuxt.config.js
 !package.json
 !package-lock.json

@@ -1,36 +1,18 @@
 {
   "name": "nahtnam",
   "alias": "www.nahtnam.com",
-  "type": "static",
-  "static": {
-    "redirects": [
-      {
-        "source": "/resume",
-        "destination": "/resume.pdf"
-      }
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
-    "headers": [
-      {
-        "source": "service-worker.js",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache"
-          }
-        ]
-      }
-    ]
+  "type": "docker",
+  "features": {
+    "cloud": "v2"
   },
   "engines": {
-    "node": "^8.0.0"
+    "node": "^10.0.0"
   },
   "env": {
-    "BASE_URL": "https://www.nahtnam.com"
+    "NODE_ENV": "production",
+    "HOST": "0.0.0.0",
+    "NUXT_HOST": "0.0.0.0",
+    "PORT": "3000",
+    "NUXT_PORT": "3000"
   }
 }

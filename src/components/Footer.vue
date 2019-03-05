@@ -1,14 +1,23 @@
 <template>
-  <footer class="footer">
-    <div class="content has-text-centered has-text-weight-bold">
-      &copy; 2018 nahtnam.
-    </div>
-  </footer>
+  <div>
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          &copy; {{ year }} nahtnam.
+        </p>
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'Footer',
+  data() {
+    return {
+      year: (new Date()).getFullYear(),
+    };
+  },
 };
 </script>
 

@@ -1,11 +1,14 @@
-@import '~bulma/sass/utilities/initial-variables';
+@import './bulma.scss';
 
-$indigo: #3f51b5;
-$pink: #ff4081;
-$primary: $indigo;
-$info: $pink;
-$link: $indigo;
+.header {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 
-@import '~bulma/bulma.sass';
+.no-pad-bottom {
+  padding-bottom: 0px !important;
+}
 
-@import './main.scss';
+.no-margin-bottom {
+  margin-bottom: 0px !important;
+}

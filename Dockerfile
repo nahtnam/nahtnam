@@ -1,6 +1,8 @@
-FROM mhart/alpine-node:10
+FROM node:10-alpine
 WORKDIR /usr/src
-COPY package.json package-lock.json /usr/src/
-RUN npm install
 COPY . .
-RUN npm run build -- --dest /public
+RUN npm install
+RUN npm run build
+EXPOSE 3000
+ENTRYPOINT ["npm"]
+CMD ["start"]
