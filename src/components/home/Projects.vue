@@ -33,12 +33,14 @@
         </div>
       </div>
     </div>
-    <a class="button is-fullwidth is-info is-outlined">
-      <span class="icon">
-        <font-awesome-icon icon="code" />
-      </span>
-      <span>View All Projects</span>
-    </a>
+    <nuxt-link to="/projects">
+      <a class="button is-fullwidth is-info is-outlined">
+        <span class="icon">
+          <font-awesome-icon icon="code" />
+        </span>
+        <span>View All Projects</span>
+      </a>
+    </nuxt-link>
   </div>
 </template>
 
