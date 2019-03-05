@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { layout } from '@/static/home/timeline.json';
+import { layout } from '@/static/data/timeline.json';
 
 export default {
   data() {

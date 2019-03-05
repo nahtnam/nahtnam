@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { media } from '@/static/home/social.json';
+import { media } from '@/static/data/social.json';
 
 export default {
   data() {

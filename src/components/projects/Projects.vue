@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { projects } from '@/static/home/projects.json';
+import { projects } from '@/static/data/projects.json';
 import color from '@/utils/projects/tag-color';
 
 export default {
