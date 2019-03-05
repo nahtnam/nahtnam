@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="columns no-margin-bottom is-vcentered" v-for="language in languages" :key="language.name">
-      <div class="column is-one-third header is-size-7" v-html="language.name"></div>
+    <div v-for="language in languages" :key="language.name" class="columns no-margin-bottom is-vcentered">
+      <!-- eslint-disable-next-line -->
+      <div class="column is-one-third header is-size-7" v-html="language.name" />
       <div class="column">
         <progress class="progress is-large" :class="getColor(language.experience)" :value="language.experience" max="100">
           <div class="progress-bar">

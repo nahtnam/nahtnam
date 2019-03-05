@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="columns is-vcentered project" v-for="project in projects" :key="project.name">
+    <div v-for="project in projects" :key="project.name" class="columns is-vcentered project">
       <div class="column">
         <span class="title">{{ project.name }}</span>
       </div>
@@ -8,18 +8,18 @@
         {{ project.description }}
       </div>
       <div class="column">
-        <div class="tags" v-if="project.stack">
-          <span class="tag is-black" v-for="tag in project.stack.concat().sort()" :key="tag" :style="{ 'background-color': color(tag) }">{{ tag }}</span>
+        <div v-if="project.stack" class="tags">
+          <span v-for="tag in project.stack.concat().sort()" :key="tag" class="tag is-black" :style="{ 'background-color': color(tag) }">{{ tag }}</span>
         </div>
       </div>
       <div class="column has-text-centered">
-        <a :href="project.url" v-if="project.url" target="_blank" rel="noopener noreferrer" class="button is-info is-outlined">
+        <a v-if="project.url" :href="project.url" target="_blank" rel="noopener noreferrer" class="button is-info is-outlined">
           <span class="icon">
             <font-awesome-icon icon="eye" />
           </span>
           <span>View</span>
         </a>
-        <a :href="project.github" v-if="project.github" target="_blank" rel="noopener noreferrer" class="button is-primary is-outlined">
+        <a v-if="project.github" :href="project.github" target="_blank" rel="noopener noreferrer" class="button is-primary is-outlined">
           <span class="icon">
             <font-awesome-icon :icon="['fab', 'github']" />
           </span>

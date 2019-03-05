@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="columns">
-      <div class="column" v-for="project in projects" :key="project.name">
+      <div v-for="project in projects" :key="project.name" class="column">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title is-centered">
@@ -12,18 +12,18 @@
             <div class="content">
               <p>{{ project.description }}</p>
               <div class="tags">
-                <span class="tag is-black" v-for="tag in project.stack.concat().sort()" :key="tag" :style="{ 'background-color': color(tag) }">{{ tag }}</span>
+                <span v-for="tag in project.stack.concat().sort()" :key="tag" class="tag is-black" :style="{ 'background-color': color(tag) }">{{ tag }}</span>
               </div>
             </div>
           </div>
           <footer class="card-footer">
-            <a :href="project.url" v-if="project.url" target="_blank" rel="noopener noreferrer" class="card-footer-item">
+            <a v-if="project.url" :href="project.url" target="_blank" rel="noopener noreferrer" class="card-footer-item">
               <span class="icon">
                 <font-awesome-icon icon="eye" />
               </span>
               View
             </a>
-            <a :href="project.github" v-if="project.github" target="_blank" rel="noopener noreferrer" class="card-footer-item">
+            <a v-if="project.github" :href="project.github" target="_blank" rel="noopener noreferrer" class="card-footer-item">
               <span class="icon">
                 <font-awesome-icon :icon="['fab', 'github']" />
               </span>

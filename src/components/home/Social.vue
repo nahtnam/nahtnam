@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="columns is-mobile is-multiline">
-      <div class="column is-one-quarter-mobile" v-for="network in media" :key="network.url">
+      <div v-for="network in media" :key="network.url" class="column is-one-quarter-mobile">
         <a :href="network.url" class="icon has-text-info fa-3x is-large" target="_blank" rel="noopener noreferrer">
           <font-awesome-icon :icon="network.icon" :class="network.color" />
         </a>
