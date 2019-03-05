@@ -3,7 +3,7 @@
     <nav class="level">
       <div class="level-item has-text-centered">
         <figure class="image is-128x128">
-          <img src="~/assets/images/nahtnam.png" class="is-rounded has-text-centered">
+          <img src="~/assets/images/nahtnam.png" alt="nahtnam" class="is-rounded has-text-centered">
         </figure>
       </div>
     </nav>

@@ -3,7 +3,7 @@
     <nav class="level">
       <div class="level-item has-text-centered">
         <figure class="image is-128x128">
-          <img src="https://pbs.twimg.com/profile_images/1039744169026224128/Ne3vqMhM.jpg" class="is-rounded has-text-centered">
+          <img src="https://pbs.twimg.com/profile_images/1039744169026224128/Ne3vqMhM.jpg" alt="Brian Armstrong" class="is-rounded has-text-centered">
         </figure>
       </div>
     </nav>
