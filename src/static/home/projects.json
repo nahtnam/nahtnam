@@ -11,6 +11,7 @@
       "name": "srvr",
       "description": "A simple, component-based framework for building Node.js API's.",
       "stack": ["typescript", "fastify", "npm", "yargs"],
+      "showcase": true,
       "github": "https://github.com/srvrjs/core"
     },
     {
@@ -47,8 +48,7 @@
       "description": "An online extension of json-diff-cli to help diff and lint your JSON.",
       "url": "https://www.jtester.com",
       "github": "https://github.com/j-tester/jtester",
-      "stack": ["vue", "fetch", "docker"],
-      "showcase": true
+      "stack": ["vue", "fetch", "docker"]
     },
     {
       "name": "pdstats.co",
