@@ -12,66 +12,64 @@
         </div>
       </div>
     </section>
-    <div id="content">
-      <section id="first-section" class="section">
-        <div class="container">
-          <div class="columns">
-            <div class="column no-pad-bottom is-three-quarters">
-              <div class="has-text-centered">
-                <h1 class="header title is-4">
-                  About Me
-                </h1>
-                <AboutMe />
-              </div>
-              <hr>
-              <div class="has-text-centered">
-                <h1 class="header title is-4">
-                  Statistics
-                </h1>
-                <Statistics />
-              </div>
-              <hr>
-              <div class="has-text-centered">
-                <h1 class="header title is-4">
-                  Projects
-                </h1>
-                <Projects />
-              </div>
-              <hr>
-              <div class="has-text-centered">
-                <h1 class="header title is-4">
-                  Social Media
-                </h1>
-                <Social />
-              </div>
-              <hr>
-              <div class="has-text-centered">
-                <h1 class="header title is-4">
-                  Shout-Outs
-                </h1>
-                <Quote />
-              </div>
+    <section id="first-section" class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column no-pad-bottom is-three-quarters">
+            <div class="has-text-centered">
+              <h1 class="header title is-4">
+                About Me
+              </h1>
+              <AboutMe />
             </div>
-            <div class="column no-pad-bottom is-one-quarter">
-              <hr class="is-hidden-tablet">
-              <div>
-                <h1 class="header title is-4 has-text-centered">
-                  Work
-                </h1>
-                <Timeline />
-              </div>
-              <hr>
-              <div class="has-text-centered">
-                <h1 class="header title is-4">
-                  Experience
-                </h1>
-                <Languages />
-              </div>
+            <hr>
+            <div class="has-text-centered">
+              <h1 class="header title is-4">
+                Statistics
+              </h1>
+              <Statistics />
+            </div>
+            <hr>
+            <div class="has-text-centered">
+              <h1 class="header title is-4">
+                Projects
+              </h1>
+              <Projects />
+            </div>
+            <hr>
+            <div class="has-text-centered">
+              <h1 class="header title is-4">
+                Social Media
+              </h1>
+              <Social />
+            </div>
+            <hr>
+            <div class="has-text-centered">
+              <h1 class="header title is-4">
+                Shout-Outs
+              </h1>
+              <Quote />
+            </div>
+          </div>
+          <div class="column no-pad-bottom is-one-quarter">
+            <hr class="is-hidden-tablet">
+            <div>
+              <h1 class="header title is-4 has-text-centered">
+                Work
+              </h1>
+              <Timeline />
+            </div>
+            <hr>
+            <div class="has-text-centered">
+              <h1 class="header title is-4">
+                Experience
+              </h1>
+              <Languages />
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </div>
 </template>
 

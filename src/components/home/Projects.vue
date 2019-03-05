@@ -49,7 +49,7 @@ import color from '@/utils/projects/tag-color';
 export default {
   data() {
     return {
-      projects: Object.keys(projects).map(key => projects[key]).filter(obj => obj.showcase),
+      projects: projects.filter(obj => obj.showcase),
     };
   },
 

@@ -24,6 +24,14 @@
           >
             Home
           </nuxt-link>
+          <nuxt-link
+            to="/projects"
+            class="navbar-item"
+            active-class="is-active"
+            @click.native="closeMenu"
+          >
+            Projects
+          </nuxt-link>
           <a href="/resume" class="navbar-item">Résumé</a>
         </div>
       </div>
