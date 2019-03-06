@@ -49,6 +49,7 @@ jobs:
 
     steps:
       - checkout
+      - run: npm config set ignore-scripts false
       - run: sudo npm install -g now
       - run: now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
 
