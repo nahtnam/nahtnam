@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  test:
     docker:
       # specify the version you desire here
       - image: circleci/node:10
@@ -52,3 +52,14 @@ jobs:
       - run: npm install -g now
       - run: now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
 
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
