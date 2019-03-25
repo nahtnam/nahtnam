@@ -1,6 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
-import classnames from 'classnames';
 
 export default class extends React.Component {
   constructor(props) {
@@ -30,7 +28,3 @@ export default class extends React.Component {
     );
   }
 };
-
-{/* <style lang="scss" scoped>
-
-</style> */}
