@@ -11,7 +11,7 @@ export default () => (
       <div className="hero-body">
         <div className="container has-text-centered">
           <h1 className="header title">
-            Hi, I'm Manthan.
+            { 'Hi, I\'m Manthan.' }
           </h1>
           <h2 className="header subtitle is-6 has-text-weight-light">
             You can find me online <a href="https://keybase.io/nahtnam" className="has-text-weight-bold is-lowercase" target="_blank" rel="noopener noreferrer">@nahtnam</a>.

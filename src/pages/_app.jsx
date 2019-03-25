@@ -1,12 +1,10 @@
 import React from 'react';
 import App, { Container } from 'next/app';
 
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
 
 import '../assets/css/index.scss';
 
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faBitcoin,
   faGithub,
@@ -24,7 +22,9 @@ import {
   faGraduationCap,
   faCode,
   faEye,
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
+import Footer from '../components/Footer';
+import Navigation from '../components/Navigation';
 
 library.add(
   faBitcoin,
@@ -41,7 +41,7 @@ library.add(
   faSteam,
   faCode,
   faEye,
-)
+);
 
 export default class extends App {
   render() {

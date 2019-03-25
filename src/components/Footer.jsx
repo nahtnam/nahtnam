@@ -23,8 +23,9 @@ export default class extends React.Component {
           .footer {
             padding: 3rem 1.5rem;
           }
-        `}</style>
+        `}
+        </style>
       </div>
     );
   }
-};
+}

@@ -51,10 +51,15 @@ export default class extends React.Component {
                   Home
                 </a>
               </Link>
+              <Link href="/resume">
+                <a className="navbar-item is-active" role="navigation" onClick={this.closeMenu}>
+                  Résumé
+                </a>
+              </Link>
             </div>
           </div>
         </div>
       </nav>
     );
   }
-};
+}

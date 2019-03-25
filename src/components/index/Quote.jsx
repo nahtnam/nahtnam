@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 
 export default () => (
@@ -26,6 +27,7 @@ export default () => (
       .quote {
         line-height: 1.25;
       }
-    `}</style>
+    `}
+    </style>
   </div>
 );

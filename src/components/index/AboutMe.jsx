@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default () => (
   <div>
     <nav className="level">
@@ -8,7 +10,7 @@ export default () => (
       </div>
     </nav>
     <div className="content is-large">
-      I'm a student, full-stack developer, researcher, gamer, and crypto-currency enthusiast.
+      { 'I\'m a student, full-stack developer, researcher, gamer, and crypto-currency enthusiast.' }
     </div>
   </div>
 );
