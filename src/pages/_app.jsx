@@ -1,6 +1,6 @@
 import React from 'react';
 import App, { Container } from 'next/app';
-import Navigation from '../components/Navigation.jsx';
+import Navigation from '../components/Navigation';
 
 import '../assets/css/index.scss';
 
@@ -15,4 +15,4 @@ export default class extends App {
       </Container>
     );
   }
-};
+}

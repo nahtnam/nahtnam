@@ -8,7 +8,8 @@
     "dev": "next src",
     "build": "next build src",
     "start": "next start src",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run lint",
+    "lint": "eslint src --ext js,jsx"
   },
   "repository": {
     "type": "git",
@@ -25,12 +26,18 @@
   "homepage": "https://github.com/nahtnam/nahtnam#readme",
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
+    "classnames": "^2.2.6",
     "next": "^8.0.3",
     "node-sass": "^4.11.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5"
   },
   "devDependencies": {
-    "bulma": "^0.7.4"
+    "bulma": "^0.7.4",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4"
   }
 }

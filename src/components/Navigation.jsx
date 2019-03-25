@@ -1,5 +1,6 @@
 import React from 'react';
-import Link from 'next/link'
+import Link from 'next/link';
+import classnames from 'classnames';
 
 export default class extends React.Component {
   constructor(props) {
@@ -13,9 +14,9 @@ export default class extends React.Component {
   }
 
   toggleMenu() {
-    this.setState({
-      active: !this.state.active,
-    });
+    this.setState(prevState => ({
+      active: !prevState.active,
+    }));
   }
 
   closeMenu() {
@@ -25,6 +26,7 @@ export default class extends React.Component {
   }
 
   render() {
+    const { active } = this.state;
     return (
       <nav id="main-navbar" className="navbar is-black is-transparent">
         <div className="container">
@@ -35,17 +37,17 @@ export default class extends React.Component {
               </a>
             </Link>
 
-            <div className={['navbar-burger', 'burger', this.state.active ? 'is-active' : ''].filter(x => x).join(' ')} onClick={this.toggleMenu}>
+            <div className={classnames('navbar-burger', 'burger', { 'is-active': active })} role="navigation" onClick={this.toggleMenu}>
               <span />
               <span />
               <span />
             </div>
           </div>
 
-          <div className={['navbar-menu', 'header', this.state.active ? 'is-active' : ''].filter(x => x).join(' ')}>
+          <div className={classnames('navbar-menu', 'header', { 'is-active': active })}>
             <div className="navbar-end">
               <Link href="/">
-                <a className="navbar-item is-active" onClick={this.closeMenu}>
+                <a className="navbar-item is-active" role="navigation" onClick={this.closeMenu}>
                   Home
                 </a>
               </Link>
