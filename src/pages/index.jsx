@@ -1,11 +1,13 @@
 import React from 'react';
 
 import AboutMe from '../components/index/AboutMe';
+import Statistics from '../components/index/Statistics';
 import Projects from '../components/index/Projects';
 import Social from '../components/index/Social';
 import Quote from '../components/index/Quote';
 
 import Timeline from '../components/index/Timeline';
+import Languages from '../components/index/Languages';
 
 export default () => (
   <div>
@@ -36,7 +38,7 @@ export default () => (
               <h1 className="header title is-4">
                 Statistics
               </h1>
-              {/* <Statistics /> */}
+              <Statistics />
             </div>
             <hr />
             <div className="has-text-centered">
@@ -73,7 +75,7 @@ export default () => (
               <h1 className="header title is-4">
                 Experience
               </h1>
-              {/* <Languages /> */}
+              <Languages />
             </div>
           </div>
         </div>
