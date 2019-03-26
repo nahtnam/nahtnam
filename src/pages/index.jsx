@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AboutMe from '../components/index/AboutMe';
+import Projects from '../components/index/Projects';
 import Social from '../components/index/Social';
 import Quote from '../components/index/Quote';
 
@@ -42,7 +43,7 @@ export default () => (
               <h1 className="header title is-4">
                 Projects
               </h1>
-              {/* <Projects /> */}
+              <Projects />
             </div>
             <hr />
             <div className="has-text-centered">

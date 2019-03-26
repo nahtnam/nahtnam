@@ -1,0 +1,68 @@
+{
+  "projects": [
+    {
+      "name": "nahtnam",
+      "description": "My personal portfolio where I host my projects, photos, and blog.",
+      "url": "https://www.nahtnam.com",
+      "stack": ["nuxt", "bulma", "docker"],
+      "github": "https://github.com/nahtnam/nahtnam"
+    },
+    {
+      "name": "srvr",
+      "description": "A simple, component-based framework for building Node.js API's.",
+      "stack": ["typescript", "fastify", "npm", "yargs"],
+      "showcase": true,
+      "github": "https://github.com/srvrjs/core"
+    },
+    {
+      "name": "ctrl tab",
+      "description": "A new tab page extension to show the data that matters to you.",
+      "github": "https://github.com/ludicrousxyz/tab",
+      "stack": ["vue", "fastify", "bulma", "docker"],
+      "url": "https://ctrltab.io",
+      "showcase": true
+    },
+    {
+      "name": "btcp.co",
+      "description": "A website to get the current bitcoin price, with some extra tools.",
+      "url": "https://www.btcp.co",
+      "stack": ["vue", "coinbase", "bulma", "docker"],
+      "github": "https://github.com/nahtnam/btcp",
+      "showcase": true
+    },
+    {
+      "name": "ebates-chat-kit",
+      "description": "A UI kit for building chat widgets in React.",
+      "url": "https://opensource.ebates.com/ebates-chat-kit",
+      "stack": ["react", "styled jsx"],
+      "github": "https://github.com/ebates-inc/ebates-chat-kit"
+    },
+    {
+      "name": "json-diff-cli",
+      "description": "A CLI program to diff API responses. Used by a large ecommerce website.",
+      "stack": ["yargs", "babel", "npm"],
+      "github": "https://github.com/j-tester/json-diff-cli"
+    },
+    {
+      "name": "JTester",
+      "description": "An online extension of json-diff-cli to help diff and lint your JSON.",
+      "url": "https://www.jtester.com",
+      "github": "https://github.com/j-tester/jtester",
+      "stack": ["vue", "fetch", "docker"]
+    },
+    {
+      "name": "pdstats.co",
+      "description": "A website to track users and bets made on primedice.com.",
+      "url": "https://www.pdstats.co",
+      "stack": ["vue", "bulma", "graphql"],
+      "github": "https://github.com/nahtnam/pdstats"
+    },
+    {
+      "name": "JV",
+      "description": "A very basic CLI to compile and run java programs for my CS class.",
+      "url": "https://crates.io/crates/jv",
+      "stack": ["rust", "crates", "bash"],
+      "github": "https://github.com/nahtnam/jv"
+    }
+  ]
+}
