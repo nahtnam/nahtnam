@@ -1,6 +1,6 @@
 import React from 'react';
 import App, { Container } from 'next/app';
-
+import Head from 'next/head';
 
 import '../assets/css/index.scss';
 
@@ -49,6 +49,13 @@ export default class extends App {
 
     return (
       <Container>
+        <Head>
+          <title>nahtnam</title>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="description" hid="description" content="my personal portfolio." />
+          <link rel="icon" type="image/png" href="/static/favicon.png" />
+        </Head>
         <Navigation />
         <Component />
         <Footer />
