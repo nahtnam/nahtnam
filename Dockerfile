@@ -1,8 +1,15 @@
-FROM node:10-alpine
+
+FROM mhart/alpine-node:10 as base
 WORKDIR /usr/src
-COPY . .
+COPY package.json package-lock.json /usr/src/
 RUN npm install
+COPY . .
 RUN npm run build
+RUN npm install --production
+
+FROM mhart/alpine-node:base-10
+WORKDIR /usr/src
+ENV NODE_ENV="production"
+COPY --from=base /usr/src .
 EXPOSE 3000
-ENTRYPOINT ["npm"]
-CMD ["start"]
+CMD ["node", "server.js"]

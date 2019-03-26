@@ -1,51 +1,49 @@
 {
   "name": "nahtnam",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "my personal portfolio",
-  "author": "Manthan Mallikarjun",
+  "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "test": "npm run lint && npm run jest",
-    "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint",
-    "jest": "jest"
+    "dev": "node server.js",
+    "build": "next build src",
+    "start": "NODE_ENV=production node server.js",
+    "test": "npm run lint",
+    "lint": "eslint . src --ext js,jsx"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nahtnam/nahtnam.git"
+  },
+  "keywords": [
+    "nahtnam"
+  ],
+  "author": "Manthan Mallikarjun",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/nahtnam/nahtnam/issues"
+  },
+  "homepage": "https://github.com/nahtnam/nahtnam#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.15",
-    "@fortawesome/free-brands-svg-icons": "^5.7.2",
-    "@fortawesome/free-solid-svg-icons": "^5.7.2",
-    "@fortawesome/vue-fontawesome": "^0.1.5",
-    "@nuxtjs/redirect-module": "^0.2.0",
-    "cross-env": "^5.2.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-brands-svg-icons": "^5.8.1",
+    "@fortawesome/free-solid-svg-icons": "^5.8.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "@zeit/next-sass": "^1.0.1",
+    "classnames": "^2.2.6",
     "lodash.orderby": "^4.6.0",
-    "nuxt": "^2.4.5"
+    "next": "^8.0.3",
+    "node-sass": "^4.11.0",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-config": "^0.0.1",
-    "@vue/test-utils": "^1.0.0-beta.27",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^8.2.1",
-    "babel-jest": "^23.6.0",
     "bulma": "^0.7.4",
-    "bulma-timeline": "^3.0.1",
-    "eslint": "^5.14.1",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-standard": ">=12.0.0",
-    "eslint-loader": "^2.0.0",
+    "bulma-timeline": "^3.0.3",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jest": ">=21.24.1",
-    "eslint-plugin-node": ">=7.0.1",
-    "eslint-plugin-promise": ">=4.0.1",
-    "eslint-plugin-standard": ">=4.0.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "jest": "^23.6.0",
-    "node-sass": "^4.11.0",
-    "nodemon": "^1.18.9",
-    "sass-loader": "^7.1.0",
-    "vue-jest": "^3.0.2"
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4"
   }
 }
