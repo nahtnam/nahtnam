@@ -1,3 +1,4 @@
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { media } from '../../static/data/social.json';
@@ -5,15 +6,13 @@ import { media } from '../../static/data/social.json';
 export default () => (
   <div>
     <div className="columns is-mobile is-multiline social">
-      { media.map((network) => {
-        return (
-          <div key={network.url} className="column is-one-quarter-mobile">
-            <a href={network.url} className="icon has-text-info fa-3x is-large" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={network.icon} className={network.color} />
-            </a>
-          </div>
-        );
-      }) }
+      { media.map(network => (
+        <div key={network.url} className="column is-one-quarter-mobile">
+          <a href={network.url} className="icon has-text-info fa-3x is-large" target="_blank" rel="noopener noreferrer">
+            <FontAwesomeIcon icon={network.icon} className={network.color} />
+          </a>
+        </div>
+      )) }
     </div>
     <style jsx global>{`
       .social .icon-github {
@@ -40,6 +39,7 @@ export default () => (
       .social .icon-bitcoin {
         color: #ff9900;
       }
-    `}</style>
+    `}
+    </style>
   </div>
 );
