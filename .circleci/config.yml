@@ -50,7 +50,7 @@ jobs:
     steps:
       - checkout
       - run: sudo npm install --unsafe-perm -g now
-      - run: now --token $NOW_TOKEN
+      - run: now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
 
 workflows:
   version: 2
