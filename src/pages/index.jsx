@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AboutMe from '../components/index/AboutMe';
+import Social from '../components/index/Social';
 import Quote from '../components/index/Quote';
 
 import Timeline from '../components/index/Timeline';
@@ -48,7 +49,7 @@ export default () => (
               <h1 className="header title is-4">
                 Social Media
               </h1>
-              {/* <Social /> */}
+              <Social />
             </div>
             <hr />
             <div className="has-text-centered">
