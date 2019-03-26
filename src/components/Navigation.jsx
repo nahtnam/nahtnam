@@ -56,6 +56,11 @@ export default class extends React.Component {
                   Projects
                 </a>
               </Link>
+              <Link href="/photos">
+                <a className="navbar-item is-active" role="navigation" onClick={this.closeMenu}>
+                  Photos
+                </a>
+              </Link>
               <Link href="/resume">
                 <a className="navbar-item is-active" role="navigation" onClick={this.closeMenu}>
                   Résumé
