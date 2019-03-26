@@ -47,22 +47,22 @@ export default class extends React.Component {
           <div className={classnames('navbar-menu', 'header', { 'is-active': active })}>
             <div className="navbar-end">
               <Link href="/">
-                <a className="navbar-item is-active" role="navigation" onClick={this.closeMenu}>
+                <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
                   Home
                 </a>
               </Link>
               <Link href="/projects">
-                <a className="navbar-item is-active" role="navigation" onClick={this.closeMenu}>
+                <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
                   Projects
                 </a>
               </Link>
               <Link href="/photos">
-                <a className="navbar-item is-active" role="navigation" onClick={this.closeMenu}>
+                <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
                   Photos
                 </a>
               </Link>
               <Link href="/resume">
-                <a className="navbar-item is-active" role="navigation" onClick={this.closeMenu}>
+                <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
                   Résumé
                 </a>
               </Link>
