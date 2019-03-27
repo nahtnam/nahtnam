@@ -70,7 +70,7 @@ jobs:
 
 workflows:
   version: 2
-  test_and_deploy:
+  main:
     jobs:
       - test
       - deploy:
