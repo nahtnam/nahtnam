@@ -1,25 +1,27 @@
 import React from 'react';
 import Link from 'next/link';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: false,
-    };
-
-    this.toggleMenu = this.toggleMenu.bind(this);
-    this.closeMenu = this.closeMenu.bind(this);
+class Navigation extends React.Component {
+  state = {
+    active: false,
   }
 
-  toggleMenu() {
+  static propTypes = {
+    router: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
+  }
+
+  toggleMenu = () => {
     this.setState(prevState => ({
       active: !prevState.active,
     }));
   }
 
-  closeMenu() {
+  closeMenu = () => {
     this.setState({
       active: false,
     });
@@ -27,6 +29,8 @@ export default class extends React.Component {
 
   render() {
     const { active } = this.state;
+    const { router: { pathname: route } } = this.props;
+
     return (
       <nav id="main-navbar" className="navbar is-black is-transparent">
         <div className="container">
@@ -47,17 +51,17 @@ export default class extends React.Component {
           <div className={classnames('navbar-menu', 'header', { 'is-active': active })}>
             <div className="navbar-end">
               <Link href="/">
-                <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
+                <a className={classnames('navbar-item', { 'is-active': route === '/' })} role="navigation" onClick={this.closeMenu}>
                   Home
                 </a>
               </Link>
               <Link href="/projects">
-                <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
+                <a className={classnames('navbar-item', { 'is-active': route === '/projects' })} role="navigation" onClick={this.closeMenu}>
                   Projects
                 </a>
               </Link>
               <Link href="/photos">
-                <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
+                <a className={classnames('navbar-item', { 'is-active': route === '/photos' })} role="navigation" onClick={this.closeMenu}>
                   Photos
                 </a>
               </Link>
@@ -73,3 +77,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withRouter(Navigation);
