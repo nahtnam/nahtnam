@@ -49,24 +49,12 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo npm install --unsafe-perm -g now
-      - run: now --token $NOW_TOKEN
-  alias:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:10
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-      - run: sudo npm install --unsafe-perm -g now
-      - run: now alias --token $NOW_TOKEN
+      - add_ssh_keys:
+          fingerprints:
+            - "43:ef:c4:90:38:76:28:94:71:63:75:b3:f1:5d:d2:d2"
+      - run: ssh-keyscan server.nahtnam.com >> ~/.ssh/known_hosts
+      - run: git remote add deploy dokku@server.nahtnam.com:nahtnam
+      - run: git push deploy master
 
 workflows:
   version: 2
@@ -76,9 +64,6 @@ workflows:
       - deploy:
           requires:
             - test
-      - alias:
-          requires:
-            - deploy
           filters:
             branches:
               only: master
