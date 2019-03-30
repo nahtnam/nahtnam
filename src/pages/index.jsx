@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Hero from '../components/Hero';
+
 import AboutMe from '../components/index/AboutMe';
 import Statistics from '../components/index/Statistics';
 import Projects from '../components/index/Projects';
@@ -11,18 +13,11 @@ import Languages from '../components/index/Languages';
 
 export default () => (
   <div>
-    <section className="hero is-medium is-black">
-      <div className="hero-body">
-        <div className="container has-text-centered">
-          <h1 className="header title">
-            { 'Hi, I\'m Manthan.' }
-          </h1>
-          <h2 className="header subtitle is-6 has-text-weight-light">
-            You can find me online <a href="https://keybase.io/nahtnam" className="has-text-weight-bold is-lowercase" target="_blank" rel="noopener noreferrer">@nahtnam</a>.
-          </h2>
-        </div>
-      </div>
-    </section>
+    <Hero
+      title="Hi, I'm Manthan."
+      subtitle='You can find me online <a href="https://keybase.io/nahtnam" class="has-text-weight-bold is-lowercase" target="_blank" rel="noopener noreferrer">@nahtnam</a>.'
+      size="medium"
+    />
     <section id="first-section" className="section">
       <div className="container">
         <div className="columns">
