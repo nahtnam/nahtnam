@@ -36,7 +36,7 @@ class Navigation extends React.Component {
         <div className="container">
           <div className="navbar-brand">
             <Link href="/">
-              <a className="navbar-item has-text-weight-bold">
+              <a className="navbar-item has-text-weight-bold" role="navigation" onClick={this.closeMenu}>
                 <span className="is-size-5">nahtnam</span>
               </a>
             </Link>
@@ -63,6 +63,11 @@ class Navigation extends React.Component {
               <Link href="/photos">
                 <a className={classnames('navbar-item', { 'is-active': route === '/photos' })} role="navigation" onClick={this.closeMenu}>
                   Photos
+                </a>
+              </Link>
+              <Link href="https://blog.nahtnam.com">
+                <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
+                  Blog
                 </a>
               </Link>
               <Link href="/resume">
