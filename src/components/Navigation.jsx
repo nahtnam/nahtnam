@@ -70,7 +70,7 @@ class Navigation extends React.Component {
                   Blog
                 </a>
               </Link>
-              <Link href="/resume">
+              <Link href="/resume.pdf">
                 <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
                   Résumé
                 </a>
