@@ -51,13 +51,6 @@
       "stack": ["vue", "fetch", "docker"]
     },
     {
-      "name": "pdstats.co",
-      "description": "A website to track users and bets made on primedice.com.",
-      "url": "https://www.pdstats.co",
-      "stack": ["vue", "bulma", "graphql"],
-      "github": "https://github.com/nahtnam/pdstats"
-    },
-    {
       "name": "JV",
       "description": "A very basic CLI to compile and run java programs for my CS class.",
       "url": "https://crates.io/crates/jv",
