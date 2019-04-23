@@ -8,7 +8,7 @@ export default () => (
   <div>
     { projects.map((project, index) => (
       <div key={project.name}>
-        <div className="columns is-vcentered project">
+        <div className="columns is-marginless is-vcentered project">
           <div className="column">
             <a href={project.url || project.github} target="_blank" rel="noopener noreferrer" className="title">{ project.name }</a>
           </div>
