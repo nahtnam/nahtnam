@@ -23,22 +23,28 @@ export default () => (
             </div>
           </div>
           <div className="column has-text-centered links">
-            { project.url ? (
-              <a href={project.url} target="_blank" rel="noopener noreferrer" className="button is-info is-outlined">
-                <span className="icon">
-                  <FontAwesomeIcon icon="eye" />
-                </span>
-                <span>View</span>
-              </a>
-            ) : null}
-            { project.github ? (
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className="button is-primary is-outlined">
-                <span className="icon">
-                  <FontAwesomeIcon icon={['fab', 'github']} />
-                </span>
-                <span>Source</span>
-              </a>
-            ) : null }
+            <div className="columns">
+              { project.url ? (
+                <div className="column">
+                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="button is-info is-fullwidth is-outlined">
+                    <span className="icon">
+                      <FontAwesomeIcon icon="eye" />
+                    </span>
+                    <span>View</span>
+                  </a>
+                </div>
+              ) : null}
+              { project.github ? (
+                <div className="column">
+                  <a href={project.github} target="_blank" rel="noopener noreferrer" className="button is-primary is-fullwidth is-outlined">
+                    <span className="icon">
+                      <FontAwesomeIcon icon={['fab', 'github']} />
+                    </span>
+                    <span>Source</span>
+                  </a>
+                </div>
+              ) : null }
+            </div>
           </div>
         </div>
         { projects.length - 1 !== index ? <hr /> : null}
@@ -48,9 +54,6 @@ export default () => (
       {`
         .project {
           padding: 0.5em;
-        }
-        .links .button {
-          margin: 2.5px;
         }
       `}
     </style>
