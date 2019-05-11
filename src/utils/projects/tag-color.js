@@ -11,6 +11,7 @@ const colors = {
   babel: '#f5da55',
   yargs: '#f49bc2',
   graphql: '#e10098',
+  netlify: '#00ad9f',
 };
 
 export default software => colors[software];

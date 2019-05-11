@@ -4,30 +4,24 @@
       "name": "nahtnam",
       "description": "My personal portfolio where I host my projects, photos, and blog.",
       "url": "https://www.nahtnam.com",
-      "stack": ["nuxt", "bulma", "docker"],
+      "stack": ["next.js", "react", "bulma", "netlify"],
+      "showcase": true,
       "github": "https://github.com/nahtnam/nahtnam"
     },
     {
-      "name": "srvr",
-      "description": "A simple, component-based framework for building Node.js API's.",
-      "stack": ["typescript", "fastify", "npm", "yargs"],
+      "name": "light",
+      "description": "light is a lightning fast web and serverless framework with amazing developer tools.",
+      "stack": ["typescript", "micro", "npm", "yargs"],
       "showcase": true,
-      "github": "https://github.com/srvrjs/core"
+      "url": "https://light.js.org",
+      "github": "https://github.com/ludicrousxyz/light"
     },
     {
       "name": "ctrl tab",
       "description": "A new tab page extension to show the data that matters to you.",
       "github": "https://github.com/ludicrousxyz/tab",
-      "stack": ["vue", "fastify", "bulma", "docker"],
+      "stack": ["vue", "micro", "bulma", "serverless"],
       "url": "https://ctrltab.io",
-      "showcase": true
-    },
-    {
-      "name": "btcp.co",
-      "description": "A website to get the current bitcoin price, with some extra tools.",
-      "url": "https://www.btcp.co",
-      "stack": ["vue", "coinbase", "bulma", "docker"],
-      "github": "https://github.com/nahtnam/btcp",
       "showcase": true
     },
     {
@@ -48,14 +42,7 @@
       "description": "An online extension of json-diff-cli to help diff and lint your JSON.",
       "url": "https://www.jtester.com",
       "github": "https://github.com/j-tester/jtester",
-      "stack": ["vue", "fetch", "docker"]
-    },
-    {
-      "name": "JV",
-      "description": "A very basic CLI to compile and run java programs for my CS class.",
-      "url": "https://crates.io/crates/jv",
-      "stack": ["rust", "crates", "bash"],
-      "github": "https://github.com/nahtnam/jv"
+      "stack": ["react", "fetch", "serverless", "netlify"]
     }
   ]
 }
