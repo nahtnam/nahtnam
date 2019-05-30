@@ -47,7 +47,7 @@ export default class extends React.Component {
 
   async getRepos() {
     try {
-      const users = ['nahtnam', 'j-tester', 'ludicrousxyz', 'srvrjs'];
+      const users = ['nahtnam', 'j-tester', 'ludicrousxyz', 'light-examples'];
       const reqsArr = users.map(usr => fetch(`https://api.github.com/users/${usr}`));
       const reqs = await Promise.all(reqsArr);
       const res = await Promise.all(reqs.map(r => r.json()));
@@ -123,7 +123,7 @@ export default class extends React.Component {
               { repos.text }+
             </p>
             <p className="heading">
-              Repos Created
+              Active Projects
             </p>
           </div>
         </div>
