@@ -1,5 +1,5 @@
 import React from 'react';
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import Head from 'next/head';
 
 import '../assets/css/index.scss';
@@ -48,7 +48,7 @@ export default class extends App {
     const { Component } = this.props;
 
     return (
-      <Container>
+      <>
         <Head>
           <title>nahtnam</title>
           <meta charSet="utf-8" />
@@ -59,7 +59,7 @@ export default class extends App {
         <Navigation />
         <Component />
         <Footer />
-      </Container>
+      </>
     );
   }
 }

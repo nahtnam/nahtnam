@@ -2,7 +2,7 @@ import React from 'react';
 import orderBy from 'lodash.orderby';
 import classnames from 'classnames';
 
-import { languages } from '../../static/data/languages.json';
+import { languages } from '../../public/data/languages.json';
 
 const skills = orderBy(languages, ['experience'], ['desc']).map((lang) => {
   const dup = Object.assign(lang, {});

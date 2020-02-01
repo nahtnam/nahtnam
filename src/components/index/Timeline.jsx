@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { layout } from '../../static/data/timeline.json';
+import { layout } from '../../public/data/timeline.json';
 
 const TimelineTag = data => (
   <div>

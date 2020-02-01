@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { media } from '../../static/data/social.json';
+import { media } from '../../public/data/social.json';
 
 export default () => (
   <div>
@@ -10,6 +10,7 @@ export default () => (
         <div key={network.url} className="column is-one-quarter-mobile">
           <a href={network.url} className="icon has-text-info fa-3x is-large" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={network.icon} className={network.color} />
+            { console.log(network.icon) }
           </a>
         </div>
       )) }

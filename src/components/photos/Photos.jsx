@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { photos } from '../../static/data/photos.json';
+import { photos } from '../../public/data/photos.json';
 
 export default () => (
   <div>

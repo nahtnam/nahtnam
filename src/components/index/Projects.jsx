@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { projects } from '../../static/data/projects.json';
+import { projects } from '../../public/data/projects.json';
 import color from '../../utils/projects/tag-color';
 
 const showcase = projects.filter(p => p.showcase);

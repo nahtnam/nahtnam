@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { projects } from '../../static/data/projects.json';
+import { projects } from '../../public/data/projects.json';
 import color from '../../utils/projects/tag-color';
 
 export default () => (

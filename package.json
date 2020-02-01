@@ -5,10 +5,10 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next src",
     "build": "next build src",
     "export": "next export src",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start src",
     "test": "npm run lint",
     "lint": "eslint . src --ext js,jsx"
   },
@@ -33,11 +33,11 @@
     "@zeit/next-sass": "^1.0.1",
     "classnames": "^2.2.6",
     "lodash.orderby": "^4.6.0",
-    "next": "^8.0.3",
+    "next": "^9.2.1",
     "node-sass": "^4.11.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.5",
-    "react-dom": "^16.8.5",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "react-typed": "^1.1.2"
   },
   "devDependencies": {
