@@ -3,10 +3,20 @@
     {
       "type": "item",
       "color": "is-success",
+      "large": true,
+      "icon": ["fas", "bicycle"],
+      "company": "Lime",
+      "role": "Software Engineer (part time)",
+      "startDate": "September 2019"
+    },
+    {
+      "type": "item",
+      "color": "is-success",
       "icon": ["fas", "bicycle"],
       "company": "Lime",
       "role": "Software Engineering Intern",
-      "startDate": "June 2019"
+      "startDate": "June 2019",
+      "endDate": "September 2019"
     },
     {
       "type": "tag",
@@ -33,7 +43,8 @@
       "icon": ["fas", "graduation-cap"],
       "company": "UC Santa Cruz",
       "role": "Researcher",
-      "startDate": "October 2017"
+      "startDate": "October 2017",
+      "endDate": "June 2019"
     },
     {
       "type": "tag",

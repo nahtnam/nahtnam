@@ -60,11 +60,6 @@ class Navigation extends React.Component {
                   Projects
                 </a>
               </Link>
-              <Link href="/photos">
-                <a className={classnames('navbar-item', { 'is-active': route === '/photos' })} role="navigation" onClick={this.closeMenu}>
-                  Photos
-                </a>
-              </Link>
               <Link href="https://blog.nahtnam.com">
                 <a className="navbar-item" role="navigation" onClick={this.closeMenu}>
                   Blog

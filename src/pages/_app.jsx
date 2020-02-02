@@ -1,10 +1,14 @@
+/* eslint-disable import/first */
 import React from 'react';
 import App from 'next/app';
 import Head from 'next/head';
 
 import '../assets/css/index.scss';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { library, config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+
+config.autoAddCss = false;
 import {
   faBitcoin,
   faGithub,
@@ -45,7 +49,7 @@ library.add(
 
 export default class extends App {
   render() {
-    const { Component } = this.props;
+    const { Component, pageProps } = this.props;
 
     return (
       <>
@@ -57,7 +61,7 @@ export default class extends App {
           <link rel="icon" type="image/png" href="/static/favicon.png" />
         </Head>
         <Navigation />
-        <Component />
+        <Component {...pageProps} />
         <Footer />
       </>
     );

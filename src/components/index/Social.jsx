@@ -10,7 +10,6 @@ export default () => (
         <div key={network.url} className="column is-one-quarter-mobile">
           <a href={network.url} className="icon has-text-info fa-3x is-large" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={network.icon} className={network.color} />
-            { console.log(network.icon) }
           </a>
         </div>
       )) }

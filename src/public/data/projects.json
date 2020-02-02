@@ -24,13 +24,6 @@
       "showcase": true
     },
     {
-      "name": "othermind",
-      "description": "create a blog in seconds, without worrying about the hassle of setting it up.",
-      "stack": ["next.js", "react", "bulma", "postgres"],
-      "showcase": true,
-      "url": "https://www.othermind.me"
-    },
-    {
       "name": "ebates-chat-kit",
       "description": "A UI kit for building chat widgets in React.",
       "url": "https://opensource.ebates.com/ebates-chat-kit",

@@ -26,43 +26,23 @@
     },
     {
       "name": "Ruby on Rails",
-      "experience": 50
+      "experience": 80
     },
     {
       "name": "Express/Koa",
       "experience": 100
     },
     {
-      "name": "Java",
-      "experience": 35
-    },
-    {
-      "name": "Laravel",
-      "experience": 40
-    },
-    {
-      "name": "Elixir/Phoenix",
-      "experience": 30
-    },
-    {
       "name": "MySQL/Postgres",
-      "experience": 70
+      "experience": 75
     },
     {
       "name": "Bash",
-      "experience": 67
+      "experience": 75
     },
     {
       "name": "Linux",
       "experience": 90
-    },
-    {
-      "name": "C",
-      "experience": 10
-    },
-    {
-      "name": "Python",
-      "experience": 40
     }
   ]
 }

@@ -14,7 +14,7 @@ export default data => (
     <section className={classnames('hero', 'is-black', getSize(data.size))}>
       <div className="hero-body">
         <div className="container has-text-centered">
-          <h1 className="header title">
+          <h1 className="header title is-family-secondary">
             { data.title }
           </h1>
           <h2 className="header subtitle is-6 has-text-weight-light">

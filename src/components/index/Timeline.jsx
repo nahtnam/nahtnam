@@ -27,7 +27,7 @@ const TimelineItem = (data) => {
   return (
     <div>
       <div className={classnames('timeline-item', data.item.color)}>
-        <div className={classnames('timeline-marker', 'is-icon', 'has-text-white', data.item.color)}>
+        <div className={classnames('timeline-marker', 'is-icon', 'has-text-white', data.item.color, { 'is-large': data.item.large })}>
           <FontAwesomeIcon icon={data.item.icon} />
         </div>
         <div className="timeline-content">
@@ -53,6 +53,9 @@ const TimelineItem = (data) => {
           background-color: #ff9900;
           color: #ffffff;
         }
+        .is-large {
+          font-size: 1.25em;
+        }
       `}
       </style>
     </div>
@@ -64,17 +67,16 @@ export default class extends React.Component {
     super(props);
 
     this.state = {
-      year: (new Date()).getFullYear(),
       layout,
     };
   }
 
   render() {
-    const { year, layout: timeline } = this.state;
+    const { layout: timeline } = this.state;
     return (
       <div className="timeline">
         <header className="timeline-header">
-          <span className="tag is-medium is-primary">{ year + 1 }</span>
+          <span className="tag is-primary">NOW</span>
         </header>
         { timeline.map((item) => {
           if (item.type === 'tag') {
