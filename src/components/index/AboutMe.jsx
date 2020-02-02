@@ -5,7 +5,7 @@ export default () => (
     <nav className="level">
       <div className="level-item has-text-centered">
         <figure className="image is-128x128">
-          <img src="/static/nahtnam.png" alt="nahtnam" className="is-rounded has-text-centered" />
+          <img src="/nahtnam.png" alt="nahtnam" className="is-rounded has-text-centered" />
         </figure>
       </div>
     </nav>

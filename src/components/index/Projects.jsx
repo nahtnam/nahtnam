@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { projects } from '../../public/data/projects.json';
 import color from '../../utils/projects/tag-color';
 
-const showcase = projects.filter(p => p.showcase);
+const showcase = projects.filter((p) => p.showcase);
 
-const ProjectCard = data => (
+const ProjectCard = (data) => (
   <div className="column">
     <div className="card">
       <header className="card-header">
@@ -19,7 +19,7 @@ const ProjectCard = data => (
         <div className="content">
           <p>{ data.project.description }</p>
           <div className="tags">
-            { data.project.stack.concat().sort().map(tag => (
+            { data.project.stack.concat().sort().map((tag) => (
               <span key={tag} className="tag is-black" style={{ backgroundColor: color(tag) }}>{ tag }</span>
             )) }
           </div>
@@ -59,13 +59,17 @@ export default () => (
     <div className="columns">
       { showcase.map(project => <ProjectCard key={project.name} project={project} />)}
     </div>
-    <Link href="/projects">
-      <a className="button is-fullwidth is-info is-outlined">
-        <span className="icon">
-          <FontAwesomeIcon icon="code" />
-        </span>
-        <span>View All Projects</span>
-      </a>
-    </Link>
+    <div className="columns">
+      <div className="column is-one-third is-offset-one-third">
+        <Link href="/projects">
+          <a className="button is-fullwidth is-info is-outlined">
+            <span className="icon">
+              <FontAwesomeIcon icon="code" />
+            </span>
+            <span>View All Projects</span>
+          </a>
+        </Link>
+      </div>
+    </div>
   </div>
 );

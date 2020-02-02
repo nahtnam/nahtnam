@@ -5,6 +5,7 @@
       "description": "My personal portfolio where I host my projects, photos, and blog.",
       "url": "https://www.nahtnam.com",
       "stack": ["next.js", "react", "bulma", "netlify"],
+      "showcase": true,
       "github": "https://github.com/nahtnam/nahtnam"
     },
     {
