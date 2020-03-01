@@ -17,7 +17,7 @@ export default () => (
           </div>
           <div className="column">
             <div v-if="project.stack" className="tags">
-              { project.stack.concat().sort().map(tag => (
+              { project.stack.concat().sort().map((tag) => (
                 <span key={tag} className="tag is-black" style={{ backgroundColor: color(tag) }}>{ tag }</span>
               )) }
             </div>

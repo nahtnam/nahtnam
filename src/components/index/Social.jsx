@@ -6,7 +6,7 @@ import { media } from '../../public/data/social.json';
 export default () => (
   <div>
     <div className="columns is-mobile is-multiline social">
-      { media.map(network => (
+      { media.map((network) => (
         <div key={network.url} className="column is-one-quarter-mobile">
           <a href={network.url} className="icon has-text-info fa-3x is-large" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={network.icon} className={network.color} />

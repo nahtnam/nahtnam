@@ -9,7 +9,7 @@ const getSize = (size) => {
   return `is-${size}`;
 };
 
-export default data => (
+export default (data) => (
   <div>
     <section className={classnames('hero', 'is-black', getSize(data.size))}>
       <div className="hero-body">

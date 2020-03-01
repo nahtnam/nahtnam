@@ -57,7 +57,7 @@ const ProjectCard = (data) => (
 export default () => (
   <div>
     <div className="columns">
-      { showcase.map(project => <ProjectCard key={project.name} project={project} />)}
+      { showcase.map((project) => <ProjectCard key={project.name} project={project} />)}
     </div>
     <div className="columns">
       <div className="column is-one-third is-offset-one-third">

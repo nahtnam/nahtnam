@@ -14,4 +14,4 @@ const colors = {
   netlify: '#00ad9f',
 };
 
-export default software => colors[software];
+export default (software) => colors[software];

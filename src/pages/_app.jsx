@@ -1,4 +1,4 @@
-/* eslint-disable import/first */
+/* eslint-disable import/first, react/jsx-props-no-spreading */
 import React from 'react';
 import App from 'next/app';
 import Head from 'next/head';

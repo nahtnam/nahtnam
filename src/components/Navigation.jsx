@@ -1,3 +1,4 @@
+/* eslint-disable react/state-in-constructor, react/static-property-placement */
 import React from 'react';
 import Link from 'next/link';
 import classnames from 'classnames';
@@ -16,7 +17,7 @@ class Navigation extends React.Component {
   }
 
   toggleMenu = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
     }));
   }

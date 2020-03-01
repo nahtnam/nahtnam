@@ -28,7 +28,7 @@ export default class extends React.Component {
   componentDidMount() {
     this.getAge();
     const ageInterval = setInterval(this.getAge, 1000);
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       age: {
         ...prevState.age,
         loading: false,
@@ -48,9 +48,9 @@ export default class extends React.Component {
   async getRepos() {
     try {
       const users = ['nahtnam', 'j-tester', 'ludicrousxyz', 'light-examples'];
-      const reqsArr = users.map(usr => fetch(`https://api.github.com/users/${usr}`));
+      const reqsArr = users.map((usr) => fetch(`https://api.github.com/users/${usr}`));
       const reqs = await Promise.all(reqsArr);
-      const res = await Promise.all(reqs.map(r => r.json()));
+      const res = await Promise.all(reqs.map((r) => r.json()));
       const reposCount = res.reduce((acc, val) => acc + val.public_repos, 0);
       this.setState({
         repos: {

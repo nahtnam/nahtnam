@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React from 'react';
 import orderBy from 'lodash.orderby';
 import classnames from 'classnames';
@@ -22,7 +23,7 @@ const getColor = (experience) => {
 
 export default () => (
   <div>
-    { skills.map(skill => (
+    { skills.map((skill) => (
       <div key={skill.name} className="columns no-margin-bottom is-vcentered">
         <div className="column is-one-third header is-size-7" dangerouslySetInnerHTML={{ __html: skill.name }} />
         <div className="column">

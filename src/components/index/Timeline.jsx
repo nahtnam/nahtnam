@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { layout } from '../../public/data/timeline.json';
 
-const TimelineTag = data => (
+const TimelineTag = (data) => (
   <div>
     <header className="timeline-header">
       <span className={classnames('tag', data.item.color, data.item.size)}>
@@ -37,8 +37,7 @@ const TimelineItem = (data) => {
             { isFuture ? <i><strong>FUTURE</strong> ({ data.item.startDate })</i> : (
               <i>
                 { data.item.startDate } - { data.item.endDate
-                  ? <span>{ data.item.endDate }</span> : <span><strong>Now</strong></span>
-                }
+                  ? <span>{ data.item.endDate }</span> : <span><strong>Now</strong></span>}
               </i>
             )}
           </p>
