@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Karla|Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inter&display=swap');
 @import '~bulma/sass/utilities/initial-variables';
 
 $indigo: #3f51b5;
@@ -6,8 +6,8 @@ $pink: #ff4081;
 $primary: $indigo;
 $info: $pink;
 $link: $indigo;
-$family-primary: 'Karla', $family-sans-serif;
-$family-secondary: 'Roboto', $family-sans-serif;
+$family-primary: 'Inter', $family-sans-serif;
+$family-secondary: 'Inter', $family-sans-serif;
 
 @import '~bulma/bulma.sass';
 
