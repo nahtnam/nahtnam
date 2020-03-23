@@ -26,6 +26,7 @@ import {
   faGraduationCap,
   faCode,
   faEye,
+  faShieldAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
 import Navigation from '../components/Navigation';
@@ -45,6 +46,7 @@ library.add(
   faSteam,
   faCode,
   faEye,
+  faShieldAlt,
 );
 
 export default class extends App {

@@ -2,12 +2,26 @@
   "layout": [
     {
       "type": "item",
-      "color": "is-success",
+      "color": "is-black",
       "large": true,
+      "icon": ["fas", "shield-alt"],
+      "company": "Pango/AnchorFree",
+      "role": "Software Engineer",
+      "startDate": "March 2020"
+    },
+    {
+      "type": "tag",
+      "text": "2020",
+      "color": "is-success"
+    },
+    {
+      "type": "item",
+      "color": "is-success",
       "icon": ["fas", "bicycle"],
       "company": "Lime",
       "role": "Software Engineer (part time)",
-      "startDate": "September 2019"
+      "startDate": "October 2019",
+      "endDate": "March 2020"
     },
     {
       "type": "item",
@@ -21,7 +35,7 @@
     {
       "type": "tag",
       "text": "2019",
-      "color": "is-success"
+      "color": "is-info"
     },
     {
       "type": "item",
