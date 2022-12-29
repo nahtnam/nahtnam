@@ -15,7 +15,7 @@ export default function Page() {
       </section>
       <section className="prose max-w-none prose-h2:uppercase">
         <h2>Work History</h2>
-        <div className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-2">
+        <div className="grid grid-cols-[minmax(auto,_1fr)_1fr] gap-x-8 gap-y-2">
           {workHistory.map(({ company, duration, position}) => (
             <>
               <div className="font-bold">{company}</div>
