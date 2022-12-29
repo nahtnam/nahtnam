@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1>Hi, I'm Manthan</h1>
 
-## Getting Started
+I am a full-stack developer. I enjoy programming in TypeScript and working with frameworks like React and Next.js. I am also a crypto-currency enthusiast, gamer, and badminton player.
 
-First, run the development server:
+Check out my site to learn more about me!
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+<a href="https://www.nahtnam.com">
+  <img alt="nahtnam.com" height="48px" src="https://img.shields.io/badge/-nahtnam.com-4f46e5?style=flat&logo=googlechrome&logoColor=white" />
+</a>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Social Media
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<p>
+  <a href="https://twitter.com/nahtnam">
+    <img alt="Twitter" height="24px" src="https://img.shields.io/badge/-@nahtnam-1da1f2?style=flat&logo=twitter&logoColor=white" />
+  </a>
+  <a href="https://github.com/nahtnam">
+    <img alt="Github" height="24px" src="https://img.shields.io/badge/-@nahtnam-333333?style=flat&logo=github&logoColor=white" />
+  </a>
+  <a href="https://www.linkedin.com/in/nahtnam/">
+    <img alt="LinkedIn" height="24px" src="https://img.shields.io/badge/-nahtnam-0077b5?style=flat&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="https://stackoverflow.com/users/2537559/nahtnam">
+    <img alt="Stack Overflow" height="24px" src="https://img.shields.io/badge/-@nahtnam-f48024?style=flat&logo=stackoverflow&logoColor=white" />
+  </a>
+  <a href="https://bitcointalk.org/index.php?action=profile;u=138245">
+    <img alt="BitcoinTalk" height="24px" src="https://img.shields.io/badge/-nahtnam-ff7b00?style=flat&logo=bitcoin&logoColor=white" />
+  </a>
+</p>
