@@ -15,13 +15,20 @@ export default function Page() {
       </section>
       <section className="prose max-w-none prose-h2:uppercase">
         <h2>Work History</h2>
-        <div className="grid grid-cols-[minmax(auto,_1fr)_1fr] gap-x-8 gap-y-2">
-          {workHistory.map(({ company, duration, position}) => (
+        <div className="grid grid-cols-[1fr_2fr] gap-x-8 gap-y-2">
+          {workHistory.map(({ company, duration, position, description}) => (
             <>
-              <div className="font-bold">{company}</div>
               <div>
-                <div>{position}</div>
-                <div className="italic text-sm">{duration}</div>
+                <div className="font-bold">{company}</div>
+                <div className="text-sm">{position}</div>
+                <div className="italic text-xs">{duration}</div>
+              </div>
+              <div>
+                <ul className="my-0">
+                  {description.map((item, index) => (
+                    <li className="text-sm" key={`${company}-description-${index}`}>{item}</li>
+                  ))}
+                </ul>
               </div>
             </>
           ))}
