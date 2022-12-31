@@ -1,3 +1,10 @@
+/**
+ * When updating anything here, you also must update:
+ * FlowCV
+ * LinkedIn
+ * Read.cv
+ * AngelList
+ */
 export const workHistory = [
   {
     company: 'Mercury',
@@ -81,6 +88,17 @@ export const workHistory = [
     duration: 'Jun 2015 - Aug 2015',
     description: [
       <>Built scrapers in <b>Scala</b> and <b>Selenium</b> to efficiently launch new products and providers</>
+    ]
+  },
+]
+
+export const education = [
+  {
+    school: 'University of California, Santa Cruz',
+    degree: 'B.S. Computer Science',
+    duration: 'September 2017 - March 2020 (2 years and 2 quarters)',
+    description: [
+      <><b>Magna Cum Laude</b>, GPA: 3.9</>
     ]
   },
 ]

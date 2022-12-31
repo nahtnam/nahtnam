@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { workHistory } from "./components/data/workHistory";
+import { education, workHistory } from "./components/data/workHistory";
 import avatar from './images/avatar.png'
 import { Suspense } from "react";
 import { BlogPosts } from "./components/BlogPosts";
@@ -36,6 +36,27 @@ export default async function Page() {
                 <ul className="my-0">
                   {description.map((item, index) => (
                     <li className="text-sm" key={`${company}-description-${index}`}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          ))}
+        </div>
+      </section>
+      <section className="prose max-w-none prose-h2:uppercase">
+        <h2>Education</h2>
+        <div className="grid grid-cols-[1fr_2fr] gap-x-8 gap-y-2">
+          {education.map(({ degree, description, duration, school}) => (
+            <>
+              <div>
+                <div className="font-bold">{school}</div>
+                <div className="text-sm">{degree}</div>
+                <div className="italic text-xs">{duration}</div>
+              </div>
+              <div>
+                <ul className="my-0">
+                  {description.map((item, index) => (
+                    <li className="text-sm" key={`${school}-description-${index}`}>{item}</li>
                   ))}
                 </ul>
               </div>
