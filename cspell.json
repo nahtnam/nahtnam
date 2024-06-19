@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "useGitignore": true,
+  "ignorePaths": ["**/*.svg"],
+  "words": [
+    "citext",
+    "datasource",
+    "infisical",
+    "lefthook",
+    "nextadmin",
+    "noninteractive",
+    "opengraph",
+    "premieroctet",
+    "shipzen",
+    "sonner",
+    "tslog",
+    "typecheck",
+    "wireit",
+    "zenstack",
+    "zenstackhq",
+    "zmodel"
+  ]
+}
