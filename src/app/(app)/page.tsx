@@ -7,7 +7,7 @@ import MeImage from "./_images/me.jpg";
 export default function Home() {
   return (
     <section className="container mt-12">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center">
         <div className="avatar">
           <div className="h-40 w-40 rounded-full border-2">
             <Image src={MeImage} width={160} height={160} alt="nahtnam avatar" />
@@ -23,7 +23,7 @@ export default function Home() {
             </Link>
           </h3>
         </div>
-        <div className="flex flex-col gap-4 text-xl">
+        <div className="mt-4 flex gap-4 text-xl md:mt-0 md:flex-col">
           <Link href="https://github.com/nahtnam" target="_blank">
             <SiGithub />
           </Link>
@@ -38,7 +38,7 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <div className="prose prose-lg mt-8 flex max-w-full flex-wrap justify-center gap-x-4 text-center">
+      <div className="prose prose-lg mt-8 flex max-w-full flex-wrap gap-x-4 md:justify-center">
         <div>
           👨‍💻 engineer @{" "}
           <Link href="https://mercury.com/" className="link-hover link text-inherit">

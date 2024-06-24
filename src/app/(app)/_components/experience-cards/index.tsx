@@ -23,7 +23,6 @@ async function ExperienceCard(props: ExperienceCardData) {
   const { company, roles, url, startDate, endDate, imageSrc } = props;
 
   const metadata = await getMetadata(url);
-  // get length in years, round up
   const length = Math.ceil(((endDate?.getTime() ?? Date.now()) - startDate.getTime()) / ms("1y"));
   return (
     <Link href={url} target="_blank" className="card card-compact border">
@@ -49,7 +48,7 @@ async function ExperienceCard(props: ExperienceCardData) {
 
 export function ExperienceCards() {
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 sm:grid-cols-2">
       {experienceCards.map((experience) => (
         <ExperienceCard key={experience.company} {...experience} />
       ))}
