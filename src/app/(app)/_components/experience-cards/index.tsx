@@ -22,7 +22,7 @@ async function getMetadata(url: string) {
 async function ExperienceCard(props: ExperienceCardData) {
   const { company, roles, url, startDate, endDate, imageSrc } = props;
 
-  const metadata = await getMetadata(url);
+  const metadata = imageSrc ? null : await getMetadata(url);
   const length = Math.ceil(((endDate?.getTime() ?? Date.now()) - startDate.getTime()) / ms("1y"));
   return (
     <Link href={url} target="_blank" className="card card-compact border">
