@@ -40,10 +40,4 @@ const nextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
-  silent: true,
-  widenClientFileUpload: true,
-  tunnelRoute: '/monitoring',
-  hideSourceMaps: true,
-  disableLogger: true,
-});
+export default nextConfig;
