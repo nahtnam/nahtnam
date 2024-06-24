@@ -5,12 +5,12 @@ import { z } from 'zod';
 
 export const env = createEnv({
   server: {
-    DATABASE_URL: z.string().url(),
+    // DATABASE_URL: z.string().url(),
     IS_STANDALONE: z
       .string()
       .optional()
       .transform((s) => s === 'true'),
-    SMTP_URL: z.string().url(),
+    // SMTP_URL: z.string().url(),
   },
   client: {
     NEXT_PUBLIC_SENTRY_DSN: z.string().url(),

@@ -1,6 +1,6 @@
 // @ts-check
 import { withSentryConfig } from '@sentry/nextjs';
-import cpx from 'cpx2';
+// import cpx from 'cpx2';
 import { env } from './src/config/env.mjs';
 
 /**
@@ -8,14 +8,11 @@ import { env } from './src/config/env.mjs';
  * For now we use the `sync-directory` library to create links
  * @param {string} name - The name of the module to copy
  */
-function syncModuleToApp(name) {
-  cpx.copySync(`./src/${name}/app/**/*`, `./src/app/(shipzen)/(${name})`, {
-    clean: true,
-  });
-}
-syncModuleToApp('admin');
-syncModuleToApp('auth');
-syncModuleToApp('server');
+// function syncModuleToApp(name) {
+//   cpx.copySync(`./src/${name}/app/**/*`, `./src/app/(shipzen)/(${name})`, {
+//     clean: true,
+//   });
+// }
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
