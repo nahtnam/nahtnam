@@ -1,6 +1,6 @@
 // @ts-check
 // import cpx from 'cpx2';
-import { env } from './src/config/env.mjs';
+import { env } from "./src/config/env.mjs";
 
 /**
  * Next.js and Tailwind do not support symbolic links
@@ -15,22 +15,22 @@ import { env } from './src/config/env.mjs';
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  output: env.IS_STANDALONE ? 'standalone' : undefined,
+  output: env.IS_STANDALONE ? "standalone" : undefined,
   poweredByHeader: false,
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'www.gravatar.com',
-        pathname: '/avatar/**',
+        protocol: "https",
+        hostname: "www.gravatar.com",
+        pathname: "/avatar/**",
       },
     ],
   },
   experimental: {
-    serverComponentsExternalPackages: ['@zenstackhq/runtime'],
+    serverComponentsExternalPackages: ["@zenstackhq/runtime"],
     swcPlugins: [
       [
-        'next-superjson-plugin',
+        "next-superjson-plugin",
         {
           excluded: [],
         },

@@ -1,12 +1,9 @@
-import ms from 'ms';
-import Link from 'next/link';
-import { twMerge } from 'tailwind-merge';
-import urlMetadata from 'url-metadata';
-import { logger } from '@/logger';
-import {
-  experienceCards,
-  type ExperienceCardData,
-} from '../../_data/experience';
+import { logger } from "@/logger";
+import ms from "ms";
+import Link from "next/link";
+import { twMerge } from "tailwind-merge";
+import urlMetadata from "url-metadata";
+import { type ExperienceCardData, experienceCards } from "../../_data/experience";
 
 async function getMetadata(url: string) {
   try {
@@ -14,7 +11,7 @@ async function getMetadata(url: string) {
     return {
       title: metadata.title as string,
       description: metadata.description as string,
-      image: (metadata['og:image'] || metadata['twitter:image']) as string,
+      image: (metadata["og:image"] || metadata["twitter:image"]) as string,
     };
   } catch (err) {
     logger.error(err);
@@ -27,9 +24,7 @@ async function ExperienceCard(props: ExperienceCardData) {
 
   const metadata = await getMetadata(url);
   // get length in years, round up
-  const length = Math.ceil(
-    ((endDate?.getTime() ?? Date.now()) - startDate.getTime()) / ms('1y'),
-  );
+  const length = Math.ceil(((endDate?.getTime() ?? Date.now()) - startDate.getTime()) / ms("1y"));
   return (
     <Link href={url} target="_blank" className="card card-compact border">
       <figure>
@@ -38,15 +33,11 @@ async function ExperienceCard(props: ExperienceCardData) {
       </figure>
       <div className="card-body">
         <div className="flex-grow">
-          <div className="mb-1 text-base font-bold">
-            <div>{roles[0]}</div> @ {company} for ~
-            {length > 1 ? `${length.toString()} years` : '1 year'}
+          <div className="mb-1 font-bold text-base">
+            <div>{roles[0]}</div> @ {company} for ~{length > 1 ? `${length.toString()} years` : "1 year"}
           </div>
           {roles.slice(1).map((role, index) => (
-            <div
-              key={`${company}-role-${index.toString()}`}
-              className={twMerge('text-xs uppercase')}
-            >
+            <div key={`${company}-role-${index.toString()}`} className={twMerge("text-xs uppercase")}>
               & prev. {role}
             </div>
           ))}

@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { SiGithub, SiLinkedin, SiStackoverflow, SiX } from 'react-icons/si';
-import { ExperienceCards } from './_components/experience-cards';
-import MeImage from './_images/me.jpg';
+import Image from "next/image";
+import Link from "next/link";
+import { SiGithub, SiLinkedin, SiStackoverflow, SiX } from "react-icons/si";
+import { ExperienceCards } from "./_components/experience-cards";
+import MeImage from "./_images/me.jpg";
 
 export default function Home() {
   return (
@@ -10,24 +10,15 @@ export default function Home() {
       <div className="flex items-center gap-4">
         <div className="avatar">
           <div className="h-40 w-40 rounded-full border-2">
-            <Image
-              src={MeImage}
-              width={160}
-              height={160}
-              alt="nahtnam avatar"
-            />
+            <Image src={MeImage} width={160} height={160} alt="nahtnam avatar" />
           </div>
         </div>
         <div className="prose prose-xl max-w-full flex-grow">
           <h2 className="mb-0">👋 Hello!</h2>
-          <h1 className="mb-0 mt-2">I&rsquo;m Manthan</h1>
+          <h1 className="mt-2 mb-0">I&rsquo;m Manthan</h1>
           <h3 className="mt-2">
-            You can find me online{' '}
-            <Link
-              href="https://keybase.io/nahtnam"
-              target="_blank"
-              className="link-hover link"
-            >
+            You can find me online{" "}
+            <Link href="https://keybase.io/nahtnam" target="_blank" className="link-hover link">
               @nahtnam
             </Link>
           </h3>
@@ -42,21 +33,15 @@ export default function Home() {
           <Link href="https://twitter.com/nahtnam" target="_blank">
             <SiX />
           </Link>
-          <Link
-            href="https://stackoverflow.com/users/2537559/nahtnam"
-            target="_blank"
-          >
+          <Link href="https://stackoverflow.com/users/2537559/nahtnam" target="_blank">
             <SiStackoverflow />
           </Link>
         </div>
       </div>
       <div className="prose prose-lg mt-8 flex max-w-full flex-wrap justify-center gap-x-4 text-center">
         <div>
-          👨‍💻 engineer @{' '}
-          <Link
-            href="https://mercury.com/"
-            className="link-hover link text-inherit"
-          >
+          👨‍💻 engineer @{" "}
+          <Link href="https://mercury.com/" className="link-hover link text-inherit">
             mercury
           </Link>
         </div>
@@ -67,7 +52,7 @@ export default function Home() {
         <div>&middot;</div>
         <div>🌎 earth, solar system</div>
       </div>
-      <div className="prose prose-lg mb-4 mt-12 max-w-full">
+      <div className="prose prose-lg mt-12 mb-4 max-w-full">
         <h2>Experience</h2>
       </div>
       <ExperienceCards />
