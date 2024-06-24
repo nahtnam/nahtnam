@@ -1,5 +1,4 @@
 // @ts-check
-import { withSentryConfig } from '@sentry/nextjs';
 // import cpx from 'cpx2';
 import { env } from './src/config/env.mjs';
 
