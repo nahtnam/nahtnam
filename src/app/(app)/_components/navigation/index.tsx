@@ -1,13 +1,12 @@
 'use client';
 import { md5 } from 'js-md5';
-import { HomeIcon, LogInIcon, MenuIcon } from 'lucide-react';
+import { HomeIcon, MenuIcon } from 'lucide-react';
 import type { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
-import { signInAction } from '@/auth/actions';
 
 type NavigationProps = {
   session: Session | null;
@@ -71,14 +70,15 @@ export function Navigation(props: NavigationProps) {
         </Link>
       </li>
 
-      <li>
-        <form action={signInAction} className="w-auto">
-          <button className="flex items-center gap-2" type="submit">
-            <LogInIcon className="h-4 w-4" />
-            Get Started
-          </button>
-        </form>
-      </li>
+      {/* <li>
+        <Link
+          href="/blog"
+          className={twMerge(pathname === '/blog' && 'active')}
+        >
+          <RssIcon className="h-4 w-4" />
+          Blog
+        </Link>
+      </li> */}
     </>
   );
 
@@ -88,7 +88,7 @@ export function Navigation(props: NavigationProps) {
         <div className="navbar px-0">
           <div className="navbar-start">
             <Link href="/" className="text-2xl font-bold">
-              TODO
+              nahtnam
             </Link>
           </div>
           <div className="navbar-end">

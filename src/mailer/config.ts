@@ -1,6 +1,5 @@
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { z } from 'zod';
-import { env } from '@/config/env.mjs';
 
 const decodedString = z.string().transform((v) => decodeURIComponent(v));
 const schema = z.object({
@@ -17,7 +16,10 @@ const schema = z.object({
     .transform((v) => v === 'true'),
 });
 
-const url = new URL(env.SMTP_URL);
+// const url = new URL(env.SMTP_URL);
+const url = new URL(
+  'smtp://nahtnam:nahtnam@nahtnam?from=nahtnam&replyTo=nahtnam&secure=true',
+);
 
 const { host, port, user, pass, from, replyTo, secure } = schema.parse({
   host: url.hostname,
