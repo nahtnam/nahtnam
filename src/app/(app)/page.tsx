@@ -38,18 +38,18 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <div className="prose prose-lg mt-8 flex max-w-full flex-wrap gap-x-4 md:justify-center">
+      <div className="prose prose-lg mt-8 flex max-w-full flex-col flex-wrap gap-x-4 md:flex-row md:justify-center">
         <div>
           👨‍💻 engineer @{" "}
           <Link href="https://mercury.com/" className="link-hover link text-inherit">
             mercury
           </Link>
         </div>
-        <div>&middot;</div>
+        <div className="hidden md:block">&middot;</div>
         <div>👾 indie hacker</div>
-        <div>&middot;</div>
+        <div className="hidden md:block">&middot;</div>
         <div>🏸 badminton player</div>
-        <div>&middot;</div>
+        <div className="hidden md:block">&middot;</div>
         <div>🌎 earth, solar system</div>
       </div>
       <div className="prose prose-lg mt-12 mb-4 max-w-full">
