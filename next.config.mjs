@@ -17,6 +17,9 @@ import { env } from "./src/config/env.mjs";
 const nextConfig = {
   output: env.IS_STANDALONE ? "standalone" : undefined,
   poweredByHeader: false,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
