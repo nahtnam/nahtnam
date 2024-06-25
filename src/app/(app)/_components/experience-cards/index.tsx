@@ -1,23 +1,8 @@
-import { logger } from "@/logger";
 import ms from "ms";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
-import urlMetadata from "url-metadata";
 import { type ExperienceCardData, experienceCards } from "../../_data/experience";
-
-async function getMetadata(url: string) {
-  try {
-    const metadata = await urlMetadata(url);
-    return {
-      title: metadata.title as string,
-      description: metadata.description as string,
-      image: (metadata["og:image"] || metadata["twitter:image"]) as string,
-    };
-  } catch (err) {
-    logger.error(err);
-    return null;
-  }
-}
+import { getMetadata } from "../utils/get-metadata";
 
 async function ExperienceCard(props: ExperienceCardData) {
   const { company, roles, url, startDate, endDate, imageSrc } = props;

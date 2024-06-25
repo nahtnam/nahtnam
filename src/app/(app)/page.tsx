@@ -52,6 +52,7 @@ export default function Home() {
         <div className="hidden md:block">&middot;</div>
         <div>🌎 earth, solar system</div>
       </div>
+
       <div className="prose prose-lg mt-12 mb-4 max-w-full">
         <h2>Experience</h2>
       </div>
@@ -60,14 +61,14 @@ export default function Home() {
         <p>and more...</p>
       </div>
 
-      {/* <div className="prose prose-lg mt-12 max-w-full">
+      {/* <div className="prose prose-lg mt-8 mb-4 max-w-full">
         <h2>Projects</h2>
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="card card-compact border">asdf</div>
-        <div className="card card-compact border">asdf</div>
-        <div className="card card-compact border">asdf</div>
+      <ProjectCards />
+      <div className="prose prose-lg mt-4">
+        <p>and more...</p>
       </div> */}
+
       {/* <div className="prose prose-lg mt-12 max-w-full">
         <h2>Blog Posts</h2>
       </div>
