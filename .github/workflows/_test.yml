@@ -16,6 +16,6 @@ jobs:
           node-version: lts/*
           cache: 'pnpm'
 
-      - run: pnpm ci
+      - run: pnpm install
 
       - run: pnpm run ci:test
