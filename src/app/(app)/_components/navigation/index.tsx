@@ -1,6 +1,6 @@
 "use client";
 import { md5 } from "js-md5";
-import { HomeIcon, MenuIcon } from "lucide-react";
+import { HomeIcon, MenuIcon, RssIcon } from "lucide-react";
 import type { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -58,15 +58,12 @@ export function Navigation(props: NavigationProps) {
         </Link>
       </li>
 
-      {/* <li>
-        <Link
-          href="/blog"
-          className={twMerge(pathname === '/blog' && 'active')}
-        >
+      <li>
+        <Link href="/blog" className={twMerge(pathname === "/blog" && "active")}>
           <RssIcon className="h-4 w-4" />
           Blog
         </Link>
-      </li> */}
+      </li>
     </>
   );
 

@@ -1,3 +1,9 @@
+import withMDX from "@next/mdx";
+import withToc from "@stefanprobst/rehype-extract-toc";
+import withTocExport from "@stefanprobst/rehype-extract-toc/mdx";
+import rehypeMdxImportMedia from "rehype-mdx-import-media";
+import { rehypePrettyCode } from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
 // @ts-check
 // import cpx from 'cpx2';
 import { env } from "./src/config/env.mjs";
@@ -16,6 +22,7 @@ import { env } from "./src/config/env.mjs";
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   output: env.IS_STANDALONE ? "standalone" : undefined,
+  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   poweredByHeader: false,
   eslint: {
     ignoreDuringBuilds: true,
@@ -42,4 +49,15 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withMDX({
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [
+      [rehypePrettyCode, { theme: "github-dark-default" }],
+      rehypeSlug,
+      withToc,
+      withTocExport,
+      rehypeMdxImportMedia,
+    ],
+  },
+})(nextConfig);
