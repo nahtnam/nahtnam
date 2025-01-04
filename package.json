@@ -1,0 +1,56 @@
+{
+  "name": "TODO",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "concurrently pnpm:build:*",
+    "build:next": "next build",
+    "ci:test": "concurrently pnpm:ci:test:*",
+    "ci:test:lint": "eslint --max-warnings 0 .",
+    "ci:test:pretty": "prettier --check .",
+    "ci:test:typecheck": "tsc --noEmit",
+    "dev": "concurrently pnpm:dev:*",
+    "dev:next": "next dev --turbo",
+    "prepare": "husky",
+    "start": "concurrently pnpm:start:*",
+    "start:next": "next start",
+    "test": "concurrently pnpm:test:*",
+    "test:lint": "eslint --fix --max-warnings 0 .",
+    "test:pretty": "prettier --write .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@xframework/core": "^0.2.0",
+    "lucide-react": "^0.469.0",
+    "next": "15.1.1-canary.22",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sharp": "^0.33.5",
+    "tailwind-merge": "^2.6.0"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^15.1.3",
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "concurrently": "^9.1.1",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "neostandard": "^0.12.0",
+    "postcss": "^8.4.49",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  },
+  "lint-staged": {
+    "*": [
+      "eslint --fix",
+      "prettier --ignore-unknown --write"
+    ]
+  }
+}
