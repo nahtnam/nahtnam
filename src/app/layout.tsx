@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Inter_Tight as InterTight } from "next/font/google";
 import { twMerge } from "tailwind-merge";
 import "./globals.css";
+import { Navbar } from "./_components/navbar";
+import { Footer } from "./_components/footer";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,7 +19,7 @@ const interTight = InterTight({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.TODO.com"),
+  metadataBase: new URL("https://www.nahtnam.com"),
 };
 
 export default function RootLayout({
@@ -30,7 +33,11 @@ export default function RootLayout({
       className={twMerge(inter.variable, interTight.variable, "h-full")}
     >
       <body className="flex min-h-screen flex-col">
-        <main className="flex-grow">{children}</main>
+        <Suspense>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </Suspense>
       </body>
     </html>
   );

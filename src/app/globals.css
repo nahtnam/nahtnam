@@ -16,3 +16,7 @@
     @apply font-display;
   }
 }
+
+.container {
+  @apply max-w-[64rem];
+}
