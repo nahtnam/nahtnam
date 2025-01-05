@@ -12,7 +12,7 @@
     "ci:test:typecheck": "tsc --noEmit",
     "dev": "concurrently pnpm:dev:*",
     "dev:next": "next dev --turbo",
-    "prepare": "husky",
+    "prepare": "husky && fumadocs-mdx",
     "start": "concurrently pnpm:start:*",
     "start:next": "next start",
     "test": "concurrently pnpm:test:*",
