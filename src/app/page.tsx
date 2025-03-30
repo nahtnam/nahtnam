@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { SiGithub, SiLinkedin, SiStackoverflow, SiX } from "react-icons/si";
 import MeImage from "./_images/me.jpg";
 import { ExperienceCards } from "./_components/experience-cards";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGithub,
+  faLinkedin,
+  faXTwitter,
+  faStackOverflow,
+} from "@fortawesome/free-brands-svg-icons";
 
 export const metadata: Metadata = {
   title: "@nahtnam - Manthan Mallikarjun",
@@ -27,7 +33,7 @@ export default function Home() {
         </div>
         <div className="prose prose-xl max-w-full flex-grow">
           <h2 className="mb-0">👋 Hello!</h2>
-          <h1 className="mb-0 mt-2">I&rsquo;m Manthan</h1>
+          <h1 className="mt-2 mb-0">I&rsquo;m Manthan</h1>
           <h3 className="mt-2">
             You can find me online{" "}
             <Link
@@ -46,28 +52,28 @@ export default function Home() {
             target="_blank"
             rel="noreferrer"
           >
-            <SiGithub />
+            <FontAwesomeIcon width={24} height={24} icon={faGithub} />
           </Link>
           <Link
             href="https://linkedin.com/in/nahtnam"
             target="_blank"
             rel="noreferrer"
           >
-            <SiLinkedin />
+            <FontAwesomeIcon width={24} height={24} icon={faLinkedin} />
           </Link>
           <Link
             href="https://twitter.com/nahtnam"
             target="_blank"
             rel="noreferrer"
           >
-            <SiX />
+            <FontAwesomeIcon width={24} height={24} icon={faXTwitter} />
           </Link>
           <Link
             href="https://stackoverflow.com/users/2537559/nahtnam"
             target="_blank"
             rel="noreferrer"
           >
-            <SiStackoverflow />
+            <FontAwesomeIcon width={24} height={24} icon={faStackOverflow} />
           </Link>
         </div>
       </div>
@@ -89,7 +95,7 @@ export default function Home() {
         <div>🌎 earth, solar system</div>
       </div>
 
-      <div className="prose prose-lg mb-4 mt-12 max-w-full">
+      <div className="prose prose-lg mt-12 mb-4 max-w-full">
         <h2>Experience</h2>
       </div>
       <ExperienceCards />

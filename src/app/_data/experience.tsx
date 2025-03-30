@@ -1,10 +1,3 @@
-import type { ReactNode } from "react";
-import { FaUniversity } from "react-icons/fa";
-import { GiTreeBeehive } from "react-icons/gi";
-import { LuBitcoin, LuPiggyBank } from "react-icons/lu";
-import { MdElectricScooter, MdVpnLock } from "react-icons/md";
-import { SiRakuten } from "react-icons/si";
-
 export type ExperienceCardData = {
   company: string;
   roles: string[];
@@ -40,7 +33,6 @@ export const experienceCards = [
 ] satisfies ExperienceCardData[];
 
 type Resume = {
-  icon: ReactNode;
   startDate: Date;
   endDate: Date | null;
   title: string;
@@ -51,7 +43,6 @@ type Resume = {
 
 export const resume = [
   {
-    icon: <LuPiggyBank />,
     iconClass: "bg-[#5266eb] text-white",
     company: "Mercury",
     title: "Staff Software Engineer",
@@ -59,7 +50,6 @@ export const resume = [
     startDate: new Date(2024, 3, 7),
   },
   {
-    icon: <LuPiggyBank />,
     iconClass: "bg-[#5266eb] text-white",
     company: "Mercury",
     title: "Senior Software Engineer",
@@ -68,7 +58,6 @@ export const resume = [
     collapse: true,
   },
   {
-    icon: <LuPiggyBank />,
     iconClass: "bg-[#5266eb] text-white",
     company: "Mercury",
     title: "Engineering Manager",
@@ -76,7 +65,6 @@ export const resume = [
     startDate: new Date(2022, 10, 7),
   },
   {
-    icon: <LuPiggyBank />,
     iconClass: "bg-[#5266eb] text-white",
     company: "Mercury",
     title: "Senior Software Engineer",
@@ -84,7 +72,6 @@ export const resume = [
     startDate: new Date(2021, 11, 29),
   },
   {
-    icon: <MdVpnLock />,
     iconClass: "bg-[#eef35f] text-black",
     company: "Twingate",
     title: "Software Engineer",
@@ -92,7 +79,6 @@ export const resume = [
     startDate: new Date(2020, 3, 1),
   },
   {
-    icon: <MdElectricScooter />,
     iconClass: "bg-[#00dd00] text-black",
     company: "Lime",
     title: "Software Engineer",
@@ -100,7 +86,6 @@ export const resume = [
     startDate: new Date(2019, 10, 1),
   },
   {
-    icon: <LuPiggyBank />,
     iconClass: "bg-[#00dd00] text-black",
     company: "Lime",
     title: "Software Engineering Intern",
@@ -109,7 +94,6 @@ export const resume = [
     collapse: true,
   },
   {
-    icon: <FaUniversity />,
     iconClass: "bg-[#1569a9] text-white",
     company: "UC Santa Cruz",
     title: "Researcher",
@@ -117,7 +101,6 @@ export const resume = [
     startDate: new Date(2017, 10, 1),
   },
   {
-    icon: <SiRakuten />,
     iconClass: "bg-[#8529cd] text-white",
     company: "Rakuten",
     title: "Software Engineering Intern",
@@ -125,7 +108,6 @@ export const resume = [
     startDate: new Date(2018, 6, 1),
   },
   {
-    icon: <GiTreeBeehive />,
     iconClass: "bg-[#fdb933] text-black",
     company: "Roambee",
     title: "Software Engineering Intern",
@@ -133,7 +115,6 @@ export const resume = [
     startDate: new Date(2016, 7, 1),
   },
   {
-    icon: <LuBitcoin />,
     iconClass: "bg-[#ffd600] text-black",
     company: "Foldapp",
     title: "Software Engineering Intern",
