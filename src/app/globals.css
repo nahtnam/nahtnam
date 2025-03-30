@@ -1,6 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default;
+}
+@plugin "@tailwindcss/typography";
+
+@utility container {
+  max-width: 64rem;
+  padding-inline: 1rem;
+  margin: auto;
+  @variant sm {
+    padding-inline: 2rem;
+  }
+  @variant lg {
+    padding-inline: 4rem;
+  }
+  @variant xl {
+    padding-inline: 5rem;
+  }
+  @variant 2xl {
+    padding-inline: 6rem;
+  }
+}
+
+@theme {
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji", "sans-serif";
+  --font-display: var(--font-inter-tight), var(--font-sans);
+}
 
 @layer base {
   html {

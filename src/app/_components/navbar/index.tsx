@@ -11,7 +11,7 @@ export function Navbar() {
   const menu = (
     <>
       <li>
-        <Link href="/" className={twMerge(pathname === "/" && "active")}>
+        <Link href="/" className={twMerge(pathname === "/" && "menu-active")}>
           <HomeIcon className="h-4 w-4" />
           Home
         </Link>
@@ -19,7 +19,7 @@ export function Navbar() {
       <li>
         <Link
           href="/blog"
-          className={twMerge(pathname.startsWith("/blog") && "active")}
+          className={twMerge(pathname.startsWith("/blog") && "menu-active")}
         >
           <RssIcon className="h-4 w-4" />
           Blog
@@ -46,7 +46,7 @@ export function Navbar() {
                 <summary className="btn btn-ghost md:hidden">
                   <MenuIcon />
                 </summary>
-                <ul className="menu dropdown-content z-[1] mt-1 w-max min-w-52 space-y-1 rounded-box border bg-base-100 p-2 text-base-content">
+                <ul className="menu dropdown-content rounded-box bg-base-100 text-base-content z-[1] mt-1 w-max min-w-52 space-y-1 border p-2">
                   {menu}
                 </ul>
               </details>
