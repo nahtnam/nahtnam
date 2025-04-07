@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 async function getYear() {
-  "use cache";
+  // "use cache";
   return new Date().getFullYear();
 }
 

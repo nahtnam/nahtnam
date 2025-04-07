@@ -5,19 +5,17 @@ import {
   type ExperienceCardData,
   experienceCards,
 } from "../../_data/experience";
-import { getMetadata } from "@/app/_utils/get-metadata";
 
 async function getDate() {
-  "use cache";
+  // "use cache";
   return new Date();
 }
 
 async function ExperienceCard(props: ExperienceCardData) {
-  const { company, roles, url, startDate, endDate, imageSrc } = props;
+  const { company, roles, url, startDate, endDate, metadata } = props;
 
   const currentDate = await getDate();
 
-  const metadata = imageSrc ? null : await getMetadata(url);
   const length = Math.ceil(
     ((endDate?.getTime() ?? currentDate.getTime()) - startDate.getTime()) /
       ms("1y"),
@@ -31,7 +29,7 @@ async function ExperienceCard(props: ExperienceCardData) {
     >
       <figure>
         {/* eslint-disable-next-line @next/next/no-img-element -- okay */}
-        <img src={imageSrc ?? metadata?.image} alt={company} />
+        <img src={metadata.image} alt={company} />
       </figure>
       <div className="card-body">
         <div className="flex-grow">

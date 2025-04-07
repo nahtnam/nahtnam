@@ -49,3 +49,5 @@
 .container {
   @apply max-w-[64rem];
 }
+
+@source '../../node_modules/fumadocs-ui/dist/**/*.js';

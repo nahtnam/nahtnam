@@ -1,9 +1,10 @@
 "use client";
 
-import { HomeIcon, MenuIcon, RssIcon } from "lucide-react";
+import { faRss, faHome, faBars } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -12,7 +13,7 @@ export function Navbar() {
     <>
       <li>
         <Link href="/" className={twMerge(pathname === "/" && "menu-active")}>
-          <HomeIcon className="h-4 w-4" />
+          <FontAwesomeIcon icon={faHome} />
           Home
         </Link>
       </li>
@@ -21,7 +22,7 @@ export function Navbar() {
           href="/blog"
           className={twMerge(pathname.startsWith("/blog") && "menu-active")}
         >
-          <RssIcon className="h-4 w-4" />
+          <FontAwesomeIcon icon={faRss} />
           Blog
         </Link>
       </li>
@@ -44,7 +45,7 @@ export function Navbar() {
             <div className="dropdown dropdown-end">
               <details className="dropdown">
                 <summary className="btn btn-ghost md:hidden">
-                  <MenuIcon />
+                  <FontAwesomeIcon icon={faBars} />
                 </summary>
                 <ul className="menu dropdown-content rounded-box bg-base-100 text-base-content z-[1] mt-1 w-max min-w-52 space-y-1 border p-2">
                   {menu}

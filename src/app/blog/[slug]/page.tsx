@@ -1,11 +1,12 @@
 import { formatDistance } from "date-fns";
 import { InlineTOC } from "fumadocs-ui/components/inline-toc";
 import defaultMdxComponents from "fumadocs-ui/mdx";
-import { ArrowLeftIcon } from "lucide-react";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { blog } from "..";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export async function generateMetadata({
   params,
@@ -51,7 +52,8 @@ export default async function Page(props: PageProps) {
             href="/blog"
             className="flex items-center text-blue-500 no-underline"
           >
-            <ArrowLeftIcon className="mr-1 w-4" /> Back to all posts
+            <FontAwesomeIcon icon={faArrowLeft} className="mr-1 w-4" /> Back to
+            all posts
           </Link>
         </p>
         <h1 className="mb-2">{post.data.title}</h1>

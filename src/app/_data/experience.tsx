@@ -5,6 +5,9 @@ export type ExperienceCardData = {
   imageSrc?: string;
   startDate: Date;
   endDate: Date | null;
+  metadata: {
+    image: string;
+  };
 };
 export const experienceCards = [
   {
@@ -13,6 +16,10 @@ export const experienceCards = [
     url: "https://mercury.com/",
     startDate: new Date(2021, 11, 29),
     endDate: null,
+    metadata: {
+      image:
+        "https://www.datocms-assets.com/115132/1728338832-1200x630_homepage_social.jpg?auto=format&fit=crop&w=1200",
+    },
   },
   {
     company: "Twingate",
@@ -20,6 +27,10 @@ export const experienceCards = [
     url: "https://twingate.com/",
     startDate: new Date(2020, 3, 1),
     endDate: new Date(2021, 11, 21),
+    metadata: {
+      image:
+        "https://framerusercontent.com/assets/5AsMG3Iz4DjPJbIKvEa72bay4.png",
+    },
   },
   {
     company: "Lime",
@@ -27,8 +38,10 @@ export const experienceCards = [
     startDate: new Date(2019, 10, 1),
     endDate: new Date(2020, 3, 1),
     url: "https://www.li.me/",
-    imageSrc:
-      "https://img.li.me/content/uploads/HERO_2022-04-19-234518_eqga.png?auto=compress&crop=focalpoint&fit=crop&fp-x=0.5&fp-y=0.5&h=630&q=80&w=1200&s=20a642dccf084e7066e240d86be26f6c",
+    metadata: {
+      image:
+        "https://img.li.me/content/uploads/HERO_2022-04-19-234518_eqga.png?auto=compress&crop=focalpoint&fit=crop&fp-x=0.5&fp-y=0.5&h=630&q=80&w=1200&s=20a642dccf084e7066e240d86be26f6c",
+    },
   },
 ] satisfies ExperienceCardData[];
 

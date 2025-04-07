@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 async function getDate() {
-  "use cache";
+  // "use cache";
   return new Date();
 }
 export default async function Page() {
@@ -24,7 +24,7 @@ export default async function Page() {
   const currentDate = await getDate();
 
   return (
-    <section className="container prose prose-lg mx-auto my-12 max-w-5xl">
+    <section className="prose prose-lg container mx-auto my-12 max-w-5xl">
       <h1>My Blog</h1>
       <p>
         Welcome to my blog. I try to share my experiences building and using

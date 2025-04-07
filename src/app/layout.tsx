@@ -5,6 +5,7 @@ import "./globals.css";
 import { Navbar } from "./_components/navbar";
 import { Footer } from "./_components/footer";
 import { Suspense } from "react";
+import { Providers } from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,9 +35,11 @@ export default function RootLayout({
     >
       <body className="flex min-h-screen flex-col">
         <Suspense>
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <Providers>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </Providers>
         </Suspense>
       </body>
     </html>
