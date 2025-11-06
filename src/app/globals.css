@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "daisyui" {
+  /* biome-ignore lint/correctness/noUnknownProperty: daisyui */
+  themes: light --default;
+  /* biome-ignore lint/correctness/noUnknownProperty: daisyui */
+  logs: false;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+}
+
+@utility container {
+  @apply px-8;
+}

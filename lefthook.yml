@@ -1,0 +1,4 @@
+pre-commit:
+  jobs:
+    - run: bun x ultracite fix
+      stage_fixed: true

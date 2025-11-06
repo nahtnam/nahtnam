@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "useSortedKeys": "on"
+      }
+    }
+  },
+  "extends": ["ultracite/core", "ultracite/react", "ultracite/next"],
+  "files": {
+    "ignoreUnknown": true
+  },
+  "json": {
+    "assist": {
+      "enabled": true
+    }
+  }
+}
