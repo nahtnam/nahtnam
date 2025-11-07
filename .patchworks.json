@@ -1,8 +1,8 @@
 {
-  "version": "0.1.1",
+  "commit": "886143bea7ce348132fe8ae74d338ecc37a502ad",
   "template": {
-    "repository": "https://github.com/ludicroushq/xNext",
-    "branch": "main"
+    "branch": "main",
+    "repository": "https://github.com/ludicroushq/xNext"
   },
-  "commit": "886143bea7ce348132fe8ae74d338ecc37a502ad"
+  "version": "0.1.1"
 }
