@@ -1,6 +1,12 @@
 {
-  "title": "Experiences",
-  "slug": "experiences",
+  "title": "experiences",
   "type": "object",
-  "properties": {}
+  "properties": {
+    "homepage": {
+      "required": true,
+      "fieldType": "Text",
+      "dataType": "string",
+      "title": "Homepage"
+    }
+  }
 }
