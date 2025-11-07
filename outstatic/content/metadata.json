@@ -1,6 +1,6 @@
 {
-  "commit": "99f0303aeaf41cd76e0980d0dd60c540df48346a",
-  "generated": "2025-11-07T09:31:53.189Z",
+  "commit": "3133bc45b533b13a3c567aec34947add397a9b4f",
+  "generated": "2025-11-07T09:34:27.809Z",
   "metadata": [
     {
       "__outstatic": {
@@ -78,6 +78,26 @@
       "startDate": "2020-03-01T08:00:00.000Z",
       "status": "published",
       "title": "Twingate"
+    },
+    {
+      "__outstatic": {
+        "commit": "3133bc45b533b13a3c567aec34947add397a9b4f",
+        "hash": "952649098",
+        "path": "outstatic/content/experiences/decklar.mdx"
+      },
+      "author": {
+        "name": "Manthan Mallikarjun",
+        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
+      },
+      "collection": "experiences",
+      "endDate": "2016-09-01T07:00:00.000Z",
+      "homepage": "https://www.decklar.com/",
+      "metadataImage": "/images/decklar-og-image-gyOT.png",
+      "publishedAt": "2025-11-07T08:44:00.024Z",
+      "slug": "decklar",
+      "startDate": "2016-07-01T07:00:00.000Z",
+      "status": "published",
+      "title": "Decklar"
     }
   ]
 }
