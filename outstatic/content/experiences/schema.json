@@ -18,6 +18,12 @@
       "fieldType": "Date",
       "dataType": "date",
       "title": "End Date"
+    },
+    "metadataImage": {
+      "required": true,
+      "fieldType": "Image",
+      "dataType": "image",
+      "title": "Metadata Image"
     }
   }
 }
