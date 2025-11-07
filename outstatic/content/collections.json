@@ -4,5 +4,11 @@
     "slug": "posts",
     "path": "outstatic/content/posts",
     "children": []
+  },
+  {
+    "title": "Experiences",
+    "slug": "experiences",
+    "path": "outstatic/content/experiences",
+    "children": []
   }
 ]
