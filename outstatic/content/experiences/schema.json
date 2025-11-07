@@ -7,6 +7,12 @@
       "fieldType": "Text",
       "dataType": "string",
       "title": "Homepage"
+    },
+    "startDate": {
+      "required": true,
+      "fieldType": "Date",
+      "dataType": "date",
+      "title": "Start Date"
     }
   }
 }
