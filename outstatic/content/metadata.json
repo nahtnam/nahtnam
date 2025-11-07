@@ -1,6 +1,6 @@
 {
-  "commit": "3133bc45b533b13a3c567aec34947add397a9b4f",
-  "generated": "2025-11-07T09:34:27.809Z",
+  "commit": "ac87c92ec7f6b6825909cac5945a0143ddca7851",
+  "generated": "2025-11-07T09:35:56.261Z",
   "metadata": [
     {
       "__outstatic": {
@@ -98,6 +98,26 @@
       "startDate": "2016-07-01T07:00:00.000Z",
       "status": "published",
       "title": "Decklar"
+    },
+    {
+      "__outstatic": {
+        "commit": "ac87c92ec7f6b6825909cac5945a0143ddca7851",
+        "hash": "258075882",
+        "path": "outstatic/content/experiences/fold.mdx"
+      },
+      "author": {
+        "name": "Manthan Mallikarjun",
+        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
+      },
+      "collection": "experiences",
+      "endDate": "2015-08-01T07:00:00.000Z",
+      "homepage": "https://foldapp.com/",
+      "metadataImage": "/images/fold-og-image-MzOD.webp",
+      "publishedAt": "2025-11-07T08:46:40.493Z",
+      "slug": "fold",
+      "startDate": "2025-06-01T07:00:00.000Z",
+      "status": "published",
+      "title": "Fold"
     }
   ]
 }
