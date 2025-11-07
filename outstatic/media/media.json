@@ -1,7 +1,18 @@
 {
-  "commit": "27ffbd2f9c0973eeafec63a6a97bfe36ecde5e4e",
-  "generated": "2025-11-07T09:25:59.341Z",
+  "commit": "3e38fdca226c70830ed3f34bb7cb3f44ff54db76",
+  "generated": "2025-11-07T09:27:35.699Z",
   "media": [
+    {
+      "__outstatic": {
+        "commit": "3e38fdca226c70830ed3f34bb7cb3f44ff54db76",
+        "hash": "1455650414",
+        "path": "public/images/lime-og-image-k4OT.jpeg"
+      },
+      "alt": "",
+      "filename": "lime-og-image-k4OT.jpeg",
+      "publishedAt": "2025-11-07T09:27:35.699Z",
+      "type": "image"
+    },
     {
       "__outstatic": {
         "commit": "",
