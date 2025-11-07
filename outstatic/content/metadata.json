@@ -1,6 +1,6 @@
 {
-  "commit": "ac87c92ec7f6b6825909cac5945a0143ddca7851",
-  "generated": "2025-11-07T09:35:56.261Z",
+  "commit": "07971b309c5302c764a7c0b53309935d3751af82",
+  "generated": "2025-11-07T09:50:34.795Z",
   "metadata": [
     {
       "__outstatic": {
@@ -101,8 +101,8 @@
     },
     {
       "__outstatic": {
-        "commit": "ac87c92ec7f6b6825909cac5945a0143ddca7851",
-        "hash": "258075882",
+        "commit": "07971b309c5302c764a7c0b53309935d3751af82",
+        "hash": "3934409135",
         "path": "outstatic/content/experiences/fold.mdx"
       },
       "author": {
@@ -115,7 +115,7 @@
       "metadataImage": "/images/fold-og-image-MzOD.webp",
       "publishedAt": "2025-11-07T08:46:40.493Z",
       "slug": "fold",
-      "startDate": "2025-06-01T07:00:00.000Z",
+      "startDate": "2015-06-01T07:00:00.000Z",
       "status": "published",
       "title": "Fold"
     }
