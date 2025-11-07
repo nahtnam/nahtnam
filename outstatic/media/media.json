@@ -1,6 +1,6 @@
 {
-  "commit": "",
-  "generated": "2025-11-07T09:23:54.747Z",
+  "commit": "27ffbd2f9c0973eeafec63a6a97bfe36ecde5e4e",
+  "generated": "2025-11-07T09:25:59.341Z",
   "media": [
     {
       "__outstatic": {
@@ -11,6 +11,17 @@
       "alt": "",
       "filename": "mercury-og-image-gzMj.avif",
       "publishedAt": "2025-11-07T09:23:54.747Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "27ffbd2f9c0973eeafec63a6a97bfe36ecde5e4e",
+        "hash": "3865295071",
+        "path": "public/images/twingate-og-image-UwOD.png"
+      },
+      "alt": "",
+      "filename": "twingate-og-image-UwOD.png",
+      "publishedAt": "2025-11-07T09:25:59.341Z",
       "type": "image"
     }
   ]
