@@ -1,6 +1,6 @@
 {
-  "commit": "ab7278ec0127f0ea00ad544da535d4d8483fa621",
-  "generated": "2025-11-07T09:27:46.334Z",
+  "commit": "62dc6910c608cddd36234355054885c7f38827c8",
+  "generated": "2025-11-07T09:29:46.262Z",
   "metadata": [
     {
       "__outstatic": {
@@ -60,6 +60,26 @@
       "startDate": "2019-10-01T07:00:00.000Z",
       "status": "draft",
       "title": "Lime"
+    },
+    {
+      "__outstatic": {
+        "commit": "62dc6910c608cddd36234355054885c7f38827c8",
+        "hash": "566409965",
+        "path": "outstatic/content/experiences/rakuten.mdx"
+      },
+      "author": {
+        "name": "Manthan Mallikarjun",
+        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
+      },
+      "collection": "experiences",
+      "endDate": "2018-09-01T07:00:00.000Z",
+      "homepage": "https://www.rakuten.com/",
+      "metadataImage": "/images/rakuten-og-image-UyNz.png",
+      "publishedAt": "2025-11-07T08:40:17.404Z",
+      "slug": "rakuten",
+      "startDate": "2018-06-01T07:00:00.000Z",
+      "status": "draft",
+      "title": "Rakuten"
     }
   ]
 }
