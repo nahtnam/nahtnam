@@ -1,6 +1,6 @@
 {
-  "commit": "67c8ea65441fa6ad488e902822e3a5dfa84b57b9",
-  "generated": "2025-11-07T09:31:50.150Z",
+  "commit": "99f0303aeaf41cd76e0980d0dd60c540df48346a",
+  "generated": "2025-11-07T09:31:53.189Z",
   "metadata": [
     {
       "__outstatic": {
@@ -61,8 +61,8 @@
     },
     {
       "__outstatic": {
-        "commit": "67c8ea65441fa6ad488e902822e3a5dfa84b57b9",
-        "hash": "2885613692",
+        "commit": "99f0303aeaf41cd76e0980d0dd60c540df48346a",
+        "hash": "1380157106",
         "path": "outstatic/content/experiences/twingate.mdx"
       },
       "author": {
@@ -76,7 +76,7 @@
       "publishedAt": "2025-11-07T08:36:25.965Z",
       "slug": "twingate",
       "startDate": "2020-03-01T08:00:00.000Z",
-      "status": "draft",
+      "status": "published",
       "title": "Twingate"
     }
   ]
