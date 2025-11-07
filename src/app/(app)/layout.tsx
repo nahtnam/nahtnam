@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import { Footer } from "./_components/footer";
 import { Navbar } from "./_components/navbar";
 
-import "@/server/client/server";
 import "./globals.css";
 
 const inter = Inter({
