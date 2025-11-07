@@ -1,6 +1,6 @@
 {
-  "commit": "3e38fdca226c70830ed3f34bb7cb3f44ff54db76",
-  "generated": "2025-11-07T09:27:35.699Z",
+  "commit": "4165aaac66d0f9d660ff2aa1af12e5ab123447ec",
+  "generated": "2025-11-07T09:29:23.308Z",
   "media": [
     {
       "__outstatic": {
@@ -22,6 +22,17 @@
       "alt": "",
       "filename": "mercury-og-image-gzMj.avif",
       "publishedAt": "2025-11-07T09:23:54.747Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "4165aaac66d0f9d660ff2aa1af12e5ab123447ec",
+        "hash": "1956442803",
+        "path": "public/images/rakuten-og-image-UyNz.png"
+      },
+      "alt": "",
+      "filename": "rakuten-og-image-UyNz.png",
+      "publishedAt": "2025-11-07T09:29:23.308Z",
       "type": "image"
     },
     {
