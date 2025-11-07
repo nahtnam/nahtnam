@@ -13,6 +13,11 @@
       "fieldType": "Date",
       "dataType": "date",
       "title": "Start Date"
+    },
+    "endDate": {
+      "fieldType": "Date",
+      "dataType": "date",
+      "title": "End Date"
     }
   }
 }
