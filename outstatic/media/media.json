@@ -1,6 +1,6 @@
 {
-  "commit": "4f42e396b711bd05f311ffc90bccd42e580d3ff1",
-  "generated": "2025-11-07T09:34:16.001Z",
+  "commit": "c508386c3c9bbde5adbfb8cd3c7c2606c1ba0756",
+  "generated": "2025-11-07T09:35:43.342Z",
   "media": [
     {
       "__outstatic": {
@@ -11,6 +11,17 @@
       "alt": "",
       "filename": "decklar-og-image-gyOT.png",
       "publishedAt": "2025-11-07T09:34:16.001Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "c508386c3c9bbde5adbfb8cd3c7c2606c1ba0756",
+        "hash": "3904860584",
+        "path": "public/images/fold-og-image-MzOD.webp"
+      },
+      "alt": "",
+      "filename": "fold-og-image-MzOD.webp",
+      "publishedAt": "2025-11-07T09:35:43.342Z",
       "type": "image"
     },
     {
