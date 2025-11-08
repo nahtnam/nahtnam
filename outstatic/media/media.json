@@ -1,6 +1,6 @@
 {
-  "commit": "122a94beb8a57833b750b4ad0f3974736a52b484",
-  "generated": "2025-11-08T22:34:11.962Z",
+  "commit": "46b30f82d759cd362b3490ea8b47200aab59180b",
+  "generated": "2025-11-08T22:35:33.101Z",
   "media": [
     {
       "__outstatic": {
@@ -66,6 +66,17 @@
       "alt": "",
       "filename": "mercury-og-image-gzMj.avif",
       "publishedAt": "2025-11-07T09:23:54.747Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "46b30f82d759cd362b3490ea8b47200aab59180b",
+        "hash": "2445798706",
+        "path": "public/images/monthly-savings-builder-g3Mz.png"
+      },
+      "alt": "",
+      "filename": "monthly-savings-builder-g3Mz.png",
+      "publishedAt": "2025-11-08T22:35:33.101Z",
       "type": "image"
     },
     {
