@@ -1,6 +1,6 @@
 {
-  "commit": "484d6b856db18c2bd7b0e473f87487647ff4458b",
-  "generated": "2025-11-08T22:44:22.362Z",
+  "commit": "5a5d8341c180d71efa6a73a9f755613a429eee01",
+  "generated": "2025-11-08T22:44:41.110Z",
   "media": [
     {
       "__outstatic": {
@@ -187,6 +187,17 @@
       "alt": "",
       "filename": "rakuten-og-image-UyNz.png",
       "publishedAt": "2025-11-07T09:29:23.308Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "5a5d8341c180d71efa6a73a9f755613a429eee01",
+        "hash": "3952045329",
+        "path": "public/images/raycast-shortcut-MyNT.png"
+      },
+      "alt": "",
+      "filename": "raycast-shortcut-MyNT.png",
+      "publishedAt": "2025-11-08T22:44:41.110Z",
       "type": "image"
     },
     {
