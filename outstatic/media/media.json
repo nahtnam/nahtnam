@@ -1,6 +1,6 @@
 {
-  "commit": "9a942d89215a0036a2ef69a74a2385fbb27b936a",
-  "generated": "2025-11-08T22:38:26.537Z",
+  "commit": "c628c4fa91d252f48cea30a71516c0e842006c10",
+  "generated": "2025-11-08T22:38:49.246Z",
   "media": [
     {
       "__outstatic": {
@@ -44,6 +44,17 @@
       "alt": "",
       "filename": "fund-target-MxMD.png",
       "publishedAt": "2025-11-08T22:34:11.962Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "c628c4fa91d252f48cea30a71516c0e842006c10",
+        "hash": "3542398416",
+        "path": "public/images/funded-credit-QxMj.png"
+      },
+      "alt": "",
+      "filename": "funded-credit-QxMj.png",
+      "publishedAt": "2025-11-08T22:38:49.246Z",
       "type": "image"
     },
     {
