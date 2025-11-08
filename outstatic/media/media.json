@@ -1,6 +1,6 @@
 {
-  "commit": "654aa69c25039b29b3dc58867e63b857772bb8a1",
-  "generated": "2025-11-08T22:36:51.628Z",
+  "commit": "176d7713188e6f148974620264a143ee65e07049",
+  "generated": "2025-11-08T22:37:10.485Z",
   "media": [
     {
       "__outstatic": {
@@ -110,6 +110,17 @@
       "alt": "",
       "filename": "ready-to-assign-EwNz.png",
       "publishedAt": "2025-11-08T22:32:51.284Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "176d7713188e6f148974620264a143ee65e07049",
+        "hash": "220059538",
+        "path": "public/images/savings-balance-date-cwNj.png"
+      },
+      "alt": "",
+      "filename": "savings-balance-date-cwNj.png",
+      "publishedAt": "2025-11-08T22:37:10.485Z",
       "type": "image"
     },
     {
