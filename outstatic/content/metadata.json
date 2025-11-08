@@ -1,6 +1,6 @@
 {
-  "commit": "d205f6fd4ac32ed905daa758fdec96690deb520b",
-  "generated": "2025-11-08T19:28:05.831Z",
+  "commit": "c41958b52e0b07f190a4f7aeab33ca1da4a453fb",
+  "generated": "2025-11-08T19:30:43.152Z",
   "metadata": [
     {
       "__outstatic": {
@@ -135,6 +135,23 @@
       "status": "draft",
       "summary": "These are the first things I do when I set up a new Mac",
       "title": "How I Set Up a New Mac"
+    },
+    {
+      "__outstatic": {
+        "commit": "c41958b52e0b07f190a4f7aeab33ca1da4a453fb",
+        "hash": "2737524356",
+        "path": "outstatic/content/posts/ynab-for-the-middle-class.mdx"
+      },
+      "author": {
+        "name": "Manthan Mallikarjun",
+        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
+      },
+      "collection": "posts",
+      "publishedAt": "2022-10-16T07:00:00.000Z",
+      "slug": "ynab-for-the-middle-class",
+      "status": "draft",
+      "summary": "YNAB is an exceptional budgeting tool, regardless of your income level",
+      "title": "YNAB for the Middle Class"
     }
   ]
 }
