@@ -1,6 +1,6 @@
 {
-  "commit": "74344a5227d505a9c07577343852dc6dde7702c2",
-  "generated": "2025-11-08T22:43:44.065Z",
+  "commit": "63f88006442b616614a034e63e25bf7c5a229ba8",
+  "generated": "2025-11-08T22:44:00.513Z",
   "media": [
     {
       "__outstatic": {
@@ -11,6 +11,17 @@
       "alt": "",
       "filename": "all-budgets-I2MD.png",
       "publishedAt": "2025-11-08T22:37:34.751Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "63f88006442b616614a034e63e25bf7c5a229ba8",
+        "hash": "1236723151",
+        "path": "public/images/alttab-hide-g3NT.png"
+      },
+      "alt": "",
+      "filename": "alttab-hide-g3NT.png",
+      "publishedAt": "2025-11-08T22:44:00.513Z",
       "type": "image"
     },
     {
