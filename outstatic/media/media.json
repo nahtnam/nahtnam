@@ -1,6 +1,6 @@
 {
-  "commit": "be653c5f832bfb341bb3d52b8d97045d2894334e",
-  "generated": "2025-11-08T22:37:34.751Z",
+  "commit": "9a942d89215a0036a2ef69a74a2385fbb27b936a",
+  "generated": "2025-11-08T22:38:26.537Z",
   "media": [
     {
       "__outstatic": {
@@ -154,6 +154,17 @@
       "alt": "",
       "filename": "twingate-og-image-UwOD.png",
       "publishedAt": "2025-11-07T09:25:59.341Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "9a942d89215a0036a2ef69a74a2385fbb27b936a",
+        "hash": "3723410588",
+        "path": "public/images/underfunded-credit-g3Nj.png"
+      },
+      "alt": "",
+      "filename": "underfunded-credit-g3Nj.png",
+      "publishedAt": "2025-11-08T22:38:26.537Z",
       "type": "image"
     }
   ]
