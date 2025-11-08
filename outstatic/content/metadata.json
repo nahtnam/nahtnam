@@ -1,6 +1,6 @@
 {
-  "commit": "7bfdb3d7f4ff5f4ac1052bf3afebecd9d355b54a",
-  "generated": "2025-11-08T22:40:00.764Z",
+  "commit": "d7ab2deb03d6c2c65e05ca7519d1dc883f2eaf70",
+  "generated": "2025-11-08T22:46:55.360Z",
   "metadata": [
     {
       "__outstatic": {
@@ -138,8 +138,8 @@
     },
     {
       "__outstatic": {
-        "commit": "7bfdb3d7f4ff5f4ac1052bf3afebecd9d355b54a",
-        "hash": "1948776969",
+        "commit": "d7ab2deb03d6c2c65e05ca7519d1dc883f2eaf70",
+        "hash": "871576285",
         "path": "outstatic/content/posts/how-i-set-up-a-new-mac.mdx"
       },
       "author": {
