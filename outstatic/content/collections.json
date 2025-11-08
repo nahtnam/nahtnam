@@ -1,14 +1,14 @@
 [
   {
-    "title": "Posts",
-    "slug": "posts",
+    "children": [],
     "path": "outstatic/content/posts",
-    "children": []
+    "slug": "posts",
+    "title": "Posts"
   },
   {
-    "title": "Experiences",
-    "slug": "experiences",
+    "children": [],
     "path": "outstatic/content/experiences",
-    "children": []
+    "slug": "experiences",
+    "title": "Experiences"
   }
 ]

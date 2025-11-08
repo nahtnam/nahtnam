@@ -29,7 +29,7 @@ export function NavbarClient() {
     <div className="navbar p-0">
       <div className="navbar-start gap-4">
         <Link className="font-bold text-xl" href="/">
-          TODO
+          nahtnam
         </Link>
       </div>
 

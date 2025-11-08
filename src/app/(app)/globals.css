@@ -12,5 +12,5 @@
 }
 
 @utility container {
-  @apply px-8;
+  @apply max-w-[64rem] px-8;
 }

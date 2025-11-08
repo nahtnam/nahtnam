@@ -1,29 +1,29 @@
 {
-  "title": "experiences",
-  "type": "object",
   "properties": {
-    "homepage": {
-      "required": true,
-      "fieldType": "Text",
-      "dataType": "string",
-      "title": "Homepage"
-    },
-    "startDate": {
-      "required": true,
-      "fieldType": "Date",
-      "dataType": "date",
-      "title": "Start Date"
-    },
     "endDate": {
-      "fieldType": "Date",
       "dataType": "date",
+      "fieldType": "Date",
       "title": "End Date"
     },
-    "metadataImage": {
+    "homepage": {
+      "dataType": "string",
+      "fieldType": "Text",
       "required": true,
-      "fieldType": "Image",
+      "title": "Homepage"
+    },
+    "metadataImage": {
       "dataType": "image",
+      "fieldType": "Image",
+      "required": true,
       "title": "Metadata Image"
+    },
+    "startDate": {
+      "dataType": "date",
+      "fieldType": "Date",
+      "required": true,
+      "title": "Start Date"
     }
-  }
+  },
+  "title": "experiences",
+  "type": "object"
 }

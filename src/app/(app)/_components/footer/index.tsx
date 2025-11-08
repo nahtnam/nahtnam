@@ -13,7 +13,7 @@ export function Footer() {
         <footer className="footer">
           <nav>
             <h6 className="footer-title">
-              &copy; {year} TODO. All rights reserved.
+              &copy; {year} nahtnam. All rights reserved.
             </h6>
           </nav>
         </footer>

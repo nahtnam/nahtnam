@@ -1,6 +1,6 @@
 {
-  "title": "Posts",
+  "properties": {},
   "slug": "posts",
-  "type": "object",
-  "properties": {}
+  "title": "Posts",
+  "type": "object"
 }
