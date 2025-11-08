@@ -1,26 +1,7 @@
 {
-  "commit": "d7ab2deb03d6c2c65e05ca7519d1dc883f2eaf70",
-  "generated": "2025-11-08T22:46:55.360Z",
+  "commit": "f75bd91a8a36737ef07b5d765bbe8605d499b995",
+  "generated": "2025-11-08T23:23:43.829Z",
   "metadata": [
-    {
-      "__outstatic": {
-        "commit": "b95d7d2f01604d2ceaa90af41a9b1ac33ac0568f",
-        "hash": "3137071978",
-        "path": "outstatic/content/experiences/mercury.mdx"
-      },
-      "author": {
-        "name": "Manthan Mallikarjun",
-        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
-      },
-      "collection": "experiences",
-      "homepage": "https://mercury.com/",
-      "metadataImage": "/images/mercury-og-image-gzMj.avif",
-      "publishedAt": "2025-11-07T08:27:56.754Z",
-      "slug": "mercury",
-      "startDate": "2021-11-29T08:00:00.000Z",
-      "status": "published",
-      "title": "Mercury"
-    },
     {
       "__outstatic": {
         "commit": "93b328918b064105eb2567fad7593c2fb5249cbd",
@@ -152,6 +133,25 @@
       "status": "published",
       "summary": "These are the first things I do when I set up a new Mac",
       "title": "How I Set Up a New Mac"
+    },
+    {
+      "__outstatic": {
+        "commit": "f75bd91a8a36737ef07b5d765bbe8605d499b995",
+        "hash": "3312703818",
+        "path": "outstatic/content/experiences/mercury.mdx"
+      },
+      "author": {
+        "name": "Manthan Mallikarjun",
+        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
+      },
+      "collection": "experiences",
+      "homepage": "https://mercury.com/",
+      "metadataImage": "/images/mercury-og-image-gzMj.avif",
+      "publishedAt": "2025-11-07T08:27:56.754Z",
+      "slug": "mercury",
+      "startDate": "2021-11-29T08:00:00.000Z",
+      "status": "published",
+      "title": "Mercury"
     }
   ]
 }
