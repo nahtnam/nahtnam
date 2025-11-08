@@ -6,6 +6,11 @@ export type Experience = {
   metadataImage: string;
 };
 
+type Post = {
+  summary: string;
+};
+
 export type Documents = {
   experiences: Experience;
+  posts: Post;
 };

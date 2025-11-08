@@ -9,7 +9,8 @@
   },
   "extends": ["ultracite/core", "ultracite/react", "ultracite/next"],
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": ["**/*", "!outstatic/**/*"]
   },
   "json": {
     "assist": {

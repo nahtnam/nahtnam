@@ -16,7 +16,7 @@ export function NavbarClient() {
       </li>
       <li>
         <Link
-          className={pathname === "/blog" ? "menu-active" : ""}
+          className={pathname.startsWith("/blog") ? "menu-active" : ""}
           href="/blog"
         >
           Blog
