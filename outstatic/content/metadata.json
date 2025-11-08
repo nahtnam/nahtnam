@@ -1,6 +1,6 @@
 {
-  "commit": "c41958b52e0b07f190a4f7aeab33ca1da4a453fb",
-  "generated": "2025-11-08T19:30:43.152Z",
+  "commit": "6f56139c6998bd0422b387ff33e5fac07f135ad8",
+  "generated": "2025-11-08T22:39:47.912Z",
   "metadata": [
     {
       "__outstatic": {
@@ -138,8 +138,8 @@
     },
     {
       "__outstatic": {
-        "commit": "c41958b52e0b07f190a4f7aeab33ca1da4a453fb",
-        "hash": "2737524356",
+        "commit": "6f56139c6998bd0422b387ff33e5fac07f135ad8",
+        "hash": "4148414831",
         "path": "outstatic/content/posts/ynab-for-the-middle-class.mdx"
       },
       "author": {
@@ -149,7 +149,7 @@
       "collection": "posts",
       "publishedAt": "2022-10-16T07:00:00.000Z",
       "slug": "ynab-for-the-middle-class",
-      "status": "draft",
+      "status": "published",
       "summary": "YNAB is an exceptional budgeting tool, regardless of your income level",
       "title": "YNAB for the Middle Class"
     }
