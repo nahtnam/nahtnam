@@ -1,6 +1,6 @@
 {
-  "commit": "22ad80396a4a08bc33b5da4eef60efd53b3a0aea",
-  "generated": "2025-11-08T22:45:28.206Z",
+  "commit": "d8ef58d53023682be602280a646f3ddcaa96f87f",
+  "generated": "2025-11-08T22:45:59.404Z",
   "media": [
     {
       "__outstatic": {
@@ -88,6 +88,17 @@
       "alt": "",
       "filename": "decklar-og-image-gyOT.png",
       "publishedAt": "2025-11-07T09:34:16.001Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "d8ef58d53023682be602280a646f3ddcaa96f87f",
+        "hash": "2256897976",
+        "path": "public/images/disable-auto-shuffle-MzMT.png"
+      },
+      "alt": "",
+      "filename": "disable-auto-shuffle-MzMT.png",
+      "publishedAt": "2025-11-08T22:45:59.404Z",
       "type": "image"
     },
     {
