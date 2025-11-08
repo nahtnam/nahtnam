@@ -1,7 +1,18 @@
 {
-  "commit": "176d7713188e6f148974620264a143ee65e07049",
-  "generated": "2025-11-08T22:37:10.485Z",
+  "commit": "be653c5f832bfb341bb3d52b8d97045d2894334e",
+  "generated": "2025-11-08T22:37:34.751Z",
   "media": [
+    {
+      "__outstatic": {
+        "commit": "be653c5f832bfb341bb3d52b8d97045d2894334e",
+        "hash": "2580496597",
+        "path": "public/images/all-budgets-I2MD.png"
+      },
+      "alt": "",
+      "filename": "all-budgets-I2MD.png",
+      "publishedAt": "2025-11-08T22:37:34.751Z",
+      "type": "image"
+    },
     {
       "__outstatic": {
         "commit": "4f42e396b711bd05f311ffc90bccd42e580d3ff1",
