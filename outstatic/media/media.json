@@ -1,6 +1,6 @@
 {
-  "commit": "465fa00147ced55d39c32d8860f33d6679b04e4a",
-  "generated": "2025-11-08T22:39:09.773Z",
+  "commit": "0e04ff8e6c6e5f0f097007df2e5f0104925b75c9",
+  "generated": "2025-11-08T22:39:24.374Z",
   "media": [
     {
       "__outstatic": {
@@ -22,6 +22,17 @@
       "alt": "",
       "filename": "credit-payment-k0Mj.png",
       "publishedAt": "2025-11-08T22:39:09.773Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "0e04ff8e6c6e5f0f097007df2e5f0104925b75c9",
+        "hash": "4129589313",
+        "path": "public/images/credit-payment-link-UzMz.png"
+      },
+      "alt": "",
+      "filename": "credit-payment-link-UzMz.png",
+      "publishedAt": "2025-11-08T22:39:24.374Z",
       "type": "image"
     },
     {
