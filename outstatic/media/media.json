@@ -1,6 +1,6 @@
 {
-  "commit": "5a5d8341c180d71efa6a73a9f755613a429eee01",
-  "generated": "2025-11-08T22:44:41.110Z",
+  "commit": "5c8b019cee9bd856fc7b3eb8d774cd64bff0a020",
+  "generated": "2025-11-08T22:45:00.543Z",
   "media": [
     {
       "__outstatic": {
@@ -44,6 +44,17 @@
       "alt": "",
       "filename": "alttab-start-QyNj.png",
       "publishedAt": "2025-11-08T22:43:26.520Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "5c8b019cee9bd856fc7b3eb8d774cd64bff0a020",
+        "hash": "2232610590",
+        "path": "public/images/battery-percent-MyOT.png"
+      },
+      "alt": "",
+      "filename": "battery-percent-MyOT.png",
+      "publishedAt": "2025-11-08T22:45:00.543Z",
       "type": "image"
     },
     {
