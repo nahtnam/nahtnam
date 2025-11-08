@@ -1,6 +1,6 @@
 {
-  "commit": "40d4a316dc19a0cee6f3bd3ca1b4ef8106e5c8c8",
-  "generated": "2025-11-08T22:45:14.423Z",
+  "commit": "22ad80396a4a08bc33b5da4eef60efd53b3a0aea",
+  "generated": "2025-11-08T22:45:28.206Z",
   "media": [
     {
       "__outstatic": {
@@ -253,6 +253,17 @@
       "alt": "",
       "filename": "show-bluetooth-I1Mz.png",
       "publishedAt": "2025-11-08T22:45:14.423Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "22ad80396a4a08bc33b5da4eef60efd53b3a0aea",
+        "hash": "2139597923",
+        "path": "public/images/show-sound-g4MD.png"
+      },
+      "alt": "",
+      "filename": "show-sound-g4MD.png",
+      "publishedAt": "2025-11-08T22:45:28.206Z",
       "type": "image"
     },
     {
