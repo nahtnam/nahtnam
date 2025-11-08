@@ -1,6 +1,6 @@
 {
-  "commit": "c628c4fa91d252f48cea30a71516c0e842006c10",
-  "generated": "2025-11-08T22:38:49.246Z",
+  "commit": "465fa00147ced55d39c32d8860f33d6679b04e4a",
+  "generated": "2025-11-08T22:39:09.773Z",
   "media": [
     {
       "__outstatic": {
@@ -11,6 +11,17 @@
       "alt": "",
       "filename": "all-budgets-I2MD.png",
       "publishedAt": "2025-11-08T22:37:34.751Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "465fa00147ced55d39c32d8860f33d6679b04e4a",
+        "hash": "181368549",
+        "path": "public/images/credit-payment-k0Mj.png"
+      },
+      "alt": "",
+      "filename": "credit-payment-k0Mj.png",
+      "publishedAt": "2025-11-08T22:39:09.773Z",
       "type": "image"
     },
     {
