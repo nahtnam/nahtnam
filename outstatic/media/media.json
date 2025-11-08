@@ -1,6 +1,6 @@
 {
-  "commit": "6050839b2f06a58c78aeb67fdb6e18ec58f001b1",
-  "generated": "2025-11-08T22:46:11.526Z",
+  "commit": "6b67c3c86efc66838af92669062e9771a91f0c9b",
+  "generated": "2025-11-08T22:46:27.827Z",
   "media": [
     {
       "__outstatic": {
@@ -44,6 +44,17 @@
       "alt": "",
       "filename": "alttab-start-QyNj.png",
       "publishedAt": "2025-11-08T22:43:26.520Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "6b67c3c86efc66838af92669062e9771a91f0c9b",
+        "hash": "2746421426",
+        "path": "public/images/auto-hide-doc-E5ND.png"
+      },
+      "alt": "",
+      "filename": "auto-hide-doc-E5ND.png",
+      "publishedAt": "2025-11-08T22:46:27.827Z",
       "type": "image"
     },
     {
