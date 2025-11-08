@@ -4,6 +4,7 @@ import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { load } from "outstatic/server";
+import { Suspense } from "react";
 import { getDocumentBySlug } from "@/app/(cms)/_utils/fetch";
 import { env } from "@/config/env/server";
 import markdownToHtml from "@/lib/remark";
@@ -42,7 +43,7 @@ async function getPost(slug: string, isDraftMode: boolean) {
   return post;
 }
 
-export default async function Page(props: PageProps) {
+async function Post(props: PageProps) {
   "use cache";
   const { params } = props;
   const { slug } = await params;
@@ -51,6 +52,31 @@ export default async function Page(props: PageProps) {
   if (!post) {
     return notFound();
   }
+
+  return (
+    <>
+      <h1 className="mb-2">{post.title}</h1>
+      <h6 className="mb-0">
+        <span>By {post.author?.name}, </span>
+        Published{" "}
+        {formatDistance(post.publishedAt, new Date(), {
+          addSuffix: true,
+        })}
+      </h6>
+      <div className="my-4" />
+      TODO
+      <div
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: blog post rendering
+        dangerouslySetInnerHTML={{
+          __html: await markdownToHtml(post.content),
+        }}
+      />
+    </>
+  );
+}
+
+export default function Page(props: PageProps) {
+  const { params } = props;
 
   return (
     <section className="container mx-auto mt-12 max-w-5xl">
@@ -64,22 +90,9 @@ export default async function Page(props: PageProps) {
             all posts
           </Link>
         </p>
-        <h1 className="mb-2">{post.title}</h1>
-        <h6 className="mb-0">
-          <span>By {post.author?.name}, </span>
-          Published{" "}
-          {formatDistance(post.publishedAt, new Date(), {
-            addSuffix: true,
-          })}
-        </h6>
-        <div className="my-4" />
-        TODO
-        <div
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: blog post rendering
-          dangerouslySetInnerHTML={{
-            __html: await markdownToHtml(post.content),
-          }}
-        />
+        <Suspense>
+          <Post params={params} />
+        </Suspense>
       </article>
     </section>
   );
