@@ -1,6 +1,6 @@
 {
-  "commit": "02d13f01651e7abab8829668181da53e20afcbe0",
-  "generated": "2025-11-08T22:32:28.258Z",
+  "commit": "0056c949611ef4ee7ae8e6211fb4018adcc20abc",
+  "generated": "2025-11-08T22:32:51.284Z",
   "media": [
     {
       "__outstatic": {
@@ -66,6 +66,17 @@
       "alt": "",
       "filename": "rakuten-og-image-UyNz.png",
       "publishedAt": "2025-11-07T09:29:23.308Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "0056c949611ef4ee7ae8e6211fb4018adcc20abc",
+        "hash": "2654504838",
+        "path": "public/images/ready-to-assign-EwNz.png"
+      },
+      "alt": "",
+      "filename": "ready-to-assign-EwNz.png",
+      "publishedAt": "2025-11-08T22:32:51.284Z",
       "type": "image"
     },
     {
