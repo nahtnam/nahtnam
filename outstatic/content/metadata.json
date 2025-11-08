@@ -1,6 +1,6 @@
 {
-  "commit": "6f56139c6998bd0422b387ff33e5fac07f135ad8",
-  "generated": "2025-11-08T22:39:47.912Z",
+  "commit": "7bfdb3d7f4ff5f4ac1052bf3afebecd9d355b54a",
+  "generated": "2025-11-08T22:40:00.764Z",
   "metadata": [
     {
       "__outstatic": {
@@ -121,23 +121,6 @@
     },
     {
       "__outstatic": {
-        "commit": "d205f6fd4ac32ed905daa758fdec96690deb520b",
-        "hash": "2036328267",
-        "path": "outstatic/content/posts/how-i-set-up-a-new-mac.mdx"
-      },
-      "author": {
-        "name": "Manthan Mallikarjun",
-        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
-      },
-      "collection": "posts",
-      "publishedAt": "2022-10-15T07:00:00.000Z",
-      "slug": "how-i-set-up-a-new-mac",
-      "status": "draft",
-      "summary": "These are the first things I do when I set up a new Mac",
-      "title": "How I Set Up a New Mac"
-    },
-    {
-      "__outstatic": {
         "commit": "6f56139c6998bd0422b387ff33e5fac07f135ad8",
         "hash": "4148414831",
         "path": "outstatic/content/posts/ynab-for-the-middle-class.mdx"
@@ -152,6 +135,23 @@
       "status": "published",
       "summary": "YNAB is an exceptional budgeting tool, regardless of your income level",
       "title": "YNAB for the Middle Class"
+    },
+    {
+      "__outstatic": {
+        "commit": "7bfdb3d7f4ff5f4ac1052bf3afebecd9d355b54a",
+        "hash": "1948776969",
+        "path": "outstatic/content/posts/how-i-set-up-a-new-mac.mdx"
+      },
+      "author": {
+        "name": "Manthan Mallikarjun",
+        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
+      },
+      "collection": "posts",
+      "publishedAt": "2022-10-15T07:00:00.000Z",
+      "slug": "how-i-set-up-a-new-mac",
+      "status": "published",
+      "summary": "These are the first things I do when I set up a new Mac",
+      "title": "How I Set Up a New Mac"
     }
   ]
 }
