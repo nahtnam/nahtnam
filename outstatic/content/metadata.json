@@ -1,6 +1,6 @@
 {
-  "commit": "07971b309c5302c764a7c0b53309935d3751af82",
-  "generated": "2025-11-07T09:50:34.795Z",
+  "commit": "d205f6fd4ac32ed905daa758fdec96690deb520b",
+  "generated": "2025-11-08T19:28:05.831Z",
   "metadata": [
     {
       "__outstatic": {
@@ -118,6 +118,23 @@
       "startDate": "2015-06-01T07:00:00.000Z",
       "status": "published",
       "title": "Fold"
+    },
+    {
+      "__outstatic": {
+        "commit": "d205f6fd4ac32ed905daa758fdec96690deb520b",
+        "hash": "2036328267",
+        "path": "outstatic/content/posts/how-i-set-up-a-new-mac.mdx"
+      },
+      "author": {
+        "name": "Manthan Mallikarjun",
+        "picture": "https://avatars.githubusercontent.com/u/20051852?v=4"
+      },
+      "collection": "posts",
+      "publishedAt": "2022-10-15T07:00:00.000Z",
+      "slug": "how-i-set-up-a-new-mac",
+      "status": "draft",
+      "summary": "These are the first things I do when I set up a new Mac",
+      "title": "How I Set Up a New Mac"
     }
   ]
 }
