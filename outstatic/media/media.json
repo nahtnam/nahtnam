@@ -1,6 +1,6 @@
 {
-  "commit": "5c8b019cee9bd856fc7b3eb8d774cd64bff0a020",
-  "generated": "2025-11-08T22:45:00.543Z",
+  "commit": "40d4a316dc19a0cee6f3bd3ca1b4ef8106e5c8c8",
+  "generated": "2025-11-08T22:45:14.423Z",
   "media": [
     {
       "__outstatic": {
@@ -242,6 +242,17 @@
       "alt": "",
       "filename": "savings-balance-kyMz.png",
       "publishedAt": "2025-11-08T22:36:51.628Z",
+      "type": "image"
+    },
+    {
+      "__outstatic": {
+        "commit": "40d4a316dc19a0cee6f3bd3ca1b4ef8106e5c8c8",
+        "hash": "3133789864",
+        "path": "public/images/show-bluetooth-I1Mz.png"
+      },
+      "alt": "",
+      "filename": "show-bluetooth-I1Mz.png",
+      "publishedAt": "2025-11-08T22:45:14.423Z",
       "type": "image"
     },
     {
