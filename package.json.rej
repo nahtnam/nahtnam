@@ -1,0 +1,26 @@
+diff a/package.json b/package.json	(rejected hunks)
+@@ -20,18 +20,18 @@
+   },
+   "devDependencies": {
+     "@biomejs/biome": "2.3.2",
+-    "@tailwindcss/postcss": "^4",
++    "@tailwindcss/postcss": "^4.1.17",
+     "@tailwindcss/typography": "^0.5.19",
++    "@types/bun": "^1.3.1",
+     "@types/ms": "^2.1.0",
+-    "@types/node": "^20",
+-    "@types/react": "^19",
+-    "@types/react-dom": "^19",
++    "@types/react": "^19.2.2",
++    "@types/react-dom": "^19.2.2",
+     "babel-plugin-react-compiler": "^1.0.0",
+     "daisyui": "^5.4.2",
+     "drizzle-kit": "^1.0.0-beta.1-27d2721",
+     "lefthook": "^2.0.2",
+-    "tailwindcss": "^4",
+-    "typescript": "^5",
++    "tailwindcss": "^4.1.17",
++    "typescript": "^5.9.3",
+     "ultracite": "6.1.0"
+   },
+   "name": "TODO",
