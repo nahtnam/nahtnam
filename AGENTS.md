@@ -20,18 +20,6 @@ Follow the instructions in @./cursor/rules/tanstack-start.mdc
 
 Follow the instructions in @./cursor/rules/orpc.mdc
 
-## Database
-
-Follow the instructions in @./cursor/rules/drizzle.mdc
-
-## Auth
-
-Follow the instructions in @./cursor/rules/better-auth.mdc
-
-## Background Jobs
-
-Follow the instructions in @./cursor/rules/workflows.mdc
-
 ## UI Components
 
 Follow the instructions in @./cursor/rules/shadcn.mdc

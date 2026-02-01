@@ -8,7 +8,6 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { appName } from "@/config/app";
-import { authClient } from "@/lib/auth-client";
 import appCss from "../styles.css?url";
 import { Footer } from "./-components/footer";
 import { Navbar } from "./-components/navbar";
@@ -21,28 +20,6 @@ type MyRouterContext = {
 };
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  beforeLoad: async ({ context }) => {
-    const sessionResponse = await context.queryClient.fetchQuery({
-      queryFn: () => authClient().getSession(),
-      queryKey: ["authClient", "getSession"],
-    });
-    if (sessionResponse.error) {
-      return {
-        session: null,
-        user: null,
-      };
-    }
-
-    if (!sessionResponse.data) {
-      return {
-        session: null,
-        user: null,
-      };
-    }
-
-    const { session, user } = sessionResponse.data;
-    return { session, user };
-  },
   component: RootComponent,
   head: () => ({
     links: [
@@ -63,9 +40,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         title: appName,
       },
     ],
-  }),
-  loader: ({ context }) => ({
-    user: context.user,
   }),
   notFoundComponent: NotFound,
   shellComponent: RootDocument,
@@ -100,11 +74,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  const { user } = Route.useLoaderData();
-
   return (
     <>
-      <Navbar user={user} />
+      <Navbar />
       <main className="grow">
         <Outlet />
       </main>

@@ -9,156 +9,54 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WithoutUserRouteImport } from './routes/_without-user'
-import { Route as WithUserRouteImport } from './routes/_with-user'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as WithoutUserGetStartedIndexRouteImport } from './routes/_without-user/get-started/index'
-import { Route as WithUserAppIndexRouteImport } from './routes/_with-user/app/index'
 import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc/$'
-import { Route as ApiAuthSignOutRouteImport } from './routes/api/auth/sign-out'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
-const WithoutUserRoute = WithoutUserRouteImport.update({
-  id: '/_without-user',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WithUserRoute = WithUserRouteImport.update({
-  id: '/_with-user',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const WithoutUserGetStartedIndexRoute =
-  WithoutUserGetStartedIndexRouteImport.update({
-    id: '/get-started/',
-    path: '/get-started/',
-    getParentRoute: () => WithoutUserRoute,
-  } as any)
-const WithUserAppIndexRoute = WithUserAppIndexRouteImport.update({
-  id: '/app/',
-  path: '/app/',
-  getParentRoute: () => WithUserRoute,
 } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
   path: '/api/rpc/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAuthSignOutRoute = ApiAuthSignOutRouteImport.update({
-  id: '/api/auth/sign-out',
-  path: '/api/auth/sign-out',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/auth/sign-out': typeof ApiAuthSignOutRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
-  '/app': typeof WithUserAppIndexRoute
-  '/get-started': typeof WithoutUserGetStartedIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/auth/sign-out': typeof ApiAuthSignOutRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
-  '/app': typeof WithUserAppIndexRoute
-  '/get-started': typeof WithoutUserGetStartedIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_with-user': typeof WithUserRouteWithChildren
-  '/_without-user': typeof WithoutUserRouteWithChildren
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/auth/sign-out': typeof ApiAuthSignOutRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
-  '/_with-user/app/': typeof WithUserAppIndexRoute
-  '/_without-user/get-started/': typeof WithoutUserGetStartedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/api/auth/$'
-    | '/api/auth/sign-out'
-    | '/api/rpc/$'
-    | '/app'
-    | '/get-started'
+  fullPaths: '/' | '/api/rpc/$'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/api/auth/$'
-    | '/api/auth/sign-out'
-    | '/api/rpc/$'
-    | '/app'
-    | '/get-started'
-  id:
-    | '__root__'
-    | '/'
-    | '/_with-user'
-    | '/_without-user'
-    | '/api/auth/$'
-    | '/api/auth/sign-out'
-    | '/api/rpc/$'
-    | '/_with-user/app/'
-    | '/_without-user/get-started/'
+  to: '/' | '/api/rpc/$'
+  id: '__root__' | '/' | '/api/rpc/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  WithUserRoute: typeof WithUserRouteWithChildren
-  WithoutUserRoute: typeof WithoutUserRouteWithChildren
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiAuthSignOutRoute: typeof ApiAuthSignOutRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_without-user': {
-      id: '/_without-user'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof WithoutUserRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_with-user': {
-      id: '/_with-user'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof WithUserRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_without-user/get-started/': {
-      id: '/_without-user/get-started/'
-      path: '/get-started'
-      fullPath: '/get-started'
-      preLoaderRoute: typeof WithoutUserGetStartedIndexRouteImport
-      parentRoute: typeof WithoutUserRoute
-    }
-    '/_with-user/app/': {
-      id: '/_with-user/app/'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof WithUserAppIndexRouteImport
-      parentRoute: typeof WithUserRoute
     }
     '/api/rpc/$': {
       id: '/api/rpc/$'
@@ -167,53 +65,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiRpcSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/auth/sign-out': {
-      id: '/api/auth/sign-out'
-      path: '/api/auth/sign-out'
-      fullPath: '/api/auth/sign-out'
-      preLoaderRoute: typeof ApiAuthSignOutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
-interface WithUserRouteChildren {
-  WithUserAppIndexRoute: typeof WithUserAppIndexRoute
-}
-
-const WithUserRouteChildren: WithUserRouteChildren = {
-  WithUserAppIndexRoute: WithUserAppIndexRoute,
-}
-
-const WithUserRouteWithChildren = WithUserRoute._addFileChildren(
-  WithUserRouteChildren,
-)
-
-interface WithoutUserRouteChildren {
-  WithoutUserGetStartedIndexRoute: typeof WithoutUserGetStartedIndexRoute
-}
-
-const WithoutUserRouteChildren: WithoutUserRouteChildren = {
-  WithoutUserGetStartedIndexRoute: WithoutUserGetStartedIndexRoute,
-}
-
-const WithoutUserRouteWithChildren = WithoutUserRoute._addFileChildren(
-  WithoutUserRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  WithUserRoute: WithUserRouteWithChildren,
-  WithoutUserRoute: WithoutUserRouteWithChildren,
-  ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiAuthSignOutRoute: ApiAuthSignOutRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
 }
 export const routeTree = rootRouteImport
