@@ -1,0 +1,27 @@
+---
+alwaysApply: true
+---
+
+We are using the BETA version of Drizzle v1 with SQLite. You can check the `.env` file to see where the local database is stored. You may make READ-only queries to the database if you need more information from the database.
+
+NEVER run any drizzle-kit cli commands. Instead ask the user to execute them. This includes `push`ing to the database or generating a migration.
+
+If the tests fail due to a database issue, its likely because we used db push for local development and did not generate the migration which the tests rely on. You may let the user know that you suspect the tests are failing due to a missing migration and let them resolve it. DO NOT migrate yourself.
+
+## BETA
+
+Since the BETA version is completely new and not in your training data, please thoroughly read the docs: https://rqbv2.drizzle-orm-fe.pages.dev/docs/overview
+
+More specifically:
+
+- Comprehensive upgrade guide from v1 to v2, including changes in imports, types, and more (feedback appreciated): https://rqbv2.drizzle-orm-fe.pages.dev/docs/relations-v1-v2
+- API reference for defining relations schema: https://rqbv2.drizzle-orm-fe.pages.dev/docs/relations-v2
+- API reference for Relational Queries v2: https://rqbv2.drizzle-orm-fe.pages.dev/docs/rqb-v2
+- Fundamentals guide explaining relations concepts: https://rqbv2.drizzle-orm-fe.pages.dev/docs/relations-schema-declaration
+
+## Files
+
+- `src/db/schema/` - Drizzle schemas (auth schema auto-generated)
+- `src/db/schema/utils/base.ts` - Common fields (id, createdAt, updatedAt)
+- `src/db/relations/` - Drizzle relations, currently just a single file
+- `src/db/index.ts` - Drizzle instance

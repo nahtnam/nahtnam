@@ -1,22 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { uniqBy } from "es-toolkit";
 import { ArrowUpRight, Github, Linkedin, Rocket, Twitter } from "lucide-react";
 import { useEffect, useState } from "react";
+import { orpcTanstackQueryClient } from "@/server/client";
 
-export const Route = createFileRoute("/")({ component: RouteComponent });
+export const Route = createFileRoute("/")({
+  component: RouteComponent,
+  loader: async ({ context }) => {
+    const { experiences } = await context.queryClient.fetchQuery(
+      orpcTanstackQueryClient.resume.listExperiences.queryOptions()
+    );
+    return { experiences };
+  },
+});
 
 const socialLinks = [
   { icon: Github, name: "GitHub", url: "https://github.com/nahtnam" },
   { icon: Linkedin, name: "LinkedIn", url: "https://linkedin.com/in/nahtnam" },
   { icon: Twitter, name: "Twitter", url: "https://twitter.com/nahtnam" },
-];
-
-const companies = [
-  { name: "Mercury", url: "https://mercury.com/" },
-  { name: "Twingate", url: "https://twingate.com/" },
-  { name: "Lime", url: "https://www.li.me/" },
-  { name: "Rakuten", url: "https://www.rakuten.com/" },
-  { name: "Decklar", url: "https://www.decklar.com/" },
-  { name: "Fold", url: "https://foldapp.com/" },
 ];
 
 function NameAnimation() {
@@ -113,6 +114,16 @@ function NameAnimation() {
 }
 
 function RouteComponent() {
+  const { experiences } = Route.useLoaderData();
+
+  const currentExperience = experiences.find((exp) => !exp.endDate);
+  const previousCompanies = uniqBy(
+    experiences.filter(
+      (exp) => exp.endDate && exp.company.id !== currentExperience?.company.id
+    ),
+    (exp) => exp.company.id
+  );
+
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -140,20 +151,26 @@ function RouteComponent() {
           <NameAnimation />
         </h1>
 
-        <a
-          className="group mb-8 inline-flex items-center gap-2 rounded-full border border-border/50 bg-background/80 px-5 py-2.5 text-sm backdrop-blur-sm transition-all hover:border-indigo-500/30 hover:bg-indigo-50/50 hover:shadow-lg dark:hover:bg-indigo-950/20"
-          href="https://mercury.com/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
-          </span>
-          <span className="text-muted-foreground">engineer</span>
-          <span className="font-medium text-foreground">@ Mercury</span>
-          <ArrowUpRight className="group-hover:-translate-y-0.5 h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-        </a>
+        {currentExperience ? (
+          <a
+            className="group mb-8 inline-flex items-center gap-2 rounded-full border border-border/50 bg-background/80 px-5 py-2.5 text-sm backdrop-blur-sm transition-all hover:border-indigo-500/30 hover:bg-indigo-50/50 hover:shadow-lg dark:hover:bg-indigo-950/20"
+            href={currentExperience.company.websiteUrl}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+            </span>
+            <span className="text-muted-foreground">
+              {currentExperience.title.toLowerCase()}
+            </span>
+            <span className="font-medium text-foreground">
+              @ {currentExperience.company.name}
+            </span>
+            <ArrowUpRight className="group-hover:-translate-y-0.5 h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+          </a>
+        ) : null}
 
         <p className="mb-8 max-w-md text-center text-lg text-muted-foreground leading-relaxed">
           Software Engineer with experience at high-growth startups. Building
@@ -196,25 +213,27 @@ function RouteComponent() {
           <div className="-translate-x-full absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 transition-transform duration-300 group-hover:translate-x-0" />
         </a>
 
-        <div className="mt-16 flex flex-col items-center gap-4">
-          <span className="text-muted-foreground/60 text-xs">
-            Previously at
-          </span>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-            {companies.map((company) => (
-              <a
-                className="group relative text-muted-foreground/60 text-xs transition-colors hover:text-foreground"
-                href={company.url}
-                key={company.name}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {company.name}
-                <span className="-bottom-0.5 absolute left-0 h-px w-0 bg-indigo-500 transition-all group-hover:w-full" />
-              </a>
-            ))}
+        {previousCompanies.length > 0 ? (
+          <div className="mt-16 flex flex-col items-center gap-4">
+            <span className="text-muted-foreground/60 text-xs">
+              Previously at
+            </span>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+              {previousCompanies.map((exp) => (
+                <a
+                  className="group relative text-muted-foreground/60 text-xs transition-colors hover:text-foreground"
+                  href={exp.company.websiteUrl}
+                  key={exp.company.id}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {exp.company.name}
+                  <span className="-bottom-0.5 absolute left-0 h-px w-0 bg-indigo-500 transition-all group-hover:w-full" />
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
       </main>
     </div>
   );
