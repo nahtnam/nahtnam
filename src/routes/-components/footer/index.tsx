@@ -4,14 +4,12 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <div className="container mx-auto border-t py-8">
-      <footer>
-        <div className="font-medium text-muted-foreground text-sm">
-          <p>
-            &copy; {year} {appName}. All rights reserved.
-          </p>
-        </div>
-      </footer>
-    </div>
+    <footer className="relative z-10 border-border/30 border-t py-8">
+      <div className="container mx-auto px-6">
+        <p className="text-center text-muted-foreground/40 text-xs">
+          &copy; {year} {appName}
+        </p>
+      </div>
+    </footer>
   );
 }
