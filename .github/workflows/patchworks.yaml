@@ -1,0 +1,18 @@
+name: patchworks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  patchworks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ludicroushq/patchworks@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,8 @@
+{
+  "version": "0.1.2",
+  "template": {
+    "repository": "https://github.com/ludicroushq/STARTer",
+    "branch": "main"
+  },
+  "commit": "b1a434f4c452f975bbab97ca8935dcd823285f85"
+}
