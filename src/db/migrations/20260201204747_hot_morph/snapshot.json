@@ -1,0 +1,192 @@
+{
+  "ddl": [
+    {
+      "entityType": "tables",
+      "name": "resume_companies"
+    },
+    {
+      "entityType": "tables",
+      "name": "resume_work_experiences"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "created_at",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "resume_companies",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "updated_at",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "logo_url",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "name",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "website_url",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "created_at",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "updated_at",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "company_id",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "description",
+      "notNull": false,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "end_date",
+      "notNull": false,
+      "table": "resume_work_experiences",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "location",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "start_date",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "title",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "columns": ["company_id"],
+      "columnsTo": ["id"],
+      "entityType": "fks",
+      "name": "fk_resume_work_experiences_company_id_resume_companies_id_fk",
+      "nameExplicit": false,
+      "onDelete": "CASCADE",
+      "onUpdate": "NO ACTION",
+      "table": "resume_work_experiences",
+      "tableTo": "resume_companies"
+    },
+    {
+      "columns": ["id"],
+      "entityType": "pks",
+      "name": "resume_companies_pk",
+      "nameExplicit": false,
+      "table": "resume_companies"
+    },
+    {
+      "columns": ["id"],
+      "entityType": "pks",
+      "name": "resume_work_experiences_pk",
+      "nameExplicit": false,
+      "table": "resume_work_experiences"
+    }
+  ],
+  "dialect": "sqlite",
+  "id": "c993cdb2-23c0-43c4-b2bf-1621b80951a2",
+  "prevIds": ["00000000-0000-0000-0000-000000000000"],
+  "renames": [],
+  "version": "7"
+}

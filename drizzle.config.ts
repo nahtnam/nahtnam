@@ -8,9 +8,6 @@ export default defineConfig({
     url: serverEnv.DATABASE_URL,
   },
   dialect: "turso",
-  migrations: {
-    prefix: "timestamp",
-  },
   out: "./src/db/migrations",
   schema: "./src/db/schema/index.ts",
 });
