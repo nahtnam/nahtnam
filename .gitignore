@@ -1,0 +1,16 @@
+.DS_Store
+.env
+.nitro
+.output
+.tanstack
+.vinxi
+.workflow-data
+.wrangler
+*.db
+*.local
+count.txt
+coverage
+dist
+dist-ssr
+node_modules
+todos.json

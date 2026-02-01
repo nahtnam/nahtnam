@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "aliases": {
+    "components": "@/routes/-shadcn/components",
+    "hooks": "@/routes/-shadcn/hooks",
+    "lib": "@/routes/-shadcn/lib",
+    "ui": "@/routes/-shadcn/components/ui",
+    "utils": "@/routes/-shadcn/lib/utils"
+  },
+  "iconLibrary": "lucide",
+  "menuAccent": "subtle",
+  "menuColor": "default",
+  "registries": {
+    "@basecn": {
+      "url": "https://basecn.dev/r/{name}.json"
+    },
+    "@shadcnblocks": {
+      "url": "https://shadcnblocks.com/r/{name}"
+    }
+  },
+  "rsc": false,
+  "style": "base-vega",
+  "tailwind": {
+    "baseColor": "neutral",
+    "config": "",
+    "css": "src/styles.css",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "tsx": true
+}

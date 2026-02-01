@@ -1,0 +1,55 @@
+---
+alwaysApply: true
+---
+
+On top of ensuring you comply with the Ultracite/Biome linting rules, here are some additional preferred rules.
+
+## Components
+
+For component props, always accept a single props variable in the function signature and destructure it afterwards.
+
+```tsx
+type NavbarProps = {
+  links: string[];
+};
+
+function Navbar(props: NavbarProps) {
+  const { links } = props;
+}
+```
+
+## Functions
+
+Prefer functions over anonymous functions.
+
+For function parameters, prefer a single object parameter with named keys. The function should only take the single parameter in the function signature and destructure it afterwards.
+
+```ts
+type GetUserOptions = {
+  userId: string;
+};
+
+function getUser(opts: GetUserOptions) {
+  const { userId } = opts;
+  return userId;
+}
+```
+
+## Existing Typed Functions
+
+The exception to the destructuring rules is when you are working with an already typed function that is being passed as a parameter. For example it's okay to do the following.
+
+```ts
+export const Route = createFileRoute("/_with-user/app/")({
+  component: RouteComponent,
+  loader({ context }) {
+    const { user } = context;
+
+    return {
+      user,
+    };
+  },
+});
+```
+
+`loader` is already typed with the object so you can just pull out the primary keys from the parameter. All sub-keys should still be destructured.

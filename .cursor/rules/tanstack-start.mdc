@@ -1,0 +1,52 @@
+---
+alwaysApply: true
+---
+
+Docs are available at: https://tanstack.com/start/latest/docs/framework/react/overview
+
+`src/routeTree.gen.ts` is automatically generated with the dev server. You must never edit or write to this file. If you are encountering type issues surrounding this file or the `createFileRoute`, specifically when it comes to the path, you are safe to ignore the issue. It will be regenerated the next time the dev server runs. DO NOT run the dev server for the user, you must ask them to do it for you.
+
+## Routing
+
+Use file-based routing with TanStack Router
+
+- `_with-user.tsx` - The route guards ensures the user exists and is signed in. Within the folder, you can access the user via context.user.
+- `_without-user.tsx` - This route guard guarantees that the user is not signed in. Use it specifically for pages that should not be visited if they are signed in like the sign in page.
+- `api/` - API routes (auth handler, RPC handler, etc)
+
+More routing specific docs can be found at: https://tanstack.com/router/latest/docs/framework/react/overview
+
+## Components
+
+`-components/` - Should only contain globally shared components
+
+Always prefer co-locating components with where they are used. Move the components up the tree if they are reused elsewhere to the shared parent directory.
+
+When creating components, put them in a `-components` folder and within that folder, create a folder based on the component name with an index.tsx file. DO NOT do something like this: `-components/user-card.tsx`, it must be `-components/user-card/index.tsx`
+
+## Data Fetching
+
+When fetching, ALWAYS use tanstack start.
+
+If you are using better-auth, you will need to use the authClient to make the request and name the key the same as the function path. For example:
+
+```ts
+const sessionResponse = await context.queryClient.fetchQuery({
+  queryFn: () => authClient().getSession(),
+  queryKey: ["authClient", "getSession"],
+});
+```
+
+If you are fetching endpoints from ORPC, then use the ORPC helpers:
+
+```ts
+const { posts } = await context.queryClient.fetchQuery(
+  orpcTanstackQueryClient.posts.get.queryOptions({
+    input: {
+      // ...
+    },
+  })
+);
+```
+
+NEVER use `Route.useRouteContext()`, instead return it from the loader and use `Route.useLoaderData()` instead.

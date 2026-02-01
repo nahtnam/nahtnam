@@ -1,0 +1,40 @@
+---
+alwaysApply: true
+---
+
+We use the RPC version of ORPC. https://orpc.dev/docs/getting-started
+
+## Files
+
+- `src/server/handler.ts` - ORPC RPC handler with error logging
+- `src/server/index.ts` - ORPC middleware (`baseOs`, `withUserOs`, `withoutUserOs`)
+- `src/server/routes/index.ts` - ORPC route definitions (currently empty)
+- `src/server/client/index.ts` - Isomorphic ORPC client (server/client)
+- `src/server/utils/get-session.ts` - Cached session getter
+
+## Routing
+
+All routes be properly organized in `src/server/routes`. The file path should always match the RPC path. Every RPC function should be a folder containing an `index.ts`. Every sub-folder should also contain an `index.ts` which reexports the scoped routes.
+
+```ts
+// src/server/routes/posts/list/index.ts
+export const list = withUserOs.handler();
+
+// src/server/routes/posts/index.ts
+import { list } from "./list";
+
+export const postsRoutes = {
+  list,
+};
+
+// src/server/routes/index.ts
+import { postsRoutes } from "./posts";
+
+export const routes = {
+  posts: postsRoutes,
+};
+```
+
+## Functions
+
+ALWAYS use one of the `os` variables defined in `src/server/index.ts` depending on the data you need. If there is recurring logic consider update the existing os to deduplicate that work or create a new one. For example if you have a concept of organizations, consider making an `export const withOrganizationOs = withUserOs.use(withOrganizationMiddleware);`
