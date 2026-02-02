@@ -1,5 +1,5 @@
-import { drizzle } from "drizzle-orm/libsql";
 import { serverEnv } from "@/config/env/server";
+import { drizzle } from "@/db/drizzle";
 import { relations } from "@/db/relations";
 // biome-ignore lint/performance/noNamespaceImport: drizzle
 import * as schema from "@/db/schema";
