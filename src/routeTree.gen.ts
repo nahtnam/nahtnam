@@ -49,11 +49,11 @@ const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/blog': typeof BlogIndexRoute
-  '/contact': typeof ContactIndexRoute
-  '/experience': typeof ExperienceIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/contact/': typeof ContactIndexRoute
+  '/experience/': typeof ExperienceIndexRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
-  '/blog/$slug': typeof BlogSlugIndexRoute
+  '/blog/$slug/': typeof BlogSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,11 +76,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/blog'
-    | '/contact'
-    | '/experience'
+    | '/blog/'
+    | '/contact/'
+    | '/experience/'
     | '/api/rpc/$'
-    | '/blog/$slug'
+    | '/blog/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/blog' | '/contact' | '/experience' | '/api/rpc/$' | '/blog/$slug'
   id:
@@ -114,28 +114,28 @@ declare module '@tanstack/react-router' {
     '/experience/': {
       id: '/experience/'
       path: '/experience'
-      fullPath: '/experience'
+      fullPath: '/experience/'
       preLoaderRoute: typeof ExperienceIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact/': {
       id: '/contact/'
       path: '/contact'
-      fullPath: '/contact'
+      fullPath: '/contact/'
       preLoaderRoute: typeof ContactIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
-      fullPath: '/blog'
+      fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/$slug/': {
       id: '/blog/$slug/'
       path: '/blog/$slug'
-      fullPath: '/blog/$slug'
+      fullPath: '/blog/$slug/'
       preLoaderRoute: typeof BlogSlugIndexRouteImport
       parentRoute: typeof rootRouteImport
     }

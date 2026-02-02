@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Badge } from "@/routes/-shadcn/components/ui/badge";
 import { Muted } from "@/routes/-shadcn/components/ui/typography";
 
-type LatestPostProps = {
+interface LatestPostProps {
   post: {
     slug: string;
     title: string;
@@ -11,7 +11,7 @@ type LatestPostProps = {
       name: string;
     };
   };
-};
+}
 
 export function LatestPost({ post }: LatestPostProps) {
   return (

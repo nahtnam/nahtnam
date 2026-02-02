@@ -14,7 +14,7 @@ import {
   Small,
 } from "@/routes/-shadcn/components/ui/typography";
 
-type Experience = {
+interface Experience {
   id: string;
   title: string;
   startDate: Date;
@@ -26,11 +26,11 @@ type Experience = {
     websiteUrl: string;
     logoUrl: string;
   };
-};
+}
 
-type ExperienceSectionProps = {
+interface ExperienceSectionProps {
   experiences: Experience[];
-};
+}
 
 function calculateTotalExperience(experiences: Experience[]) {
   let totalMonths = 0;

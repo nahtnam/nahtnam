@@ -45,7 +45,7 @@ function BlogPostPage() {
   return (
     <div className="container mx-auto max-w-2xl px-6 py-12">
       <Button
-        className="-ml-2 mb-8 text-muted-foreground hover:text-foreground"
+        className="mb-8 -ml-2 text-muted-foreground hover:text-foreground"
         render={<Link to="/blog" />}
         variant="ghost"
       >

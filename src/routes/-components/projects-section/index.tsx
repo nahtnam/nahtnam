@@ -2,17 +2,17 @@ import { Folder } from "lucide-react";
 import { Badge } from "@/routes/-shadcn/components/ui/badge";
 import { H2, Muted, Small } from "@/routes/-shadcn/components/ui/typography";
 
-type Project = {
+interface Project {
   id: string;
   name: string;
   description: string;
   link: string;
   tags: string[];
-};
+}
 
-type ProjectsSectionProps = {
+interface ProjectsSectionProps {
   projects: Project[];
-};
+}
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (

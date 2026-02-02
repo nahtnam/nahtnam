@@ -2,14 +2,14 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/routes/-shadcn/components/ui/button";
 import { Muted } from "@/routes/-shadcn/components/ui/typography";
 
-type Company = {
+interface Company {
   id: string;
   name: string;
-};
+}
 
-type PreviousCompaniesProps = {
+interface PreviousCompaniesProps {
   companies: Company[];
-};
+}
 
 export function PreviousCompanies({ companies }: PreviousCompaniesProps) {
   if (companies.length === 0) {

@@ -15,9 +15,9 @@ import { NotFound } from "./-components/not-found";
 import TanStackQueryDevtools from "./-components/tanstack-query/devtools";
 import { Toaster } from "./-shadcn/components/ui/sonner";
 
-type MyRouterContext = {
+interface MyRouterContext {
   queryClient: QueryClient;
-};
+}
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: RootComponent,

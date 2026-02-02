@@ -2,10 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { Badge } from "@/routes/-shadcn/components/ui/badge";
 import { Muted } from "@/routes/-shadcn/components/ui/typography";
 
-type CurrentCompanyProps = {
+interface CurrentCompanyProps {
   companyName: string;
   title: string;
-};
+}
 
 export function CurrentCompany({ companyName, title }: CurrentCompanyProps) {
   return (

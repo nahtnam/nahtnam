@@ -6,17 +6,17 @@ import {
   Small,
 } from "@/routes/-shadcn/components/ui/typography";
 
-type Education = {
+interface Education {
   school: string;
   degree: string;
   startYear: string;
   endYear: string;
   details?: string;
-};
+}
 
-type EducationSectionProps = {
+interface EducationSectionProps {
   education: Education[];
-};
+}
 
 export function EducationSection({ education }: EducationSectionProps) {
   return (

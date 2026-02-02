@@ -1,10 +1,11 @@
 import { createEnv } from "@t3-oss/env-core";
+import { REQUIRED_STRING } from "./utils";
 
 export const clientEnv = createEnv({
   client: {
-    // VITE_...
+    VITE_TURNSTILE_SITE_KEY: REQUIRED_STRING,
   },
   clientPrefix: "VITE_",
   emptyStringAsUndefined: true,
-  runtimeEnv: process.env,
+  runtimeEnv: import.meta.env,
 });
