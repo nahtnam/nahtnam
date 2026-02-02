@@ -18,7 +18,7 @@ export function CurrentCompany({ companyName, title }: CurrentCompanyProps) {
         <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500 opacity-75" />
         <span className="relative inline-flex size-2.5 rounded-full bg-green-500" />
       </span>
-      <Muted>{title.toLowerCase()}</Muted>
+      <Muted>{title}</Muted>
       <span className="font-medium">@ {companyName}</span>
     </Badge>
   );
