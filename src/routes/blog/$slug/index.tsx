@@ -26,6 +26,49 @@ function formatFullDate(date: Date) {
 
 export const Route = createFileRoute("/blog/$slug/")({
   component: BlogPostPage,
+  head: ({ loaderData }) => {
+    const post = loaderData?.post;
+    return {
+      meta: [
+        {
+          content: post
+            ? `${post.title} | Manthan (@nahtnam)`
+            : "Blog Post | Manthan (@nahtnam)",
+          title: post
+            ? `${post.title} | Manthan (@nahtnam)`
+            : "Blog Post | Manthan (@nahtnam)",
+        },
+        {
+          content: post?.excerpt ?? "",
+          name: "description",
+        },
+        {
+          content: post?.title ?? "Blog Post",
+          property: "og:title",
+        },
+        {
+          content: post?.excerpt ?? "",
+          property: "og:description",
+        },
+        {
+          content: "article",
+          property: "og:type",
+        },
+        {
+          content: post?.publishedAt?.toISOString() ?? "",
+          property: "article:published_time",
+        },
+        {
+          content: post?.category?.name ?? "",
+          property: "article:section",
+        },
+        {
+          content: "@nahtnam",
+          property: "article:author",
+        },
+      ],
+    };
+  },
   loader: async ({ context, params }) => {
     const { post } = await context.queryClient.fetchQuery(
       orpcTanstackQueryClient.blog.getPost.queryOptions({

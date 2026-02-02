@@ -11,6 +11,28 @@ import { orpcTanstackQueryClient } from "@/server/client";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        content: "Manthan (@nahtnam) - Principal Software Engineer at Mercury",
+        title: "Manthan (@nahtnam) - Principal Software Engineer at Mercury",
+      },
+      {
+        content:
+          "Personal website of Manthan (@nahtnam) - Principal Software Engineer at Mercury. Writing about software, startups, personal finance, and product reviews.",
+        name: "description",
+      },
+      {
+        content: "Manthan (@nahtnam) - Principal Software Engineer at Mercury",
+        property: "og:title",
+      },
+      {
+        content:
+          "Personal website of Manthan (@nahtnam) - Principal Software Engineer at Mercury. Writing about software, startups, personal finance, and product reviews.",
+        property: "og:description",
+      },
+    ],
+  }),
   loader: async ({ context }) => {
     const [{ experiences }, { posts }] = await Promise.all([
       context.queryClient.fetchQuery(

@@ -18,6 +18,28 @@ const education = [
 
 export const Route = createFileRoute("/experience/")({
   component: ExperiencePage,
+  head: () => ({
+    meta: [
+      {
+        content: "Experience | Manthan (@nahtnam)",
+        title: "Experience | Manthan (@nahtnam)",
+      },
+      {
+        content:
+          "Professional experience, projects, and education history of Manthan (@nahtnam) - Principal Software Engineer at Mercury.",
+        name: "description",
+      },
+      {
+        content: "Experience | Manthan (@nahtnam)",
+        property: "og:title",
+      },
+      {
+        content:
+          "Professional experience, projects, and education history of Manthan (@nahtnam) - Principal Software Engineer at Mercury.",
+        property: "og:description",
+      },
+    ],
+  }),
   loader: async ({ context }) => {
     const [{ experiences }, { projects }] = await Promise.all([
       context.queryClient.fetchQuery(

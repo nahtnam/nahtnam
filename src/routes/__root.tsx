@@ -7,7 +7,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { appName } from "@/config/app";
+import { appName, appUrl } from "@/config/app";
 import appCss from "../styles.css?url";
 import { Footer } from "./-components/footer";
 import { Navbar } from "./-components/navbar";
@@ -18,6 +18,9 @@ import { Toaster } from "./-shadcn/components/ui/sonner";
 interface MyRouterContext {
   queryClient: QueryClient;
 }
+
+const defaultDescription =
+  "Manthan (@nahtnam) - Principal Software Engineer at Mercury. Writing about software, startups, and personal finance.";
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: RootComponent,
@@ -37,7 +40,48 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         name: "viewport",
       },
       {
+        content: appName,
         title: appName,
+      },
+      {
+        content: defaultDescription,
+        name: "description",
+      },
+      {
+        content: appName,
+        property: "og:site_name",
+      },
+      {
+        content: appUrl,
+        property: "og:url",
+      },
+      {
+        content: "website",
+        property: "og:type",
+      },
+      {
+        content: defaultDescription,
+        property: "og:description",
+      },
+      {
+        content: "summary_large_image",
+        name: "twitter:card",
+      },
+      {
+        content: "@nahtnam",
+        name: "twitter:creator",
+      },
+      {
+        content: "@nahtnam",
+        name: "twitter:site",
+      },
+      {
+        content: "light",
+        name: "color-scheme",
+      },
+      {
+        content: "light dark",
+        name: "supported-color-schemes",
       },
     ],
   }),
