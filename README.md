@@ -2,7 +2,7 @@
 
 <!-- Animated Typing Header -->
 <a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=28&duration=3000&pause=1000&color=00D9FF&center=true&vCenter=true&width=600&lines=Hey%2C+I'm+Manthan+%F0%9F%91%8B;Principal+Engineer+%40+Mercury;Building+the+future+of+finance;TypeScript+%E2%9D%A4%EF%B8%8F+React+%E2%9D%A4%EF%B8%8F+Node.js" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=28&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&width=600&lines=Hey%2C+I'm+Manthan+%F0%9F%91%8B;Principal+Engineer+%40+Mercury;Building+the+future+of+finance;TypeScript+%E2%9D%A4%EF%B8%8F+React+%E2%9D%A4%EF%B8%8F+Node.js" alt="About Manthan (@nahtnam)" />
 </a>
 
 <!-- ASCII Art Name -->
