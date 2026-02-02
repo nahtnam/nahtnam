@@ -19,3 +19,11 @@ export const resumeWorkExperiences = sqliteTable("resume_work_experiences", {
   startDate: integer({ mode: "timestamp_ms" }).notNull(),
   title: text().notNull(),
 });
+
+export const resumeProjects = sqliteTable("resume_projects", {
+  ...shared,
+  description: text().notNull(),
+  link: text().notNull(),
+  name: text().notNull(),
+  tags: text({ mode: "json" }).notNull().$type<string[]>(),
+});

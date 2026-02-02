@@ -26,7 +26,11 @@ export function HeroAvatar() {
       }}
     >
       <Avatar className="size-40 rounded-3xl shadow-2xl after:rounded-3xl">
-        <AvatarImage alt="Manthan" className="rounded-3xl" src="/me.jpg" />
+        <AvatarImage
+          alt="Manthan"
+          className="rounded-3xl"
+          src="/assets/images/me.avif"
+        />
         <AvatarFallback className="rounded-3xl bg-foreground font-bold font-serif text-6xl text-background md:text-7xl">
           m
         </AvatarFallback>

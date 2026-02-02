@@ -1,30 +1,17 @@
-import { ArrowUpRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Badge } from "@/routes/-shadcn/components/ui/badge";
 import { Muted } from "@/routes/-shadcn/components/ui/typography";
 
 type CurrentCompanyProps = {
   companyName: string;
-  companyUrl: string;
   title: string;
 };
 
-export function CurrentCompany({
-  companyName,
-  companyUrl,
-  title,
-}: CurrentCompanyProps) {
+export function CurrentCompany({ companyName, title }: CurrentCompanyProps) {
   return (
     <Badge
       className="h-auto gap-2 px-4 py-2 text-sm"
-      render={
-        // biome-ignore lint/a11y/useAnchorContent: content provided via Badge children
-        <a
-          aria-label={`View ${companyName}`}
-          href={companyUrl}
-          rel="noopener noreferrer"
-          target="_blank"
-        />
-      }
+      render={<Link aria-label="View experience" to="/experience" />}
       variant="outline"
     >
       <span className="relative flex size-2.5">
@@ -33,7 +20,6 @@ export function CurrentCompany({
       </span>
       <Muted>{title.toLowerCase()}</Muted>
       <span className="font-medium">@ {companyName}</span>
-      <ArrowUpRight className="size-4 text-muted-foreground" />
     </Badge>
   );
 }

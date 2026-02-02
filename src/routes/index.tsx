@@ -3,6 +3,7 @@ import { uniqBy } from "es-toolkit";
 import { AboutMe } from "@/routes/-components/about-me";
 import { CurrentCompany } from "@/routes/-components/current-company";
 import { HeroAvatar } from "@/routes/-components/hero-avatar";
+import { LatestPost } from "@/routes/-components/latest-post";
 import { NameAnimation } from "@/routes/-components/name-animation";
 import { PreviousCompanies } from "@/routes/-components/previous-companies";
 import { SocialLinks } from "@/routes/-components/social-links";
@@ -11,15 +12,20 @@ import { orpcTanstackQueryClient } from "@/server/client";
 export const Route = createFileRoute("/")({
   component: RouteComponent,
   loader: async ({ context }) => {
-    const { experiences } = await context.queryClient.fetchQuery(
-      orpcTanstackQueryClient.resume.listExperiences.queryOptions()
-    );
-    return { experiences };
+    const [{ experiences }, { posts }] = await Promise.all([
+      context.queryClient.fetchQuery(
+        orpcTanstackQueryClient.resume.listExperiences.queryOptions()
+      ),
+      context.queryClient.fetchQuery(
+        orpcTanstackQueryClient.blog.listPosts.queryOptions()
+      ),
+    ]);
+    return { experiences, latestPost: posts.at(0) };
   },
 });
 
 function RouteComponent() {
-  const { experiences } = Route.useLoaderData();
+  const { experiences, latestPost } = Route.useLoaderData();
 
   const currentExperience = experiences.at(0);
   const previousCompanies = uniqBy(
@@ -40,7 +46,6 @@ function RouteComponent() {
           {currentExperience ? (
             <CurrentCompany
               companyName={currentExperience.company.name}
-              companyUrl={currentExperience.company.websiteUrl}
               title={currentExperience.title}
             />
           ) : null}
@@ -50,6 +55,8 @@ function RouteComponent() {
           <SocialLinks />
 
           <PreviousCompanies companies={previousCompanies} />
+
+          {latestPost ? <LatestPost post={latestPost} /> : null}
         </div>
       </main>
     </div>

@@ -14,12 +14,14 @@ import {
 
 const links = [
   { label: "Home", to: "/" },
+  { label: "Experience", to: "/experience" },
+  { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
 ];
 
 export function Navbar() {
   return (
-    <header className="container mx-auto px-6 py-6">
+    <header className="container mx-auto px-6 py-6 print:hidden">
       <nav className="flex items-center justify-between">
         <Link
           className="font-bold font-mono text-lg transition-colors hover:text-indigo-500"

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Muted } from "@/routes/-shadcn/components/ui/typography";
 
-const AT_SYMBOL_FADE_DURATION = 0.5;
+const AT_SYMBOL_FADE_DURATION = 0.15;
 const AT_SYMBOL_FADED_OPACITY = 0;
 const NAME_FLIP_DURATION = 0.25;
 const NAME_FLIP_INTERVAL = 5000;
@@ -40,7 +40,10 @@ export function NameAnimation() {
           animate={{ opacity: atSymbolOpacity }}
           className="font-bold font-mono text-6xl text-foreground md:text-8xl"
           initial={{ opacity: AT_SYMBOL_FADED_OPACITY }}
-          transition={{ duration: AT_SYMBOL_FADE_DURATION }}
+          transition={{
+            duration: AT_SYMBOL_FADE_DURATION,
+            ease: [0.7, 0, 1, 1],
+          }}
         >
           @
         </motion.span>

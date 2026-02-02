@@ -77,7 +77,7 @@ function RootComponent() {
   return (
     <>
       <Navbar />
-      <main className="grow">
+      <main className="grow print:m-0 print:grow-0">
         <Outlet />
       </main>
       <Footer />

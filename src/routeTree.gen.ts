@@ -9,18 +9,36 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
+import { Route as ContactIndexRouteImport } from './routes/contact/index'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as BlogSlugIndexRouteImport } from './routes/blog/$slug/index'
 import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc/$'
 
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienceIndexRoute = ExperienceIndexRouteImport.update({
+  id: '/experience/',
+  path: '/experience/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactIndexRoute = ContactIndexRouteImport.update({
+  id: '/contact/',
+  path: '/contact/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugIndexRoute = BlogSlugIndexRouteImport.update({
+  id: '/blog/$slug/',
+  path: '/blog/$slug/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
@@ -31,48 +49,94 @@ const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
+  '/blog': typeof BlogIndexRoute
+  '/contact': typeof ContactIndexRoute
+  '/experience': typeof ExperienceIndexRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/blog/$slug': typeof BlogSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
+  '/blog': typeof BlogIndexRoute
+  '/contact': typeof ContactIndexRoute
+  '/experience': typeof ExperienceIndexRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/blog/$slug': typeof BlogSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
+  '/blog/': typeof BlogIndexRoute
+  '/contact/': typeof ContactIndexRoute
+  '/experience/': typeof ExperienceIndexRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/blog/$slug/': typeof BlogSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contact' | '/api/rpc/$'
+  fullPaths:
+    | '/'
+    | '/blog'
+    | '/contact'
+    | '/experience'
+    | '/api/rpc/$'
+    | '/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contact' | '/api/rpc/$'
-  id: '__root__' | '/' | '/contact' | '/api/rpc/$'
+  to: '/' | '/blog' | '/contact' | '/experience' | '/api/rpc/$' | '/blog/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/blog/'
+    | '/contact/'
+    | '/experience/'
+    | '/api/rpc/$'
+    | '/blog/$slug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ContactRoute: typeof ContactRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  ContactIndexRoute: typeof ContactIndexRoute
+  ExperienceIndexRoute: typeof ExperienceIndexRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
+  BlogSlugIndexRoute: typeof BlogSlugIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experience/': {
+      id: '/experience/'
+      path: '/experience'
+      fullPath: '/experience'
+      preLoaderRoute: typeof ExperienceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact/': {
+      id: '/contact/'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug/': {
+      id: '/blog/$slug/'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/rpc/$': {
@@ -87,8 +151,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ContactRoute: ContactRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  ContactIndexRoute: ContactIndexRoute,
+  ExperienceIndexRoute: ExperienceIndexRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
+  BlogSlugIndexRoute: BlogSlugIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
