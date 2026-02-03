@@ -24,8 +24,20 @@ function formatFullDate(date: Date) {
   });
 }
 
+// biome-ignore assist/source/useSortedKeys: tsr
 export const Route = createFileRoute("/blog/$slug/")({
   component: BlogPostPage,
+  loader: async ({ context, params }) => {
+    const { post } = await context.queryClient.fetchQuery(
+      orpcTanstackQueryClient.blog.getPost.queryOptions({
+        input: { slug: params.slug },
+      })
+    );
+    if (!post) {
+      throw notFound();
+    }
+    return { post };
+  },
   head: ({ loaderData }) => {
     const post = loaderData?.post;
     return {
@@ -68,17 +80,6 @@ export const Route = createFileRoute("/blog/$slug/")({
         },
       ],
     };
-  },
-  loader: async ({ context, params }) => {
-    const { post } = await context.queryClient.fetchQuery(
-      orpcTanstackQueryClient.blog.getPost.queryOptions({
-        input: { slug: params.slug },
-      })
-    );
-    if (!post) {
-      throw notFound();
-    }
-    return { post };
   },
 });
 
