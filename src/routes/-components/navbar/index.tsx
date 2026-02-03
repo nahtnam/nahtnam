@@ -12,35 +12,41 @@ import {
   SheetTrigger,
 } from "@/routes/-shadcn/components/ui/sheet";
 
-const links = [
-  { label: "Home", to: "/" },
-  { label: "Experience", to: "/experience" },
-  { label: "Blog", to: "/blog" },
-  { label: "Contact", to: "/contact" },
+interface MenuItem {
+  title: string;
+  url: string;
+  isExternal?: boolean;
+}
+
+const menu: MenuItem[] = [
+  { title: "Home", url: "/" },
+  { title: "Experience", url: "/experience" },
+  { title: "Blog", url: "/blog" },
+  { title: "Contact", url: "/contact" },
 ];
 
 export function Navbar() {
   return (
-    <header className="container mx-auto px-6 py-6 print:hidden">
+    <header className="container mx-auto border-b py-4">
       <nav className="flex items-center justify-between">
-        <Link
-          className="font-bold font-mono text-lg transition-colors hover:text-indigo-500"
-          to="/"
-        >
+        <Link className="font-bold text-xl" to="/">
           {appName}
         </Link>
 
         <Menubar className="hidden border-none bg-transparent shadow-none md:flex">
-          {links.map((link) => (
+          {menu.map((item) => (
             <Button
-              className="text-muted-foreground hover:text-foreground"
-              key={link.label}
-              render={<Link to={link.to} />}
+              key={item.title}
+              render={
+                item.isExternal ? (
+                  <a href={item.url}>{item.title}</a>
+                ) : (
+                  <Link to={item.url}>{item.title}</Link>
+                )
+              }
               size="sm"
               variant="ghost"
-            >
-              {link.label}
-            </Button>
+            />
           ))}
         </Menubar>
 
@@ -55,24 +61,26 @@ export function Navbar() {
               />
             }
           >
-            <Menu className="size-5" />
+            <Menu />
           </SheetTrigger>
           <SheetContent side="right">
             <SheetHeader>
               <SheetTitle>{appName}</SheetTitle>
             </SheetHeader>
-            <nav className="flex flex-col gap-2 px-4">
-              {links.map((link) => (
-                <SheetClose key={link.label} render={<Link to={link.to} />}>
-                  <Button
-                    className="w-full justify-start text-muted-foreground"
-                    variant="ghost"
-                  >
-                    {link.label}
-                  </Button>
+            <div className="flex flex-col px-2">
+              {menu.map((item) => (
+                <SheetClose
+                  key={item.title}
+                  render={<Button className="justify-start" variant="ghost" />}
+                >
+                  {item.isExternal ? (
+                    <a href={item.url}>{item.title}</a>
+                  ) : (
+                    <Link to={item.url}>{item.title}</Link>
+                  )}
                 </SheetClose>
               ))}
-            </nav>
+            </div>
           </SheetContent>
         </Sheet>
       </nav>
