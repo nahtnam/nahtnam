@@ -50,7 +50,7 @@ const globeConfig: GlobeConfig = {
 export function FlightGlobeInner(props: FlightGlobeInnerProps) {
   return (
     <div className="aspect-square w-full max-w-[600px]">
-      <Canvas camera={new PerspectiveCamera(50, ASPECT, 180, 1800)}>
+      <Canvas camera={new PerspectiveCamera(50, ASPECT, 1, 1800)}>
         <RendererConfig />
         <ambientLight color="#ffffff" intensity={1.5} />
         <GlobeObject airportPoints={props.airportPoints} arcs={props.arcs} />
