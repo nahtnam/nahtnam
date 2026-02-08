@@ -11,6 +11,7 @@
   "menuAccent": "subtle",
   "menuColor": "default",
   "registries": {
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
     "@basecn": {
       "url": "https://basecn.dev/r/{name}.json"
     },

@@ -1,0 +1,558 @@
+{
+  "ddl": [
+    {
+      "entityType": "tables",
+      "name": "blog_categories"
+    },
+    {
+      "entityType": "tables",
+      "name": "blog_posts"
+    },
+    {
+      "entityType": "tables",
+      "name": "resume_companies"
+    },
+    {
+      "entityType": "tables",
+      "name": "resume_projects"
+    },
+    {
+      "entityType": "tables",
+      "name": "resume_work_experiences"
+    },
+    {
+      "entityType": "tables",
+      "name": "travel_flights"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "created_at",
+      "notNull": true,
+      "table": "blog_categories",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "blog_categories",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "updated_at",
+      "notNull": true,
+      "table": "blog_categories",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "name",
+      "notNull": true,
+      "table": "blog_categories",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "created_at",
+      "notNull": true,
+      "table": "blog_posts",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "blog_posts",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "updated_at",
+      "notNull": true,
+      "table": "blog_posts",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "category_id",
+      "notNull": true,
+      "table": "blog_posts",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "content",
+      "notNull": true,
+      "table": "blog_posts",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "excerpt",
+      "notNull": true,
+      "table": "blog_posts",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "published_at",
+      "notNull": true,
+      "table": "blog_posts",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "slug",
+      "notNull": true,
+      "table": "blog_posts",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "title",
+      "notNull": true,
+      "table": "blog_posts",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "created_at",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "resume_companies",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "updated_at",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "logo_url",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "name",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "website_url",
+      "notNull": true,
+      "table": "resume_companies",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "created_at",
+      "notNull": true,
+      "table": "resume_projects",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "resume_projects",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "updated_at",
+      "notNull": true,
+      "table": "resume_projects",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "description",
+      "notNull": true,
+      "table": "resume_projects",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "link",
+      "notNull": true,
+      "table": "resume_projects",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "name",
+      "notNull": true,
+      "table": "resume_projects",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "tags",
+      "notNull": true,
+      "table": "resume_projects",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "created_at",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "updated_at",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "company_id",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "description",
+      "notNull": false,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "end_date",
+      "notNull": false,
+      "table": "resume_work_experiences",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "location",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "start_date",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "title",
+      "notNull": true,
+      "table": "resume_work_experiences",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "created_at",
+      "notNull": true,
+      "table": "travel_flights",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "travel_flights",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "updated_at",
+      "notNull": true,
+      "table": "travel_flights",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "aircraft_type",
+      "notNull": true,
+      "table": "travel_flights",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "airline",
+      "notNull": true,
+      "table": "travel_flights",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "date",
+      "notNull": true,
+      "table": "travel_flights",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "flight_number",
+      "notNull": true,
+      "table": "travel_flights",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "from",
+      "notNull": true,
+      "table": "travel_flights",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "to",
+      "notNull": true,
+      "table": "travel_flights",
+      "type": "text"
+    },
+    {
+      "columns": ["category_id"],
+      "columnsTo": ["id"],
+      "entityType": "fks",
+      "name": "fk_blog_posts_category_id_blog_categories_id_fk",
+      "nameExplicit": false,
+      "onDelete": "CASCADE",
+      "onUpdate": "NO ACTION",
+      "table": "blog_posts",
+      "tableTo": "blog_categories"
+    },
+    {
+      "columns": ["company_id"],
+      "columnsTo": ["id"],
+      "entityType": "fks",
+      "name": "fk_resume_work_experiences_company_id_resume_companies_id_fk",
+      "nameExplicit": false,
+      "onDelete": "CASCADE",
+      "onUpdate": "NO ACTION",
+      "table": "resume_work_experiences",
+      "tableTo": "resume_companies"
+    },
+    {
+      "columns": ["id"],
+      "entityType": "pks",
+      "name": "blog_categories_pk",
+      "nameExplicit": false,
+      "table": "blog_categories"
+    },
+    {
+      "columns": ["id"],
+      "entityType": "pks",
+      "name": "blog_posts_pk",
+      "nameExplicit": false,
+      "table": "blog_posts"
+    },
+    {
+      "columns": ["id"],
+      "entityType": "pks",
+      "name": "resume_companies_pk",
+      "nameExplicit": false,
+      "table": "resume_companies"
+    },
+    {
+      "columns": ["id"],
+      "entityType": "pks",
+      "name": "resume_projects_pk",
+      "nameExplicit": false,
+      "table": "resume_projects"
+    },
+    {
+      "columns": ["id"],
+      "entityType": "pks",
+      "name": "resume_work_experiences_pk",
+      "nameExplicit": false,
+      "table": "resume_work_experiences"
+    },
+    {
+      "columns": ["id"],
+      "entityType": "pks",
+      "name": "travel_flights_pk",
+      "nameExplicit": false,
+      "table": "travel_flights"
+    },
+    {
+      "columns": ["date", "flight_number", "from"],
+      "entityType": "uniques",
+      "name": "travel_flights_date_flight_number_from_unique",
+      "nameExplicit": false,
+      "table": "travel_flights"
+    },
+    {
+      "columns": ["name"],
+      "entityType": "uniques",
+      "name": "blog_categories_name_unique",
+      "nameExplicit": false,
+      "table": "blog_categories"
+    },
+    {
+      "columns": ["slug"],
+      "entityType": "uniques",
+      "name": "blog_posts_slug_unique",
+      "nameExplicit": false,
+      "table": "blog_posts"
+    }
+  ],
+  "dialect": "sqlite",
+  "id": "5c2ee6a7-d49d-4639-bbf6-123c9be61de8",
+  "prevIds": ["823fb5f6-c709-406e-af43-f18784fa712b"],
+  "renames": [],
+  "version": "7"
+}

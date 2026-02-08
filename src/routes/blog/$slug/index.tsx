@@ -90,6 +90,7 @@ function BlogPostPage() {
     <div className="container mx-auto max-w-2xl px-6 py-12">
       <Button
         className="mb-8 -ml-2 text-muted-foreground hover:text-foreground"
+        nativeButton={false}
         render={<Link to="/blog" />}
         variant="ghost"
       >

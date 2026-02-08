@@ -22,6 +22,7 @@ const menu: MenuItem[] = [
   { title: "Home", url: "/" },
   { title: "Experience", url: "/experience" },
   { title: "Blog", url: "/blog" },
+  { title: "Travel", url: "/travel" },
   { title: "Contact", url: "/contact" },
 ];
 
@@ -37,6 +38,7 @@ export function Navbar() {
           {menu.map((item) => (
             <Button
               key={item.title}
+              nativeButton={false}
               render={
                 item.isExternal ? (
                   <a href={item.url}>{item.title}</a>

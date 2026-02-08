@@ -14,6 +14,7 @@ export function SocialLinks() {
       {SOCIAL_LINKS.map((social) => (
         <Button
           key={social.name}
+          nativeButton={false}
           render={
             // biome-ignore lint/a11y/useAnchorContent: content provided via Button children
             <a
@@ -29,7 +30,7 @@ export function SocialLinks() {
           <social.icon className="size-5" />
         </Button>
       ))}
-      <Button render={<Link to="/contact" />} size="lg">
+      <Button nativeButton={false} render={<Link to="/contact" />} size="lg">
         Get in Touch
         <ArrowUpRight className="size-4" />
       </Button>

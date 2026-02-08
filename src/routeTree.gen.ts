@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TravelIndexRouteImport } from './routes/travel/index'
 import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
 import { Route as ContactIndexRouteImport } from './routes/contact/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
@@ -19,6 +20,11 @@ import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc/$'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TravelIndexRoute = TravelIndexRouteImport.update({
+  id: '/travel/',
+  path: '/travel/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExperienceIndexRoute = ExperienceIndexRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/blog/': typeof BlogIndexRoute
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
+  '/travel/': typeof TravelIndexRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/blog/$slug/': typeof BlogSlugIndexRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogIndexRoute
   '/contact': typeof ContactIndexRoute
   '/experience': typeof ExperienceIndexRoute
+  '/travel': typeof TravelIndexRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/blog/$slug': typeof BlogSlugIndexRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/blog/': typeof BlogIndexRoute
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
+  '/travel/': typeof TravelIndexRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/blog/$slug/': typeof BlogSlugIndexRoute
 }
@@ -79,16 +88,25 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/contact/'
     | '/experience/'
+    | '/travel/'
     | '/api/rpc/$'
     | '/blog/$slug/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/blog' | '/contact' | '/experience' | '/api/rpc/$' | '/blog/$slug'
+  to:
+    | '/'
+    | '/blog'
+    | '/contact'
+    | '/experience'
+    | '/travel'
+    | '/api/rpc/$'
+    | '/blog/$slug'
   id:
     | '__root__'
     | '/'
     | '/blog/'
     | '/contact/'
     | '/experience/'
+    | '/travel/'
     | '/api/rpc/$'
     | '/blog/$slug/'
   fileRoutesById: FileRoutesById
@@ -98,6 +116,7 @@ export interface RootRouteChildren {
   BlogIndexRoute: typeof BlogIndexRoute
   ContactIndexRoute: typeof ContactIndexRoute
   ExperienceIndexRoute: typeof ExperienceIndexRoute
+  TravelIndexRoute: typeof TravelIndexRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
   BlogSlugIndexRoute: typeof BlogSlugIndexRoute
 }
@@ -109,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/travel/': {
+      id: '/travel/'
+      path: '/travel'
+      fullPath: '/travel/'
+      preLoaderRoute: typeof TravelIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experience/': {
@@ -154,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogIndexRoute: BlogIndexRoute,
   ContactIndexRoute: ContactIndexRoute,
   ExperienceIndexRoute: ExperienceIndexRoute,
+  TravelIndexRoute: TravelIndexRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
   BlogSlugIndexRoute: BlogSlugIndexRoute,
 }

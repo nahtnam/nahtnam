@@ -24,6 +24,7 @@ export function PreviousCompanies({ companies }: PreviousCompaniesProps) {
           <Button
             className="text-muted-foreground"
             key={company.id}
+            nativeButton={false}
             render={<Link aria-label={company.name} to="/experience" />}
             size="sm"
             variant="link"
