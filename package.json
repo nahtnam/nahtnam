@@ -61,6 +61,7 @@
     "@vitejs/plugin-react": "^5.1.2",
     "babel-plugin-react-compiler": "^1.0.0",
     "drizzle-kit": "^1.0.0-beta.12-a5629fb",
+    "gray-matter": "^4.0.3",
     "jsdom": "^27.4.0",
     "lefthook": "^2.0.16",
     "shadcn": "^3.8.1",
