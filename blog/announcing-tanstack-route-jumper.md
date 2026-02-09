@@ -29,7 +29,7 @@ It handles pretty much everything TanStack Router supports — static routes, dy
 
 ## How Do I Get It?
 
-Search "TanStack Route Jumper" in the VS Code marketplace (publisher: nahtnam) or check out the [source on GitHub](https://github.com/nahtnam/tanstack-route-jumper). It's MIT licensed.
+You can grab it from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=nahtnam.tanstack-route-jumper) or check out the [source on GitHub](https://github.com/nahtnam/tanstack-route-jumper). It's MIT licensed.
 
 I've been using it on my own projects and it's saved me a lot of time navigating larger codebases. If you're working with TanStack Router, I'd recommend trying it out.
 
