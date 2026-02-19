@@ -1,19 +1,24 @@
 import { os } from "@orpc/server";
+import { Cache } from "within-ts";
 import { db } from "@/db";
 
-export const listPosts = os.handler(async () => {
-  const now = new Date();
-  const posts = await db.query.blogPosts.findMany({
-    orderBy: {
-      publishedAt: "desc",
-    },
-    where: {
-      publishedAt: { lte: now },
-    },
-    with: {
-      category: true,
-    },
-  });
+const cachedListPosts = Cache.memoize(
+  () =>
+    db.query.blogPosts.findMany({
+      orderBy: {
+        publishedAt: "desc",
+      },
+      where: {
+        publishedAt: { lte: new Date() },
+      },
+      with: {
+        category: true,
+      },
+    }),
+  { ttl: "5m" }
+);
 
+export const listPosts = os.handler(async () => {
+  const posts = await cachedListPosts();
   return { posts };
 });

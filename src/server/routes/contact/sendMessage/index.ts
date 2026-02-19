@@ -2,6 +2,7 @@ import { ORPCError, os } from "@orpc/server";
 import escapeHtml from "escape-html";
 import { Bot } from "grammy";
 import { TurnstileVerify } from "turnstile-verify";
+import { Result } from "within-ts";
 import { z } from "zod";
 import { serverEnv } from "@/config/env/server";
 
@@ -18,10 +19,12 @@ const turnstile = new TurnstileVerify({
 const bot = new Bot(serverEnv.TELEGRAM_BOT_TOKEN);
 
 export const sendMessage = os.input(inputSchema).handler(async ({ input }) => {
-  const { valid } = await turnstile.validate({
-    response: input.turnstileToken,
-  });
-  if (!valid) {
+  const captchaResult = await Result.tryPromise(() =>
+    turnstile.validate({
+      response: input.turnstileToken,
+    })
+  );
+  if (!(captchaResult.ok && captchaResult.value.valid)) {
     throw new ORPCError("BAD_REQUEST", { message: "Invalid captcha" });
   }
 
@@ -31,9 +34,16 @@ export const sendMessage = os.input(inputSchema).handler(async ({ input }) => {
     `<b>Email:</b> ${escapeHtml(input.email)}\n\n` +
     `<b>Message:</b>\n${escapeHtml(input.message)}`;
 
-  await bot.api.sendMessage(serverEnv.TELEGRAM_CHAT_ID, message, {
-    parse_mode: "HTML",
-  });
+  const sendResult = await Result.tryPromise(() =>
+    bot.api.sendMessage(serverEnv.TELEGRAM_CHAT_ID, message, {
+      parse_mode: "HTML",
+    })
+  );
+  if (!sendResult.ok) {
+    throw new ORPCError("INTERNAL_SERVER_ERROR", {
+      message: "Failed to send message",
+    });
+  }
 
   return { success: true };
 });

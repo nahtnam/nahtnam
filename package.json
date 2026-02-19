@@ -43,6 +43,7 @@
     "three": "^0.182.0",
     "three-globe": "^2.45.0",
     "turnstile-verify": "^1.2.0",
+    "within-ts": "https://pkg.pr.new/ludicroushq/within-ts@081b9d1",
     "zod": "^4.3.6",
     "zod-validation-error": "^5.0.0"
   },
