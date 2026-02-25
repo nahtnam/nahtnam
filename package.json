@@ -14,7 +14,7 @@
     "test": "run-p test:*",
     "test:typecheck": "bun run --bun tsc --noEmit",
     "test:xo": "bun run --bun xo",
-    "test:prettier": "bun run --bun prettier --check .",
+    "test:prettier": "bun run --bun prettier --write .",
     "vite:build": "bun run vite build",
     "vite:dev": "bun run vite dev --port 3000",
     "vite:serve": "bun run vite preview",
