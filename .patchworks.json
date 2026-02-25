@@ -1,0 +1,8 @@
+{
+  "version": "0.1.2",
+  "template": {
+    "repository": "https://github.com/ludicroushq/vertex",
+    "branch": "main"
+  },
+  "commit": "2e985606741effa2a8dccc1c59ba737b7f3bf596"
+}
