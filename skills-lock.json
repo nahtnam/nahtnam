@@ -1,0 +1,50 @@
+{
+  "skills": {
+    "content-strategy": {
+      "computedHash": "256d326fbdfbb234c2e61bb9fbbed923c474a7e08b666747e590e3cf84f8742a",
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github"
+    },
+    "convex": {
+      "computedHash": "de7a20d081cd19bf8bce4038bd62d038a0a88f218f85afb35320d09b052fb534",
+      "source": "waynesutton/convexskills",
+      "sourceType": "github"
+    },
+    "copywriting": {
+      "computedHash": "39b7a636c7e254a2f08dee43db6b9f6faf6723de999a6bbce2eb5ac95a130207",
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github"
+    },
+    "frontend-design": {
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67",
+      "source": "anthropics/skills",
+      "sourceType": "github"
+    },
+    "marketing-psychology": {
+      "computedHash": "1f9527f4b69799e8acd05966ea1f57798890948a1c8446016593c9b485e3e86d",
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github"
+    },
+    "programmatic-seo": {
+      "computedHash": "aae6ed1dda8bacf4980860e3ee2cc3c181f31e31d6b524cfd452015930d16a1f",
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github"
+    },
+    "seo-audit": {
+      "computedHash": "6bd4cde58bb701b5dc90a0fae2f0ea3efc7c3e6fd2ae754083fa659930e7d39f",
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github"
+    },
+    "shadcn-ui": {
+      "computedHash": "dadbca54d35a33fe73e40018611af2179689305bf6da812ab2643987fefd9da3",
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github"
+    },
+    "tanstack-start-best-practices": {
+      "computedHash": "50c1b6d9b35b05927fa0c81962d560634385c9567b7b1d66396b171965b33105",
+      "source": "deckardger/tanstack-agent-skills",
+      "sourceType": "github"
+    }
+  },
+  "version": 1
+}

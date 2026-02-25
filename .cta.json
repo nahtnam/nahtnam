@@ -1,0 +1,15 @@
+{
+  "addOnOptions": {},
+  "chosenAddOns": ["nitro"],
+  "envVarValues": {},
+  "framework": "react-cra",
+  "git": true,
+  "includeExamples": false,
+  "mode": "file-router",
+  "packageManager": "bun",
+  "projectName": "vertex",
+  "routerOnly": false,
+  "tailwind": true,
+  "typescript": true,
+  "version": 1
+}

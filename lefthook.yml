@@ -1,0 +1,8 @@
+pre-commit:
+  jobs:
+    - name: prettier
+      run: bunx prettier --no-error-on-unmatched-pattern --ignore-unknown --write {staged_files}
+      stage_fixed: true
+    - name: xo
+      run: bunx xo --fix {staged_files}
+      stage_fixed: true
