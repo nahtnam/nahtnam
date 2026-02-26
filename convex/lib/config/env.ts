@@ -5,6 +5,7 @@ export const convexEnv = createEnv({
   emptyStringAsUndefined: true,
   runtimeEnv: process.env, // eslint-disable-line n/prefer-global/process
   server: {
+    ADMIN_SECRET: REQUIRED_STRING,
     TELEGRAM_BOT_TOKEN: REQUIRED_STRING,
     TELEGRAM_CHAT_ID: REQUIRED_STRING,
     TURNSTILE_SECRET_KEY: REQUIRED_STRING,

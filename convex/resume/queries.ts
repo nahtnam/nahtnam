@@ -1,5 +1,12 @@
 import { query } from "../_generated/server";
 
+export const listCompanies = query({
+  args: {},
+  async handler(ctx) {
+    return ctx.db.query("resumeCompanies").collect();
+  },
+});
+
 export const listExperiences = query({
   args: {},
   async handler(ctx) {

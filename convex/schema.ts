@@ -52,7 +52,10 @@ export default defineSchema({
     airline: v.string(),
     date: v.string(),
     flightNumber: v.string(),
+    flightyId: v.optional(v.string()),
     from: v.string(),
     to: v.string(),
-  }).index("by_date", ["date"]),
+  })
+    .index("by_date", ["date"])
+    .index("by_flightyId", ["flightyId"]),
 });

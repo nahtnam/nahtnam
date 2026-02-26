@@ -9,13 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TravelIndexRouteImport } from './routes/travel/index'
 import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
 import { Route as ContactIndexRouteImport } from './routes/contact/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as BlogSlugIndexRouteImport } from './routes/blog/$slug/index'
+import { Route as AdminTravelIndexRouteImport } from './routes/admin/travel/index'
+import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/index'
+import { Route as AdminExperiencesIndexRouteImport } from './routes/admin/experiences/index'
+import { Route as AdminEducationIndexRouteImport } from './routes/admin/education/index'
+import { Route as AdminCompaniesIndexRouteImport } from './routes/admin/companies/index'
+import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
+import { Route as AdminBlogCategoriesIndexRouteImport } from './routes/admin/blog/categories/index'
+import { Route as AdminBlogIdIndexRouteImport } from './routes/admin/blog/$id/index'
 
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -41,60 +56,171 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const BlogSlugIndexRoute = BlogSlugIndexRouteImport.update({
   id: '/blog/$slug/',
   path: '/blog/$slug/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminTravelIndexRoute = AdminTravelIndexRouteImport.update({
+  id: '/travel/',
+  path: '/travel/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminExperiencesIndexRoute = AdminExperiencesIndexRouteImport.update({
+  id: '/experiences/',
+  path: '/experiences/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminEducationIndexRoute = AdminEducationIndexRouteImport.update({
+  id: '/education/',
+  path: '/education/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCompaniesIndexRoute = AdminCompaniesIndexRouteImport.update({
+  id: '/companies/',
+  path: '/companies/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBlogCategoriesIndexRoute =
+  AdminBlogCategoriesIndexRouteImport.update({
+    id: '/blog/categories/',
+    path: '/blog/categories/',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
+const AdminBlogIdIndexRoute = AdminBlogIdIndexRouteImport.update({
+  id: '/blog/$id/',
+  path: '/blog/$id/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
   '/travel/': typeof TravelIndexRoute
+  '/admin/blog/': typeof AdminBlogIndexRoute
+  '/admin/companies/': typeof AdminCompaniesIndexRoute
+  '/admin/education/': typeof AdminEducationIndexRoute
+  '/admin/experiences/': typeof AdminExperiencesIndexRoute
+  '/admin/projects/': typeof AdminProjectsIndexRoute
+  '/admin/travel/': typeof AdminTravelIndexRoute
   '/blog/$slug/': typeof BlogSlugIndexRoute
+  '/admin/blog/$id/': typeof AdminBlogIdIndexRoute
+  '/admin/blog/categories/': typeof AdminBlogCategoriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/contact': typeof ContactIndexRoute
   '/experience': typeof ExperienceIndexRoute
   '/travel': typeof TravelIndexRoute
+  '/admin/blog': typeof AdminBlogIndexRoute
+  '/admin/companies': typeof AdminCompaniesIndexRoute
+  '/admin/education': typeof AdminEducationIndexRoute
+  '/admin/experiences': typeof AdminExperiencesIndexRoute
+  '/admin/projects': typeof AdminProjectsIndexRoute
+  '/admin/travel': typeof AdminTravelIndexRoute
   '/blog/$slug': typeof BlogSlugIndexRoute
+  '/admin/blog/$id': typeof AdminBlogIdIndexRoute
+  '/admin/blog/categories': typeof AdminBlogCategoriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
   '/travel/': typeof TravelIndexRoute
+  '/admin/blog/': typeof AdminBlogIndexRoute
+  '/admin/companies/': typeof AdminCompaniesIndexRoute
+  '/admin/education/': typeof AdminEducationIndexRoute
+  '/admin/experiences/': typeof AdminExperiencesIndexRoute
+  '/admin/projects/': typeof AdminProjectsIndexRoute
+  '/admin/travel/': typeof AdminTravelIndexRoute
   '/blog/$slug/': typeof BlogSlugIndexRoute
+  '/admin/blog/$id/': typeof AdminBlogIdIndexRoute
+  '/admin/blog/categories/': typeof AdminBlogCategoriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/admin/'
     | '/blog/'
     | '/contact/'
     | '/experience/'
     | '/travel/'
+    | '/admin/blog/'
+    | '/admin/companies/'
+    | '/admin/education/'
+    | '/admin/experiences/'
+    | '/admin/projects/'
+    | '/admin/travel/'
     | '/blog/$slug/'
+    | '/admin/blog/$id/'
+    | '/admin/blog/categories/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/blog' | '/contact' | '/experience' | '/travel' | '/blog/$slug'
+  to:
+    | '/'
+    | '/admin'
+    | '/blog'
+    | '/contact'
+    | '/experience'
+    | '/travel'
+    | '/admin/blog'
+    | '/admin/companies'
+    | '/admin/education'
+    | '/admin/experiences'
+    | '/admin/projects'
+    | '/admin/travel'
+    | '/blog/$slug'
+    | '/admin/blog/$id'
+    | '/admin/blog/categories'
   id:
     | '__root__'
     | '/'
+    | '/admin'
+    | '/admin/'
     | '/blog/'
     | '/contact/'
     | '/experience/'
     | '/travel/'
+    | '/admin/blog/'
+    | '/admin/companies/'
+    | '/admin/education/'
+    | '/admin/experiences/'
+    | '/admin/projects/'
+    | '/admin/travel/'
     | '/blog/$slug/'
+    | '/admin/blog/$id/'
+    | '/admin/blog/categories/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   BlogIndexRoute: typeof BlogIndexRoute
   ContactIndexRoute: typeof ContactIndexRoute
   ExperienceIndexRoute: typeof ExperienceIndexRoute
@@ -104,6 +230,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -139,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/blog/$slug/': {
       id: '/blog/$slug/'
       path: '/blog/$slug'
@@ -146,11 +286,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/travel/': {
+      id: '/admin/travel/'
+      path: '/travel'
+      fullPath: '/admin/travel/'
+      preLoaderRoute: typeof AdminTravelIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/projects/': {
+      id: '/admin/projects/'
+      path: '/projects'
+      fullPath: '/admin/projects/'
+      preLoaderRoute: typeof AdminProjectsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/experiences/': {
+      id: '/admin/experiences/'
+      path: '/experiences'
+      fullPath: '/admin/experiences/'
+      preLoaderRoute: typeof AdminExperiencesIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/education/': {
+      id: '/admin/education/'
+      path: '/education'
+      fullPath: '/admin/education/'
+      preLoaderRoute: typeof AdminEducationIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/companies/': {
+      id: '/admin/companies/'
+      path: '/companies'
+      fullPath: '/admin/companies/'
+      preLoaderRoute: typeof AdminCompaniesIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/blog/': {
+      id: '/admin/blog/'
+      path: '/blog'
+      fullPath: '/admin/blog/'
+      preLoaderRoute: typeof AdminBlogIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/blog/categories/': {
+      id: '/admin/blog/categories/'
+      path: '/blog/categories'
+      fullPath: '/admin/blog/categories/'
+      preLoaderRoute: typeof AdminBlogCategoriesIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/blog/$id/': {
+      id: '/admin/blog/$id/'
+      path: '/blog/$id'
+      fullPath: '/admin/blog/$id/'
+      preLoaderRoute: typeof AdminBlogIdIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
+  AdminCompaniesIndexRoute: typeof AdminCompaniesIndexRoute
+  AdminEducationIndexRoute: typeof AdminEducationIndexRoute
+  AdminExperiencesIndexRoute: typeof AdminExperiencesIndexRoute
+  AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
+  AdminTravelIndexRoute: typeof AdminTravelIndexRoute
+  AdminBlogIdIndexRoute: typeof AdminBlogIdIndexRoute
+  AdminBlogCategoriesIndexRoute: typeof AdminBlogCategoriesIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+  AdminBlogIndexRoute: AdminBlogIndexRoute,
+  AdminCompaniesIndexRoute: AdminCompaniesIndexRoute,
+  AdminEducationIndexRoute: AdminEducationIndexRoute,
+  AdminExperiencesIndexRoute: AdminExperiencesIndexRoute,
+  AdminProjectsIndexRoute: AdminProjectsIndexRoute,
+  AdminTravelIndexRoute: AdminTravelIndexRoute,
+  AdminBlogIdIndexRoute: AdminBlogIdIndexRoute,
+  AdminBlogCategoriesIndexRoute: AdminBlogCategoriesIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   BlogIndexRoute: BlogIndexRoute,
   ContactIndexRoute: ContactIndexRoute,
   ExperienceIndexRoute: ExperienceIndexRoute,
