@@ -1,5 +1,5 @@
-/* eslint-disable sort-keys */
 import { convexQuery } from "@convex-dev/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
 import { FlightGlobe } from "./-components/flight-globe";
@@ -9,11 +9,6 @@ import { appUrl } from "@/lib/config";
 
 export const Route = createFileRoute("/travel/")({
   component: TravelPage,
-  async loader({ context }) {
-    return context.queryClient.fetchQuery(
-      convexQuery(api.travel.queries.getStats, {}),
-    );
-  },
   head: () => ({
     links: [
       {
@@ -49,7 +44,9 @@ export const Route = createFileRoute("/travel/")({
 });
 
 function TravelPage() {
-  const data = Route.useLoaderData();
+  const { data } = useSuspenseQuery(
+    convexQuery(api.travel.queries.getStats, {}),
+  );
 
   return (
     <div className="container mx-auto max-w-3xl px-6 py-16">

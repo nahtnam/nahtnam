@@ -1,5 +1,6 @@
 /* eslint-disable sort-keys */
 import { convexQuery } from "@convex-dev/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
 import { formatDistanceToNow } from "date-fns";
@@ -30,7 +31,7 @@ function formatFullDate(date: Date) {
 export const Route = createFileRoute("/blog/$slug/")({
   component: BlogPostPage,
   async loader({ context, params }) {
-    const post = await context.queryClient.fetchQuery(
+    const post = await context.queryClient.ensureQueryData(
       convexQuery(api.blog.queries.getPost, { slug: params.slug }),
     );
     if (!post) {
@@ -98,7 +99,13 @@ export const Route = createFileRoute("/blog/$slug/")({
 });
 
 function BlogPostPage() {
-  const { post } = Route.useLoaderData();
+  const { slug } = Route.useParams();
+  const { data: post } = useSuspenseQuery(
+    convexQuery(api.blog.queries.getPost, { slug }),
+  );
+  if (!post) {
+    return null;
+  }
 
   const articleJsonLd = {
     "@context": "https://schema.org",

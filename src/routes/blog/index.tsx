@@ -1,5 +1,5 @@
-/* eslint-disable sort-keys */
 import { convexQuery } from "@convex-dev/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
 import { formatDistanceToNow } from "date-fns";
@@ -26,12 +26,6 @@ function formatFullDate(date: Date) {
 
 export const Route = createFileRoute("/blog/")({
   component: BlogIndexPage,
-  async loader({ context }) {
-    const posts = await context.queryClient.fetchQuery(
-      convexQuery(api.blog.queries.listPosts, {}),
-    );
-    return { posts };
-  },
   head: () => ({
     links: [
       {
@@ -67,7 +61,9 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogIndexPage() {
-  const { posts } = Route.useLoaderData();
+  const { data: posts } = useSuspenseQuery(
+    convexQuery(api.blog.queries.listPosts, {}),
+  );
 
   return (
     <div className="container mx-auto max-w-3xl px-6 py-16">

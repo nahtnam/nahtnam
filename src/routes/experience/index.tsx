@@ -1,5 +1,5 @@
-/* eslint-disable sort-keys */
 import { convexQuery } from "@convex-dev/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
 import { Separator } from "@/components/ui/separator";
@@ -11,20 +11,6 @@ import { ProjectsSection } from "@/routes/-components/projects-section";
 
 export const Route = createFileRoute("/experience/")({
   component: ExperiencePage,
-  async loader({ context }) {
-    const [education, experiences, projects] = await Promise.all([
-      context.queryClient.fetchQuery(
-        convexQuery(api.resume.queries.listEducation, {}),
-      ),
-      context.queryClient.fetchQuery(
-        convexQuery(api.resume.queries.listExperiences, {}),
-      ),
-      context.queryClient.fetchQuery(
-        convexQuery(api.resume.queries.listProjects, {}),
-      ),
-    ]);
-    return { education, experiences, projects };
-  },
   head: () => ({
     links: [
       {
@@ -60,7 +46,15 @@ export const Route = createFileRoute("/experience/")({
 });
 
 function ExperiencePage() {
-  const { education, experiences, projects } = Route.useLoaderData();
+  const { data: education } = useSuspenseQuery(
+    convexQuery(api.resume.queries.listEducation, {}),
+  );
+  const { data: experiences } = useSuspenseQuery(
+    convexQuery(api.resume.queries.listExperiences, {}),
+  );
+  const { data: projects } = useSuspenseQuery(
+    convexQuery(api.resume.queries.listProjects, {}),
+  );
 
   return (
     <div className="container mx-auto max-w-3xl px-6 py-16 print:max-w-none print:p-0 print:px-4">
