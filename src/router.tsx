@@ -6,9 +6,7 @@ import { routeTree } from "./routeTree.gen";
 import { clientEnv } from "./lib/config/client";
 
 export function getRouter() {
-  const convexQueryClient = new ConvexQueryClient(clientEnv.VITE_CONVEX_URL, {
-    expectAuth: true,
-  });
+  const convexQueryClient = new ConvexQueryClient(clientEnv.VITE_CONVEX_URL);
 
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {

@@ -1,8 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { Menu } from "lucide-react";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { api } from "convex/_generated/api";
-import { convexQuery } from "@convex-dev/react-query";
 import { Button } from "@/components/ui/button";
 import { Menubar } from "@/components/ui/menubar";
 import {
@@ -21,39 +18,20 @@ type MenuItem = {
   isExternal?: boolean;
 };
 
+const menu: MenuItem[] = [
+  { title: "Home", url: "/" },
+  { title: "Experience", url: "/experience" },
+  { title: "Blog", url: "/blog" },
+  { title: "Travel", url: "/travel" },
+  { title: "Contact", url: "/contact" },
+];
+
 export function Navbar() {
-  const { data: user } = useSuspenseQuery(
-    convexQuery(api.auth.queries.safeGetCurrentUser),
-  );
-
-  const menu: MenuItem[] = user
-    ? [
-        {
-          title: "Dashboard",
-          url: "/app",
-        },
-        {
-          isExternal: true,
-          title: "Sign Out",
-          url: "/api/auth/sign-out",
-        },
-      ]
-    : [
-        {
-          title: "Home",
-          url: "/",
-        },
-        {
-          title: "Get Started",
-          url: "/get-started",
-        },
-      ];
-
   return (
     <header className="border-b py-4">
       <div className="container mx-auto">
         <nav className="flex items-center justify-between">
-          <Link className="font-bold text-xl" to={user ? "/app" : "/"}>
+          <Link className="font-bold text-xl" to="/">
             {appName}
           </Link>
 

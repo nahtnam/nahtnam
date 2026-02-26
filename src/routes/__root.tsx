@@ -8,41 +8,22 @@ import {
 import { type QueryClient } from "@tanstack/react-query";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { createServerFn } from "@tanstack/react-start";
 import type { ConvexQueryClient } from "@convex-dev/react-query";
-import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
+import { ConvexProvider } from "convex/react";
 import appCss from "../styles.css?url";
 import { Navbar } from "./-components/navbar";
 import { NotFound } from "./-components/not-found";
 import { Footer } from "./-components/footer";
-import { getToken } from "@/lib/auth-server";
-import { authClient } from "@/lib/auth-client";
-import { appName } from "@/lib/config";
+import { Toaster } from "@/components/ui/sonner";
+import { appName, appUrl } from "@/lib/config";
 
-const getAuth = createServerFn({ method: "GET" }).handler(async () => {
-  try {
-    return await getToken();
-  } catch (error) {
-    console.error("getAuth error:", error);
-    return null;
-  }
-});
+const defaultDescription =
+  "Manthan (@nahtnam) - Principal Software Engineer at Mercury. Writing about software, startups, and personal finance.";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   convexQueryClient: ConvexQueryClient;
 }>()({
-  async beforeLoad(ctx) {
-    const token = await getAuth();
-    if (token) {
-      ctx.context.convexQueryClient.serverHttpClient?.setAuth(token);
-    }
-
-    return {
-      isAuthenticated: Boolean(token),
-      token,
-    };
-  },
   component: RootComponent,
   head: () => ({
     links: [
@@ -60,7 +41,48 @@ export const Route = createRootRouteWithContext<{
         name: "viewport",
       },
       {
+        content: appName,
         title: appName,
+      },
+      {
+        content: defaultDescription,
+        name: "description",
+      },
+      {
+        content: appName,
+        property: "og:site_name",
+      },
+      {
+        content: appUrl,
+        property: "og:url",
+      },
+      {
+        content: "website",
+        property: "og:type",
+      },
+      {
+        content: defaultDescription,
+        property: "og:description",
+      },
+      {
+        content: "summary_large_image",
+        name: "twitter:card",
+      },
+      {
+        content: "@nahtnam",
+        name: "twitter:creator",
+      },
+      {
+        content: "@nahtnam",
+        name: "twitter:site",
+      },
+      {
+        content: "light",
+        name: "color-scheme",
+      },
+      {
+        content: "light dark",
+        name: "supported-color-schemes",
       },
     ],
   }),
@@ -70,12 +92,14 @@ export const Route = createRootRouteWithContext<{
 
 function RootDocument({ children }: { readonly children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full">
+    <html className="h-full" lang="en">
       <head>
         <HeadContent />
       </head>
       <body className="flex h-full flex-col antialiased">
         {children}
+
+        <Toaster />
         <TanStackDevtools
           config={{
             position: "bottom-right",
@@ -94,18 +118,15 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  const context = useRouteContext({ from: Route.id });
+  const { convexQueryClient } = useRouteContext({ from: "__root__" });
+
   return (
-    <ConvexBetterAuthProvider
-      client={context.convexQueryClient.convexClient}
-      authClient={authClient}
-      initialToken={context.token}
-    >
+    <ConvexProvider client={convexQueryClient.convexClient}>
       <Navbar />
-      <main className="grow">
+      <main className="grow print:m-0 print:grow-0">
         <Outlet />
       </main>
       <Footer />
-    </ConvexBetterAuthProvider>
+    </ConvexProvider>
   );
 }
