@@ -15,6 +15,7 @@ import { Navbar } from "./-components/navbar";
 import { NotFound } from "./-components/not-found";
 import { Footer } from "./-components/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { appName, appUrl } from "@/lib/config";
 
 const defaultDescription =
@@ -122,11 +123,13 @@ function RootComponent() {
 
   return (
     <ConvexProvider client={convexQueryClient.convexClient}>
-      <Navbar />
-      <main className="grow print:m-0 print:grow-0">
-        <Outlet />
-      </main>
-      <Footer />
+      <TooltipProvider>
+        <Navbar />
+        <main className="grow print:m-0 print:grow-0">
+          <Outlet />
+        </main>
+        <Footer />
+      </TooltipProvider>
     </ConvexProvider>
   );
 }
