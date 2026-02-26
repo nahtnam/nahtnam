@@ -1,8 +1,8 @@
 /* eslint-disable sort-keys */
 import { convexQuery } from "@convex-dev/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { formatDistanceToNow } from "date-fns";
 import { api } from "convex/_generated/api";
+import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { H1, Lead, Small } from "@/components/ui/typography";
+import { appUrl } from "@/lib/config";
 
 function formatRelativeDate(date: Date) {
   return formatDistanceToNow(date, { addSuffix: true });
@@ -32,6 +33,12 @@ export const Route = createFileRoute("/blog/")({
     return { posts };
   },
   head: () => ({
+    links: [
+      {
+        href: `${appUrl}/blog`,
+        rel: "canonical",
+      },
+    ],
     meta: [
       {
         content: "Blog | Manthan (@nahtnam)",
@@ -41,6 +48,10 @@ export const Route = createFileRoute("/blog/")({
         content:
           "Writing about software engineering, startups, personal finance, and product reviews.",
         name: "description",
+      },
+      {
+        content: `${appUrl}/blog`,
+        property: "og:url",
       },
       {
         content: "Blog | Manthan (@nahtnam)",

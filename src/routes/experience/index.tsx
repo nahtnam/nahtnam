@@ -2,11 +2,12 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
+import { Separator } from "@/components/ui/separator";
+import { H1 } from "@/components/ui/typography";
+import { appUrl } from "@/lib/config";
 import { EducationSection } from "@/routes/-components/education-section";
 import { ExperienceSection } from "@/routes/-components/experience-section";
 import { ProjectsSection } from "@/routes/-components/projects-section";
-import { Separator } from "@/components/ui/separator";
-import { H1 } from "@/components/ui/typography";
 
 export const Route = createFileRoute("/experience/")({
   component: ExperiencePage,
@@ -25,6 +26,12 @@ export const Route = createFileRoute("/experience/")({
     return { education, experiences, projects };
   },
   head: () => ({
+    links: [
+      {
+        href: `${appUrl}/experience`,
+        rel: "canonical",
+      },
+    ],
     meta: [
       {
         content: "Experience | Manthan (@nahtnam)",
@@ -34,6 +41,10 @@ export const Route = createFileRoute("/experience/")({
         content:
           "Professional experience, projects, and education history of Manthan (@nahtnam) - Principal Software Engineer at Mercury.",
         name: "description",
+      },
+      {
+        content: `${appUrl}/experience`,
+        property: "og:url",
       },
       {
         content: "Experience | Manthan (@nahtnam)",

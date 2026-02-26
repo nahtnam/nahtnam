@@ -1,19 +1,19 @@
+import type { ConvexQueryClient } from "@convex-dev/react-query";
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import type { QueryClient } from "@tanstack/react-query";
 import {
+  createRootRouteWithContext,
   HeadContent,
   Outlet,
   Scripts,
-  createRootRouteWithContext,
   useRouteContext,
 } from "@tanstack/react-router";
-import { type QueryClient } from "@tanstack/react-query";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { TanStackDevtools } from "@tanstack/react-devtools";
-import type { ConvexQueryClient } from "@convex-dev/react-query";
 import { ConvexProvider } from "convex/react";
 import appCss from "../styles.css?url";
+import { Footer } from "./-components/footer";
 import { Navbar } from "./-components/navbar";
 import { NotFound } from "./-components/not-found";
-import { Footer } from "./-components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { appName, appUrl } from "@/lib/config";
@@ -31,6 +31,15 @@ export const Route = createRootRouteWithContext<{
       {
         href: appCss,
         rel: "stylesheet",
+      },
+      {
+        href: "/assets/images/me.avif",
+        rel: "icon",
+        type: "image/avif",
+      },
+      {
+        href: "/assets/images/me.avif",
+        rel: "apple-touch-icon",
       },
     ],
     meta: [
@@ -62,8 +71,16 @@ export const Route = createRootRouteWithContext<{
         property: "og:type",
       },
       {
+        content: appName,
+        property: "og:title",
+      },
+      {
         content: defaultDescription,
         property: "og:description",
+      },
+      {
+        content: `${appUrl}/assets/images/me.avif`,
+        property: "og:image",
       },
       {
         content: "summary_large_image",
@@ -76,6 +93,10 @@ export const Route = createRootRouteWithContext<{
       {
         content: "@nahtnam",
         name: "twitter:site",
+      },
+      {
+        content: `${appUrl}/assets/images/me.avif`,
+        name: "twitter:image",
       },
       {
         content: "light",

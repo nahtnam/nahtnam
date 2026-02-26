@@ -5,6 +5,7 @@ import { api } from "convex/_generated/api";
 import { FlightGlobe } from "./-components/flight-globe";
 import { FlightStats } from "./-components/flight-stats";
 import { H1 } from "@/components/ui/typography";
+import { appUrl } from "@/lib/config";
 
 export const Route = createFileRoute("/travel/")({
   component: TravelPage,
@@ -14,6 +15,12 @@ export const Route = createFileRoute("/travel/")({
     );
   },
   head: () => ({
+    links: [
+      {
+        href: `${appUrl}/travel`,
+        rel: "canonical",
+      },
+    ],
     meta: [
       {
         content: "Travel | Manthan (@nahtnam)",
@@ -23,6 +30,10 @@ export const Route = createFileRoute("/travel/")({
         content:
           "Flight history and travel stats of Manthan (@nahtnam) — airports visited, routes flown, and more.",
         name: "description",
+      },
+      {
+        content: `${appUrl}/travel`,
+        property: "og:url",
       },
       {
         content: "Travel | Manthan (@nahtnam)",

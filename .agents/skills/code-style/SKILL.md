@@ -5,7 +5,7 @@ description: Code style conventions for components, functions, and destructuring
 
 # Code Style
 
-On top of ensuring you comply with the Ultracite/Biome linting rules, here are some additional preferred rules.
+On top of ensuring you comply with the xo/eslint linting rules, here are some additional preferred rules.
 
 ## Components
 

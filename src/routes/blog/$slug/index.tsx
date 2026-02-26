@@ -1,10 +1,10 @@
 /* eslint-disable sort-keys */
 import { convexQuery } from "@convex-dev/react-query";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { api } from "convex/_generated/api";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowLeft } from "lucide-react";
 import Markdown from "react-markdown";
-import { api } from "convex/_generated/api";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { H1, Muted } from "@/components/ui/typography";
+import { appUrl } from "@/lib/config";
 
 function formatRelativeDate(date: Date) {
   return formatDistanceToNow(date, { addSuffix: true });
@@ -38,9 +39,16 @@ export const Route = createFileRoute("/blog/$slug/")({
 
     return { post };
   },
-  head({ loaderData }) {
+  head({ loaderData, params }) {
     const post = loaderData?.post;
+    const postUrl = `${appUrl}/blog/${params.slug}`;
     return {
+      links: [
+        {
+          href: postUrl,
+          rel: "canonical",
+        },
+      ],
       meta: [
         {
           content: post
@@ -53,6 +61,10 @@ export const Route = createFileRoute("/blog/$slug/")({
         {
           content: post?.excerpt ?? "",
           name: "description",
+        },
+        {
+          content: postUrl,
+          property: "og:url",
         },
         {
           content: post?.title ?? "Blog Post",
@@ -88,8 +100,34 @@ export const Route = createFileRoute("/blog/$slug/")({
 function BlogPostPage() {
   const { post } = Route.useLoaderData();
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: new Date(post.publishedAt).toISOString(),
+    articleSection: post.category.name,
+    url: `${appUrl}/blog/${post.slug}`,
+    author: {
+      "@type": "Person",
+      name: "Manthan",
+      url: appUrl,
+    },
+    publisher: {
+      "@type": "Person",
+      name: "Manthan",
+      url: appUrl,
+    },
+  };
+
   return (
     <div className="container mx-auto max-w-2xl px-6 py-12">
+      {/* eslint-disable react/no-danger */}
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        type="application/ld+json"
+      />
+      {/* eslint-enable react/no-danger */}
       <Button
         asChild
         className="mb-8 -ml-2 text-muted-foreground hover:text-foreground"
