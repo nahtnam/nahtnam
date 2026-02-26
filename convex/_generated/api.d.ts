@@ -11,6 +11,7 @@
 import type * as blog_queries from "../blog/queries.js";
 import type * as contact_actions from "../contact/actions.js";
 import type * as http from "../http.js";
+import type * as lib_config_env from "../lib/config/env.js";
 import type * as resume_queries from "../resume/queries.js";
 import type * as travel_airlines from "../travel/airlines.js";
 import type * as travel_airports from "../travel/airports.js";
@@ -27,6 +28,7 @@ declare const fullApi: ApiFromModules<{
   "blog/queries": typeof blog_queries;
   "contact/actions": typeof contact_actions;
   http: typeof http;
+  "lib/config/env": typeof lib_config_env;
   "resume/queries": typeof resume_queries;
   "travel/airlines": typeof travel_airlines;
   "travel/airports": typeof travel_airports;

@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { action } from "../_generated/server";
+import { convexEnv } from "../lib/config/env";
 
 export const sendMessage = action({
   args: {
@@ -9,9 +10,9 @@ export const sendMessage = action({
     turnstileToken: v.string(),
   },
   async handler(_ctx, args) {
-    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY; // eslint-disable-line n/prefer-global/process
-    const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN; // eslint-disable-line n/prefer-global/process
-    const telegramChatId = process.env.TELEGRAM_CHAT_ID; // eslint-disable-line n/prefer-global/process
+    const turnstileSecret = convexEnv.TURNSTILE_SECRET_KEY;
+    const telegramBotToken = convexEnv.TELEGRAM_BOT_TOKEN;
+    const telegramChatId = convexEnv.TELEGRAM_CHAT_ID;
 
     if (!turnstileSecret || !telegramBotToken || !telegramChatId) {
       throw new Error("Missing environment variables");
