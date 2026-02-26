@@ -7,7 +7,7 @@
   "includeExamples": false,
   "mode": "file-router",
   "packageManager": "bun",
-  "projectName": "vertex",
+  "projectName": "nahtnam",
   "routerOnly": false,
   "tailwind": true,
   "typescript": true,
