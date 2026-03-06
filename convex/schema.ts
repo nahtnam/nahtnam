@@ -17,6 +17,18 @@ export default defineSchema({
     .index("by_slug", ["slug"])
     .index("by_publishedAt", ["publishedAt"]),
 
+  bnbBookings: defineTable({
+    checkIn: v.string(),
+    checkOut: v.string(),
+    guests: v.array(v.string()),
+    notes: v.optional(v.string()),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("accepted"),
+      v.literal("rejected"),
+    ),
+  }).index("by_status", ["status"]),
+
   resumeCompanies: defineTable({
     logoUrl: v.string(),
     name: v.string(),

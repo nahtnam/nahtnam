@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TravelIndexRouteImport } from './routes/travel/index'
 import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
 import { Route as ContactIndexRouteImport } from './routes/contact/index'
+import { Route as BnbIndexRouteImport } from './routes/bnb/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as BlogSlugIndexRouteImport } from './routes/blog/$slug/index'
@@ -49,6 +50,11 @@ const ExperienceIndexRoute = ExperienceIndexRouteImport.update({
 const ContactIndexRoute = ContactIndexRouteImport.update({
   id: '/contact/',
   path: '/contact/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BnbIndexRoute = BnbIndexRouteImport.update({
+  id: '/bnb/',
+  path: '/bnb/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/bnb/': typeof BnbIndexRoute
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
   '/travel/': typeof TravelIndexRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
+  '/bnb': typeof BnbIndexRoute
   '/contact': typeof ContactIndexRoute
   '/experience': typeof ExperienceIndexRoute
   '/travel': typeof TravelIndexRoute
@@ -149,6 +157,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/bnb/': typeof BnbIndexRoute
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
   '/travel/': typeof TravelIndexRoute
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/'
     | '/blog/'
+    | '/bnb/'
     | '/contact/'
     | '/experience/'
     | '/travel/'
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/blog'
+    | '/bnb'
     | '/contact'
     | '/experience'
     | '/travel'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/'
     | '/blog/'
+    | '/bnb/'
     | '/contact/'
     | '/experience/'
     | '/travel/'
@@ -222,6 +234,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   BlogIndexRoute: typeof BlogIndexRoute
+  BnbIndexRoute: typeof BnbIndexRoute
   ContactIndexRoute: typeof ContactIndexRoute
   ExperienceIndexRoute: typeof ExperienceIndexRoute
   TravelIndexRoute: typeof TravelIndexRoute
@@ -263,6 +276,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact/'
       preLoaderRoute: typeof ContactIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bnb/': {
+      id: '/bnb/'
+      path: '/bnb'
+      fullPath: '/bnb/'
+      preLoaderRoute: typeof BnbIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -377,6 +397,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   BlogIndexRoute: BlogIndexRoute,
+  BnbIndexRoute: BnbIndexRoute,
   ContactIndexRoute: ContactIndexRoute,
   ExperienceIndexRoute: ExperienceIndexRoute,
   TravelIndexRoute: TravelIndexRoute,

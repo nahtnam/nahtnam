@@ -10,6 +10,9 @@
 
 import type * as blog_mutations from "../blog/mutations.js";
 import type * as blog_queries from "../blog/queries.js";
+import type * as bnb_actions from "../bnb/actions.js";
+import type * as bnb_mutations from "../bnb/mutations.js";
+import type * as bnb_queries from "../bnb/queries.js";
 import type * as contact_actions from "../contact/actions.js";
 import type * as http from "../http.js";
 import type * as lib_admin from "../lib/admin.js";
@@ -31,6 +34,9 @@ import type {
 declare const fullApi: ApiFromModules<{
   "blog/mutations": typeof blog_mutations;
   "blog/queries": typeof blog_queries;
+  "bnb/actions": typeof bnb_actions;
+  "bnb/mutations": typeof bnb_mutations;
+  "bnb/queries": typeof bnb_queries;
   "contact/actions": typeof contact_actions;
   http: typeof http;
   "lib/admin": typeof lib_admin;
