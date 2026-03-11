@@ -63,7 +63,7 @@ export const Route = createFileRoute("/admin")({
 function AdminLayout() {
   const router = useRouter();
   const { pathname } = router.state.location;
-  const [secret, setSecret] = useState("");
+  const [secret, setSecret] = useState<string | undefined>(null);
 
   useEffect(() => {
     async function fetchSecret() {
@@ -75,7 +75,7 @@ function AdminLayout() {
   }, []);
 
   return (
-    <AdminSecretContext value={secret}>
+    <AdminSecretContext value={secret ?? ""}>
       <div className="flex min-h-[calc(100vh-8rem)]">
         <aside className="w-56 shrink-0 border-r">
           <nav className="flex flex-col gap-1 p-3">
@@ -100,9 +100,7 @@ function AdminLayout() {
             })}
           </nav>
         </aside>
-        <div className="flex-1 p-6">
-          <Outlet />
-        </div>
+        <div className="flex-1 p-6">{secret === null ? null : <Outlet />}</div>
       </div>
     </AdminSecretContext>
   );
