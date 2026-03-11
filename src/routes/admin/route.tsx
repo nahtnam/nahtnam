@@ -5,7 +5,7 @@ import {
   redirect,
   useRouter,
 } from "@tanstack/react-router";
-import { createContext, use, useEffect, useState } from "react";
+import { createContext, use } from "react";
 import {
   Briefcase,
   Building2,
@@ -56,6 +56,9 @@ export const Route = createFileRoute("/admin")({
     if (!isAuthed) {
       throw redirect({ to: "/" });
     }
+
+    const adminSecret = await getAdminSecret();
+    return { adminSecret };
   },
   component: AdminLayout,
 });
@@ -63,19 +66,10 @@ export const Route = createFileRoute("/admin")({
 function AdminLayout() {
   const router = useRouter();
   const { pathname } = router.state.location;
-  const [secret, setSecret] = useState<string | undefined>(null);
-
-  useEffect(() => {
-    async function fetchSecret() {
-      const value = await getAdminSecret();
-      setSecret(value);
-    }
-
-    void fetchSecret();
-  }, []);
+  const { adminSecret } = Route.useRouteContext();
 
   return (
-    <AdminSecretContext value={secret ?? ""}>
+    <AdminSecretContext value={adminSecret}>
       <div className="flex min-h-[calc(100vh-8rem)]">
         <aside className="w-56 shrink-0 border-r">
           <nav className="flex flex-col gap-1 p-3">
@@ -100,7 +94,9 @@ function AdminLayout() {
             })}
           </nav>
         </aside>
-        <div className="flex-1 p-6">{secret === null ? null : <Outlet />}</div>
+        <div className="flex-1 p-6">
+          <Outlet />
+        </div>
       </div>
     </AdminSecretContext>
   );
