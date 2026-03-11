@@ -84,25 +84,30 @@ function BlogEditor() {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    values: existingPost
-      ? {
-          title: existingPost.title,
-          slug: existingPost.slug,
-          excerpt: existingPost.excerpt,
-          content: existingPost.content,
-          categoryId: existingPost.categoryId,
-          publishedAt: new Date(existingPost.publishedAt)
-            .toISOString()
-            .slice(0, 16),
-        }
-      : {
-          title: "",
-          slug: "",
-          excerpt: "",
-          content: "",
-          categoryId: "",
-          publishedAt: new Date().toISOString().slice(0, 16),
-        },
+    defaultValues: {
+      title: "",
+      slug: "",
+      excerpt: "",
+      content: "",
+      categoryId: "",
+      publishedAt: new Date().toISOString().slice(0, 16),
+    },
+    ...(isNew
+      ? {}
+      : existingPost
+        ? {
+            values: {
+              title: existingPost.title,
+              slug: existingPost.slug,
+              excerpt: existingPost.excerpt,
+              content: existingPost.content,
+              categoryId: existingPost.categoryId,
+              publishedAt: new Date(existingPost.publishedAt)
+                .toISOString()
+                .slice(0, 16),
+            },
+          }
+        : {}),
   });
 
   const contentValue = form.watch("content");
