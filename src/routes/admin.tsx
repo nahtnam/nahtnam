@@ -15,6 +15,7 @@ import {
   Plane,
   Tags,
 } from "lucide-react";
+import { api } from "convex/_generated/api";
 import { getAdminSecret, setAdminCookie } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 
@@ -30,7 +31,7 @@ const adminNav = [
 ];
 
 export const Route = createFileRoute("/admin")({
-  async beforeLoad({ location }) {
+  async beforeLoad({ context, location }) {
     const parameters = new URLSearchParams(location.searchStr);
     const secret = parameters.get("secret");
 
@@ -41,6 +42,15 @@ export const Route = createFileRoute("/admin")({
 
     const adminSecret = await getAdminSecret();
     if (!adminSecret) {
+      throw redirect({ to: "/" });
+    }
+
+    try {
+      await context.convexQueryClient.convexClient.query(
+        api.admin.auth.isAuthorized,
+        { adminSecret },
+      );
+    } catch {
       throw redirect({ to: "/" });
     }
 
