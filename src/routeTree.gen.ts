@@ -9,7 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TravelIndexRouteImport } from './routes/travel/index'
 import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
@@ -27,7 +27,7 @@ import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as AdminBlogCategoriesIndexRouteImport } from './routes/admin/blog/categories/index'
 import { Route as AdminBlogIdIndexRouteImport } from './routes/admin/blog/$id/index'
 
-const AdminRouteRoute = AdminRouteRouteImport.update({
+const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => rootRouteImport,
@@ -65,7 +65,7 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AdminRouteRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 const BlogSlugIndexRoute = BlogSlugIndexRouteImport.update({
   id: '/blog/$slug/',
@@ -75,48 +75,48 @@ const BlogSlugIndexRoute = BlogSlugIndexRouteImport.update({
 const AdminTravelIndexRoute = AdminTravelIndexRouteImport.update({
   id: '/travel/',
   path: '/travel/',
-  getParentRoute: () => AdminRouteRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
-  getParentRoute: () => AdminRouteRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminExperiencesIndexRoute = AdminExperiencesIndexRouteImport.update({
   id: '/experiences/',
   path: '/experiences/',
-  getParentRoute: () => AdminRouteRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminEducationIndexRoute = AdminEducationIndexRouteImport.update({
   id: '/education/',
   path: '/education/',
-  getParentRoute: () => AdminRouteRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminCompaniesIndexRoute = AdminCompaniesIndexRouteImport.update({
   id: '/companies/',
   path: '/companies/',
-  getParentRoute: () => AdminRouteRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
-  getParentRoute: () => AdminRouteRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminBlogCategoriesIndexRoute =
   AdminBlogCategoriesIndexRouteImport.update({
     id: '/blog/categories/',
     path: '/blog/categories/',
-    getParentRoute: () => AdminRouteRoute,
+    getParentRoute: () => AdminRoute,
   } as any)
 const AdminBlogIdIndexRoute = AdminBlogIdIndexRouteImport.update({
   id: '/blog/$id/',
   path: '/blog/$id/',
-  getParentRoute: () => AdminRouteRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/bnb/': typeof BnbIndexRoute
@@ -154,7 +154,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/bnb/': typeof BnbIndexRoute
@@ -232,7 +232,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   BlogIndexRoute: typeof BlogIndexRoute
   BnbIndexRoute: typeof BnbIndexRoute
   ContactIndexRoute: typeof ContactIndexRoute
@@ -247,7 +247,7 @@ declare module '@tanstack/react-router' {
       id: '/admin'
       path: '/admin'
       fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteRouteImport
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -297,7 +297,7 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
     '/blog/$slug/': {
       id: '/blog/$slug/'
@@ -311,61 +311,61 @@ declare module '@tanstack/react-router' {
       path: '/travel'
       fullPath: '/admin/travel/'
       preLoaderRoute: typeof AdminTravelIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
     '/admin/projects/': {
       id: '/admin/projects/'
       path: '/projects'
       fullPath: '/admin/projects/'
       preLoaderRoute: typeof AdminProjectsIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
     '/admin/experiences/': {
       id: '/admin/experiences/'
       path: '/experiences'
       fullPath: '/admin/experiences/'
       preLoaderRoute: typeof AdminExperiencesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
     '/admin/education/': {
       id: '/admin/education/'
       path: '/education'
       fullPath: '/admin/education/'
       preLoaderRoute: typeof AdminEducationIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
     '/admin/companies/': {
       id: '/admin/companies/'
       path: '/companies'
       fullPath: '/admin/companies/'
       preLoaderRoute: typeof AdminCompaniesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
     '/admin/blog/': {
       id: '/admin/blog/'
       path: '/blog'
       fullPath: '/admin/blog/'
       preLoaderRoute: typeof AdminBlogIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
     '/admin/blog/categories/': {
       id: '/admin/blog/categories/'
       path: '/blog/categories'
       fullPath: '/admin/blog/categories/'
       preLoaderRoute: typeof AdminBlogCategoriesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
     '/admin/blog/$id/': {
       id: '/admin/blog/$id/'
       path: '/blog/$id'
       fullPath: '/admin/blog/$id/'
       preLoaderRoute: typeof AdminBlogIdIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminRoute
     }
   }
 }
 
-interface AdminRouteRouteChildren {
+interface AdminRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
   AdminCompaniesIndexRoute: typeof AdminCompaniesIndexRoute
@@ -377,7 +377,7 @@ interface AdminRouteRouteChildren {
   AdminBlogCategoriesIndexRoute: typeof AdminBlogCategoriesIndexRoute
 }
 
-const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+const AdminRouteChildren: AdminRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminCompaniesIndexRoute: AdminCompaniesIndexRoute,
@@ -389,13 +389,11 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminBlogCategoriesIndexRoute: AdminBlogCategoriesIndexRoute,
 }
 
-const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
-  AdminRouteRouteChildren,
-)
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRouteRoute: AdminRouteRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   BlogIndexRoute: BlogIndexRoute,
   BnbIndexRoute: BnbIndexRoute,
   ContactIndexRoute: ContactIndexRoute,

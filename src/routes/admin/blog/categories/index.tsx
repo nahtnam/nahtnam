@@ -9,7 +9,6 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -47,23 +46,24 @@ export const Route = createFileRoute("/admin/blog/categories/")({
 });
 
 function CategoriesAdmin() {
+  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"blogCategories"> | undefined>(
     undefined,
   );
 
   const { data: categories = [] } = useQuery(
-    convexQuery(api.blog.queries.listCategories, {}),
+    convexQuery(api.admin.blog.listCategories, { adminSecret }),
   );
 
   const { mutateAsync: createCategory } = useMutation({
-    mutationFn: useConvexMutation(api.blog.mutations.createCategory),
+    mutationFn: useConvexMutation(api.admin.blog.createCategory),
   });
   const { mutateAsync: updateCategory } = useMutation({
-    mutationFn: useConvexMutation(api.blog.mutations.updateCategory),
+    mutationFn: useConvexMutation(api.admin.blog.updateCategory),
   });
   const { mutateAsync: deleteCategory } = useMutation({
-    mutationFn: useConvexMutation(api.blog.mutations.deleteCategory),
+    mutationFn: useConvexMutation(api.admin.blog.deleteCategory),
   });
 
   const form = useForm<FormValues>({
@@ -84,7 +84,6 @@ function CategoriesAdmin() {
   }
 
   async function onSubmit(values: FormValues) {
-    const adminSecret = await getAdminSecret();
     await (editingId
       ? updateCategory({ adminSecret, id: editingId, ...values })
       : createCategory({ adminSecret, ...values }));
@@ -160,7 +159,6 @@ function CategoriesAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      const adminSecret = await getAdminSecret();
                       await deleteCategory({ adminSecret, id: category._id });
                     }}
                   >

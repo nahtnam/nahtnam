@@ -10,7 +10,6 @@ import Markdown from "react-markdown";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -49,36 +48,37 @@ export const Route = createFileRoute("/admin/blog/$id/")({
 function BlogEditor() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
+  const { adminSecret } = Route.useRouteContext();
   const isNew = id === "new";
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [uploading, setUploading] = useState(false);
 
   const { data: existingPost } = useQuery({
     ...convexQuery(
-      api.blog.queries.getPostById,
-      isNew ? "skip" : { id: id as Id<"blogPosts"> },
+      api.admin.blog.getPostById,
+      isNew ? "skip" : { adminSecret, id: id as Id<"blogPosts"> },
     ),
     enabled: !isNew,
   });
 
   const { data: categories = [] } = useQuery(
-    convexQuery(api.blog.queries.listCategories, {}),
+    convexQuery(api.admin.blog.listCategories, { adminSecret }),
   );
 
   const { mutateAsync: createPost } = useMutation({
-    mutationFn: useConvexMutation(api.blog.mutations.createPost),
+    mutationFn: useConvexMutation(api.admin.blog.createPost),
   });
   const { mutateAsync: updatePost } = useMutation({
-    mutationFn: useConvexMutation(api.blog.mutations.updatePost),
+    mutationFn: useConvexMutation(api.admin.blog.updatePost),
   });
   const { mutateAsync: deletePost } = useMutation({
-    mutationFn: useConvexMutation(api.blog.mutations.deletePost),
+    mutationFn: useConvexMutation(api.admin.blog.deletePost),
   });
   const { mutateAsync: generateUploadUrl } = useMutation({
-    mutationFn: useConvexMutation(api.blog.mutations.generateUploadUrl),
+    mutationFn: useConvexMutation(api.admin.blog.generateUploadUrl),
   });
   const { mutateAsync: getImageUrl } = useMutation({
-    mutationFn: useConvexMutation(api.blog.mutations.getImageUrl),
+    mutationFn: useConvexMutation(api.admin.blog.getImageUrl),
   });
 
   const form = useForm<FormValues>({
@@ -112,7 +112,6 @@ function BlogEditor() {
   const contentValue = form.watch("content");
 
   async function onSubmit(values: FormValues) {
-    const adminSecret = await getAdminSecret();
     const data = {
       title: values.title,
       slug: values.slug,
@@ -131,14 +130,12 @@ function BlogEditor() {
 
   async function handleDelete() {
     if (!isNew) {
-      const adminSecret = await getAdminSecret();
       await deletePost({ adminSecret, id: id as Id<"blogPosts"> });
       await navigate({ to: "/admin/blog" });
     }
   }
 
   const handleImageUpload = useCallback(async () => {
-    const adminSecret = await getAdminSecret();
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
@@ -184,7 +181,7 @@ function BlogEditor() {
     });
 
     input.click();
-  }, [form, generateUploadUrl, getImageUrl]);
+  }, [adminSecret, form, generateUploadUrl, getImageUrl]);
 
   function generateSlug() {
     const title = form.getValues("title");

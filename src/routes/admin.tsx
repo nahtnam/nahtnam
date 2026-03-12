@@ -43,6 +43,8 @@ export const Route = createFileRoute("/admin")({
     if (!adminSecret) {
       throw redirect({ to: "/" });
     }
+
+    return { adminSecret };
   },
   component: AdminLayout,
 });

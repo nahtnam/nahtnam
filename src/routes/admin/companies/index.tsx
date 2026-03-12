@@ -9,7 +9,6 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -49,23 +48,24 @@ export const Route = createFileRoute("/admin/companies/")({
 });
 
 function CompaniesAdmin() {
+  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"resumeCompanies"> | undefined>(
     undefined,
   );
 
   const { data: companies = [] } = useQuery(
-    convexQuery(api.resume.queries.listCompanies, {}),
+    convexQuery(api.admin.resume.listCompanies, { adminSecret }),
   );
 
   const { mutateAsync: createCompany } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.createCompany),
+    mutationFn: useConvexMutation(api.admin.resume.createCompany),
   });
   const { mutateAsync: updateCompany } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.updateCompany),
+    mutationFn: useConvexMutation(api.admin.resume.updateCompany),
   });
   const { mutateAsync: deleteCompany } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.deleteCompany),
+    mutationFn: useConvexMutation(api.admin.resume.deleteCompany),
   });
 
   const form = useForm<FormValues>({
@@ -90,7 +90,6 @@ function CompaniesAdmin() {
   }
 
   async function onSubmit(values: FormValues) {
-    const adminSecret = await getAdminSecret();
     await (editingId
       ? updateCompany({ adminSecret, id: editingId, ...values })
       : createCompany({ adminSecret, ...values }));
@@ -198,7 +197,6 @@ function CompaniesAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      const adminSecret = await getAdminSecret();
                       await deleteCompany({ adminSecret, id: company._id });
                     }}
                   >

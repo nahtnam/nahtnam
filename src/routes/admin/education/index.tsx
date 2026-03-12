@@ -9,7 +9,6 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -52,23 +51,24 @@ export const Route = createFileRoute("/admin/education/")({
 });
 
 function EducationAdmin() {
+  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"resumeEducation"> | undefined>(
     undefined,
   );
 
   const { data: education = [] } = useQuery(
-    convexQuery(api.resume.queries.listEducation, {}),
+    convexQuery(api.admin.resume.listEducation, { adminSecret }),
   );
 
   const { mutateAsync: createEducation } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.createEducation),
+    mutationFn: useConvexMutation(api.admin.resume.createEducation),
   });
   const { mutateAsync: updateEducation } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.updateEducation),
+    mutationFn: useConvexMutation(api.admin.resume.updateEducation),
   });
   const { mutateAsync: deleteEducation } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.deleteEducation),
+    mutationFn: useConvexMutation(api.admin.resume.deleteEducation),
   });
 
   const form = useForm<FormValues>({
@@ -107,7 +107,6 @@ function EducationAdmin() {
   }
 
   async function onSubmit(values: FormValues) {
-    const adminSecret = await getAdminSecret();
     const data = {
       ...values,
       details: values.details ?? undefined,
@@ -248,7 +247,6 @@ function EducationAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      const adminSecret = await getAdminSecret();
                       await deleteEducation({ adminSecret, id: edu._id });
                     }}
                   >

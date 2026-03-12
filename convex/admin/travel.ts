@@ -1,7 +1,6 @@
-/* eslint-disable no-await-in-loop */
 import { v } from "convex/values";
 import { mutation } from "../_generated/server";
-import { requireAdmin } from "../lib/admin";
+import { requireAdmin } from "../lib/builder";
 
 export const upsertFlights = mutation({
   args: {
@@ -18,12 +17,12 @@ export const upsertFlights = mutation({
       }),
     ),
   },
-  async handler(ctx, args) {
-    requireAdmin(args.adminSecret);
+  async handler(ctx, { adminSecret, flights }) {
+    requireAdmin(adminSecret);
     let created = 0;
     let updated = 0;
 
-    for (const flight of args.flights) {
+    for (const flight of flights) {
       const existing = await ctx.db
         .query("travelFlights")
         .withIndex("by_flightyId", (q) => q.eq("flightyId", flight.flightyId))

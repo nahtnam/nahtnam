@@ -17,6 +17,12 @@ const xoConfig: FlatXoConfig = [
     },
   },
   {
+    files: ["convex/**/*"],
+    rules: {
+      "no-await-in-loop": "off",
+    },
+  },
+  {
     ignores: [
       "src/components/ui/**/*",
       "src/lib/shadcn/*",

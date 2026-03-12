@@ -19,8 +19,9 @@ export const Route = createFileRoute("/admin/blog/")({
 });
 
 function BlogAdmin() {
+  const { adminSecret } = Route.useRouteContext();
   const { data: posts = [] } = useQuery(
-    convexQuery(api.blog.queries.listAllPosts, {}),
+    convexQuery(api.admin.blog.listAllPosts, { adminSecret }),
   );
 
   return (

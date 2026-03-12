@@ -9,7 +9,6 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -60,26 +59,27 @@ export const Route = createFileRoute("/admin/experiences/")({
 });
 
 function ExperiencesAdmin() {
+  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<
     Id<"resumeWorkExperiences"> | undefined
   >(undefined);
 
   const { data: experiences = [] } = useQuery(
-    convexQuery(api.resume.queries.listExperiences, {}),
+    convexQuery(api.admin.resume.listExperiences, { adminSecret }),
   );
   const { data: companies = [] } = useQuery(
-    convexQuery(api.resume.queries.listCompanies, {}),
+    convexQuery(api.admin.resume.listCompanies, { adminSecret }),
   );
 
   const { mutateAsync: createExperience } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.createExperience),
+    mutationFn: useConvexMutation(api.admin.resume.createExperience),
   });
   const { mutateAsync: updateExperience } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.updateExperience),
+    mutationFn: useConvexMutation(api.admin.resume.updateExperience),
   });
   const { mutateAsync: deleteExperience } = useMutation({
-    mutationFn: useConvexMutation(api.resume.mutations.deleteExperience),
+    mutationFn: useConvexMutation(api.admin.resume.deleteExperience),
   });
 
   const form = useForm<FormValues>({
@@ -123,7 +123,6 @@ function ExperiencesAdmin() {
   }
 
   async function onSubmit(values: FormValues) {
-    const adminSecret = await getAdminSecret();
     const data = {
       companyId: values.companyId as Id<"resumeCompanies">,
       title: values.title,
@@ -303,7 +302,6 @@ function ExperiencesAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      const adminSecret = await getAdminSecret();
                       await deleteExperience({ adminSecret, id: exp._id });
                     }}
                   >
