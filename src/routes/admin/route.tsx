@@ -5,7 +5,6 @@ import {
   redirect,
   useRouter,
 } from "@tanstack/react-router";
-import { createContext, use } from "react";
 import {
   Briefcase,
   Building2,
@@ -16,18 +15,8 @@ import {
   Plane,
   Tags,
 } from "lucide-react";
-import {
-  checkAdminAuth,
-  getAdminSecret,
-  setAdminCookie,
-} from "@/lib/admin-auth";
+import { checkAdminAuth, setAdminCookie } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
-
-const AdminSecretContext = createContext<string>("");
-
-export function useAdminSecret() {
-  return use(AdminSecretContext);
-}
 
 const adminNav = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -56,9 +45,6 @@ export const Route = createFileRoute("/admin")({
     if (!isAuthed) {
       throw redirect({ to: "/" });
     }
-
-    const adminSecret = await getAdminSecret();
-    return { adminSecret };
   },
   component: AdminLayout,
 });
@@ -66,38 +52,35 @@ export const Route = createFileRoute("/admin")({
 function AdminLayout() {
   const router = useRouter();
   const { pathname } = router.state.location;
-  const { adminSecret } = Route.useRouteContext();
 
   return (
-    <AdminSecretContext value={adminSecret}>
-      <div className="flex min-h-[calc(100vh-8rem)]">
-        <aside className="w-56 shrink-0 border-r">
-          <nav className="flex flex-col gap-1 p-3">
-            {adminNav.map((item) => {
-              const isActive =
-                pathname === item.href ||
-                (item.href !== "/admin" && pathname.startsWith(item.href));
-              return (
-                <Button
-                  key={item.href}
-                  asChild
-                  className="justify-start"
-                  size="sm"
-                  variant={isActive ? "secondary" : "ghost"}
-                >
-                  <Link to={item.href}>
-                    <item.icon className="mr-2 size-4" />
-                    {item.label}
-                  </Link>
-                </Button>
-              );
-            })}
-          </nav>
-        </aside>
-        <div className="flex-1 p-6">
-          <Outlet />
-        </div>
+    <div className="flex min-h-[calc(100vh-8rem)]">
+      <aside className="w-56 shrink-0 border-r">
+        <nav className="flex flex-col gap-1 p-3">
+          {adminNav.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/admin" && pathname.startsWith(item.href));
+            return (
+              <Button
+                key={item.href}
+                asChild
+                className="justify-start"
+                size="sm"
+                variant={isActive ? "secondary" : "ghost"}
+              >
+                <Link to={item.href}>
+                  <item.icon className="mr-2 size-4" />
+                  {item.label}
+                </Link>
+              </Button>
+            );
+          })}
+        </nav>
+      </aside>
+      <div className="flex-1 p-6">
+        <Outlet />
       </div>
-    </AdminSecretContext>
+    </div>
   );
 }

@@ -5,7 +5,7 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { useState } from "react";
 import { CheckCircle2, Loader2, Upload } from "lucide-react";
 import { api } from "convex/_generated/api";
-import { useAdminSecret } from "../route";
+import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -83,7 +83,6 @@ export const Route = createFileRoute("/admin/travel/")({
 });
 
 function TravelAdmin() {
-  const adminSecret = useAdminSecret();
   const [parsed, setParsed] = useState<ParsedFlight[]>([]);
   const [status, setStatus] = useState<
     "idle" | "parsing" | "uploading" | "done"
@@ -117,6 +116,7 @@ function TravelAdmin() {
 
     setStatus("uploading");
 
+    const adminSecret = await getAdminSecret();
     const batchSize = 50;
     let totalCreated = 0;
     let totalUpdated = 0;

@@ -10,7 +10,7 @@ import Markdown from "react-markdown";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { useAdminSecret } from "../../route";
+import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -47,7 +47,6 @@ export const Route = createFileRoute("/admin/blog/$id/")({
 });
 
 function BlogEditor() {
-  const adminSecret = useAdminSecret();
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const isNew = id === "new";
@@ -113,6 +112,7 @@ function BlogEditor() {
   const contentValue = form.watch("content");
 
   async function onSubmit(values: FormValues) {
+    const adminSecret = await getAdminSecret();
     const data = {
       title: values.title,
       slug: values.slug,
@@ -131,12 +131,14 @@ function BlogEditor() {
 
   async function handleDelete() {
     if (!isNew) {
+      const adminSecret = await getAdminSecret();
       await deletePost({ adminSecret, id: id as Id<"blogPosts"> });
       await navigate({ to: "/admin/blog" });
     }
   }
 
   const handleImageUpload = useCallback(async () => {
+    const adminSecret = await getAdminSecret();
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
@@ -182,7 +184,7 @@ function BlogEditor() {
     });
 
     input.click();
-  }, [adminSecret, form, generateUploadUrl, getImageUrl]);
+  }, [form, generateUploadUrl, getImageUrl]);
 
   function generateSlug() {
     const title = form.getValues("title");

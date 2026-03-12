@@ -9,7 +9,7 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { useAdminSecret } from "../route";
+import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -60,7 +60,6 @@ export const Route = createFileRoute("/admin/experiences/")({
 });
 
 function ExperiencesAdmin() {
-  const adminSecret = useAdminSecret();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<
     Id<"resumeWorkExperiences"> | undefined
@@ -124,6 +123,7 @@ function ExperiencesAdmin() {
   }
 
   async function onSubmit(values: FormValues) {
+    const adminSecret = await getAdminSecret();
     const data = {
       companyId: values.companyId as Id<"resumeCompanies">,
       title: values.title,
@@ -302,8 +302,9 @@ function ExperiencesAdmin() {
                   <Button
                     size="icon"
                     variant="ghost"
-                    onClick={() => {
-                      void deleteExperience({ adminSecret, id: exp._id });
+                    onClick={async () => {
+                      const adminSecret = await getAdminSecret();
+                      await deleteExperience({ adminSecret, id: exp._id });
                     }}
                   >
                     <Trash2 className="size-4" />

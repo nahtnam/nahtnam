@@ -9,7 +9,7 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
-import { useAdminSecret } from "../../route";
+import { getAdminSecret } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -47,7 +47,6 @@ export const Route = createFileRoute("/admin/blog/categories/")({
 });
 
 function CategoriesAdmin() {
-  const adminSecret = useAdminSecret();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"blogCategories"> | undefined>(
     undefined,
@@ -85,6 +84,7 @@ function CategoriesAdmin() {
   }
 
   async function onSubmit(values: FormValues) {
+    const adminSecret = await getAdminSecret();
     await (editingId
       ? updateCategory({ adminSecret, id: editingId, ...values })
       : createCategory({ adminSecret, ...values }));
@@ -159,8 +159,9 @@ function CategoriesAdmin() {
                   <Button
                     size="icon"
                     variant="ghost"
-                    onClick={() => {
-                      void deleteCategory({ adminSecret, id: category._id });
+                    onClick={async () => {
+                      const adminSecret = await getAdminSecret();
+                      await deleteCategory({ adminSecret, id: category._id });
                     }}
                   >
                     <Trash2 className="size-4" />
