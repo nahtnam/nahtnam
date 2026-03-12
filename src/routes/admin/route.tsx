@@ -15,7 +15,7 @@ import {
   Plane,
   Tags,
 } from "lucide-react";
-import { checkAdminAuth, setAdminCookie } from "@/lib/admin-auth";
+import { getAdminSecret, setAdminCookie } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 
 const adminNav = [
@@ -35,14 +35,12 @@ export const Route = createFileRoute("/admin")({
     const secret = parameters.get("secret");
 
     if (secret) {
-      const ok = await setAdminCookie({ data: { secret } });
-      if (ok) {
-        throw redirect({ to: "/admin" });
-      }
+      await setAdminCookie({ data: { secret } });
+      throw redirect({ to: "/admin" });
     }
 
-    const isAuthed = await checkAdminAuth();
-    if (!isAuthed) {
+    const adminSecret = await getAdminSecret();
+    if (!adminSecret) {
       throw redirect({ to: "/" });
     }
   },
