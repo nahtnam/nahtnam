@@ -41,6 +41,15 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+function toLocalDateTime(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  const h = String(date.getHours()).padStart(2, "0");
+  const min = String(date.getMinutes()).padStart(2, "0");
+  return `${y}-${m}-${d}T${h}:${min}`;
+}
+
 export const Route = createFileRoute("/admin/blog/$id/")({
   component: BlogEditor,
 });
@@ -89,24 +98,19 @@ function BlogEditor() {
       excerpt: "",
       content: "",
       categoryId: "",
-      publishedAt: new Date().toISOString().slice(0, 16),
+      publishedAt: toLocalDateTime(new Date()),
     },
-    ...(isNew
-      ? {}
-      : existingPost
+    values:
+      !isNew && existingPost
         ? {
-            values: {
-              title: existingPost.title,
-              slug: existingPost.slug,
-              excerpt: existingPost.excerpt,
-              content: existingPost.content,
-              categoryId: existingPost.categoryId,
-              publishedAt: new Date(existingPost.publishedAt)
-                .toISOString()
-                .slice(0, 16),
-            },
+            title: existingPost.title,
+            slug: existingPost.slug,
+            excerpt: existingPost.excerpt,
+            content: existingPost.content,
+            categoryId: existingPost.categoryId,
+            publishedAt: toLocalDateTime(new Date(existingPost.publishedAt)),
           }
-        : {}),
+        : undefined,
   });
 
   const contentValue = form.watch("content");

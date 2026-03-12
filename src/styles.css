@@ -146,4 +146,10 @@
   html {
     @apply font-sans;
   }
+
+  .prose img {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 1.5rem;
+  }
 }
