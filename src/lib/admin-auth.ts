@@ -12,7 +12,7 @@ export const checkAdminAuth = createServerFn({ method: "GET" }).handler(
   },
 );
 
-export const getAdminSecret = createServerFn({ method: "GET" }).handler(
+export const getAdminSecret = createServerFn({ method: "POST" }).handler(
   async () => {
     const token = getCookie(COOKIE_NAME);
     if (token !== serverEnv.ADMIN_SECRET) {
