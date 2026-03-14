@@ -1,4 +1,3 @@
- 
 import { query } from "../_generated/server";
 
 export const listItems = query({

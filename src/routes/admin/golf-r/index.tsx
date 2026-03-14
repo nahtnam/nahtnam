@@ -88,17 +88,17 @@ function GolfRAdmin() {
   );
 
   const { data: items = [] } = useQuery(
-    convexQuery(api.admin.golfR.listItems, { adminSecret }),
+    convexQuery(api.admin.golf_r.listItems, { adminSecret }),
   );
 
   const { mutateAsync: createItem } = useMutation({
-    mutationFn: useConvexMutation(api.admin.golfR.createItem),
+    mutationFn: useConvexMutation(api.admin.golf_r.createItem),
   });
   const { mutateAsync: updateItem } = useMutation({
-    mutationFn: useConvexMutation(api.admin.golfR.updateItem),
+    mutationFn: useConvexMutation(api.admin.golf_r.updateItem),
   });
   const { mutateAsync: deleteItem } = useMutation({
-    mutationFn: useConvexMutation(api.admin.golfR.deleteItem),
+    mutationFn: useConvexMutation(api.admin.golf_r.deleteItem),
   });
 
   const form = useForm<FormValues>({

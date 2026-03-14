@@ -47,7 +47,7 @@ export const Route = createFileRoute("/golf-r/")({
 
 function GolfRPage() {
   const { data: items } = useSuspenseQuery(
-    convexQuery(api.golfR.queries.listItems, {}),
+    convexQuery(api.golf_r.queries.listItems, {}),
   );
 
   return (
