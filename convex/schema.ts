@@ -29,6 +29,21 @@ export default defineSchema({
     ),
   }).index("by_status", ["status"]),
 
+  golfRItems: defineTable({
+    cashback: v.optional(v.number()),
+    category: v.string(),
+    date: v.string(),
+    description: v.optional(v.string()),
+    discount: v.optional(v.number()),
+    installed: v.optional(v.boolean()),
+    name: v.string(),
+    price: v.number(),
+    sortOrder: v.number(),
+    url: v.optional(v.string()),
+  })
+    .index("by_sortOrder", ["sortOrder"])
+    .index("by_category", ["category"]),
+
   resumeCompanies: defineTable({
     logoUrl: v.string(),
     name: v.string(),

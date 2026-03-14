@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TravelIndexRouteImport } from './routes/travel/index'
+import { Route as GolfRIndexRouteImport } from './routes/golf-r/index'
 import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
 import { Route as ContactIndexRouteImport } from './routes/contact/index'
 import { Route as BnbIndexRouteImport } from './routes/bnb/index'
@@ -20,6 +21,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as BlogSlugIndexRouteImport } from './routes/blog/$slug/index'
 import { Route as AdminTravelIndexRouteImport } from './routes/admin/travel/index'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/index'
+import { Route as AdminGolfRIndexRouteImport } from './routes/admin/golf-r/index'
 import { Route as AdminExperiencesIndexRouteImport } from './routes/admin/experiences/index'
 import { Route as AdminEducationIndexRouteImport } from './routes/admin/education/index'
 import { Route as AdminCompaniesIndexRouteImport } from './routes/admin/companies/index'
@@ -40,6 +42,11 @@ const IndexRoute = IndexRouteImport.update({
 const TravelIndexRoute = TravelIndexRouteImport.update({
   id: '/travel/',
   path: '/travel/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GolfRIndexRoute = GolfRIndexRouteImport.update({
+  id: '/golf-r/',
+  path: '/golf-r/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExperienceIndexRoute = ExperienceIndexRouteImport.update({
@@ -82,6 +89,11 @@ const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
   path: '/projects/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGolfRIndexRoute = AdminGolfRIndexRouteImport.update({
+  id: '/golf-r/',
+  path: '/golf-r/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminExperiencesIndexRoute = AdminExperiencesIndexRouteImport.update({
   id: '/experiences/',
   path: '/experiences/',
@@ -122,11 +134,13 @@ export interface FileRoutesByFullPath {
   '/bnb/': typeof BnbIndexRoute
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
+  '/golf-r/': typeof GolfRIndexRoute
   '/travel/': typeof TravelIndexRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/companies/': typeof AdminCompaniesIndexRoute
   '/admin/education/': typeof AdminEducationIndexRoute
   '/admin/experiences/': typeof AdminExperiencesIndexRoute
+  '/admin/golf-r/': typeof AdminGolfRIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/travel/': typeof AdminTravelIndexRoute
   '/blog/$slug/': typeof BlogSlugIndexRoute
@@ -140,11 +154,13 @@ export interface FileRoutesByTo {
   '/bnb': typeof BnbIndexRoute
   '/contact': typeof ContactIndexRoute
   '/experience': typeof ExperienceIndexRoute
+  '/golf-r': typeof GolfRIndexRoute
   '/travel': typeof TravelIndexRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/companies': typeof AdminCompaniesIndexRoute
   '/admin/education': typeof AdminEducationIndexRoute
   '/admin/experiences': typeof AdminExperiencesIndexRoute
+  '/admin/golf-r': typeof AdminGolfRIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/travel': typeof AdminTravelIndexRoute
   '/blog/$slug': typeof BlogSlugIndexRoute
@@ -160,11 +176,13 @@ export interface FileRoutesById {
   '/bnb/': typeof BnbIndexRoute
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
+  '/golf-r/': typeof GolfRIndexRoute
   '/travel/': typeof TravelIndexRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/companies/': typeof AdminCompaniesIndexRoute
   '/admin/education/': typeof AdminEducationIndexRoute
   '/admin/experiences/': typeof AdminExperiencesIndexRoute
+  '/admin/golf-r/': typeof AdminGolfRIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/travel/': typeof AdminTravelIndexRoute
   '/blog/$slug/': typeof BlogSlugIndexRoute
@@ -181,11 +199,13 @@ export interface FileRouteTypes {
     | '/bnb/'
     | '/contact/'
     | '/experience/'
+    | '/golf-r/'
     | '/travel/'
     | '/admin/blog/'
     | '/admin/companies/'
     | '/admin/education/'
     | '/admin/experiences/'
+    | '/admin/golf-r/'
     | '/admin/projects/'
     | '/admin/travel/'
     | '/blog/$slug/'
@@ -199,11 +219,13 @@ export interface FileRouteTypes {
     | '/bnb'
     | '/contact'
     | '/experience'
+    | '/golf-r'
     | '/travel'
     | '/admin/blog'
     | '/admin/companies'
     | '/admin/education'
     | '/admin/experiences'
+    | '/admin/golf-r'
     | '/admin/projects'
     | '/admin/travel'
     | '/blog/$slug'
@@ -218,11 +240,13 @@ export interface FileRouteTypes {
     | '/bnb/'
     | '/contact/'
     | '/experience/'
+    | '/golf-r/'
     | '/travel/'
     | '/admin/blog/'
     | '/admin/companies/'
     | '/admin/education/'
     | '/admin/experiences/'
+    | '/admin/golf-r/'
     | '/admin/projects/'
     | '/admin/travel/'
     | '/blog/$slug/'
@@ -237,6 +261,7 @@ export interface RootRouteChildren {
   BnbIndexRoute: typeof BnbIndexRoute
   ContactIndexRoute: typeof ContactIndexRoute
   ExperienceIndexRoute: typeof ExperienceIndexRoute
+  GolfRIndexRoute: typeof GolfRIndexRoute
   TravelIndexRoute: typeof TravelIndexRoute
   BlogSlugIndexRoute: typeof BlogSlugIndexRoute
 }
@@ -262,6 +287,13 @@ declare module '@tanstack/react-router' {
       path: '/travel'
       fullPath: '/travel/'
       preLoaderRoute: typeof TravelIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/golf-r/': {
+      id: '/golf-r/'
+      path: '/golf-r'
+      fullPath: '/golf-r/'
+      preLoaderRoute: typeof GolfRIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experience/': {
@@ -320,6 +352,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProjectsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/golf-r/': {
+      id: '/admin/golf-r/'
+      path: '/golf-r'
+      fullPath: '/admin/golf-r/'
+      preLoaderRoute: typeof AdminGolfRIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/experiences/': {
       id: '/admin/experiences/'
       path: '/experiences'
@@ -371,6 +410,7 @@ interface AdminRouteChildren {
   AdminCompaniesIndexRoute: typeof AdminCompaniesIndexRoute
   AdminEducationIndexRoute: typeof AdminEducationIndexRoute
   AdminExperiencesIndexRoute: typeof AdminExperiencesIndexRoute
+  AdminGolfRIndexRoute: typeof AdminGolfRIndexRoute
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
   AdminTravelIndexRoute: typeof AdminTravelIndexRoute
   AdminBlogIdIndexRoute: typeof AdminBlogIdIndexRoute
@@ -383,6 +423,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCompaniesIndexRoute: AdminCompaniesIndexRoute,
   AdminEducationIndexRoute: AdminEducationIndexRoute,
   AdminExperiencesIndexRoute: AdminExperiencesIndexRoute,
+  AdminGolfRIndexRoute: AdminGolfRIndexRoute,
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,
   AdminTravelIndexRoute: AdminTravelIndexRoute,
   AdminBlogIdIndexRoute: AdminBlogIdIndexRoute,
@@ -398,6 +439,7 @@ const rootRouteChildren: RootRouteChildren = {
   BnbIndexRoute: BnbIndexRoute,
   ContactIndexRoute: ContactIndexRoute,
   ExperienceIndexRoute: ExperienceIndexRoute,
+  GolfRIndexRoute: GolfRIndexRoute,
   TravelIndexRoute: TravelIndexRoute,
   BlogSlugIndexRoute: BlogSlugIndexRoute,
 }

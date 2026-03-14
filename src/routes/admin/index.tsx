@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Briefcase,
   Building2,
+  Car,
   FileText,
   FolderOpen,
   GraduationCap,
@@ -57,6 +58,12 @@ const sections = [
     href: "/admin/travel",
     icon: Plane,
     title: "Travel",
+  },
+  {
+    description: "Manage Golf R mods & costs",
+    href: "/admin/golf-r",
+    icon: Car,
+    title: "Golf R",
   },
 ];
 

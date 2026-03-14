@@ -8,6 +8,7 @@ import {
 import {
   Briefcase,
   Building2,
+  Car,
   FileText,
   FolderOpen,
   GraduationCap,
@@ -28,6 +29,7 @@ const adminNav = [
   { href: "/admin/blog", icon: FileText, label: "Blog Posts" },
   { href: "/admin/blog/categories", icon: Tags, label: "Categories" },
   { href: "/admin/travel", icon: Plane, label: "Travel" },
+  { href: "/admin/golf-r", icon: Car, label: "Golf R" },
 ];
 
 export const Route = createFileRoute("/admin")({

@@ -10,13 +10,16 @@
 
 import type * as admin_auth from "../admin/auth.js";
 import type * as admin_blog from "../admin/blog.js";
+import type * as admin_golfR from "../admin/golfR.js";
 import type * as admin_resume from "../admin/resume.js";
+import type * as admin_seedGolfR from "../admin/seedGolfR.js";
 import type * as admin_travel from "../admin/travel.js";
 import type * as blog_queries from "../blog/queries.js";
 import type * as bnb_actions from "../bnb/actions.js";
 import type * as bnb_mutations from "../bnb/mutations.js";
 import type * as bnb_queries from "../bnb/queries.js";
 import type * as contact_actions from "../contact/actions.js";
+import type * as golfR_queries from "../golfR/queries.js";
 import type * as http from "../http.js";
 import type * as lib_builder from "../lib/builder.js";
 import type * as lib_config_env from "../lib/config/env.js";
@@ -35,13 +38,16 @@ import type {
 declare const fullApi: ApiFromModules<{
   "admin/auth": typeof admin_auth;
   "admin/blog": typeof admin_blog;
+  "admin/golfR": typeof admin_golfR;
   "admin/resume": typeof admin_resume;
+  "admin/seedGolfR": typeof admin_seedGolfR;
   "admin/travel": typeof admin_travel;
   "blog/queries": typeof blog_queries;
   "bnb/actions": typeof bnb_actions;
   "bnb/mutations": typeof bnb_mutations;
   "bnb/queries": typeof bnb_queries;
   "contact/actions": typeof contact_actions;
+  "golfR/queries": typeof golfR_queries;
   http: typeof http;
   "lib/builder": typeof lib_builder;
   "lib/config/env": typeof lib_config_env;
