@@ -9,7 +9,7 @@ export const listItems = query({
     requireAdmin(adminSecret);
     return ctx.db
       .query("golfRItems")
-      .withIndex("by_sortOrder")
+      .withIndex("by_date")
       .order("asc")
       .collect();
   },
@@ -26,7 +26,7 @@ export const createItem = mutation({
     installed: v.optional(v.boolean()),
     name: v.string(),
     price: v.number(),
-    sortOrder: v.number(),
+
     url: v.optional(v.string()),
   },
   async handler(ctx, { adminSecret, ...args }) {
@@ -47,7 +47,7 @@ export const updateItem = mutation({
     installed: v.optional(v.boolean()),
     name: v.string(),
     price: v.number(),
-    sortOrder: v.number(),
+
     url: v.optional(v.string()),
   },
   async handler(ctx, { adminSecret, id, ...data }) {

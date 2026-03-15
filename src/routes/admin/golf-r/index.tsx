@@ -63,7 +63,6 @@ const schema = z.object({
   date: z.string().min(1, "Required"),
   description: z.string().optional(),
   url: z.string().optional(),
-  sortOrder: z.coerce.number().int(),
   installed: z.boolean().optional(),
 });
 
@@ -112,7 +111,7 @@ function GolfRAdmin() {
       date: "",
       description: "",
       url: "",
-      sortOrder: 0,
+
       installed: undefined,
     },
   });
@@ -128,7 +127,7 @@ function GolfRAdmin() {
       date: "",
       description: "",
       url: "",
-      sortOrder: items.length,
+
       installed: undefined,
     });
     setOpen(true);
@@ -145,7 +144,7 @@ function GolfRAdmin() {
       date: item.date,
       description: item.description ?? "",
       url: item.url ?? "",
-      sortOrder: item.sortOrder,
+
       installed: item.installed ?? undefined,
     });
     setOpen(true);
@@ -322,19 +321,6 @@ function GolfRAdmin() {
                 <div className="grid grid-cols-2 gap-3">
                   <FormField
                     control={form.control}
-                    name="sortOrder"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sort Order</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
                     name="installed"
                     render={({ field }) => (
                       <FormItem className="flex flex-col justify-end">
@@ -360,7 +346,6 @@ function GolfRAdmin() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-12">#</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Category</TableHead>
             <TableHead className="text-right">Price</TableHead>
@@ -372,9 +357,6 @@ function GolfRAdmin() {
         <TableBody>
           {items.map((item) => (
             <TableRow key={item._id}>
-              <TableCell className="font-mono text-muted-foreground text-xs">
-                {item.sortOrder}
-              </TableCell>
               <TableCell className="font-medium">{item.name}</TableCell>
               <TableCell className="text-sm">
                 {categories.find((c) => c.value === item.category)?.label ??

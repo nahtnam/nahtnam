@@ -38,10 +38,9 @@ export default defineSchema({
     installed: v.optional(v.boolean()),
     name: v.string(),
     price: v.number(),
-    sortOrder: v.number(),
     url: v.optional(v.string()),
   })
-    .index("by_sortOrder", ["sortOrder"])
+    .index("by_date", ["date"])
     .index("by_category", ["category"]),
 
   resumeCompanies: defineTable({

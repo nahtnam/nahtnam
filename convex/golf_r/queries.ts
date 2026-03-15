@@ -5,7 +5,7 @@ export const listItems = query({
   async handler(ctx) {
     return ctx.db
       .query("golfRItems")
-      .withIndex("by_sortOrder")
+      .withIndex("by_date")
       .order("asc")
       .collect();
   },
