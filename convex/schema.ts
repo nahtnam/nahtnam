@@ -38,6 +38,7 @@ export default defineSchema({
     installed: v.optional(v.boolean()),
     name: v.string(),
     price: v.number(),
+    sortOrder: v.optional(v.number()),
     url: v.optional(v.string()),
   })
     .index("by_date", ["date"])

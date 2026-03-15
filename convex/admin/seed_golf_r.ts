@@ -47,6 +47,17 @@ const seedItems = [
   },
 ];
 
+export const removeSortOrder = internalMutation({
+  args: {},
+  async handler(ctx) {
+    const items = await ctx.db.query("golfRItems").collect();
+    for (const item of items) {
+      const { sortOrder: _, ...rest } = item as Record<string, unknown>;
+      await ctx.db.replace("golfRItems", item._id, rest as never);
+    }
+  },
+});
+
 export const seed = internalMutation({
   args: {},
   async handler(ctx) {
