@@ -101,7 +101,7 @@ function GolfRAdmin() {
   });
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as never,
     defaultValues: {
       name: "",
       category: "purchase",
@@ -366,9 +366,10 @@ function GolfRAdmin() {
                 {formatUsd(item.price)}
               </TableCell>
               <TableCell className="text-right font-mono text-sm text-emerald-600">
-                {(item.discount ?? 0) > 0 && `-${formatUsd(item.discount)}`}
+                {(item.discount ?? 0) > 0 &&
+                  `-${formatUsd(item.discount ?? 0)}`}
                 {(item.cashback ?? 0) > 0 &&
-                  `${(item.discount ?? 0) > 0 ? " / " : ""}-${formatUsd(item.cashback)}`}
+                  `${(item.discount ?? 0) > 0 ? " / " : ""}-${formatUsd(item.cashback ?? 0)}`}
               </TableCell>
               <TableCell className="text-sm">{item.date}</TableCell>
               <TableCell>

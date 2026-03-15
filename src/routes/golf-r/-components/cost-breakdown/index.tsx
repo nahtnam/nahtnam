@@ -142,41 +142,41 @@ export function CostBreakdown({ items }: CostBreakdownProps) {
                     className="ml-7 space-y-1 border-l-2 py-2 pl-4"
                     style={{ borderColor: color }}
                   >
-                    {catItems.map((item) => (
-                      <div
-                        key={item._id}
-                        className="flex items-center justify-between py-1.5 text-sm"
-                      >
-                        <div className="flex items-center gap-2">
-                          {item.url ? (
-                            <a
-                              className="text-foreground underline decoration-muted-foreground/30 underline-offset-2 hover:decoration-foreground"
-                              href={item.url}
-                              rel="noopener noreferrer"
-                              target="_blank"
-                            >
-                              {item.name}
-                            </a>
-                          ) : (
-                            <span>{item.name}</span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {(item.discount ?? 0) > 0 ||
-                            (item.cashback ?? 0) > 0 ? (
-                            <span className="text-xs font-medium text-emerald-500">
-                              saves{" "}
-                              {formatUsd(
-                                (item.discount ?? 0) + (item.cashback ?? 0),
-                              )}
+                    {catItems.map((item) => {
+                      const savings =
+                        (item.discount ?? 0) + (item.cashback ?? 0);
+                      return (
+                        <div
+                          key={item._id}
+                          className="flex items-center justify-between py-1.5 text-sm"
+                        >
+                          <div className="flex items-center gap-2">
+                            {item.url ? (
+                              <a
+                                className="text-foreground underline decoration-muted-foreground/30 underline-offset-2 hover:decoration-foreground"
+                                href={item.url}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                {item.name}
+                              </a>
+                            ) : (
+                              <span>{item.name}</span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {savings > 0 ? (
+                              <span className="text-xs font-medium text-emerald-500">
+                                saves {formatUsd(savings)}
+                              </span>
+                            ) : null}
+                            <span className="font-mono tabular-nums text-muted-foreground">
+                              {formatUsd(netCost(item))}
                             </span>
-                          ) : null}
-                          <span className="font-mono tabular-nums text-muted-foreground">
-                            {formatUsd(netCost(item))}
-                          </span>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </motion.div>
               ) : null}
