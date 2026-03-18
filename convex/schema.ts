@@ -30,6 +30,15 @@ export default defineSchema({
   }).index("by_status", ["status"]),
 
   golfRItems: defineTable({
+    attachments: v.optional(
+      v.array(
+        v.object({
+          contentType: v.optional(v.string()),
+          name: v.string(),
+          storageId: v.id("_storage"),
+        }),
+      ),
+    ),
     cashback: v.optional(v.number()),
     category: v.string(),
     date: v.string(),

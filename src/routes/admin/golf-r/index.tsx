@@ -4,12 +4,21 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { useRef, useState, type ChangeEvent } from "react";
+import {
+  Loader2,
+  Paperclip,
+  Pencil,
+  Plus,
+  Trash2,
+  Upload,
+  X,
+} from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { sortGolfRItems } from "@/routes/golf-r/-components/lib";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -71,6 +80,13 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+type AttachmentValue = {
+  readonly contentType?: string;
+  readonly name: string;
+  readonly storageId: Id<"_storage">;
+  readonly url?: string;
+};
+
 export const Route = createFileRoute("/admin/golf-r/")({
   component: GolfRAdmin,
 });
@@ -82,12 +98,30 @@ function formatUsd(amount: number) {
   }).format(amount);
 }
 
+function sameAttachmentIds(
+  left: readonly AttachmentValue[],
+  right: readonly AttachmentValue[],
+) {
+  return (
+    left.length === right.length &&
+    left.every(
+      (attachment, index) => attachment.storageId === right[index]?.storageId,
+    )
+  );
+}
+
 function GolfRAdmin() {
   const { adminSecret } = Route.useRouteContext();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [attachments, setAttachments] = useState<AttachmentValue[]>([]);
+  const [initialAttachmentIds, setInitialAttachmentIds] = useState<
+    Array<Id<"_storage">>
+  >([]);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"golfRItems"> | undefined>(
     undefined,
   );
+  const [uploading, setUploading] = useState(false);
 
   const { data = [] } = useQuery(
     convexQuery(api.admin.golf_r.listItems, { adminSecret }),
@@ -103,6 +137,15 @@ function GolfRAdmin() {
   const { mutateAsync: deleteItem } = useMutation({
     mutationFn: useConvexMutation(api.admin.golf_r.deleteItem),
   });
+  const { mutateAsync: generateUploadUrl } = useMutation({
+    mutationFn: useConvexMutation(api.admin.golf_r.generateUploadUrl),
+  });
+  const { mutateAsync: getAttachmentUrl } = useMutation({
+    mutationFn: useConvexMutation(api.admin.golf_r.getAttachmentUrl),
+  });
+  const { mutateAsync: deleteAttachment } = useMutation({
+    mutationFn: useConvexMutation(api.admin.golf_r.deleteAttachment),
+  });
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema) as never,
@@ -115,14 +158,15 @@ function GolfRAdmin() {
       date: "",
       description: "",
       url: "",
-
       installed: undefined,
       mileage: undefined,
     },
   });
 
-  function openCreate() {
+  function resetEditor() {
+    setAttachments([]);
     setEditingId(undefined);
+    setInitialAttachmentIds([]);
     form.reset({
       name: "",
       category: "purchase",
@@ -132,15 +176,67 @@ function GolfRAdmin() {
       date: "",
       description: "",
       url: "",
-
       installed: undefined,
       mileage: undefined,
     });
+  }
+
+  async function cleanupDraftAttachments() {
+    const initialIds = new Set(initialAttachmentIds);
+    const draftAttachments = attachments.filter(
+      (attachment) => !initialIds.has(attachment.storageId),
+    );
+
+    await Promise.all(
+      draftAttachments.map(async (attachment) =>
+        deleteAttachment({ adminSecret, storageId: attachment.storageId }),
+      ),
+    );
+  }
+
+  async function handleOpenChange(nextOpen: boolean) {
+    if (!nextOpen) {
+      await cleanupDraftAttachments();
+      resetEditor();
+    }
+
+    setOpen(nextOpen);
+  }
+
+  function openCreate() {
+    resetEditor();
     setOpen(true);
   }
 
-  function openEdit(item: (typeof items)[number]) {
+  async function resolveAttachmentUrls(baseAttachments: AttachmentValue[]) {
+    const resolvedAttachments = await Promise.all(
+      baseAttachments.map(async (attachment) => ({
+        ...attachment,
+        url:
+          (await getAttachmentUrl({
+            adminSecret,
+            storageId: attachment.storageId,
+          })) ?? undefined,
+      })),
+    );
+
+    setAttachments((currentAttachments) =>
+      sameAttachmentIds(currentAttachments, baseAttachments)
+        ? resolvedAttachments
+        : currentAttachments,
+    );
+  }
+
+  async function openEdit(item: (typeof items)[number]) {
+    const nextAttachments = (item.attachments ?? []).map((attachment) => ({
+      ...attachment,
+    }));
+
     setEditingId(item._id);
+    setAttachments(nextAttachments);
+    setInitialAttachmentIds(
+      nextAttachments.map((attachment) => attachment.storageId),
+    );
     form.reset({
       name: item.name,
       category: item.category,
@@ -150,16 +246,90 @@ function GolfRAdmin() {
       date: item.date,
       description: item.description ?? "",
       url: item.url ?? "",
-
       installed: item.installed ?? undefined,
       mileage: item.mileage ?? undefined,
     });
     setOpen(true);
+    await resolveAttachmentUrls(nextAttachments);
+  }
+
+  async function handleAttachmentUpload(event: ChangeEvent<HTMLInputElement>) {
+    const files = [...(event.target.files ?? [])];
+    event.target.value = "";
+
+    if (files.length === 0) {
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const uploadedAttachments = await Promise.all(
+        files.map(async (file) => {
+          const uploadUrl = await generateUploadUrl({ adminSecret });
+          const result = await fetch(uploadUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": file.type || "application/octet-stream",
+            },
+            body: file,
+          });
+
+          if (!result.ok) {
+            throw new Error(`Failed to upload ${file.name}`);
+          }
+
+          const { storageId } = (await result.json()) as { storageId: string };
+          const typedStorageId = storageId as Id<"_storage">;
+          const url = await getAttachmentUrl({
+            adminSecret,
+            storageId: typedStorageId,
+          });
+
+          return {
+            contentType: file.type || undefined,
+            name: file.name,
+            storageId: typedStorageId,
+            url: url ?? undefined,
+          };
+        }),
+      );
+
+      setAttachments((currentAttachments) => [
+        ...currentAttachments,
+        ...uploadedAttachments,
+      ]);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function removeAttachmentFromDraft(storageId: Id<"_storage">) {
+    const initialIds = new Set(initialAttachmentIds);
+    const shouldDeleteNow = !initialIds.has(storageId);
+
+    setAttachments((currentAttachments) =>
+      currentAttachments.filter(
+        (attachment) => attachment.storageId !== storageId,
+      ),
+    );
+
+    if (shouldDeleteNow) {
+      await deleteAttachment({ adminSecret, storageId });
+    }
   }
 
   async function onSubmit(values: FormValues) {
+    const nextAttachments = attachments.map(
+      ({ contentType, name, storageId }) => ({
+        contentType,
+        name,
+        storageId,
+      }),
+    );
     const data = {
       ...values,
+      attachments: nextAttachments,
       description: values.description ?? undefined,
       url: values.url ?? undefined,
       discount: values.discount ?? undefined,
@@ -171,6 +341,7 @@ function GolfRAdmin() {
       ? updateItem({ adminSecret, id: editingId, ...data })
       : createItem({ adminSecret, ...data }));
 
+    resetEditor();
     setOpen(false);
   }
 
@@ -178,7 +349,12 @@ function GolfRAdmin() {
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold text-2xl">Golf R</h1>
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog
+          open={open}
+          onOpenChange={async (nextOpen) => {
+            await handleOpenChange(nextOpen);
+          }}
+        >
           <DialogTrigger asChild>
             <Button size="sm" onClick={openCreate}>
               <Plus className="mr-1 size-4" />
@@ -201,7 +377,7 @@ function GolfRAdmin() {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g. Subwoofer Kit" {...field} />
+                        <Input placeholder="e.g. Oil Change" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -363,6 +539,99 @@ function GolfRAdmin() {
                     )}
                   />
                 </div>
+
+                <div className="space-y-3 rounded-lg border p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-medium">Attachments</p>
+                      <p className="text-muted-foreground text-sm">
+                        Upload receipts or warranty proof. Only visible in
+                        admin.
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        inputRef.current?.click();
+                      }}
+                    >
+                      {uploading ? (
+                        <Loader2 className="mr-2 size-4 animate-spin" />
+                      ) : (
+                        <Upload className="mr-2 size-4" />
+                      )}
+                      Add Files
+                    </Button>
+                  </div>
+
+                  <Input
+                    ref={inputRef}
+                    multiple
+                    type="file"
+                    className="hidden"
+                    onChange={async (event) => {
+                      await handleAttachmentUpload(event);
+                    }}
+                  />
+
+                  {attachments.length === 0 ? (
+                    <div className="text-muted-foreground rounded-md border border-dashed p-3 text-sm">
+                      No attachments yet.
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {attachments.map((attachment) => (
+                        <div
+                          key={attachment.storageId}
+                          className="flex items-center justify-between gap-3 rounded-md border px-3 py-2"
+                        >
+                          <div className="min-w-0">
+                            {attachment.url ? (
+                              <a
+                                className="hover:text-primary flex items-center gap-2 text-sm font-medium underline-offset-4 hover:underline"
+                                href={attachment.url}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                <Paperclip className="size-4 shrink-0" />
+                                <span className="truncate">
+                                  {attachment.name}
+                                </span>
+                              </a>
+                            ) : (
+                              <div className="flex items-center gap-2 text-sm font-medium">
+                                <Paperclip className="size-4 shrink-0" />
+                                <span className="truncate">
+                                  {attachment.name}
+                                </span>
+                              </div>
+                            )}
+                            {attachment.contentType ? (
+                              <p className="text-muted-foreground text-xs">
+                                {attachment.contentType}
+                              </p>
+                            ) : null}
+                          </div>
+
+                          <Button
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                            onClick={() => {
+                              void removeAttachmentFromDraft(
+                                attachment.storageId,
+                              );
+                            }}
+                          >
+                            <X className="size-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <Button type="submit">{editingId ? "Update" : "Create"}</Button>
               </form>
             </Form>
@@ -378,6 +647,7 @@ function GolfRAdmin() {
             <TableHead className="text-right">Price</TableHead>
             <TableHead className="text-right">Disc/CB</TableHead>
             <TableHead className="text-right">Miles</TableHead>
+            <TableHead className="text-right">Files</TableHead>
             <TableHead>Date</TableHead>
             <TableHead className="w-24" />
           </TableRow>
@@ -402,14 +672,17 @@ function GolfRAdmin() {
               <TableCell className="text-right font-mono text-sm">
                 {item.mileage?.toLocaleString("en-US") ?? "—"}
               </TableCell>
+              <TableCell className="text-right text-sm">
+                <Badge variant="outline">{item.attachments?.length ?? 0}</Badge>
+              </TableCell>
               <TableCell className="text-sm">{item.date}</TableCell>
               <TableCell>
                 <div className="flex gap-1">
                   <Button
                     size="icon"
                     variant="ghost"
-                    onClick={() => {
-                      openEdit(item);
+                    onClick={async () => {
+                      await openEdit(item);
                     }}
                   >
                     <Pencil className="size-4" />
