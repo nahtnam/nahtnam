@@ -1,14 +1,25 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { Gauge, ReceiptText, ShieldCheck, Wrench } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import type { Doc } from "convex/_generated/dataModel";
+import {
+  formatDate,
+  formatMileage,
+  isMaintenanceItem,
+  isModItem,
+  netCost,
+} from "../lib";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 type BuildStatsProps = {
   readonly items: Array<Doc<"golfRItems">>;
 };
-
-function netCost(item: Doc<"golfRItems">) {
-  return item.price - (item.discount ?? 0) - (item.cashback ?? 0);
-}
 
 function AnimatedCounter(props: {
   readonly decimals?: number;
@@ -28,7 +39,7 @@ function AnimatedCounter(props: {
     }
 
     const timeout = setTimeout(() => {
-      const duration = 1500;
+      const duration = 1200;
       const startTime = performance.now();
 
       function animate(currentTime: number) {
@@ -49,7 +60,7 @@ function AnimatedCounter(props: {
     return () => {
       clearTimeout(timeout);
     };
-  }, [isInView, value, delay]);
+  }, [delay, isInView, value]);
 
   return (
     <span ref={ref} className="tabular-nums">
@@ -65,70 +76,93 @@ function AnimatedCounter(props: {
 
 export function BuildStats({ items }: BuildStatsProps) {
   const totalSpent = items.reduce((sum, item) => sum + netCost(item), 0);
-  const mods = items.filter(
-    (i) =>
-      i.category !== "purchase" && i.category !== "tax" && i.category !== "fee",
-  );
+  const mods = items.filter((item) => isModItem(item));
+  const maintenance = items.filter((item) => isMaintenanceItem(item));
   const modSpent = mods.reduce((sum, item) => sum + netCost(item), 0);
+  const maintenanceSpent = maintenance.reduce(
+    (sum, item) => sum + netCost(item),
+    0,
+  );
+  const latestMileage = items.find(
+    (item) => item.mileage !== undefined,
+  )?.mileage;
+  const latestService = maintenance[0];
 
-  const stats = [
+  const cards = [
     {
-      delay: 0,
-      label: "Total Invested",
+      description: `${items.length} logged item${items.length === 1 ? "" : "s"}`,
+      icon: ReceiptText,
+      title: "Total Invested",
       value: <AnimatedCounter decimals={2} prefix="$" value={totalSpent} />,
     },
     {
-      delay: 100,
-      label: "Mod Spend",
+      description: `${mods.length} build update${mods.length === 1 ? "" : "s"}`,
+      icon: Wrench,
+      title: "Upgrade Spend",
       value: <AnimatedCounter decimals={2} prefix="$" value={modSpent} />,
     },
     {
-      delay: 200,
-      label: "Upgrades",
-      value: <AnimatedCounter value={mods.length} />,
+      description: latestService
+        ? `${formatDate(latestService.date)}${typeof latestService.mileage === "number" ? ` • ${formatMileage(latestService.mileage)}` : ""}`
+        : "Oil changes and service records",
+      icon: ShieldCheck,
+      title: "Maintenance",
+      value:
+        maintenance.length > 0 ? (
+          <AnimatedCounter decimals={2} prefix="$" value={maintenanceSpent} />
+        ) : (
+          "Not logged"
+        ),
     },
     {
-      delay: 300,
-      label: "Horsepower",
-      suffix: "(stock)",
-      value: <AnimatedCounter suffix=" hp" value={333} />,
-    },
-    {
-      delay: 400,
-      label: "Torque",
-      suffix: "(stock)",
-      value: <AnimatedCounter suffix=" lb-ft" value={295} />,
-    },
-    {
-      delay: 500,
-      label: "0-60 mph",
-      value: <AnimatedCounter decimals={1} suffix="s" value={4.6} />,
+      description: latestMileage
+        ? "Latest recorded mileage"
+        : "Add mileage to maintenance entries",
+      icon: Gauge,
+      title: "Current Odometer",
+      value:
+        typeof latestMileage === "number"
+          ? formatMileage(latestMileage)
+          : "Not logged",
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-3">
-      {stats.map((stat) => (
-        <motion.div
-          key={stat.label}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-card p-5"
-          initial={{ opacity: 0, y: 10 }}
-          transition={{ delay: stat.delay / 1000, duration: 0.5 }}
-        >
-          <p className="mb-1 text-xs font-medium tracking-wider text-muted-foreground uppercase">
-            {stat.label}
-            {stat.suffix ? (
-              <span className="ml-1 text-muted-foreground/50 normal-case">
-                {stat.suffix}
-              </span>
-            ) : null}
-          </p>
-          <p className="font-mono text-xl font-bold tracking-tight md:text-2xl">
-            {stat.value}
-          </p>
-        </motion.div>
-      ))}
-    </div>
+    <section className="grid auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {cards.map((card, index) => {
+        const Icon = card.icon;
+
+        return (
+          <motion.div
+            key={card.title}
+            animate={{ opacity: 1, y: 0 }}
+            className="h-full"
+            initial={{ opacity: 0, y: 10 }}
+            transition={{ delay: index * 0.04, duration: 0.3 }}
+          >
+            <Card className="h-full min-h-56 justify-between gap-4">
+              <CardHeader className="gap-3">
+                <div className="flex items-center justify-between gap-3">
+                  <CardTitle className="text-sm font-medium">
+                    {card.title}
+                  </CardTitle>
+                  <div className="text-muted-foreground rounded-md border p-2">
+                    <Icon className="size-4" />
+                  </div>
+                </div>
+                <CardDescription className="min-h-12">
+                  {card.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="font-mono text-3xl font-semibold tracking-tight">
+                  {card.value}
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        );
+      })}
+    </section>
   );
 }

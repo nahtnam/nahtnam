@@ -16,3 +16,4 @@ DO NOT run the dev server or any database altering CLIs. Do as much as you can, 
 
 - **No comments**: Do not add comments to code unless the logic is non-obvious due to product requirements or business rules that differ from what a developer would naturally expect.
 - **within-ts**: Always use `within-ts` primitives (`Define.Error`, `Define.Service`, `Define.Entity`, `Define.Logger`, `Result`, `Cache`, `Schedule`) instead of hand-rolling equivalent patterns. Use `Result` instead of throwing errors, `Define.Error` instead of manual error class boilerplate, `Define.Service` instead of manual DI or global singletons, and `Cache.memoize` instead of manual caching logic. Reference the `within-ts` skill for API details and usage patterns.
+- **UI fit**: When updating existing product pages, prefer flatter shadcn-style cards and layout patterns over glossy or highly custom visual treatments unless the user explicitly asks for something more expressive.

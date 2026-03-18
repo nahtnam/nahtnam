@@ -1,151 +1,132 @@
 import { motion } from "framer-motion";
 import type { Doc } from "convex/_generated/dataModel";
+import {
+  categoryLabels,
+  formatDate,
+  formatMileage,
+  formatUsd,
+  isAccountingItem,
+  netCost,
+} from "../lib";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 type ModTimelineProps = {
   readonly items: Array<Doc<"golfRItems">>;
 };
 
-const categoryEmoji: Record<string, string> = {
-  audio: "🔊",
-  exterior: "🎨",
-  interior: "💺",
-  performance: "⚡",
-  wheels: "🛞",
+const statusLabels: Record<string, string> = {
+  false: "Pending",
+  true: "Installed",
 };
-
-const categoryAccent: Record<string, string> = {
-  audio: "border-violet-500/30 bg-violet-500/5",
-  exterior: "border-cyan-500/30 bg-cyan-500/5",
-  interior: "border-amber-500/30 bg-amber-500/5",
-  performance: "border-red-500/30 bg-red-500/5",
-  wheels: "border-emerald-500/30 bg-emerald-500/5",
-};
-
-const statusColors: Record<string, string> = {
-  false: "border-amber-500/40 bg-amber-500/10 text-amber-500",
-  true: "border-emerald-500/40 bg-emerald-500/10 text-emerald-500",
-};
-
-function formatUsd(amount: number) {
-  return new Intl.NumberFormat("en-US", {
-    currency: "USD",
-    style: "currency",
-  }).format(amount);
-}
-
-function formatDate(dateString: string) {
-  const date = new Date(dateString + "T00:00:00");
-  return date.toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
 
 export function ModTimeline({ items }: ModTimelineProps) {
-  const mods = items.filter(
-    (item) =>
-      item.category !== "purchase" &&
-      item.category !== "tax" &&
-      item.category !== "fee",
-  );
-
-  if (mods.length === 0) {
-    return (
-      <div>
-        <h2 className="mb-4 font-bold text-2xl tracking-tight">Build Log</h2>
-        <div className="rounded-xl border border-dashed p-8 text-center">
-          <p className="text-muted-foreground">
-            No mods yet. Stock life for now.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const activity = items.filter((item) => !isAccountingItem(item));
 
   return (
-    <div>
-      <div className="mb-6 flex items-baseline justify-between">
-        <h2 className="font-bold text-2xl tracking-tight">Build Log</h2>
-        <span className="font-mono text-sm text-muted-foreground">
-          {mods.length} mod{mods.length === 1 ? "" : "s"}
-        </span>
-      </div>
+    <Card>
+      <CardHeader>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription className="mt-1">
+              Mods, service, and oil changes with newest entries first.
+            </CardDescription>
+          </div>
+          <Badge variant="outline">{activity.length} entries</Badge>
+        </div>
+      </CardHeader>
 
-      <div className="space-y-3">
-        {mods.map((item, index) => {
-          const net = item.price - (item.discount ?? 0) - (item.cashback ?? 0);
-          const accent =
-            categoryAccent[item.category] ?? "border-border bg-card";
-          const emoji = categoryEmoji[item.category] ?? "🔧";
+      <CardContent className="space-y-4">
+        {activity.length === 0 ? (
+          <div className="text-muted-foreground rounded-lg border border-dashed p-6 text-sm">
+            Add the first mod or service record and it will show up here.
+          </div>
+        ) : (
+          activity.map((item, index) => {
+            const savings = (item.discount ?? 0) + (item.cashback ?? 0);
 
-          return (
-            <motion.div
-              key={item._id}
-              animate={{ opacity: 1, y: 0 }}
-              className={`rounded-xl border p-4 transition-colors hover:border-foreground/10 ${accent}`}
-              initial={{ opacity: 0, y: 15 }}
-              transition={{ delay: index * 0.08, duration: 0.4 }}
-            >
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 text-lg">{emoji}</span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <h3 className="font-semibold leading-tight">
-                        {item.url ? (
-                          <a
-                            className="underline decoration-foreground/20 underline-offset-2 hover:decoration-foreground"
-                            href={item.url}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
-                            {item.name}
-                          </a>
-                        ) : (
-                          item.name
+            return (
+              <motion.div
+                key={item._id}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-4"
+                initial={{ opacity: 0, y: 8 }}
+                transition={{ delay: index * 0.03, duration: 0.25 }}
+              >
+                <div className="rounded-lg border bg-card p-4">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                    <div className="min-w-0 space-y-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge variant="secondary">
+                          {categoryLabels[item.category] ?? item.category}
+                        </Badge>
+                        <span className="text-muted-foreground text-sm">
+                          {formatDate(item.date)}
+                        </span>
+                        {typeof item.mileage === "number" ? (
+                          <Badge variant="outline">
+                            {formatMileage(item.mileage)}
+                          </Badge>
+                        ) : null}
+                        {item.installed === undefined ? null : (
+                          <Badge variant="outline">
+                            {statusLabels[String(item.installed)]}
+                          </Badge>
                         )}
-                      </h3>
-                      {item.description ? (
-                        <p className="mt-0.5 text-sm text-muted-foreground">
-                          {item.description}
-                        </p>
-                      ) : null}
+                      </div>
+
+                      <div className="space-y-1">
+                        <h3 className="text-base font-semibold">
+                          {item.url ? (
+                            <a
+                              className="hover:text-primary underline-offset-4 hover:underline"
+                              href={item.url}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              {item.name}
+                            </a>
+                          ) : (
+                            item.name
+                          )}
+                        </h3>
+                        {item.description ? (
+                          <p className="text-muted-foreground text-sm leading-6">
+                            {item.description}
+                          </p>
+                        ) : null}
+                      </div>
                     </div>
-                    <div className="shrink-0 text-right">
-                      <span className="font-mono font-semibold tabular-nums">
-                        {formatUsd(net)}
-                      </span>
-                      {(item.discount ?? 0) > 0 || (item.cashback ?? 0) > 0 ? (
-                        <p className="text-xs font-medium text-emerald-500">
-                          {(item.discount ?? 0) > 0
-                            ? `${formatUsd(item.discount!)} off`
-                            : ""}
-                          {(item.cashback ?? 0) > 0
-                            ? `${(item.discount ?? 0) > 0 ? " + " : ""}${formatUsd(item.cashback!)} back`
-                            : ""}
-                        </p>
-                      ) : null}
+
+                    <div className="shrink-0 md:text-right">
+                      <p className="font-mono text-lg font-semibold">
+                        {formatUsd(netCost(item))}
+                      </p>
+                      <p className="text-muted-foreground mt-1 text-sm">
+                        {savings > 0
+                          ? `Saved ${formatUsd(savings)}`
+                          : item.category === "maintenance"
+                            ? "Service entry"
+                            : "Build entry"}
+                      </p>
                     </div>
-                  </div>
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="font-mono text-xs text-muted-foreground">
-                      {formatDate(item.date)}
-                    </span>
-                    {item.installed === undefined ? null : (
-                      <span
-                        className={`rounded-full border px-2 py-0.5 text-xs font-medium ${statusColors[String(item.installed)]}`}
-                      >
-                        {item.installed ? "Installed" : "Pending"}
-                      </span>
-                    )}
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-    </div>
+
+                {index < activity.length - 1 ? <Separator /> : null}
+              </motion.div>
+            );
+          })
+        )}
+      </CardContent>
+    </Card>
   );
 }

@@ -6,7 +6,7 @@ export const listItems = query({
     return ctx.db
       .query("golfRItems")
       .withIndex("by_date")
-      .order("asc")
+      .order("desc")
       .collect();
   },
 });

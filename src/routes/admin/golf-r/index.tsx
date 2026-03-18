@@ -9,6 +9,7 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
+import { sortGolfRItems } from "@/routes/golf-r/-components/lib";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -52,6 +53,7 @@ const categories = [
   { label: "Wheels & Tires", value: "wheels" },
   { label: "Exterior", value: "exterior" },
   { label: "Interior", value: "interior" },
+  { label: "Maintenance", value: "maintenance" },
 ];
 
 const schema = z.object({
@@ -64,6 +66,7 @@ const schema = z.object({
   description: z.string().optional(),
   url: z.string().optional(),
   installed: z.boolean().optional(),
+  mileage: z.coerce.number().int().min(0).optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -86,9 +89,10 @@ function GolfRAdmin() {
     undefined,
   );
 
-  const { data: items = [] } = useQuery(
+  const { data = [] } = useQuery(
     convexQuery(api.admin.golf_r.listItems, { adminSecret }),
   );
+  const items = sortGolfRItems(data);
 
   const { mutateAsync: createItem } = useMutation({
     mutationFn: useConvexMutation(api.admin.golf_r.createItem),
@@ -113,6 +117,7 @@ function GolfRAdmin() {
       url: "",
 
       installed: undefined,
+      mileage: undefined,
     },
   });
 
@@ -129,6 +134,7 @@ function GolfRAdmin() {
       url: "",
 
       installed: undefined,
+      mileage: undefined,
     });
     setOpen(true);
   }
@@ -146,6 +152,7 @@ function GolfRAdmin() {
       url: item.url ?? "",
 
       installed: item.installed ?? undefined,
+      mileage: item.mileage ?? undefined,
     });
     setOpen(true);
   }
@@ -157,6 +164,7 @@ function GolfRAdmin() {
       url: values.url ?? undefined,
       discount: values.discount ?? undefined,
       cashback: values.cashback ?? undefined,
+      mileage: values.mileage ?? undefined,
     };
 
     await (editingId
@@ -281,6 +289,25 @@ function GolfRAdmin() {
                 </div>
                 <FormField
                   control={form.control}
+                  name="mileage"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Mileage</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          step="1"
+                          placeholder="Optional"
+                          {...field}
+                          value={field.value ?? ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="date"
                   render={({ field }) => (
                     <FormItem>
@@ -350,6 +377,7 @@ function GolfRAdmin() {
             <TableHead>Category</TableHead>
             <TableHead className="text-right">Price</TableHead>
             <TableHead className="text-right">Disc/CB</TableHead>
+            <TableHead className="text-right">Miles</TableHead>
             <TableHead>Date</TableHead>
             <TableHead className="w-24" />
           </TableRow>
@@ -370,6 +398,9 @@ function GolfRAdmin() {
                   `-${formatUsd(item.discount ?? 0)}`}
                 {(item.cashback ?? 0) > 0 &&
                   `${(item.discount ?? 0) > 0 ? " / " : ""}-${formatUsd(item.cashback ?? 0)}`}
+              </TableCell>
+              <TableCell className="text-right font-mono text-sm">
+                {item.mileage?.toLocaleString("en-US") ?? "—"}
               </TableCell>
               <TableCell className="text-sm">{item.date}</TableCell>
               <TableCell>

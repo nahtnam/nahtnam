@@ -36,6 +36,7 @@ export default defineSchema({
     description: v.optional(v.string()),
     discount: v.optional(v.number()),
     installed: v.optional(v.boolean()),
+    mileage: v.optional(v.number()),
     name: v.string(),
     price: v.number(),
 

@@ -10,7 +10,7 @@ export const listItems = query({
     return ctx.db
       .query("golfRItems")
       .withIndex("by_date")
-      .order("asc")
+      .order("desc")
       .collect();
   },
 });
@@ -24,6 +24,7 @@ export const createItem = mutation({
     description: v.optional(v.string()),
     discount: v.optional(v.number()),
     installed: v.optional(v.boolean()),
+    mileage: v.optional(v.number()),
     name: v.string(),
     price: v.number(),
 
@@ -45,6 +46,7 @@ export const updateItem = mutation({
     discount: v.optional(v.number()),
     id: v.id("golfRItems"),
     installed: v.optional(v.boolean()),
+    mileage: v.optional(v.number()),
     name: v.string(),
     price: v.number(),
 
