@@ -4,6 +4,7 @@ export type GolfRItem = Doc<"golfRItems">;
 
 export const categoryLabels: Record<string, string> = {
   audio: "Audio",
+  equipment: "Equipment",
   exterior: "Exterior",
   fee: "Fees & Registration",
   interior: "Interior",
@@ -23,6 +24,12 @@ export const categoryThemes: Record<
     dot: "bg-violet-400",
     panel: "from-violet-500/12 via-transparent to-transparent",
     track: "bg-violet-500",
+  },
+  equipment: {
+    chip: "border-orange-500/30 bg-orange-500/10 text-orange-200",
+    dot: "bg-orange-400",
+    panel: "from-orange-500/12 via-transparent to-transparent",
+    track: "bg-orange-500",
   },
   exterior: {
     chip: "border-cyan-500/30 bg-cyan-500/10 text-cyan-200",
@@ -110,8 +117,16 @@ export function isMaintenanceItem(item: GolfRItem) {
   return item.category === "maintenance";
 }
 
+export function isEquipmentItem(item: GolfRItem) {
+  return item.category === "equipment";
+}
+
 export function isModItem(item: GolfRItem) {
-  return !isAccountingItem(item) && !isMaintenanceItem(item);
+  return (
+    !isAccountingItem(item) &&
+    !isMaintenanceItem(item) &&
+    !isEquipmentItem(item)
+  );
 }
 
 export function sortGolfRItems(items: readonly GolfRItem[]) {

@@ -32,6 +32,7 @@ export const createItem = mutation({
     discount: v.optional(v.number()),
     installed: v.optional(v.boolean()),
     mileage: v.optional(v.number()),
+    modification: v.optional(v.boolean()),
     name: v.string(),
     price: v.number(),
 
@@ -55,6 +56,7 @@ export const updateItem = mutation({
     id: v.id("golfRItems"),
     installed: v.optional(v.boolean()),
     mileage: v.optional(v.number()),
+    modification: v.optional(v.boolean()),
     name: v.string(),
     price: v.number(),
 

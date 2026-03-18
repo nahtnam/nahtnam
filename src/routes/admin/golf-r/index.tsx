@@ -58,6 +58,7 @@ const categories = [
   { label: "Taxes", value: "tax" },
   { label: "Fees & Registration", value: "fee" },
   { label: "Audio", value: "audio" },
+  { label: "Equipment", value: "equipment" },
   { label: "Performance", value: "performance" },
   { label: "Wheels & Tires", value: "wheels" },
   { label: "Exterior", value: "exterior" },
@@ -74,8 +75,8 @@ const schema = z.object({
   date: z.string().min(1, "Required"),
   description: z.string().optional(),
   url: z.string().optional(),
-  installed: z.boolean().optional(),
   mileage: z.coerce.number().int().min(0).optional(),
+  modification: z.boolean().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -158,8 +159,8 @@ function GolfRAdmin() {
       date: "",
       description: "",
       url: "",
-      installed: undefined,
       mileage: undefined,
+      modification: undefined,
     },
   });
 
@@ -176,8 +177,8 @@ function GolfRAdmin() {
       date: "",
       description: "",
       url: "",
-      installed: undefined,
       mileage: undefined,
+      modification: undefined,
     });
   }
 
@@ -246,8 +247,8 @@ function GolfRAdmin() {
       date: item.date,
       description: item.description ?? "",
       url: item.url ?? "",
-      installed: item.installed ?? undefined,
       mileage: item.mileage ?? undefined,
+      modification: item.modification ?? item.installed ?? undefined,
     });
     setOpen(true);
     await resolveAttachmentUrls(nextAttachments);
@@ -335,6 +336,7 @@ function GolfRAdmin() {
       discount: values.discount ?? undefined,
       cashback: values.cashback ?? undefined,
       mileage: values.mileage ?? undefined,
+      modification: values.modification ?? undefined,
     };
 
     await (editingId
@@ -524,10 +526,10 @@ function GolfRAdmin() {
                 <div className="grid grid-cols-2 gap-3">
                   <FormField
                     control={form.control}
-                    name="installed"
+                    name="modification"
                     render={({ field }) => (
                       <FormItem className="flex flex-col justify-end">
-                        <FormLabel>Installed</FormLabel>
+                        <FormLabel>Modification</FormLabel>
                         <FormControl>
                           <Switch
                             checked={field.value ?? false}

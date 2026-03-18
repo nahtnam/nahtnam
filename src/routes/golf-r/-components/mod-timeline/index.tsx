@@ -23,8 +23,7 @@ type ModTimelineProps = {
 };
 
 const statusLabels: Record<string, string> = {
-  false: "Pending",
-  true: "Installed",
+  true: "Modification",
 };
 
 export function ModTimeline({ items }: ModTimelineProps) {
@@ -37,7 +36,8 @@ export function ModTimeline({ items }: ModTimelineProps) {
           <div>
             <CardTitle>Recent Activity</CardTitle>
             <CardDescription className="mt-1">
-              Mods, service, and oil changes with newest entries first.
+              Mods, maintenance, and equipment purchases with newest entries
+              first.
             </CardDescription>
           </div>
           <Badge variant="outline">{activity.length} entries</Badge>
@@ -76,11 +76,9 @@ export function ModTimeline({ items }: ModTimelineProps) {
                             {formatMileage(item.mileage)}
                           </Badge>
                         ) : null}
-                        {item.installed === undefined ? null : (
-                          <Badge variant="outline">
-                            {statusLabels[String(item.installed)]}
-                          </Badge>
-                        )}
+                        {(item.modification ?? item.installed) ? (
+                          <Badge variant="outline">{statusLabels.true}</Badge>
+                        ) : null}
                       </div>
 
                       <div className="space-y-1">
@@ -115,7 +113,9 @@ export function ModTimeline({ items }: ModTimelineProps) {
                           ? `Saved ${formatUsd(savings)}`
                           : item.category === "maintenance"
                             ? "Service entry"
-                            : "Build entry"}
+                            : item.category === "equipment"
+                              ? "Equipment entry"
+                              : "Build entry"}
                       </p>
                     </div>
                   </div>
