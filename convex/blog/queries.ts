@@ -4,11 +4,9 @@ import { query } from "../_generated/server";
 export const listPosts = query({
   args: {},
   async handler(ctx) {
-    const now = Date.now();
     const posts = await ctx.db
       .query("blogPosts")
-      .withIndex("by_publishedAt")
-      .filter((q) => q.lte(q.field("publishedAt"), now))
+      .withIndex("by_published_publishedAt", (q) => q.eq("published", true))
       .order("desc")
       .collect();
 
@@ -26,13 +24,14 @@ export const listPosts = query({
 export const getPost = query({
   args: { slug: v.string() },
   async handler(ctx, args) {
-    const now = Date.now();
     const post = await ctx.db
       .query("blogPosts")
-      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .withIndex("by_published_slug", (q) =>
+        q.eq("published", true).eq("slug", args.slug),
+      )
       .first();
 
-    if (!post || post.publishedAt > now) {
+    if (!post) {
       return null;
     }
 

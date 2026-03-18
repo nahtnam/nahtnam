@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -36,6 +37,7 @@ const schema = z.object({
   excerpt: z.string().min(1, "Required"),
   content: z.string().min(1, "Required"),
   categoryId: z.string().min(1, "Required"),
+  published: z.boolean(),
   publishedAt: z.string().min(1, "Required"),
 });
 
@@ -91,13 +93,14 @@ function BlogEditor() {
   });
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as never,
     defaultValues: {
       title: "",
       slug: "",
       excerpt: "",
       content: "",
       categoryId: "",
+      published: true,
       publishedAt: toLocalDateTime(new Date()),
     },
     values:
@@ -108,6 +111,7 @@ function BlogEditor() {
             excerpt: existingPost.excerpt,
             content: existingPost.content,
             categoryId: existingPost.categoryId,
+            published: existingPost.published ?? true,
             publishedAt: toLocalDateTime(new Date(existingPost.publishedAt)),
           }
         : undefined,
@@ -122,6 +126,7 @@ function BlogEditor() {
       excerpt: values.excerpt,
       content: values.content,
       categoryId: values.categoryId as Id<"blogCategories">,
+      published: values.published,
       publishedAt: new Date(values.publishedAt).getTime(),
     };
 
@@ -272,7 +277,7 @@ function BlogEditor() {
             )}
           />
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <FormField
               control={form.control}
               name="categoryId"
@@ -305,6 +310,22 @@ function BlogEditor() {
                   <FormLabel>Publish Date</FormLabel>
                   <FormControl>
                     <Input type="datetime-local" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="published"
+              render={({ field }) => (
+                <FormItem className="flex flex-col justify-end">
+                  <FormLabel>Published</FormLabel>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

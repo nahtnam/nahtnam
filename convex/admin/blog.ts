@@ -51,6 +51,7 @@ export const createPost = mutation({
     categoryId: v.id("blogCategories"),
     content: v.string(),
     excerpt: v.string(),
+    published: v.boolean(),
     publishedAt: v.number(),
     slug: v.string(),
     title: v.string(),
@@ -68,6 +69,7 @@ export const updatePost = mutation({
     content: v.string(),
     excerpt: v.string(),
     id: v.id("blogPosts"),
+    published: v.boolean(),
     publishedAt: v.number(),
     slug: v.string(),
     title: v.string(),
@@ -111,6 +113,27 @@ export const deleteCategory = mutation({
   async handler(ctx, { adminSecret, id }) {
     requireAdmin(adminSecret);
     await ctx.db.delete("blogCategories", id);
+  },
+});
+
+export const backfillPublishedFlags = mutation({
+  args: { adminSecret: v.string() },
+  async handler(ctx, { adminSecret }) {
+    requireAdmin(adminSecret);
+    const now = Date.now();
+    const posts = await ctx.db.query("blogPosts").collect();
+
+    await Promise.all(
+      posts.map(async (post) => {
+        if (post.published !== undefined) {
+          return;
+        }
+
+        await ctx.db.patch("blogPosts", post._id, {
+          published: post.publishedAt <= now,
+        });
+      }),
+    );
   },
 });
 

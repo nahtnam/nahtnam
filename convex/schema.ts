@@ -10,11 +10,15 @@ export default defineSchema({
     categoryId: v.id("blogCategories"),
     content: v.string(),
     excerpt: v.string(),
+    published: v.optional(v.boolean()),
     publishedAt: v.number(),
     slug: v.string(),
     title: v.string(),
   })
     .index("by_slug", ["slug"])
+    .index("by_published", ["published"])
+    .index("by_published_slug", ["published", "slug"])
+    .index("by_published_publishedAt", ["published", "publishedAt"])
     .index("by_publishedAt", ["publishedAt"]),
 
   bnbBookings: defineTable({
