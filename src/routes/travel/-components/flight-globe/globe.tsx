@@ -4,7 +4,7 @@ import { Map } from "@/components/ui/map";
 import type { ArcData } from "@/lib/travel/types";
 
 const DURATION_PER_TWELVE_HOURS_MS = 5000;
-const DELAY_PER_YEAR_MS = 100;
+const DELAY_PER_YEAR_MS = 5000;
 const LOOP_ANIMATION = false;
 
 type FlightGlobeInnerProps = {
