@@ -7,12 +7,17 @@ export type AirportData = {
 };
 
 export type ArcData = {
-  animateTime: number;
+  flightTimeHours: number;
+  firstFlightDate: string;
   startLat: number;
   startLng: number;
+  startCode: string;
   endLat: number;
   endLng: number;
+  endCode: string;
   count: number;
+  tripType: "one-way" | "round-trip";
+  year: number;
 };
 
 export type TravelStats = {

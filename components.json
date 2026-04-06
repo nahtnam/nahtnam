@@ -8,7 +8,9 @@
     "utils": "@/lib/shadcn/utils"
   },
   "iconLibrary": "lucide",
-  "registries": {},
+  "registries": {
+    "@flightcn": "https://flightcn.yencheng.dev/r/{name}.json"
+  },
   "rsc": false,
   "rtl": false,
   "style": "new-york",

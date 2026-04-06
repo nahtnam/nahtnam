@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { AirportData, ArcData } from "@/lib/travel/types";
+import type { ArcData } from "@/lib/travel/types";
 
 const FlightGlobeInner = lazy(async () => {
   const m = await import("./globe");
@@ -8,7 +8,6 @@ const FlightGlobeInner = lazy(async () => {
 });
 
 type FlightGlobeProps = {
-  readonly airportPoints: AirportData[];
   readonly arcs: ArcData[];
 };
 
@@ -31,7 +30,7 @@ export function FlightGlobe(props: FlightGlobeProps) {
         <Skeleton className="aspect-square w-full max-w-[600px] rounded-full" />
       }
     >
-      <FlightGlobeInner airportPoints={props.airportPoints} arcs={props.arcs} />
+      <FlightGlobeInner arcs={props.arcs} />
     </Suspense>
   );
 }

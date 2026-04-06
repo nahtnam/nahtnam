@@ -55,7 +55,7 @@ function TravelPage() {
       </div>
 
       <div className="mb-10 flex justify-center">
-        <FlightGlobe airportPoints={data.airportPoints} arcs={data.arcs} />
+        <FlightGlobe arcs={data.arcs} />
       </div>
 
       <FlightStats stats={data.stats} />

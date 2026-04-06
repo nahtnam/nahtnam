@@ -20,6 +20,12 @@
   [role="button"][aria-disabled="true"] {
     cursor: default;
   }
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
 }
 
 /* shadcn */
