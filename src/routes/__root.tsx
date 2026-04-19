@@ -103,7 +103,7 @@ export const Route = createRootRouteWithContext<{
         name: "color-scheme",
       },
       {
-        content: "light dark",
+        content: "light",
         name: "supported-color-schemes",
       },
     ],
@@ -145,11 +145,13 @@ function RootComponent() {
   return (
     <ConvexProvider client={convexQueryClient.convexClient}>
       <TooltipProvider>
-        <Navbar />
-        <main className="grow print:m-0 print:grow-0">
-          <Outlet />
-        </main>
-        <Footer />
+        <div className="relative flex min-h-full flex-col">
+          <Navbar />
+          <main className="grow print:m-0 print:grow-0">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
       </TooltipProvider>
     </ConvexProvider>
   );

@@ -103,11 +103,11 @@ function BnbPage() {
   );
 
   return (
-    <div className="container mx-auto max-w-2xl px-6 py-16">
-      <div className="mb-8 text-center">
+    <div className="page-shell page-shell-narrow">
+      <div className="page-intro mb-8 text-center">
         <Sofa className="mx-auto mb-4 size-12" />
-        <h1 className="font-bold text-3xl">Couch BnB</h1>
-        <p className="mt-2 text-muted-foreground">
+        <h1 className="font-serif text-5xl tracking-[-0.03em]">Couch BnB</h1>
+        <p className="mt-3 text-muted-foreground">
           Book my couch for your next visit. Luxury not guaranteed.
         </p>
       </div>
@@ -121,7 +121,7 @@ function BnbPage() {
           </div>
         </>
       ) : (
-        <div className="rounded-2xl border p-6 shadow-sm">
+        <div className="section-card">
           <form className="space-y-4" onSubmit={handleUnlock}>
             <div className="space-y-2">
               <Label className="font-medium text-sm" htmlFor="password">
@@ -208,7 +208,7 @@ function BookingForm(props: { readonly password: string }) {
 
   if (isSubmitted) {
     return (
-      <div className="rounded-2xl border p-6 shadow-sm">
+      <div className="section-card">
         <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
           <CheckCircle2 className="size-12 text-green-500" />
           <h3 className="font-semibold text-lg">Booking requested!</h3>
@@ -222,7 +222,7 @@ function BookingForm(props: { readonly password: string }) {
   }
 
   return (
-    <div className="rounded-2xl border p-6 shadow-sm">
+    <div className="section-card">
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label className="font-medium text-sm">Guests</Label>

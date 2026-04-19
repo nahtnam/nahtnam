@@ -15,20 +15,28 @@ const SOCIAL_LINKS = [
 
 export function SocialLinks() {
   return (
-    <div className="flex items-center gap-3">
-      {SOCIAL_LINKS.map((social) => (
-        <Button key={social.name} asChild size="icon-lg" variant="outline">
-          <a
-            aria-label={social.name}
-            href={social.url}
-            rel="noopener noreferrer"
-            target="_blank"
+    <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-center">
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        {SOCIAL_LINKS.map((social) => (
+          <Button
+            key={social.name}
+            asChild
+            className="bg-background/75"
+            size="icon-lg"
+            variant="outline"
           >
-            <IconifyIcon icon={social.icon} width={20} height={20} />
-          </a>
-        </Button>
-      ))}
-      <Button asChild size="lg">
+            <a
+              aria-label={social.name}
+              href={social.url}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <IconifyIcon icon={social.icon} height={20} width={20} />
+            </a>
+          </Button>
+        ))}
+      </div>
+      <Button asChild className="w-full px-5 sm:w-auto" size="lg">
         <Link to="/contact">
           Get in Touch
           <ArrowUpRight className="size-4" />

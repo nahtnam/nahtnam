@@ -53,7 +53,7 @@ function GolfRPage() {
   const items = sortGolfRItems(data);
 
   return (
-    <div className="container mx-auto max-w-6xl px-6 py-16">
+    <div className="page-shell page-shell-wide">
       <CarHero />
 
       <div className="mt-10 space-y-8">

@@ -3,11 +3,12 @@ import { H1, Lead } from "@/components/ui/typography";
 
 export function ContactHeader() {
   return (
-    <div className="mb-10 text-center">
-      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
+    <div className="page-intro mb-8 text-center">
+      <div className="mx-auto mb-6 flex size-[4.5rem] items-center justify-center rounded-[1.8rem] border border-primary/15 bg-primary/8">
         <Coffee className="size-8" />
       </div>
-      <H1 className="font-semibold text-3xl">Say hello</H1>
+      <span className="eyebrow mb-4">Contact</span>
+      <H1>Say hello</H1>
       <Lead className="mx-auto mt-3 max-w-md text-base">
         I&apos;m always happy to chat about tech, life, or anything in between.
         Whether you want to grab coffee or just say hi, feel free to reach out.

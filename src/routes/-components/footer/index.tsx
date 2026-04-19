@@ -5,11 +5,13 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t py-8">
+    <footer className="px-4 pb-6 pt-10">
       <div className="container mx-auto">
-        <Muted className="text-center">
-          &copy; {year} {appName}
-        </Muted>
+        <div className="rounded-4xl border border-border/70 bg-background/72 px-6 py-6 text-center shadow-[0_20px_40px_-34px_color-mix(in_srgb,var(--color-foreground)_28%,transparent)] backdrop-blur-sm">
+          <Muted className="font-mono text-[0.7rem] tracking-[0.26em] uppercase">
+            &copy; {year} {appName}
+          </Muted>
+        </div>
       </div>
     </footer>
   );

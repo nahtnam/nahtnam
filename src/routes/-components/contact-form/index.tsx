@@ -51,10 +51,12 @@ export function ContactForm() {
 
   if (isSubmitted) {
     return (
-      <div className="rounded-2xl border p-6 shadow-sm">
+      <div className="section-card">
         <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
           <CheckCircle2 className="size-12 text-green-500" />
-          <h3 className="font-semibold text-lg">Message sent!</h3>
+          <h3 className="font-serif text-3xl tracking-[-0.02em]">
+            Message sent!
+          </h3>
           <p className="text-muted-foreground text-sm">
             Thanks for reaching out. I&apos;ll get back to you soon.
           </p>
@@ -64,10 +66,13 @@ export function ContactForm() {
   }
 
   return (
-    <div className="rounded-2xl border p-6 shadow-sm">
+    <div className="section-card">
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
-          <Label className="font-medium text-sm" htmlFor="name">
+          <Label
+            className="font-mono text-[0.72rem] tracking-[0.22em] uppercase"
+            htmlFor="name"
+          >
             Your name
           </Label>
           <Input
@@ -84,7 +89,10 @@ export function ContactForm() {
         </div>
 
         <div className="space-y-2">
-          <Label className="font-medium text-sm" htmlFor="email">
+          <Label
+            className="font-mono text-[0.72rem] tracking-[0.22em] uppercase"
+            htmlFor="email"
+          >
             Email
           </Label>
           <Input
@@ -101,7 +109,10 @@ export function ContactForm() {
         </div>
 
         <div className="space-y-2">
-          <Label className="font-medium text-sm" htmlFor="message">
+          <Label
+            className="font-mono text-[0.72rem] tracking-[0.22em] uppercase"
+            htmlFor="message"
+          >
             Message
           </Label>
           <Textarea

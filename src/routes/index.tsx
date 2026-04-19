@@ -5,6 +5,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
 import { uniqBy } from "es-toolkit";
 import { appUrl } from "@/lib/config";
+import { cn } from "@/lib/shadcn/utils";
 import { AboutMe } from "@/routes/-components/about-me";
 import { CurrentCompany } from "@/routes/-components/current-company";
 import { HeroAvatar } from "@/routes/-components/hero-avatar";
@@ -89,28 +90,43 @@ function RouteComponent() {
         type="application/ld+json"
       />
       {/* eslint-enable react/no-danger */}
-      <main className="flex flex-1 flex-col items-center justify-center px-6 py-10">
-        <div className="flex flex-col items-center space-y-6">
-          <HeroAvatar />
+      <main className="page-shell page-shell-wide flex flex-1 items-center">
+        <div className="page-intro mx-auto w-full">
+          <div className="flex flex-col items-center gap-10">
+            <div className="flex w-full max-w-4xl flex-col items-center gap-7 pt-18 text-center md:pt-22">
+              <HeroAvatar />
 
-          <h1 className="text-center">
-            <NameAnimation />
-          </h1>
+              <h1 className="text-center">
+                <NameAnimation />
+              </h1>
 
-          {currentExperience ? (
-            <CurrentCompany
-              companyName={currentExperience.company.name}
-              title={currentExperience.title}
-            />
-          ) : null}
+              <AboutMe />
 
-          <AboutMe />
+              <SocialLinks />
+            </div>
 
-          <SocialLinks />
-
-          <PreviousCompanies companies={previousCompanies} />
-
-          {latestPost ? <LatestPost post={latestPost} /> : null}
+            <div className="flex w-full flex-col items-center gap-6 text-center">
+              <div
+                className={cn(
+                  "w-full gap-6",
+                  latestPost
+                    ? "grid lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.8fr)]"
+                    : "flex justify-center lg:justify-center",
+                )}
+              >
+                <div className="flex flex-col items-center gap-4">
+                  {currentExperience ? (
+                    <CurrentCompany
+                      companyName={currentExperience.company.name}
+                      title={currentExperience.title}
+                    />
+                  ) : null}
+                  <PreviousCompanies companies={previousCompanies} />
+                </div>
+                {latestPost ? <LatestPost post={latestPost} /> : null}
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>

@@ -3,7 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
 import { Separator } from "@/components/ui/separator";
-import { H1 } from "@/components/ui/typography";
+import { H1, Lead } from "@/components/ui/typography";
 import { appUrl } from "@/lib/config";
 import { EducationSection } from "@/routes/-components/education-section";
 import { ExperienceSection } from "@/routes/-components/experience-section";
@@ -57,21 +57,32 @@ function ExperiencePage() {
   );
 
   return (
-    <div className="container mx-auto max-w-3xl px-6 py-16 print:max-w-none print:p-0 print:px-4">
-      <div className="mb-8 print:mb-4">
-        <H1 className="font-semibold text-3xl print:text-2xl">Experience</H1>
+    <div className="page-shell page-shell-wide print:max-w-none print:p-0 print:px-4">
+      <div className="page-intro mb-8 print:mb-4">
+        <span className="eyebrow mb-4">Career</span>
+        <H1 className="print:text-2xl">Experience</H1>
+        <Lead className="mt-4 max-w-2xl text-base">
+          A snapshot of the companies, projects, and education that shaped how I
+          build products and teams.
+        </Lead>
       </div>
 
       <div className="space-y-8 print:space-y-4">
-        <ExperienceSection experiences={experiences} />
+        <div className="section-card print:border-0 print:bg-transparent print:p-0 print:shadow-none">
+          <ExperienceSection experiences={experiences} />
+        </div>
 
         <Separator className="print:hidden" />
 
-        <ProjectsSection projects={projects} />
+        <div className="section-card print:border-0 print:bg-transparent print:p-0 print:shadow-none">
+          <ProjectsSection projects={projects} />
+        </div>
 
         <Separator className="print:hidden" />
 
-        <EducationSection education={education} />
+        <div className="section-card print:border-0 print:bg-transparent print:p-0 print:shadow-none">
+          <EducationSection education={education} />
+        </div>
       </div>
     </div>
   );

@@ -42,7 +42,7 @@ export const Route = createFileRoute("/contact/")({
 
 function ContactPage() {
   return (
-    <div className="container mx-auto max-w-2xl px-6 py-16">
+    <div className="page-shell page-shell-narrow">
       <ContactHeader />
       <ContactForm />
       <ContactFooter />

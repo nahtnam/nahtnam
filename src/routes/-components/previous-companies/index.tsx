@@ -17,16 +17,18 @@ export function PreviousCompanies({ companies }: PreviousCompaniesProps) {
   }
 
   return (
-    <div className="flex flex-col items-center space-y-2 pt-4">
-      <Muted className="text-xs">Previously at</Muted>
-      <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+    <div className="flex flex-col items-center space-y-3 pt-4">
+      <Muted className="font-mono text-[0.68rem] tracking-[0.24em] uppercase">
+        Previously at
+      </Muted>
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {companies.map((company) => (
           <Button
             key={company._id}
             asChild
-            className="text-muted-foreground"
+            className="border-border/65 bg-background/70 text-muted-foreground hover:text-foreground"
             size="sm"
-            variant="link"
+            variant="outline"
           >
             <Link aria-label={company.name} to="/experience">
               {company.name}

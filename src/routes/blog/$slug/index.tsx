@@ -128,7 +128,7 @@ function BlogPostPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-2xl px-6 py-12">
+    <div className="page-shell page-shell-article">
       {/* eslint-disable react/no-danger */}
       <script
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -137,7 +137,7 @@ function BlogPostPage() {
       {/* eslint-enable react/no-danger */}
       <Button
         asChild
-        className="mb-8 -ml-2 text-muted-foreground hover:text-foreground"
+        className="mb-8 -ml-1 text-muted-foreground hover:text-foreground"
         variant="ghost"
       >
         <Link to="/blog">
@@ -146,25 +146,27 @@ function BlogPostPage() {
         </Link>
       </Button>
 
-      <div className="mb-6 flex items-center gap-3">
-        <Badge className="font-medium text-xs" variant="secondary">
-          {post.category.name}
-        </Badge>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Muted className="cursor-default">
-              {formatRelativeDate(new Date(post.publishedAt))}
-            </Muted>
-          </TooltipTrigger>
-          <TooltipContent>
-            {formatFullDate(new Date(post.publishedAt))}
-          </TooltipContent>
-        </Tooltip>
+      <div className="page-intro mb-10">
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <Badge className="font-medium text-[0.68rem]" variant="secondary">
+            {post.category.name}
+          </Badge>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Muted className="cursor-default font-mono text-[0.72rem] tracking-[0.2em] uppercase">
+                {formatRelativeDate(new Date(post.publishedAt))}
+              </Muted>
+            </TooltipTrigger>
+            <TooltipContent>
+              {formatFullDate(new Date(post.publishedAt))}
+            </TooltipContent>
+          </Tooltip>
+        </div>
+
+        <H1 className="text-balance">{post.title}</H1>
       </div>
 
-      <H1 className="mb-8 font-semibold text-3xl">{post.title}</H1>
-
-      <article className="prose prose-neutral max-w-none">
+      <article className="prose-editorial">
         <Markdown>{post.content}</Markdown>
       </article>
     </div>
