@@ -24,5 +24,6 @@ DO NOT run the dev server or any database altering CLIs. Do as much as you can, 
 - **Hero motion**: Keep hero name animation stable at rest; avoid autoplay states that can leave the primary lockup looking broken in screenshots or on first load.
 - **Matched chips**: When presenting a small pair of personal tags or badges, make them feel intentionally matched in scale and width rather than leaving one visibly smaller.
 - **UI fit**: When updating existing product pages, prefer flatter shadcn-style cards and layout patterns over glossy or highly custom visual treatments unless the user explicitly asks for something more expressive.
+- **Distinct modules**: On the homepage, adjacent sections with different jobs should not share nearly identical treatments; editorial content like latest writing should feel meaningfully different from metadata rows such as company chips.
 - **Public timelines**: Future-dated entries should stay out of public-facing queries and derived stats until their date has arrived; admins can still see and manage them.
 - **Convex schema changes**: When adding fields to existing tables, make the field optional first or include an explicit backfill path so older documents do not fail schema validation before migration runs.

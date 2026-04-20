@@ -1,15 +1,9 @@
 import { useCallback, useState, type PointerEvent } from "react";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const AVATAR_HOVER_SCALE = 1.03;
 const ROTATION_RANGE = 14;
-const SHINE_SIZE = 34;
 
 export function HeroAvatar() {
   const [isActive, setIsActive] = useState(false);
@@ -17,9 +11,6 @@ export function HeroAvatar() {
   const rotateY = useMotionValue(0);
   const scale = useMotionValue(1);
   const offsetY = useMotionValue(0);
-  const shineX = useMotionValue(50);
-  const shineY = useMotionValue(50);
-  const shineOpacity = useMotionValue(0);
 
   const smoothRotateX = useSpring(rotateX, {
     damping: 18,
@@ -37,12 +28,6 @@ export function HeroAvatar() {
     damping: 18,
     stiffness: 220,
   });
-  const smoothShineOpacity = useSpring(shineOpacity, {
-    damping: 20,
-    stiffness: 220,
-  });
-
-  const shineBackground = useMotionTemplate`radial-gradient(circle at ${shineX}% ${shineY}%, rgba(255,255,255,0.88), rgba(255,255,255,0.42) ${SHINE_SIZE}%, rgba(255,255,255,0.08) 56%, transparent 74%)`;
 
   const resetTilt = useCallback(() => {
     setIsActive(false);
@@ -50,10 +35,7 @@ export function HeroAvatar() {
     rotateY.set(0);
     scale.set(1);
     offsetY.set(0);
-    shineOpacity.set(0);
-    shineX.set(50);
-    shineY.set(50);
-  }, [offsetY, rotateX, rotateY, scale, shineOpacity, shineX, shineY]);
+  }, [offsetY, rotateX, rotateY, scale]);
 
   const handlePointerMove = useCallback(
     (event: PointerEvent<HTMLSpanElement>) => {
@@ -66,19 +48,15 @@ export function HeroAvatar() {
       rotateY.set((x - 0.5) * ROTATION_RANGE);
       scale.set(AVATAR_HOVER_SCALE);
       offsetY.set(-4);
-      shineOpacity.set(1);
-      shineX.set(x * 100);
-      shineY.set(y * 100);
     },
-    [offsetY, rotateX, rotateY, scale, shineOpacity, shineX, shineY],
+    [offsetY, rotateX, rotateY, scale],
   );
 
   const handlePointerEnter = useCallback(() => {
     setIsActive(true);
     scale.set(AVATAR_HOVER_SCALE);
     offsetY.set(-4);
-    shineOpacity.set(0.65);
-  }, [offsetY, scale, shineOpacity]);
+  }, [offsetY, scale]);
 
   return (
     <motion.div
@@ -107,23 +85,6 @@ export function HeroAvatar() {
           alt="Manthan"
           className="rounded-[2rem]"
           src="/assets/images/me.avif"
-        />
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-[2rem] mix-blend-screen"
-          style={{
-            backgroundImage: shineBackground,
-            opacity: smoothShineOpacity,
-          }}
-        />
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-[2rem]"
-          style={{
-            background:
-              "linear-gradient(165deg, rgba(255,255,255,0.3), transparent 42%, rgba(99,102,241,0.14) 100%)",
-            opacity: smoothShineOpacity,
-          }}
         />
         <AvatarFallback className="rounded-[2rem] bg-foreground font-serif text-6xl text-background md:text-7xl">
           m
