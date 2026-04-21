@@ -8,7 +8,11 @@ import { nitro } from "nitro/vite";
 
 const config = defineConfig({
   plugins: [
-    devtools(),
+    devtools({
+      injectSource: {
+        enabled: false,
+      },
+    }),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
