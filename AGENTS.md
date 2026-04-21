@@ -27,3 +27,4 @@ DO NOT run the dev server or any database altering CLIs. Do as much as you can, 
 - **Distinct modules**: On the homepage, adjacent sections with different jobs should not share nearly identical treatments; editorial content like latest writing should feel meaningfully different from metadata rows such as company chips.
 - **Public timelines**: Future-dated entries should stay out of public-facing queries and derived stats until their date has arrived; admins can still see and manage them.
 - **Convex schema changes**: When adding fields to existing tables, make the field optional first or include an explicit backfill path so older documents do not fail schema validation before migration runs.
+- **Admin auth**: Admin access should use WorkOS-backed identity and server-side Convex authorization by allowed email. Do not reintroduce shared secrets in query params, cookies, or client-passed mutation arguments.
