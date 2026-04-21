@@ -1,0 +1,10 @@
+diff a/.cta.json b/.cta.json	(rejected hunks)
+@@ -7,7 +7,7 @@
+   "includeExamples": false,
+   "mode": "file-router",
+   "packageManager": "bun",
+-  "projectName": "vertex",
++  "projectName": "TODO",
+   "routerOnly": false,
+   "tailwind": true,
+   "typescript": true,

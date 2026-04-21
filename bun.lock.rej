@@ -1,0 +1,10 @@
+diff a/bun.lock b/bun.lock	(rejected hunks)
+@@ -3,7 +3,7 @@
+   "configVersion": 1,
+   "workspaces": {
+     "": {
+-      "name": "vertex",
++      "name": "TODO",
+       "dependencies": {
+         "@convex-dev/better-auth": "^0.10.11",
+         "@convex-dev/react-query": "^0.1.0",
