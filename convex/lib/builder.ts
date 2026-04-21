@@ -1,7 +1,19 @@
+import type { ActionCtx, MutationCtx, QueryCtx } from "../_generated/server";
 import { convexEnv } from "./config/env";
 
-export function requireAdmin(adminSecret: string) {
-  if (adminSecret !== convexEnv.ADMIN_SECRET) {
+type AdminCtx = ActionCtx | MutationCtx | QueryCtx;
+
+const adminEmails = new Set(
+  convexEnv.ADMIN_EMAILS.split(",").map((email) => email.trim().toLowerCase()),
+);
+
+export async function requireAdmin(ctx: AdminCtx) {
+  const identity = await ctx.auth.getUserIdentity();
+  const email = identity?.email?.toLowerCase();
+
+  if (!email || !adminEmails.has(email)) {
     throw new Error("Unauthorized");
   }
+
+  return identity;
 }

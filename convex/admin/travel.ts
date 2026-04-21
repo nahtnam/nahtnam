@@ -4,7 +4,6 @@ import { requireAdmin } from "../lib/builder";
 
 export const upsertFlights = mutation({
   args: {
-    adminSecret: v.string(),
     flights: v.array(
       v.object({
         aircraftType: v.string(),
@@ -17,8 +16,8 @@ export const upsertFlights = mutation({
       }),
     ),
   },
-  async handler(ctx, { adminSecret, flights }) {
-    requireAdmin(adminSecret);
+  async handler(ctx, { flights }) {
+    await requireAdmin(ctx);
     let created = 0;
     let updated = 0;
 

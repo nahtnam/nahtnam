@@ -51,14 +51,13 @@ export const Route = createFileRoute("/admin/education/")({
 });
 
 function EducationAdmin() {
-  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"resumeEducation"> | undefined>(
     undefined,
   );
 
   const { data: education = [] } = useQuery(
-    convexQuery(api.admin.resume.listEducation, { adminSecret }),
+    convexQuery(api.admin.resume.listEducation, {}),
   );
 
   const { mutateAsync: createEducation } = useMutation({
@@ -113,8 +112,8 @@ function EducationAdmin() {
     };
 
     await (editingId
-      ? updateEducation({ adminSecret, id: editingId, ...data })
-      : createEducation({ adminSecret, ...data }));
+      ? updateEducation({ id: editingId, ...data })
+      : createEducation({ ...data }));
 
     setOpen(false);
   }
@@ -247,7 +246,7 @@ function EducationAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      await deleteEducation({ adminSecret, id: edu._id });
+                      await deleteEducation({ id: edu._id });
                     }}
                   >
                     <Trash2 className="size-4" />

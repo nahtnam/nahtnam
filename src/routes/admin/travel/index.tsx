@@ -82,7 +82,6 @@ export const Route = createFileRoute("/admin/travel/")({
 });
 
 function TravelAdmin() {
-  const { adminSecret } = Route.useRouteContext();
   const [parsed, setParsed] = useState<ParsedFlight[]>([]);
   const [status, setStatus] = useState<
     "idle" | "parsing" | "uploading" | "done"
@@ -122,7 +121,7 @@ function TravelAdmin() {
 
     for (let i = 0; i < parsed.length; i += batchSize) {
       const batch = parsed.slice(i, i + batchSize);
-      const batchResult = await upsertFlights({ adminSecret, flights: batch });
+      const batchResult = await upsertFlights({ flights: batch });
       totalCreated += batchResult.created;
       totalUpdated += batchResult.updated;
     }

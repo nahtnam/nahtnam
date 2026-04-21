@@ -19,9 +19,8 @@ export const Route = createFileRoute("/admin/blog/")({
 });
 
 function BlogAdmin() {
-  const { adminSecret } = Route.useRouteContext();
   const { data: posts = [] } = useQuery(
-    convexQuery(api.admin.blog.listAllPosts, { adminSecret }),
+    convexQuery(api.admin.blog.listAllPosts, {}),
   );
   const { mutateAsync: backfillPublishedFlags } = useMutation({
     mutationFn: useConvexMutation(api.admin.blog.backfillPublishedFlags),
@@ -35,7 +34,7 @@ function BlogAdmin() {
           <Button
             size="sm"
             variant="outline"
-            onClick={async () => backfillPublishedFlags({ adminSecret })}
+            onClick={async () => backfillPublishedFlags({})}
           >
             <RefreshCcw className="mr-1 size-4" />
             Backfill Published

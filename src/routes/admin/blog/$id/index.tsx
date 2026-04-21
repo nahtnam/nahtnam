@@ -59,7 +59,6 @@ export const Route = createFileRoute("/admin/blog/$id/")({
 function BlogEditor() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const { adminSecret } = Route.useRouteContext();
   const isNew = id === "new";
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -67,13 +66,13 @@ function BlogEditor() {
   const { data: existingPost } = useQuery({
     ...convexQuery(
       api.admin.blog.getPostById,
-      isNew ? "skip" : { adminSecret, id: id as Id<"blogPosts"> },
+      isNew ? "skip" : { id: id as Id<"blogPosts"> },
     ),
     enabled: !isNew,
   });
 
   const { data: categories = [] } = useQuery(
-    convexQuery(api.admin.blog.listCategories, { adminSecret }),
+    convexQuery(api.admin.blog.listCategories, {}),
   );
 
   const { mutateAsync: createPost } = useMutation({
@@ -131,15 +130,15 @@ function BlogEditor() {
     };
 
     await (isNew
-      ? createPost({ adminSecret, ...data })
-      : updatePost({ adminSecret, id: id as Id<"blogPosts">, ...data }));
+      ? createPost(data)
+      : updatePost({ id: id as Id<"blogPosts">, ...data }));
 
     await navigate({ to: "/admin/blog" });
   }
 
   async function handleDelete() {
     if (!isNew) {
-      await deletePost({ adminSecret, id: id as Id<"blogPosts"> });
+      await deletePost({ id: id as Id<"blogPosts"> });
       await navigate({ to: "/admin/blog" });
     }
   }
@@ -156,7 +155,7 @@ function BlogEditor() {
 
       setUploading(true);
       try {
-        const uploadUrl = await generateUploadUrl({ adminSecret });
+        const uploadUrl = await generateUploadUrl({});
         const result = await fetch(uploadUrl, {
           method: "POST",
           headers: { "Content-Type": file.type },
@@ -164,7 +163,6 @@ function BlogEditor() {
         });
         const { storageId } = (await result.json()) as { storageId: string };
         const url = await getImageUrl({
-          adminSecret,
           storageId: storageId as Id<"_storage">,
         });
 
@@ -190,7 +188,7 @@ function BlogEditor() {
     });
 
     input.click();
-  }, [adminSecret, form, generateUploadUrl, getImageUrl]);
+  }, [form, generateUploadUrl, getImageUrl]);
 
   function generateSlug() {
     const title = form.getValues("title");

@@ -5,6 +5,7 @@ import {
   redirect,
   useRouter,
 } from "@tanstack/react-router";
+import { useAuth } from "@workos/authkit-tanstack-react-start/client";
 import {
   Briefcase,
   Building2,
@@ -17,7 +18,6 @@ import {
   Tags,
 } from "lucide-react";
 import { api } from "convex/_generated/api";
-import { getAdminSecret, setAdminCookie } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 
 const adminNav = [
@@ -33,35 +33,25 @@ const adminNav = [
 ];
 
 export const Route = createFileRoute("/admin")({
-  async beforeLoad({ context, location }) {
-    const parameters = new URLSearchParams(location.searchStr);
-    const secret = parameters.get("secret");
-
-    if (secret) {
-      await setAdminCookie({ data: { secret } });
-      throw redirect({ to: "/admin" });
-    }
-
-    const adminSecret = await getAdminSecret();
-    if (!adminSecret) {
-      throw redirect({ to: "/" });
+  async beforeLoad({ context }) {
+    if (!context.auth.user) {
+      throw redirect({ href: "/sign-in?redirectTo=%2Fadmin" });
     }
 
     try {
       await context.convexQueryClient.convexClient.query(
         api.admin.auth.isAuthorized,
-        { adminSecret },
+        {},
       );
     } catch {
       throw redirect({ to: "/" });
     }
-
-    return { adminSecret };
   },
   component: AdminLayout,
 });
 
 function AdminLayout() {
+  const { signOut } = useAuth();
   const router = useRouter();
   const { pathname } = router.state.location;
 
@@ -88,6 +78,17 @@ function AdminLayout() {
               </Button>
             );
           })}
+          <Button
+            className="justify-start"
+            size="sm"
+            type="button"
+            variant="ghost"
+            onClick={() => {
+              void signOut({ returnTo: "/" });
+            }}
+          >
+            Sign Out
+          </Button>
         </nav>
       </aside>
       <div className="flex-1 p-6">

@@ -10,9 +10,9 @@ const attachmentValidator = v.object({
 });
 
 export const listItems = query({
-  args: { adminSecret: v.string() },
-  async handler(ctx, { adminSecret }) {
-    requireAdmin(adminSecret);
+  args: {},
+  async handler(ctx) {
+    await requireAdmin(ctx);
     return ctx.db
       .query("golfRItems")
       .withIndex("by_date")
@@ -23,7 +23,6 @@ export const listItems = query({
 
 export const createItem = mutation({
   args: {
-    adminSecret: v.string(),
     attachments: v.optional(v.array(attachmentValidator)),
     cashback: v.optional(v.number()),
     category: v.string(),
@@ -38,15 +37,14 @@ export const createItem = mutation({
 
     url: v.optional(v.string()),
   },
-  async handler(ctx, { adminSecret, ...args }) {
-    requireAdmin(adminSecret);
+  async handler(ctx, args) {
+    await requireAdmin(ctx);
     return ctx.db.insert("golfRItems", args);
   },
 });
 
 export const updateItem = mutation({
   args: {
-    adminSecret: v.string(),
     attachments: v.optional(v.array(attachmentValidator)),
     cashback: v.optional(v.number()),
     category: v.string(),
@@ -62,8 +60,8 @@ export const updateItem = mutation({
 
     url: v.optional(v.string()),
   },
-  async handler(ctx, { adminSecret, id, ...data }) {
-    requireAdmin(adminSecret);
+  async handler(ctx, { id, ...data }) {
+    await requireAdmin(ctx);
     const existingItem = await ctx.db.get("golfRItems", id);
     if (!existingItem) {
       return;
@@ -84,9 +82,9 @@ export const updateItem = mutation({
 });
 
 export const deleteItem = mutation({
-  args: { adminSecret: v.string(), id: v.id("golfRItems") },
-  async handler(ctx, { adminSecret, id }) {
-    requireAdmin(adminSecret);
+  args: { id: v.id("golfRItems") },
+  async handler(ctx, { id }) {
+    await requireAdmin(ctx);
     const existingItem = await ctx.db.get("golfRItems", id);
     for (const attachment of existingItem?.attachments ?? []) {
       await ctx.storage.delete(attachment.storageId);
@@ -97,25 +95,25 @@ export const deleteItem = mutation({
 });
 
 export const generateUploadUrl = mutation({
-  args: { adminSecret: v.string() },
-  async handler(ctx, { adminSecret }) {
-    requireAdmin(adminSecret);
+  args: {},
+  async handler(ctx) {
+    await requireAdmin(ctx);
     return ctx.storage.generateUploadUrl();
   },
 });
 
 export const getAttachmentUrl = mutation({
-  args: { adminSecret: v.string(), storageId: v.id("_storage") },
-  async handler(ctx, { adminSecret, storageId }) {
-    requireAdmin(adminSecret);
+  args: { storageId: v.id("_storage") },
+  async handler(ctx, { storageId }) {
+    await requireAdmin(ctx);
     return ctx.storage.getUrl(storageId);
   },
 });
 
 export const deleteAttachment = mutation({
-  args: { adminSecret: v.string(), storageId: v.id("_storage") },
-  async handler(ctx, { adminSecret, storageId }) {
-    requireAdmin(adminSecret);
+  args: { storageId: v.id("_storage") },
+  async handler(ctx, { storageId }) {
+    await requireAdmin(ctx);
     await ctx.storage.delete(storageId);
   },
 });

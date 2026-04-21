@@ -3,9 +3,9 @@ import { mutation, query } from "../_generated/server";
 import { requireAdmin } from "../lib/builder";
 
 export const listAllPosts = query({
-  args: { adminSecret: v.string() },
-  async handler(ctx, { adminSecret }) {
-    requireAdmin(adminSecret);
+  args: {},
+  async handler(ctx) {
+    await requireAdmin(ctx);
     const posts = await ctx.db
       .query("blogPosts")
       .withIndex("by_publishedAt")
@@ -24,9 +24,9 @@ export const listAllPosts = query({
 });
 
 export const getPostById = query({
-  args: { adminSecret: v.string(), id: v.id("blogPosts") },
-  async handler(ctx, { adminSecret, id }) {
-    requireAdmin(adminSecret);
+  args: { id: v.id("blogPosts") },
+  async handler(ctx, { id }) {
+    await requireAdmin(ctx);
     const post = await ctx.db.get("blogPosts", id);
     if (!post) {
       return null;
@@ -38,16 +38,15 @@ export const getPostById = query({
 });
 
 export const listCategories = query({
-  args: { adminSecret: v.string() },
-  async handler(ctx, { adminSecret }) {
-    requireAdmin(adminSecret);
+  args: {},
+  async handler(ctx) {
+    await requireAdmin(ctx);
     return ctx.db.query("blogCategories").collect();
   },
 });
 
 export const createPost = mutation({
   args: {
-    adminSecret: v.string(),
     categoryId: v.id("blogCategories"),
     content: v.string(),
     excerpt: v.string(),
@@ -56,15 +55,14 @@ export const createPost = mutation({
     slug: v.string(),
     title: v.string(),
   },
-  async handler(ctx, { adminSecret, ...args }) {
-    requireAdmin(adminSecret);
+  async handler(ctx, args) {
+    await requireAdmin(ctx);
     return ctx.db.insert("blogPosts", args);
   },
 });
 
 export const updatePost = mutation({
   args: {
-    adminSecret: v.string(),
     categoryId: v.id("blogCategories"),
     content: v.string(),
     excerpt: v.string(),
@@ -74,52 +72,51 @@ export const updatePost = mutation({
     slug: v.string(),
     title: v.string(),
   },
-  async handler(ctx, { adminSecret, id, ...data }) {
-    requireAdmin(adminSecret);
+  async handler(ctx, { id, ...data }) {
+    await requireAdmin(ctx);
     await ctx.db.patch("blogPosts", id, data);
   },
 });
 
 export const deletePost = mutation({
-  args: { adminSecret: v.string(), id: v.id("blogPosts") },
-  async handler(ctx, { adminSecret, id }) {
-    requireAdmin(adminSecret);
+  args: { id: v.id("blogPosts") },
+  async handler(ctx, { id }) {
+    await requireAdmin(ctx);
     await ctx.db.delete("blogPosts", id);
   },
 });
 
 export const createCategory = mutation({
-  args: { adminSecret: v.string(), name: v.string() },
-  async handler(ctx, { adminSecret, ...args }) {
-    requireAdmin(adminSecret);
+  args: { name: v.string() },
+  async handler(ctx, args) {
+    await requireAdmin(ctx);
     return ctx.db.insert("blogCategories", args);
   },
 });
 
 export const updateCategory = mutation({
   args: {
-    adminSecret: v.string(),
     id: v.id("blogCategories"),
     name: v.string(),
   },
-  async handler(ctx, { adminSecret, id, ...data }) {
-    requireAdmin(adminSecret);
+  async handler(ctx, { id, ...data }) {
+    await requireAdmin(ctx);
     await ctx.db.patch("blogCategories", id, data);
   },
 });
 
 export const deleteCategory = mutation({
-  args: { adminSecret: v.string(), id: v.id("blogCategories") },
-  async handler(ctx, { adminSecret, id }) {
-    requireAdmin(adminSecret);
+  args: { id: v.id("blogCategories") },
+  async handler(ctx, { id }) {
+    await requireAdmin(ctx);
     await ctx.db.delete("blogCategories", id);
   },
 });
 
 export const backfillPublishedFlags = mutation({
-  args: { adminSecret: v.string() },
-  async handler(ctx, { adminSecret }) {
-    requireAdmin(adminSecret);
+  args: {},
+  async handler(ctx) {
+    await requireAdmin(ctx);
     const now = Date.now();
     const posts = await ctx.db.query("blogPosts").collect();
 
@@ -138,17 +135,17 @@ export const backfillPublishedFlags = mutation({
 });
 
 export const generateUploadUrl = mutation({
-  args: { adminSecret: v.string() },
-  async handler(ctx, { adminSecret }) {
-    requireAdmin(adminSecret);
+  args: {},
+  async handler(ctx) {
+    await requireAdmin(ctx);
     return ctx.storage.generateUploadUrl();
   },
 });
 
 export const getImageUrl = mutation({
-  args: { adminSecret: v.string(), storageId: v.id("_storage") },
-  async handler(ctx, { adminSecret, storageId }) {
-    requireAdmin(adminSecret);
+  args: { storageId: v.id("_storage") },
+  async handler(ctx, { storageId }) {
+    await requireAdmin(ctx);
     return ctx.storage.getUrl(storageId);
   },
 });

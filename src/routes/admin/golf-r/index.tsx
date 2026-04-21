@@ -112,7 +112,6 @@ function sameAttachmentIds(
 }
 
 function GolfRAdmin() {
-  const { adminSecret } = Route.useRouteContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const [attachments, setAttachments] = useState<AttachmentValue[]>([]);
   const [initialAttachmentIds, setInitialAttachmentIds] = useState<
@@ -124,9 +123,7 @@ function GolfRAdmin() {
   );
   const [uploading, setUploading] = useState(false);
 
-  const { data = [] } = useQuery(
-    convexQuery(api.admin.golf_r.listItems, { adminSecret }),
-  );
+  const { data = [] } = useQuery(convexQuery(api.admin.golf_r.listItems, {}));
   const items = sortGolfRItems(data);
 
   const { mutateAsync: createItem } = useMutation({
@@ -190,7 +187,7 @@ function GolfRAdmin() {
 
     await Promise.all(
       draftAttachments.map(async (attachment) =>
-        deleteAttachment({ adminSecret, storageId: attachment.storageId }),
+        deleteAttachment({ storageId: attachment.storageId }),
       ),
     );
   }
@@ -215,7 +212,6 @@ function GolfRAdmin() {
         ...attachment,
         url:
           (await getAttachmentUrl({
-            adminSecret,
             storageId: attachment.storageId,
           })) ?? undefined,
       })),
@@ -267,7 +263,7 @@ function GolfRAdmin() {
     try {
       const uploadedAttachments = await Promise.all(
         files.map(async (file) => {
-          const uploadUrl = await generateUploadUrl({ adminSecret });
+          const uploadUrl = await generateUploadUrl({});
           const result = await fetch(uploadUrl, {
             method: "POST",
             headers: {
@@ -282,10 +278,7 @@ function GolfRAdmin() {
 
           const { storageId } = (await result.json()) as { storageId: string };
           const typedStorageId = storageId as Id<"_storage">;
-          const url = await getAttachmentUrl({
-            adminSecret,
-            storageId: typedStorageId,
-          });
+          const url = await getAttachmentUrl({ storageId: typedStorageId });
 
           return {
             contentType: file.type || undefined,
@@ -316,7 +309,7 @@ function GolfRAdmin() {
     );
 
     if (shouldDeleteNow) {
-      await deleteAttachment({ adminSecret, storageId });
+      await deleteAttachment({ storageId });
     }
   }
 
@@ -340,8 +333,8 @@ function GolfRAdmin() {
     };
 
     await (editingId
-      ? updateItem({ adminSecret, id: editingId, ...data })
-      : createItem({ adminSecret, ...data }));
+      ? updateItem({ id: editingId, ...data })
+      : createItem(data));
 
     resetEditor();
     setOpen(false);
@@ -693,7 +686,7 @@ function GolfRAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      await deleteItem({ adminSecret, id: item._id });
+                      await deleteItem({ id: item._id });
                     }}
                   >
                     <Trash2 className="size-4" />

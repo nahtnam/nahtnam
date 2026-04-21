@@ -1,6 +1,7 @@
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
+import { ConvexProviderWithAuth } from "convex/react";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -9,7 +10,13 @@ import {
   useRouteContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { ConvexProvider } from "convex/react";
+import { getAuth } from "@workos/authkit-tanstack-react-start";
+import {
+  AuthKitProvider,
+  useAccessToken,
+  useAuth,
+} from "@workos/authkit-tanstack-react-start/client";
+import { useCallback, useMemo } from "react";
 import appCss from "../styles.css?url";
 import { Footer } from "./-components/footer";
 import { Navbar } from "./-components/navbar";
@@ -25,6 +32,22 @@ export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   convexQueryClient: ConvexQueryClient;
 }>()({
+  async beforeLoad(ctx) {
+    const auth = await getAuth();
+
+    if (auth.user) {
+      ctx.context.convexQueryClient.serverHttpClient?.setAuth(auth.accessToken);
+      ctx.context.convexQueryClient.convexClient.setAuth(
+        async () => auth.accessToken ?? null,
+      );
+    } else {
+      ctx.context.convexQueryClient.convexClient.clearAuth();
+    }
+
+    return {
+      auth,
+    };
+  },
   component: RootComponent,
   head: () => ({
     links: [
@@ -140,19 +163,53 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  const { convexQueryClient } = useRouteContext({ from: "__root__" });
+  const context = useRouteContext({ from: "__root__" });
 
   return (
-    <ConvexProvider client={convexQueryClient.convexClient}>
-      <TooltipProvider>
-        <div className="relative flex min-h-full flex-col">
-          <Navbar />
-          <main className="grow print:m-0 print:grow-0">
-            <Outlet />
-          </main>
-          <Footer />
-        </div>
-      </TooltipProvider>
-    </ConvexProvider>
+    <AuthKitProvider initialAuth={context.auth}>
+      <ConvexProviderWithAuth
+        client={context.convexQueryClient.convexClient}
+        useAuth={useAuthFromAuthKit}
+      >
+        <TooltipProvider>
+          <div className="relative flex min-h-full flex-col">
+            <Navbar />
+            <main className="grow print:m-0 print:grow-0">
+              <Outlet />
+            </main>
+            <Footer />
+          </div>
+        </TooltipProvider>
+      </ConvexProviderWithAuth>
+    </AuthKitProvider>
+  );
+}
+
+function useAuthFromAuthKit() {
+  const { loading, user } = useAuth();
+  const { getAccessToken, refresh } = useAccessToken();
+
+  const fetchAccessToken = useCallback(
+    async ({ forceRefreshToken }: { forceRefreshToken: boolean }) => {
+      if (!user) {
+        return null;
+      }
+
+      if (forceRefreshToken) {
+        return (await refresh()) ?? null;
+      }
+
+      return (await getAccessToken()) ?? null;
+    },
+    [getAccessToken, refresh, user],
+  );
+
+  return useMemo(
+    () => ({
+      fetchAccessToken,
+      isAuthenticated: Boolean(user),
+      isLoading: loading,
+    }),
+    [fetchAccessToken, loading, user],
   );
 }

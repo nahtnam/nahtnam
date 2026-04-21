@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TravelIndexRouteImport } from './routes/travel/index'
@@ -26,9 +27,15 @@ import { Route as AdminExperiencesIndexRouteImport } from './routes/admin/experi
 import { Route as AdminEducationIndexRouteImport } from './routes/admin/education/index'
 import { Route as AdminCompaniesIndexRouteImport } from './routes/admin/companies/index'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
+import { Route as ApiAuthCallbackRouteImport } from './routes/api/auth/callback'
 import { Route as AdminBlogCategoriesIndexRouteImport } from './routes/admin/blog/categories/index'
 import { Route as AdminBlogIdIndexRouteImport } from './routes/admin/blog/$id/index'
 
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -114,6 +121,11 @@ const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiAuthCallbackRoute = ApiAuthCallbackRouteImport.update({
+  id: '/api/auth/callback',
+  path: '/api/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogCategoriesIndexRoute =
   AdminBlogCategoriesIndexRouteImport.update({
     id: '/blog/categories/',
@@ -129,6 +141,7 @@ const AdminBlogIdIndexRoute = AdminBlogIdIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/sign-in': typeof SignInRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/bnb/': typeof BnbIndexRoute
@@ -136,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/experience/': typeof ExperienceIndexRoute
   '/golf-r/': typeof GolfRIndexRoute
   '/travel/': typeof TravelIndexRoute
+  '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/companies/': typeof AdminCompaniesIndexRoute
   '/admin/education/': typeof AdminEducationIndexRoute
@@ -149,6 +163,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sign-in': typeof SignInRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/bnb': typeof BnbIndexRoute
@@ -156,6 +171,7 @@ export interface FileRoutesByTo {
   '/experience': typeof ExperienceIndexRoute
   '/golf-r': typeof GolfRIndexRoute
   '/travel': typeof TravelIndexRoute
+  '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/companies': typeof AdminCompaniesIndexRoute
   '/admin/education': typeof AdminEducationIndexRoute
@@ -171,6 +187,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/sign-in': typeof SignInRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/bnb/': typeof BnbIndexRoute
@@ -178,6 +195,7 @@ export interface FileRoutesById {
   '/experience/': typeof ExperienceIndexRoute
   '/golf-r/': typeof GolfRIndexRoute
   '/travel/': typeof TravelIndexRoute
+  '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/companies/': typeof AdminCompaniesIndexRoute
   '/admin/education/': typeof AdminEducationIndexRoute
@@ -194,6 +212,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/sign-in'
     | '/admin/'
     | '/blog/'
     | '/bnb/'
@@ -201,6 +220,7 @@ export interface FileRouteTypes {
     | '/experience/'
     | '/golf-r/'
     | '/travel/'
+    | '/api/auth/callback'
     | '/admin/blog/'
     | '/admin/companies/'
     | '/admin/education/'
@@ -214,6 +234,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/sign-in'
     | '/admin'
     | '/blog'
     | '/bnb'
@@ -221,6 +242,7 @@ export interface FileRouteTypes {
     | '/experience'
     | '/golf-r'
     | '/travel'
+    | '/api/auth/callback'
     | '/admin/blog'
     | '/admin/companies'
     | '/admin/education'
@@ -235,6 +257,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/sign-in'
     | '/admin/'
     | '/blog/'
     | '/bnb/'
@@ -242,6 +265,7 @@ export interface FileRouteTypes {
     | '/experience/'
     | '/golf-r/'
     | '/travel/'
+    | '/api/auth/callback'
     | '/admin/blog/'
     | '/admin/companies/'
     | '/admin/education/'
@@ -257,17 +281,26 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  SignInRoute: typeof SignInRoute
   BlogIndexRoute: typeof BlogIndexRoute
   BnbIndexRoute: typeof BnbIndexRoute
   ContactIndexRoute: typeof ContactIndexRoute
   ExperienceIndexRoute: typeof ExperienceIndexRoute
   GolfRIndexRoute: typeof GolfRIndexRoute
   TravelIndexRoute: typeof TravelIndexRoute
+  ApiAuthCallbackRoute: typeof ApiAuthCallbackRoute
   BlogSlugIndexRoute: typeof BlogSlugIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -387,6 +420,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/api/auth/callback': {
+      id: '/api/auth/callback'
+      path: '/api/auth/callback'
+      fullPath: '/api/auth/callback'
+      preLoaderRoute: typeof ApiAuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog/categories/': {
       id: '/admin/blog/categories/'
       path: '/blog/categories'
@@ -435,12 +475,14 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  SignInRoute: SignInRoute,
   BlogIndexRoute: BlogIndexRoute,
   BnbIndexRoute: BnbIndexRoute,
   ContactIndexRoute: ContactIndexRoute,
   ExperienceIndexRoute: ExperienceIndexRoute,
   GolfRIndexRoute: GolfRIndexRoute,
   TravelIndexRoute: TravelIndexRoute,
+  ApiAuthCallbackRoute: ApiAuthCallbackRoute,
   BlogSlugIndexRoute: BlogSlugIndexRoute,
 }
 export const routeTree = rootRouteImport
@@ -448,10 +490,11 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

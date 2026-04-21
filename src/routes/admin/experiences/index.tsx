@@ -59,17 +59,16 @@ export const Route = createFileRoute("/admin/experiences/")({
 });
 
 function ExperiencesAdmin() {
-  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<
     Id<"resumeWorkExperiences"> | undefined
   >(undefined);
 
   const { data: experiences = [] } = useQuery(
-    convexQuery(api.admin.resume.listExperiences, { adminSecret }),
+    convexQuery(api.admin.resume.listExperiences, {}),
   );
   const { data: companies = [] } = useQuery(
-    convexQuery(api.admin.resume.listCompanies, { adminSecret }),
+    convexQuery(api.admin.resume.listCompanies, {}),
   );
 
   const { mutateAsync: createExperience } = useMutation({
@@ -133,8 +132,8 @@ function ExperiencesAdmin() {
     };
 
     await (editingId
-      ? updateExperience({ adminSecret, id: editingId, ...data })
-      : createExperience({ adminSecret, ...data }));
+      ? updateExperience({ id: editingId, ...data })
+      : createExperience({ ...data }));
 
     setOpen(false);
   }
@@ -302,7 +301,7 @@ function ExperiencesAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      await deleteExperience({ adminSecret, id: exp._id });
+                      await deleteExperience({ id: exp._id });
                     }}
                   >
                     <Trash2 className="size-4" />

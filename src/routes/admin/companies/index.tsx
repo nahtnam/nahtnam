@@ -48,14 +48,13 @@ export const Route = createFileRoute("/admin/companies/")({
 });
 
 function CompaniesAdmin() {
-  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"resumeCompanies"> | undefined>(
     undefined,
   );
 
   const { data: companies = [] } = useQuery(
-    convexQuery(api.admin.resume.listCompanies, { adminSecret }),
+    convexQuery(api.admin.resume.listCompanies, {}),
   );
 
   const { mutateAsync: createCompany } = useMutation({
@@ -91,8 +90,8 @@ function CompaniesAdmin() {
 
   async function onSubmit(values: FormValues) {
     await (editingId
-      ? updateCompany({ adminSecret, id: editingId, ...values })
-      : createCompany({ adminSecret, ...values }));
+      ? updateCompany({ id: editingId, ...values })
+      : createCompany({ ...values }));
 
     setOpen(false);
   }
@@ -197,7 +196,7 @@ function CompaniesAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      await deleteCompany({ adminSecret, id: company._id });
+                      await deleteCompany({ id: company._id });
                     }}
                   >
                     <Trash2 className="size-4" />

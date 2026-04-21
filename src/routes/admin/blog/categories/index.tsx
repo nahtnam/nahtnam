@@ -46,14 +46,13 @@ export const Route = createFileRoute("/admin/blog/categories/")({
 });
 
 function CategoriesAdmin() {
-  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"blogCategories"> | undefined>(
     undefined,
   );
 
   const { data: categories = [] } = useQuery(
-    convexQuery(api.admin.blog.listCategories, { adminSecret }),
+    convexQuery(api.admin.blog.listCategories, {}),
   );
 
   const { mutateAsync: createCategory } = useMutation({
@@ -85,8 +84,8 @@ function CategoriesAdmin() {
 
   async function onSubmit(values: FormValues) {
     await (editingId
-      ? updateCategory({ adminSecret, id: editingId, ...values })
-      : createCategory({ adminSecret, ...values }));
+      ? updateCategory({ id: editingId, ...values })
+      : createCategory({ ...values }));
 
     setOpen(false);
   }
@@ -159,7 +158,7 @@ function CategoriesAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      await deleteCategory({ adminSecret, id: category._id });
+                      await deleteCategory({ id: category._id });
                     }}
                   >
                     <Trash2 className="size-4" />

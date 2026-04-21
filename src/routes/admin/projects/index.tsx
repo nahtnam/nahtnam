@@ -50,14 +50,13 @@ export const Route = createFileRoute("/admin/projects/")({
 });
 
 function ProjectsAdmin() {
-  const { adminSecret } = Route.useRouteContext();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<Id<"resumeProjects"> | undefined>(
     undefined,
   );
 
   const { data: projects = [] } = useQuery(
-    convexQuery(api.admin.resume.listProjects, { adminSecret }),
+    convexQuery(api.admin.resume.listProjects, {}),
   );
 
   const { mutateAsync: createProject } = useMutation({
@@ -104,8 +103,8 @@ function ProjectsAdmin() {
     };
 
     await (editingId
-      ? updateProject({ adminSecret, id: editingId, ...data })
-      : createProject({ adminSecret, ...data }));
+      ? updateProject({ id: editingId, ...data })
+      : createProject({ ...data }));
 
     setOpen(false);
   }
@@ -226,7 +225,7 @@ function ProjectsAdmin() {
                     size="icon"
                     variant="ghost"
                     onClick={async () => {
-                      await deleteProject({ adminSecret, id: project._id });
+                      await deleteProject({ id: project._id });
                     }}
                   >
                     <Trash2 className="size-4" />
