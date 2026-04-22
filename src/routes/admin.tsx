@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { api } from "convex/_generated/api";
 import { Button } from "@/components/ui/button";
+import { appUrl } from "@/lib/config";
 
 const adminNav = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -84,7 +85,7 @@ function AdminLayout() {
             type="button"
             variant="ghost"
             onClick={() => {
-              void signOut({ returnTo: "/" });
+              void signOut({ returnTo: appUrl });
             }}
           >
             Sign Out

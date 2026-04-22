@@ -11,7 +11,17 @@ export async function requireAdmin(ctx: AdminCtx) {
   const identity = await ctx.auth.getUserIdentity();
   const email = identity?.email?.toLowerCase();
 
-  if (!email || !adminEmails.has(email)) {
+  if (!identity) {
+    throw new Error("Unauthorized");
+  }
+
+  if (!email) {
+    throw new Error(
+      "Unauthorized: authenticated token is missing an email claim",
+    );
+  }
+
+  if (!adminEmails.has(email)) {
     throw new Error("Unauthorized");
   }
 

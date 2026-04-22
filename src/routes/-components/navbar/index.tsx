@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Menu } from "lucide-react";
+import { useAuth } from "@workos/authkit-tanstack-react-start/client";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Menubar } from "@/components/ui/menubar";
@@ -11,7 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { appName } from "@/lib/config";
+import { appName, appUrl } from "@/lib/config";
 
 type MenuItem = {
   title: string;
@@ -28,6 +29,8 @@ const menu: MenuItem[] = [
 ];
 
 export function Navbar() {
+  const { signOut, user } = useAuth();
+
   return (
     <header className="sticky top-0 z-40 px-4 pt-4">
       <div className="container mx-auto">
@@ -60,6 +63,29 @@ export function Navbar() {
                 )}
               </Button>
             ))}
+            {user ? (
+              <>
+                <Button
+                  asChild
+                  className="text-muted-foreground hover:text-foreground"
+                  size="sm"
+                  variant="ghost"
+                >
+                  <Link to="/admin">Admin</Link>
+                </Button>
+                <Button
+                  className="text-muted-foreground hover:text-foreground"
+                  size="sm"
+                  type="button"
+                  variant="ghost"
+                  onClick={() => {
+                    void signOut({ returnTo: appUrl });
+                  }}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : null}
           </Menubar>
 
           <Sheet>
@@ -99,6 +125,33 @@ export function Navbar() {
                     </Button>
                   </SheetClose>
                 ))}
+                {user ? (
+                  <>
+                    <SheetClose asChild>
+                      <Button
+                        asChild
+                        className="justify-start"
+                        size="lg"
+                        variant="ghost"
+                      >
+                        <Link to="/admin">Admin</Link>
+                      </Button>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Button
+                        className="justify-start"
+                        size="lg"
+                        type="button"
+                        variant="ghost"
+                        onClick={() => {
+                          void signOut({ returnTo: appUrl });
+                        }}
+                      >
+                        Sign Out
+                      </Button>
+                    </SheetClose>
+                  </>
+                ) : null}
               </div>
             </SheetContent>
           </Sheet>
