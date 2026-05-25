@@ -8,6 +8,7 @@ import {
   Outlet,
   Scripts,
   useRouteContext,
+  useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { getAuth } from "@workos/authkit-tanstack-react-start";
@@ -164,6 +165,11 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
 
 function RootComponent() {
   const context = useRouteContext({ from: "__root__" });
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+  const isChromelessRoute =
+    pathname === "/pomodoro" || pathname === "/pomodoro/";
 
   return (
     <AuthKitProvider initialAuth={context.auth}>
@@ -173,11 +179,11 @@ function RootComponent() {
       >
         <TooltipProvider>
           <div className="relative flex min-h-full flex-col">
-            <Navbar />
+            {isChromelessRoute ? null : <Navbar />}
             <main className="grow print:m-0 print:grow-0">
               <Outlet />
             </main>
-            <Footer />
+            {isChromelessRoute ? null : <Footer />}
           </div>
         </TooltipProvider>
       </ConvexProviderWithAuth>

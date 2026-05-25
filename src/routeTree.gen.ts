@@ -13,6 +13,7 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TravelIndexRouteImport } from './routes/travel/index'
+import { Route as PomodoroIndexRouteImport } from './routes/pomodoro/index'
 import { Route as GolfRIndexRouteImport } from './routes/golf-r/index'
 import { Route as ExperienceIndexRouteImport } from './routes/experience/index'
 import { Route as ContactIndexRouteImport } from './routes/contact/index'
@@ -49,6 +50,11 @@ const IndexRoute = IndexRouteImport.update({
 const TravelIndexRoute = TravelIndexRouteImport.update({
   id: '/travel/',
   path: '/travel/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PomodoroIndexRoute = PomodoroIndexRouteImport.update({
+  id: '/pomodoro/',
+  path: '/pomodoro/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GolfRIndexRoute = GolfRIndexRouteImport.update({
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
   '/golf-r/': typeof GolfRIndexRoute
+  '/pomodoro/': typeof PomodoroIndexRoute
   '/travel/': typeof TravelIndexRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
@@ -170,6 +177,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactIndexRoute
   '/experience': typeof ExperienceIndexRoute
   '/golf-r': typeof GolfRIndexRoute
+  '/pomodoro': typeof PomodoroIndexRoute
   '/travel': typeof TravelIndexRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/admin/blog': typeof AdminBlogIndexRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/contact/': typeof ContactIndexRoute
   '/experience/': typeof ExperienceIndexRoute
   '/golf-r/': typeof GolfRIndexRoute
+  '/pomodoro/': typeof PomodoroIndexRoute
   '/travel/': typeof TravelIndexRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/contact/'
     | '/experience/'
     | '/golf-r/'
+    | '/pomodoro/'
     | '/travel/'
     | '/api/auth/callback'
     | '/admin/blog/'
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/experience'
     | '/golf-r'
+    | '/pomodoro'
     | '/travel'
     | '/api/auth/callback'
     | '/admin/blog'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/contact/'
     | '/experience/'
     | '/golf-r/'
+    | '/pomodoro/'
     | '/travel/'
     | '/api/auth/callback'
     | '/admin/blog/'
@@ -287,6 +299,7 @@ export interface RootRouteChildren {
   ContactIndexRoute: typeof ContactIndexRoute
   ExperienceIndexRoute: typeof ExperienceIndexRoute
   GolfRIndexRoute: typeof GolfRIndexRoute
+  PomodoroIndexRoute: typeof PomodoroIndexRoute
   TravelIndexRoute: typeof TravelIndexRoute
   ApiAuthCallbackRoute: typeof ApiAuthCallbackRoute
   BlogSlugIndexRoute: typeof BlogSlugIndexRoute
@@ -320,6 +333,13 @@ declare module '@tanstack/react-router' {
       path: '/travel'
       fullPath: '/travel/'
       preLoaderRoute: typeof TravelIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pomodoro/': {
+      id: '/pomodoro/'
+      path: '/pomodoro'
+      fullPath: '/pomodoro/'
+      preLoaderRoute: typeof PomodoroIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/golf-r/': {
@@ -481,6 +501,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactIndexRoute: ContactIndexRoute,
   ExperienceIndexRoute: ExperienceIndexRoute,
   GolfRIndexRoute: GolfRIndexRoute,
+  PomodoroIndexRoute: PomodoroIndexRoute,
   TravelIndexRoute: TravelIndexRoute,
   ApiAuthCallbackRoute: ApiAuthCallbackRoute,
   BlogSlugIndexRoute: BlogSlugIndexRoute,

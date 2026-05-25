@@ -264,6 +264,24 @@
   .paper-chip {
     @apply rounded-full border border-border/70 bg-background/80 px-3 py-1;
   }
+
+  .pomodoro-flip-clock {
+    font-family: var(--font-mono);
+  }
+
+  .pomodoro-flip-clock .fcc__unit_time {
+    align-items: center;
+  }
+
+  .pomodoro-flip-clock .fcc__digit_block {
+    border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+    font-variant-numeric: tabular-nums;
+    overflow: hidden;
+  }
+
+  .pomodoro-flip-clock .fcc__label {
+    opacity: 0.55;
+  }
 }
 
 @layer utilities {
