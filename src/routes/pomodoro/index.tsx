@@ -199,6 +199,9 @@ function PomodoroPage() {
   const [sessionLogLoaded, setSessionLogLoaded] = useState(false);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [sessionStartedAt, setSessionStartedAt] = useState<number>();
+  const [todayKey, setTodayKey] = useState(() =>
+    getLocalDateKey({ date: new Date() }),
+  );
   const titleRef = useRef<string | undefined>(undefined);
 
   const totalSeconds = useMemo(
@@ -228,9 +231,17 @@ function PomodoroPage() {
       }),
     [completedSegments, phase, settings.segmentsBeforeLongBreak],
   );
+  const todaysSessions = useMemo(
+    () =>
+      getSessionsCompletedOnDate({
+        dateKey: todayKey,
+        sessions: sessionLog,
+      }),
+    [sessionLog, todayKey],
+  );
   const stats = useMemo(
-    () => getSessionStats({ sessions: sessionLog }),
-    [sessionLog],
+    () => getSessionStats({ sessions: todaysSessions }),
+    [todaysSessions],
   );
 
   useEffect(() => {
@@ -243,6 +254,16 @@ function PomodoroPage() {
         ? "dark"
         : "light",
     );
+  }, []);
+
+  useEffect(() => {
+    const intervalId = globalThis.setInterval(() => {
+      setTodayKey(getLocalDateKey({ date: new Date() }));
+    }, 60_000);
+
+    return () => {
+      globalThis.clearInterval(intervalId);
+    };
   }, []);
 
   useEffect(() => {
@@ -693,7 +714,11 @@ function PomodoroPage() {
               </Button>
             </div>
 
-            <SessionHistory sessions={sessionLog} stats={stats} theme={theme} />
+            <SessionHistory
+              sessions={todaysSessions}
+              stats={stats}
+              theme={theme}
+            />
           </section>
         </main>
       </div>
@@ -801,7 +826,7 @@ function SessionHistory(props: {
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="font-mono text-xs uppercase tracking-[0.24em] opacity-65">
-            Progress
+            Today
           </h2>
           <div className="mt-2 flex flex-wrap gap-4 font-mono text-xs uppercase tracking-[0.18em]">
             <span>{stats.focusCount} focus</span>
@@ -847,7 +872,7 @@ function SessionHistory(props: {
         </div>
       ) : (
         <div className="rounded-md border border-dashed border-current/20 px-4 py-5 text-center font-mono text-xs uppercase tracking-[0.2em] opacity-55">
-          No completed sessions yet
+          No completed sessions today
         </div>
       )}
     </div>
@@ -1023,6 +1048,31 @@ function getSessionStats(props: { readonly sessions: CompletedSession[] }) {
     focusSeconds,
     totalSeconds,
   };
+}
+
+function getSessionsCompletedOnDate(props: {
+  readonly dateKey: string;
+  readonly sessions: CompletedSession[];
+}) {
+  const { dateKey, sessions } = props;
+
+  return sessions.filter((session) => {
+    const completedAt = new Date(session.completedAt);
+
+    if (Number.isNaN(completedAt.getTime())) {
+      return false;
+    }
+
+    return getLocalDateKey({ date: completedAt }) === dateKey;
+  });
+}
+
+function getLocalDateKey(props: { readonly date: Date }) {
+  const { date } = props;
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+
+  return `${date.getFullYear()}-${month}-${day}`;
 }
 
 function getSessionSquareColor(props: {
