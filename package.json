@@ -48,6 +48,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.32.0",
+    "convex-route-query": "^0.0.1",
     "date-fns": "^4.1.0",
     "es-toolkit": "^1.44.0",
     "framer-motion": "^12.34.3",
