@@ -23,6 +23,7 @@ import type * as golf_r_queries from "../golf_r/queries.js";
 import type * as http from "../http.js";
 import type * as lib_builder from "../lib/builder.js";
 import type * as lib_config_env from "../lib/config/env.js";
+import type * as posthog from "../posthog.js";
 import type * as resume_queries from "../resume/queries.js";
 import type * as travel_airlines from "../travel/airlines.js";
 import type * as travel_airports from "../travel/airports.js";
@@ -51,6 +52,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   "lib/builder": typeof lib_builder;
   "lib/config/env": typeof lib_config_env;
+  posthog: typeof posthog;
   "resume/queries": typeof resume_queries;
   "travel/airlines": typeof travel_airlines;
   "travel/airports": typeof travel_airports;
