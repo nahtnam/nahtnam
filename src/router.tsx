@@ -7,7 +7,9 @@ import { routeTree } from "./routeTree.gen";
 import { clientEnv } from "./lib/config/client";
 
 export function getRouter() {
-  const convexQueryClient = new ConvexQueryClient(clientEnv.VITE_CONVEX_URL);
+  const convexQueryClient = new ConvexQueryClient(clientEnv.VITE_CONVEX_URL, {
+    expectAuth: true,
+  });
 
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -22,7 +24,6 @@ export function getRouter() {
   const router = createRouter({
     context: { convexQueryClient, queryClient },
     defaultPendingComponent: PendingComponent,
-    defaultPendingMs: 0,
     defaultPreload: "intent",
     routeTree,
     scrollRestoration: true,

@@ -38,17 +38,22 @@ export const Route = createRootRouteWithContext<{
   async beforeLoad(ctx) {
     const auth = await getAuth();
 
-    if (auth.user) {
-      ctx.context.convexQueryClient.serverHttpClient?.setAuth(auth.accessToken);
-      ctx.context.convexQueryClient.convexClient.setAuth(
-        async () => auth.accessToken ?? null,
-      );
-    } else {
+    if (!auth.user) {
       ctx.context.convexQueryClient.convexClient.clearAuth();
+
+      return {
+        auth,
+      };
     }
 
+    const { accessToken, ...clientAuth } = auth;
+    ctx.context.convexQueryClient.serverHttpClient?.setAuth(accessToken);
+    ctx.context.convexQueryClient.convexClient.setAuth(
+      async () => accessToken ?? null,
+    );
+
     return {
-      auth,
+      auth: clientAuth,
     };
   },
   component: RootComponent,
