@@ -31,3 +31,4 @@ DO NOT run the dev server or any database altering CLIs. Do as much as you can, 
 - **Public timelines**: Future-dated entries should stay out of public-facing queries and derived stats until their date has arrived; admins can still see and manage them.
 - **Convex schema changes**: When adding fields to existing tables, make the field optional first or include an explicit backfill path so older documents do not fail schema validation before migration runs.
 - **Admin auth**: Admin access should use WorkOS-backed identity and server-side Convex authorization by allowed email. Do not reintroduce shared secrets in query params, cookies, or client-passed mutation arguments.
+- **Boilerplate updates**: When syncing from the Vertex template with Patchworks, treat the generated diff as a proposal and preserve intentional removals from this repo. If dependency versions change, reset the lockfile and regenerate it with `bun install` instead of hand-editing lockfile changes.
