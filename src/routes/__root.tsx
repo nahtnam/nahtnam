@@ -25,6 +25,8 @@ import { NotFound } from "./-components/not-found";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { appName, appUrl } from "@/lib/config";
+import { PostHogIdentity } from "@/lib/posthog/identity";
+import { PostHogAppProvider } from "@/lib/posthog/provider";
 
 const defaultDescription =
   "Manthan (@nahtnam) - Principal Software Engineer at Mercury. Writing about software, startups, and personal finance.";
@@ -143,7 +145,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="flex h-full flex-col antialiased">
-        {children}
+        <PostHogAppProvider>{children}</PostHogAppProvider>
 
         <Toaster />
         <TanStackDevtools
@@ -177,6 +179,7 @@ function RootComponent() {
         client={context.convexQueryClient.convexClient}
         useAuth={useAuthFromAuthKit}
       >
+        <PostHogIdentity />
         <TooltipProvider>
           <div className="relative flex min-h-full flex-col">
             {isChromelessRoute ? null : <Navbar />}

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getAuthkit } from "@workos/authkit-tanstack-react-start";
 import { appUrl } from "@/lib/config";
+import { posthog } from "@/lib/posthog/server";
 
 const getHeaders = (
   result: Awaited<
@@ -51,7 +52,9 @@ export const Route = createFileRoute("/api/auth/callback")({
             status: 307,
           });
         } catch (error) {
-          console.error("OAuth callback failed:", error);
+          posthog.captureException(error, undefined, {
+            route: "/api/auth/callback",
+          });
 
           return Response.json(
             {

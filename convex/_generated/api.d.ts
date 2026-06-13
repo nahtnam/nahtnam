@@ -84,4 +84,173 @@ export declare const internal: FilterApi<
   FunctionReference<any, "internal">
 >;
 
-export declare const components: {};
+export declare const components: {
+  posthog: {
+    lib: {
+      alias: FunctionReference<
+        "action",
+        "internal",
+        {
+          alias: string;
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          host: string;
+        },
+        any
+      >;
+      capture: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          event: string;
+          groups?: string;
+          host: string;
+          properties?: string;
+          sendFeatureFlags?: boolean;
+          timestamp?: number;
+          uuid?: string;
+        },
+        any
+      >;
+      captureException: FunctionReference<
+        "action",
+        "internal",
+        {
+          additionalProperties?: string;
+          apiKey: string;
+          distinctId?: string;
+          errorMessage: string;
+          errorName?: string;
+          errorStack?: string;
+          host: string;
+        },
+        any
+      >;
+      getAllFlags: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          flagKeys?: Array<string>;
+          groupProperties?: any;
+          groups?: any;
+          host: string;
+          personProperties?: any;
+        },
+        any
+      >;
+      getAllFlagsAndPayloads: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          flagKeys?: Array<string>;
+          groupProperties?: any;
+          groups?: any;
+          host: string;
+          personProperties?: any;
+        },
+        any
+      >;
+      getFeatureFlag: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          groupProperties?: any;
+          groups?: any;
+          host: string;
+          key: string;
+          personProperties?: any;
+          sendFeatureFlagEvents?: boolean;
+        },
+        any
+      >;
+      getFeatureFlagPayload: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          groupProperties?: any;
+          groups?: any;
+          host: string;
+          key: string;
+          matchValue?: string | boolean;
+          personProperties?: any;
+          sendFeatureFlagEvents?: boolean;
+        },
+        any
+      >;
+      getFeatureFlagResult: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          groupProperties?: any;
+          groups?: any;
+          host: string;
+          key: string;
+          personProperties?: any;
+          sendFeatureFlagEvents?: boolean;
+        },
+        any
+      >;
+      groupIdentify: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId?: string;
+          groupKey: string;
+          groupType: string;
+          host: string;
+          properties?: string;
+        },
+        any
+      >;
+      identify: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          host: string;
+          properties?: string;
+        },
+        any
+      >;
+      isFeatureEnabled: FunctionReference<
+        "action",
+        "internal",
+        {
+          apiKey: string;
+          disableGeoip?: boolean;
+          distinctId: string;
+          groupProperties?: any;
+          groups?: any;
+          host: string;
+          key: string;
+          personProperties?: any;
+          sendFeatureFlagEvents?: boolean;
+        },
+        any
+      >;
+    };
+  };
+};
