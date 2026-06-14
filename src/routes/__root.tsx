@@ -39,8 +39,6 @@ export const Route = createRootRouteWithContext<{
     const auth = await getAuth();
 
     if (!auth.user) {
-      ctx.context.convexQueryClient.convexClient.clearAuth();
-
       return {
         auth,
       };
@@ -48,9 +46,6 @@ export const Route = createRootRouteWithContext<{
 
     const { accessToken, ...clientAuth } = auth;
     ctx.context.convexQueryClient.serverHttpClient?.setAuth(accessToken);
-    ctx.context.convexQueryClient.convexClient.setAuth(
-      async () => accessToken ?? null,
-    );
 
     return {
       auth: clientAuth,
