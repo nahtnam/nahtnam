@@ -206,7 +206,7 @@ function ConvexUnauthenticatedAuthState({
 
   useEffect(() => {
     if (!loading && !user) {
-      client.clearAuth();
+      client.setAuth(async () => null);
     }
   }, [client, loading, user]);
 
