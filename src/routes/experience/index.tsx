@@ -1,6 +1,6 @@
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
+/* eslint-disable sort-keys */
 import { createFileRoute } from "@tanstack/react-router";
+import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import { Separator } from "@/components/ui/separator";
 import { H1, Lead } from "@/components/ui/typography";
@@ -9,8 +9,21 @@ import { EducationSection } from "@/routes/-components/education-section";
 import { ExperienceSection } from "@/routes/-components/experience-section";
 import { ProjectsSection } from "@/routes/-components/projects-section";
 
+const listEducation = createConvexRouteQuery(api.resume.queries.listEducation);
+const listExperiences = createConvexRouteQuery(
+  api.resume.queries.listExperiences,
+);
+const listProjects = createConvexRouteQuery(api.resume.queries.listProjects);
+
 export const Route = createFileRoute("/experience/")({
   component: ExperiencePage,
+  async loader({ context }) {
+    await Promise.all([
+      listEducation.prefetchQuery(context.queryClient),
+      listExperiences.prefetchQuery(context.queryClient),
+      listProjects.prefetchQuery(context.queryClient),
+    ]);
+  },
   head: () => ({
     links: [
       {
@@ -46,15 +59,9 @@ export const Route = createFileRoute("/experience/")({
 });
 
 function ExperiencePage() {
-  const { data: education } = useSuspenseQuery(
-    convexQuery(api.resume.queries.listEducation, {}),
-  );
-  const { data: experiences } = useSuspenseQuery(
-    convexQuery(api.resume.queries.listExperiences, {}),
-  );
-  const { data: projects } = useSuspenseQuery(
-    convexQuery(api.resume.queries.listProjects, {}),
-  );
+  const { data: education } = listEducation.useSuspenseQuery();
+  const { data: experiences } = listExperiences.useSuspenseQuery();
+  const { data: projects } = listProjects.useSuspenseQuery();
 
   return (
     <div className="page-shell page-shell-wide print:max-w-none print:p-0 print:px-4">

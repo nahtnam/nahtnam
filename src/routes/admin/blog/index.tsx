@@ -1,8 +1,9 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { Pencil, Plus, RefreshCcw } from "lucide-react";
 import { api } from "convex/_generated/api";
+import { createConvexRouteQuery } from "convex-route-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,14 +15,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+const listAllPosts = createConvexRouteQuery(api.admin.blog.listAllPosts);
+
 export const Route = createFileRoute("/admin/blog/")({
   component: BlogAdmin,
+  async loader({ context }) {
+    await listAllPosts.prefetchQuery(context.queryClient);
+  },
 });
 
 function BlogAdmin() {
-  const { data: posts = [] } = useQuery(
-    convexQuery(api.admin.blog.listAllPosts, {}),
-  );
+  const { data: posts } = listAllPosts.useSuspenseQuery();
   const { mutateAsync: backfillPublishedFlags } = useMutation({
     mutationFn: useConvexMutation(api.admin.blog.backfillPublishedFlags),
   });

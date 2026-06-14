@@ -1,14 +1,19 @@
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
+/* eslint-disable sort-keys */
 import { createFileRoute } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
+import { createConvexRouteQuery } from "convex-route-query";
 import { FlightGlobe } from "./-components/flight-globe";
 import { FlightStats } from "./-components/flight-stats";
 import { H1, Lead } from "@/components/ui/typography";
 import { appUrl } from "@/lib/config";
 
+const getStats = createConvexRouteQuery(api.travel.queries.getStats);
+
 export const Route = createFileRoute("/travel/")({
   component: TravelPage,
+  async loader({ context }) {
+    await getStats.prefetchQuery(context.queryClient);
+  },
   head: () => ({
     links: [
       {
@@ -44,9 +49,7 @@ export const Route = createFileRoute("/travel/")({
 });
 
 function TravelPage() {
-  const { data } = useSuspenseQuery(
-    convexQuery(api.travel.queries.getStats, {}),
-  );
+  const { data } = getStats.useSuspenseQuery();
 
   return (
     <div className="page-shell page-shell-wide max-w-5xl">

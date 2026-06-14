@@ -1,7 +1,6 @@
 /* eslint-disable sort-keys */
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowLeft } from "lucide-react";
@@ -15,6 +14,8 @@ import {
 } from "@/components/ui/tooltip";
 import { H1, Muted } from "@/components/ui/typography";
 import { appUrl } from "@/lib/config";
+
+const getPost = createConvexRouteQuery(api.blog.queries.getPost);
 
 function formatRelativeDate(date: Date) {
   return formatDistanceToNow(date, { addSuffix: true });
@@ -31,9 +32,9 @@ function formatFullDate(date: Date) {
 export const Route = createFileRoute("/blog/$slug/")({
   component: BlogPostPage,
   async loader({ context, params }) {
-    const post = await context.queryClient.ensureQueryData(
-      convexQuery(api.blog.queries.getPost, { slug: params.slug }),
-    );
+    const post = await getPost.fetchQuery(context.queryClient, {
+      slug: params.slug,
+    });
     if (!post) {
       throw notFound();
     }
@@ -100,9 +101,7 @@ export const Route = createFileRoute("/blog/$slug/")({
 
 function BlogPostPage() {
   const { slug } = Route.useParams();
-  const { data: post } = useSuspenseQuery(
-    convexQuery(api.blog.queries.getPost, { slug }),
-  );
+  const { data: post } = getPost.useSuspenseQuery({ slug });
   if (!post) {
     return null;
   }

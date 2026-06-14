@@ -18,6 +18,7 @@ import {
   Tags,
 } from "lucide-react";
 import { api } from "convex/_generated/api";
+import { createConvexRouteQuery } from "convex-route-query";
 import { Button } from "@/components/ui/button";
 import { appUrl } from "@/lib/config";
 
@@ -33,6 +34,8 @@ const adminNav = [
   { href: "/admin/golf-r", icon: Car, label: "Golf R" },
 ];
 
+const isAuthorized = createConvexRouteQuery(api.admin.auth.isAuthorized);
+
 export const Route = createFileRoute("/admin")({
   async beforeLoad({ context }) {
     if (!context.auth.user) {
@@ -40,10 +43,7 @@ export const Route = createFileRoute("/admin")({
     }
 
     try {
-      await context.convexQueryClient.convexClient.query(
-        api.admin.auth.isAuthorized,
-        {},
-      );
+      await isAuthorized.fetchQuery(context.queryClient);
     } catch {
       throw redirect({ to: "/" });
     }

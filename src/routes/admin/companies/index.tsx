@@ -1,12 +1,13 @@
 /* eslint-disable sort-keys, react/jsx-no-bind */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
+import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
@@ -43,8 +44,15 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const listCompaniesQuery = createConvexRouteQuery(
+  api.admin.resume.listCompanies,
+);
+
 export const Route = createFileRoute("/admin/companies/")({
   component: CompaniesAdmin,
+  async loader({ context }) {
+    await listCompaniesQuery.prefetchQuery(context.queryClient);
+  },
 });
 
 function CompaniesAdmin() {
@@ -53,9 +61,7 @@ function CompaniesAdmin() {
     undefined,
   );
 
-  const { data: companies = [] } = useQuery(
-    convexQuery(api.admin.resume.listCompanies, {}),
-  );
+  const { data: companies } = listCompaniesQuery.useSuspenseQuery();
 
   const { mutateAsync: createCompany } = useMutation({
     mutationFn: useConvexMutation(api.admin.resume.createCompany),

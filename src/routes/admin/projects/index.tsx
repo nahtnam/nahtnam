@@ -1,12 +1,13 @@
 /* eslint-disable sort-keys, react/jsx-no-bind */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
+import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
@@ -45,8 +46,13 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const listProjectsQuery = createConvexRouteQuery(api.admin.resume.listProjects);
+
 export const Route = createFileRoute("/admin/projects/")({
   component: ProjectsAdmin,
+  async loader({ context }) {
+    await listProjectsQuery.prefetchQuery(context.queryClient);
+  },
 });
 
 function ProjectsAdmin() {
@@ -55,9 +61,7 @@ function ProjectsAdmin() {
     undefined,
   );
 
-  const { data: projects = [] } = useQuery(
-    convexQuery(api.admin.resume.listProjects, {}),
-  );
+  const { data: projects } = listProjectsQuery.useSuspenseQuery();
 
   const { mutateAsync: createProject } = useMutation({
     mutationFn: useConvexMutation(api.admin.resume.createProject),

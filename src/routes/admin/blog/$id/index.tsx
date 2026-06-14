@@ -1,8 +1,8 @@
 /* eslint-disable sort-keys, react/jsx-no-bind */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { useForm } from "react-hook-form";
 import { useCallback, useRef, useState } from "react";
 import { ArrowLeft, ImagePlus, Loader2, Trash2 } from "lucide-react";
@@ -10,6 +10,7 @@ import Markdown from "react-markdown";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
+import { createConvexRouteQuery } from "convex-route-query";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -54,7 +55,20 @@ function toLocalDateTime(date: Date): string {
 
 export const Route = createFileRoute("/admin/blog/$id/")({
   component: BlogEditor,
+  async loader({ context, params }) {
+    await Promise.all([
+      listCategories.prefetchQuery(context.queryClient),
+      params.id === "new"
+        ? Promise.resolve()
+        : getPostById.prefetchQuery(context.queryClient, {
+            id: params.id as Id<"blogPosts">,
+          }),
+    ]);
+  },
 });
+
+const getPostById = createConvexRouteQuery(api.admin.blog.getPostById);
+const listCategories = createConvexRouteQuery(api.admin.blog.listCategories);
 
 function BlogEditor() {
   const { id } = Route.useParams();
@@ -63,17 +77,12 @@ function BlogEditor() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [uploading, setUploading] = useState(false);
 
-  const { data: existingPost } = useQuery({
-    ...convexQuery(
-      api.admin.blog.getPostById,
-      isNew ? "skip" : { id: id as Id<"blogPosts"> },
-    ),
-    enabled: !isNew,
-  });
-
-  const { data: categories = [] } = useQuery(
-    convexQuery(api.admin.blog.listCategories, {}),
+  const { data: existingPost } = getPostById.useQuery(
+    { id: id as Id<"blogPosts"> },
+    { enabled: !isNew },
   );
+
+  const { data: categories } = listCategories.useSuspenseQuery();
 
   const { mutateAsync: createPost } = useMutation({
     mutationFn: useConvexMutation(api.admin.blog.createPost),

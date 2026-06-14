@@ -1,12 +1,13 @@
 /* eslint-disable sort-keys, react/jsx-no-bind */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
+import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
@@ -46,8 +47,15 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const listEducationQuery = createConvexRouteQuery(
+  api.admin.resume.listEducation,
+);
+
 export const Route = createFileRoute("/admin/education/")({
   component: EducationAdmin,
+  async loader({ context }) {
+    await listEducationQuery.prefetchQuery(context.queryClient);
+  },
 });
 
 function EducationAdmin() {
@@ -56,9 +64,7 @@ function EducationAdmin() {
     undefined,
   );
 
-  const { data: education = [] } = useQuery(
-    convexQuery(api.admin.resume.listEducation, {}),
-  );
+  const { data: education } = listEducationQuery.useSuspenseQuery();
 
   const { mutateAsync: createEducation } = useMutation({
     mutationFn: useConvexMutation(api.admin.resume.createEducation),

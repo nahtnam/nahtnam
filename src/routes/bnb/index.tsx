@@ -1,8 +1,7 @@
 /* eslint-disable sort-keys */
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useAction } from "convex/react";
+import { createConvexRouteQuery } from "convex-route-query";
 import { CheckCircle2, Clock, Loader2, Plus, Sofa, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "convex/_generated/api";
@@ -22,6 +21,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+const listBookings = createConvexRouteQuery(api.bnb.queries.listBookings);
+
 export const Route = createFileRoute("/bnb/")({
   component: BnbPage,
   async beforeLoad() {
@@ -34,6 +35,11 @@ export const Route = createFileRoute("/bnb/")({
     }
 
     return { cachedPassword, isAuthed };
+  },
+  async loader({ context }) {
+    if (context.isAuthed) {
+      await listBookings.prefetchQuery(context.queryClient);
+    }
   },
   head: () => ({
     links: [
@@ -346,9 +352,7 @@ function BookingForm(props: { readonly password: string }) {
 }
 
 function BookingsList() {
-  const { data } = useSuspenseQuery(
-    convexQuery(api.bnb.queries.listBookings, {}),
-  );
+  const { data } = listBookings.useSuspenseQuery();
 
   const { accepted, pending } = data;
 

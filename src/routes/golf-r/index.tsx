@@ -1,7 +1,7 @@
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
+/* eslint-disable sort-keys */
 import { createFileRoute } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
+import { createConvexRouteQuery } from "convex-route-query";
 import { BuildStats } from "./-components/build-stats";
 import { CarHero } from "./-components/car-hero";
 import { CostBreakdown } from "./-components/cost-breakdown";
@@ -10,8 +10,13 @@ import { ModTimeline } from "./-components/mod-timeline";
 import { VehicleLedger } from "./-components/vehicle-ledger";
 import { appUrl } from "@/lib/config";
 
+const listItems = createConvexRouteQuery(api.golf_r.queries.listItems);
+
 export const Route = createFileRoute("/golf-r/")({
   component: GolfRPage,
+  async loader({ context }) {
+    await listItems.prefetchQuery(context.queryClient);
+  },
   head: () => ({
     links: [
       {
@@ -47,9 +52,7 @@ export const Route = createFileRoute("/golf-r/")({
 });
 
 function GolfRPage() {
-  const { data } = useSuspenseQuery(
-    convexQuery(api.golf_r.queries.listItems, {}),
-  );
+  const { data } = listItems.useSuspenseQuery();
   const items = sortGolfRItems(data);
 
   return (

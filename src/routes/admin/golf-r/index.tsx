@@ -1,8 +1,8 @@
 /* eslint-disable sort-keys, react/jsx-no-bind */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { useForm } from "react-hook-form";
 import { useRef, useState, type ChangeEvent } from "react";
 import {
@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { z } from "zod";
+import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { sortGolfRItems } from "@/routes/golf-r/-components/lib";
@@ -88,8 +89,13 @@ type AttachmentValue = {
   readonly url?: string;
 };
 
+const listItemsQuery = createConvexRouteQuery(api.admin.golf_r.listItems);
+
 export const Route = createFileRoute("/admin/golf-r/")({
   component: GolfRAdmin,
+  async loader({ context }) {
+    await listItemsQuery.prefetchQuery(context.queryClient);
+  },
 });
 
 function formatUsd(amount: number) {
@@ -123,7 +129,7 @@ function GolfRAdmin() {
   );
   const [uploading, setUploading] = useState(false);
 
-  const { data = [] } = useQuery(convexQuery(api.admin.golf_r.listItems, {}));
+  const { data } = listItemsQuery.useSuspenseQuery();
   const items = sortGolfRItems(data);
 
   const { mutateAsync: createItem } = useMutation({

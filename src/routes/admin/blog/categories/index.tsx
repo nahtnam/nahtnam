@@ -1,14 +1,15 @@
 /* eslint-disable sort-keys, react/jsx-no-bind */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
+import { createConvexRouteQuery } from "convex-route-query";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -41,8 +42,13 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const listCategories = createConvexRouteQuery(api.admin.blog.listCategories);
+
 export const Route = createFileRoute("/admin/blog/categories/")({
   component: CategoriesAdmin,
+  async loader({ context }) {
+    await listCategories.prefetchQuery(context.queryClient);
+  },
 });
 
 function CategoriesAdmin() {
@@ -51,9 +57,7 @@ function CategoriesAdmin() {
     undefined,
   );
 
-  const { data: categories = [] } = useQuery(
-    convexQuery(api.admin.blog.listCategories, {}),
-  );
+  const { data: categories } = listCategories.useSuspenseQuery();
 
   const { mutateAsync: createCategory } = useMutation({
     mutationFn: useConvexMutation(api.admin.blog.createCategory),

@@ -1,7 +1,6 @@
 /* eslint-disable sort-keys */
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import { uniqBy } from "es-toolkit";
 import { appUrl } from "@/lib/config";
@@ -13,8 +12,19 @@ import { NameAnimation } from "@/routes/-components/name-animation";
 import { PreviousCompanies } from "@/routes/-components/previous-companies";
 import { SocialLinks } from "@/routes/-components/social-links";
 
+const listExperiences = createConvexRouteQuery(
+  api.resume.queries.listExperiences,
+);
+const listPosts = createConvexRouteQuery(api.blog.queries.listPosts);
+
 export const Route = createFileRoute("/")({
   component: RouteComponent,
+  async loader({ context }) {
+    await Promise.all([
+      listExperiences.prefetchQuery(context.queryClient),
+      listPosts.prefetchQuery(context.queryClient),
+    ]);
+  },
   head: () => ({
     links: [
       {
@@ -50,12 +60,8 @@ export const Route = createFileRoute("/")({
 });
 
 function RouteComponent() {
-  const { data: experiences } = useSuspenseQuery(
-    convexQuery(api.resume.queries.listExperiences, {}),
-  );
-  const { data: posts } = useSuspenseQuery(
-    convexQuery(api.blog.queries.listPosts, {}),
-  );
+  const { data: experiences } = listExperiences.useSuspenseQuery();
+  const { data: posts } = listPosts.useSuspenseQuery();
   const latestPost = posts.at(0);
 
   const currentExperience = experiences.at(0);

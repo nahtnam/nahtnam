@@ -1,6 +1,6 @@
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
+/* eslint-disable sort-keys */
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/tooltip";
 import { H1, Lead, Small } from "@/components/ui/typography";
 import { appUrl } from "@/lib/config";
+
+const listPosts = createConvexRouteQuery(api.blog.queries.listPosts);
 
 function formatRelativeDate(date: Date) {
   return formatDistanceToNow(date, { addSuffix: true });
@@ -26,6 +28,9 @@ function formatFullDate(date: Date) {
 
 export const Route = createFileRoute("/blog/")({
   component: BlogIndexPage,
+  async loader({ context }) {
+    await listPosts.prefetchQuery(context.queryClient);
+  },
   head: () => ({
     links: [
       {
@@ -61,9 +66,7 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogIndexPage() {
-  const { data: posts } = useSuspenseQuery(
-    convexQuery(api.blog.queries.listPosts, {}),
-  );
+  const { data: posts } = listPosts.useSuspenseQuery();
 
   return (
     <div className="page-shell page-shell-narrow">
