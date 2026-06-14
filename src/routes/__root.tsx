@@ -17,7 +17,7 @@ import {
   useAccessToken,
   useAuth,
 } from "@workos/authkit-tanstack-react-start/client";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import appCss from "../styles.css?url";
 import { Footer } from "./-components/footer";
 import { Navbar } from "./-components/navbar";
@@ -175,9 +175,6 @@ function RootComponent() {
 
   return (
     <AuthKitProvider initialAuth={context.auth}>
-      <ConvexUnauthenticatedAuthState
-        client={context.convexQueryClient.convexClient}
-      />
       <ConvexProviderWithAuth
         client={context.convexQueryClient.convexClient}
         useAuth={useAuthFromAuthKit}
@@ -195,22 +192,6 @@ function RootComponent() {
       </ConvexProviderWithAuth>
     </AuthKitProvider>
   );
-}
-
-function ConvexUnauthenticatedAuthState({
-  client,
-}: {
-  readonly client: ConvexQueryClient["convexClient"];
-}) {
-  const { loading, user } = useAuth();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      client.setAuth(async () => null);
-    }
-  }, [client, loading, user]);
-
-  return null;
 }
 
 function useAuthFromAuthKit() {
