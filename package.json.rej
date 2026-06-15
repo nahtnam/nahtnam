@@ -1,0 +1,9 @@
+diff a/package.json b/package.json	(rejected hunks)
+@@ -35,6 +35,7 @@
+     "@tanstack/react-router-with-query": "^1.130.17",
+     "@tanstack/react-start": "^1.167.3",
+     "@tanstack/router-plugin": "^1.167.3",
++    "@workos/authkit-session": "0.5.4",
+     "@workos/authkit-tanstack-react-start": "^0.8.6",
+     "class-variance-authority": "^0.7.1",
+     "clsx": "^2.1.1",
