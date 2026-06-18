@@ -18,6 +18,7 @@ export default defineSchema({
 
   blogPosts: defineTable({
     categoryId: v.id("blogCategories"),
+    content: v.optional(v.string()),
     contentPath: v.optional(v.string()),
     excerpt: v.string(),
     kind: v.optional(v.union(v.literal("markdown"), v.literal("x"))),

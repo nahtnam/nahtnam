@@ -409,6 +409,26 @@ export const deleteCategory = mutation({
   },
 });
 
+export const removeLegacyBlogContent = mutation({
+  args: {},
+  async handler(ctx) {
+    await requireAdmin(ctx);
+    const posts = await ctx.db.query("blogPosts").collect();
+
+    await Promise.all(
+      posts.map(async (post) => {
+        if (post.content === undefined) {
+          return;
+        }
+
+        await ctx.db.patch("blogPosts", post._id, {
+          content: undefined,
+        });
+      }),
+    );
+  },
+});
+
 export const generateUploadUrl = mutation({
   args: {},
   async handler(ctx) {
