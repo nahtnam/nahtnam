@@ -110,9 +110,11 @@ function BnbPage() {
 
   return (
     <div className="page-shell page-shell-narrow">
-      <div className="page-intro mb-8 text-center">
-        <Sofa className="mx-auto mb-4 size-12" />
-        <h1 className="font-serif text-5xl tracking-[-0.03em]">Couch BnB</h1>
+      <div className="page-intro">
+        <span className="eyebrow mb-4">Novelty</span>
+        <h1 className="font-serif text-5xl tracking-[-0.03em] md:text-6xl">
+          Couch BnB
+        </h1>
         <p className="mt-3 text-muted-foreground">
           Book my couch for your next visit. Luxury not guaranteed.
         </p>
@@ -122,12 +124,14 @@ function BnbPage() {
         <>
           <BookingForm password={password} />
           <div className="mt-12">
-            <h2 className="mb-4 font-semibold text-xl">Bookings</h2>
+            <h2 className="mb-4 font-mono text-[0.7rem] font-semibold tracking-[0.2em] text-muted-foreground uppercase">
+              Bookings
+            </h2>
             <BookingsList />
           </div>
         </>
       ) : (
-        <div className="section-card">
+        <div className="rounded-xl border border-border bg-card p-6 md:p-8">
           <form className="space-y-4" onSubmit={handleUnlock}>
             <div className="space-y-2">
               <Label className="font-medium text-sm" htmlFor="password">
@@ -146,7 +150,7 @@ function BnbPage() {
               />
             </div>
 
-            {error ? <p className="text-destructive text-sm">{error}</p> : null}
+            {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
             <Button
               className="w-full"
@@ -214,11 +218,11 @@ function BookingForm(props: { readonly password: string }) {
 
   if (isSubmitted) {
     return (
-      <div className="section-card">
+      <div className="rounded-xl border border-border bg-card p-6">
         <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
-          <CheckCircle2 className="size-12 text-green-500" />
-          <h3 className="font-semibold text-lg">Booking requested!</h3>
-          <p className="text-muted-foreground text-sm">
+          <CheckCircle2 className="size-10 text-green-500" />
+          <h3 className="text-lg font-semibold">Booking requested!</h3>
+          <p className="text-sm text-muted-foreground">
             Manthan will review your request and accept it if the couch is
             available.
           </p>
@@ -228,7 +232,7 @@ function BookingForm(props: { readonly password: string }) {
   }
 
   return (
-    <div className="section-card">
+    <div className="rounded-xl border border-border bg-card p-6 md:p-8">
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label className="font-medium text-sm">Guests</Label>

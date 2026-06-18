@@ -7,7 +7,6 @@ import { ArrowLeft } from "lucide-react";
 import Markdown from "react-markdown";
 import { EmbeddedTweet } from "react-tweet";
 import type { Tweet } from "react-tweet/api";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -142,23 +141,25 @@ function BlogPostPage() {
       {/* eslint-enable react/no-danger */}
       <Button
         asChild
-        className="mb-8 -ml-1 text-muted-foreground hover:text-foreground"
+        className="mb-10 -ml-2 text-muted-foreground hover:text-foreground"
+        size="sm"
         variant="ghost"
       >
         <Link to="/blog">
-          <ArrowLeft className="mr-1 size-4" />
-          Back
+          <ArrowLeft className="size-4" />
+          Back to blog
         </Link>
       </Button>
 
-      <div className="page-intro mb-10">
-        <div className="mb-6 flex flex-wrap items-center gap-3">
-          <Badge className="font-medium text-[0.68rem]" variant="secondary">
+      <div className="mb-10 border-b border-border pb-8">
+        <div className="mb-5 flex flex-wrap items-center gap-3">
+          <span className="font-mono text-[0.64rem] font-medium tracking-[0.18em] text-primary uppercase">
             {post.category.name}
-          </Badge>
+          </span>
+          <span className="h-3 w-px bg-border" />
           <Tooltip>
             <TooltipTrigger asChild>
-              <Muted className="cursor-default font-mono text-[0.72rem] tracking-[0.2em] uppercase">
+              <Muted className="cursor-default font-mono text-[0.66rem] tracking-[0.14em] uppercase">
                 {formatRelativeDate(new Date(post.publishedAt))}
               </Muted>
             </TooltipTrigger>

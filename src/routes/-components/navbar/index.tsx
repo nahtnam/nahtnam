@@ -3,7 +3,6 @@ import { Menu } from "lucide-react";
 import { useAuth } from "@workos/authkit-tanstack-react-start/client";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Menubar } from "@/components/ui/menubar";
 import {
   Sheet,
   SheetClose,
@@ -32,130 +31,127 @@ export function Navbar() {
   const { signOut, user } = useAuth();
 
   return (
-    <header className="sticky top-0 z-40 px-4 pt-4">
-      <div className="container mx-auto">
-        <nav className="flex items-center justify-between rounded-full border border-border/70 bg-background/78 px-4 py-3 shadow-[0_24px_50px_-36px_color-mix(in_srgb,var(--color-foreground)_35%,transparent)] backdrop-blur-xl md:px-5">
-          <Link
-            className="inline-flex items-center gap-3 text-foreground"
-            to="/"
-          >
-            <Avatar className="size-11 border border-white/85 shadow-[0_18px_32px_-20px_color-mix(in_srgb,var(--color-primary)_30%,transparent)]">
-              <AvatarImage alt="Manthan" src="/assets/images/me.avif" />
-            </Avatar>
-            <span className="font-serif text-2xl tracking-[-0.02em]">
-              {appName}
-            </span>
-          </Link>
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
+      <div className="container mx-auto flex h-16 items-center justify-between">
+        <Link
+          className="inline-flex items-center gap-2.5 text-foreground"
+          to="/"
+        >
+          <Avatar className="size-8 rounded-full">
+            <AvatarImage alt="Manthan" src="/assets/images/me.avif" />
+          </Avatar>
+          <span className="font-serif text-xl tracking-[-0.02em]">
+            {appName}
+          </span>
+        </Link>
 
-          <Menubar className="hidden border-none bg-transparent p-0 shadow-none md:flex">
-            {menu.map((item) => (
+        <nav className="hidden items-center gap-1 md:flex">
+          {menu.map((item) => (
+            <Button
+              key={item.title}
+              asChild
+              className="text-muted-foreground hover:text-foreground"
+              size="sm"
+              variant="ghost"
+            >
+              {item.isExternal ? (
+                <a href={item.url}>{item.title}</a>
+              ) : (
+                <Link to={item.url}>{item.title}</Link>
+              )}
+            </Button>
+          ))}
+          {user ? (
+            <>
+              <span className="mx-1 h-5 w-px bg-border" />
               <Button
-                key={item.title}
                 asChild
                 className="text-muted-foreground hover:text-foreground"
                 size="sm"
                 variant="ghost"
               >
-                {item.isExternal ? (
-                  <a href={item.url}>{item.title}</a>
-                ) : (
-                  <Link to={item.url}>{item.title}</Link>
-                )}
+                <Link to="/admin">Admin</Link>
               </Button>
-            ))}
-            {user ? (
-              <>
-                <Button
-                  asChild
-                  className="text-muted-foreground hover:text-foreground"
-                  size="sm"
-                  variant="ghost"
-                >
-                  <Link to="/admin">Admin</Link>
-                </Button>
-                <Button
-                  className="text-muted-foreground hover:text-foreground"
-                  size="sm"
-                  type="button"
-                  variant="ghost"
-                  onClick={() => {
-                    void signOut({ returnTo: appUrl });
-                  }}
-                >
-                  Sign Out
-                </Button>
-              </>
-            ) : null}
-          </Menubar>
-
-          <Sheet>
-            <SheetTrigger asChild>
               <Button
-                aria-label="Toggle menu"
-                className="md:hidden"
-                size="icon"
-                variant="outline"
+                className="text-muted-foreground hover:text-foreground"
+                size="sm"
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  void signOut({ returnTo: appUrl });
+                }}
               >
-                <Menu />
+                Sign Out
               </Button>
-            </SheetTrigger>
-            <SheetContent
-              className="border-l-border/70 bg-background/95 backdrop-blur-xl"
-              side="right"
+            </>
+          ) : null}
+        </nav>
+
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              aria-label="Toggle menu"
+              className="md:hidden"
+              size="icon"
+              variant="ghost"
             >
-              <SheetHeader className="px-6 pt-8">
-                <div className="flex items-center gap-3">
-                  <Avatar className="size-11 border border-white/85 shadow-[0_18px_32px_-20px_color-mix(in_srgb,var(--color-primary)_30%,transparent)]">
-                    <AvatarImage alt="Manthan" src="/assets/images/me.avif" />
-                  </Avatar>
-                  <SheetTitle className="font-serif text-3xl font-normal tracking-[-0.02em]">
-                    {appName}
-                  </SheetTitle>
-                </div>
-              </SheetHeader>
-              <div className="flex flex-col gap-2 px-4 pb-6">
-                {menu.map((item) => (
-                  <SheetClose key={item.title} asChild>
-                    <Button className="justify-start" size="lg" variant="ghost">
-                      {item.isExternal ? (
-                        <a href={item.url}>{item.title}</a>
-                      ) : (
-                        <Link to={item.url}>{item.title}</Link>
-                      )}
+              <Menu />
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="border-l-border bg-background" side="right">
+            <SheetHeader className="border-b border-border px-6 py-5">
+              <div className="flex items-center gap-2.5">
+                <Avatar className="size-9 rounded-full">
+                  <AvatarImage alt="Manthan" src="/assets/images/me.avif" />
+                </Avatar>
+                <SheetTitle className="font-serif text-2xl font-normal tracking-[-0.02em]">
+                  {appName}
+                </SheetTitle>
+              </div>
+            </SheetHeader>
+            <div className="flex flex-col gap-1 px-3 py-4">
+              {menu.map((item) => (
+                <SheetClose key={item.title} asChild>
+                  <Button className="justify-start" size="lg" variant="ghost">
+                    {item.isExternal ? (
+                      <a href={item.url}>{item.title}</a>
+                    ) : (
+                      <Link to={item.url}>{item.title}</Link>
+                    )}
+                  </Button>
+                </SheetClose>
+              ))}
+              {user ? (
+                <>
+                  <div className="my-2 h-px bg-border" />
+                  <SheetClose asChild>
+                    <Button
+                      asChild
+                      className="justify-start"
+                      size="lg"
+                      variant="ghost"
+                    >
+                      <Link to="/admin">Admin</Link>
                     </Button>
                   </SheetClose>
-                ))}
-                {user ? (
-                  <>
-                    <SheetClose asChild>
-                      <Button
-                        asChild
-                        className="justify-start"
-                        size="lg"
-                        variant="ghost"
-                      >
-                        <Link to="/admin">Admin</Link>
-                      </Button>
-                    </SheetClose>
-                    <SheetClose asChild>
-                      <Button
-                        className="justify-start"
-                        size="lg"
-                        type="button"
-                        variant="ghost"
-                        onClick={() => {
-                          void signOut({ returnTo: appUrl });
-                        }}
-                      >
-                        Sign Out
-                      </Button>
-                    </SheetClose>
-                  </>
-                ) : null}
-              </div>
-            </SheetContent>
-          </Sheet>
-        </nav>
+                  <SheetClose asChild>
+                    <Button
+                      className="justify-start"
+                      size="lg"
+                      type="button"
+                      variant="ghost"
+                      onClick={() => {
+                        void signOut({ returnTo: appUrl });
+                      }}
+                    >
+                      Sign Out
+                    </Button>
+                  </SheetClose>
+                </>
+              ) : null}
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   );

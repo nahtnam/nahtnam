@@ -326,27 +326,32 @@ function BlogPostForm(props: BlogPostFormProps) {
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-6 flex items-start justify-between gap-4">
         <div className="flex items-center gap-2">
-          <Button asChild size="icon" variant="ghost">
+          <Button asChild size="icon-sm" variant="ghost">
             <a href="/admin/blog">
               <ArrowLeft className="size-4" />
             </a>
           </Button>
-          <h1 className="font-semibold text-2xl">
-            {isNew ? "New Post" : "Edit Post"}
-          </h1>
+          <div>
+            <h1 className="font-serif text-3xl tracking-[-0.02em]">
+              {isNew ? "New Post" : "Edit Post"}
+            </h1>
+          </div>
         </div>
         {!isNew && (
           <Button size="sm" variant="destructive" onClick={handleDelete}>
-            <Trash2 className="mr-1 size-4" />
+            <Trash2 className="size-4" />
             Delete
           </Button>
         )}
       </div>
 
       <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="space-y-4 rounded-xl border border-border bg-card p-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <div className="grid grid-cols-3 gap-4">
             <FormField
               control={form.control}
@@ -535,7 +540,7 @@ function BlogPostForm(props: BlogPostFormProps) {
                 )}
               />
 
-              <div className="space-y-3 rounded-md border p-4">
+              <div className="space-y-3 rounded-lg border border-border bg-background p-4">
                 <div className="flex items-center justify-between gap-3">
                   <FormLabel>Media</FormLabel>
                   <Button
@@ -546,9 +551,9 @@ function BlogPostForm(props: BlogPostFormProps) {
                     onClick={handleImageUpload}
                   >
                     {uploading ? (
-                      <Loader2 className="mr-1 size-4 animate-spin" />
+                      <Loader2 className="size-4 animate-spin" />
                     ) : (
-                      <ImagePlus className="mr-1 size-4" />
+                      <ImagePlus className="size-4" />
                     )}
                     Upload Image
                   </Button>
@@ -557,7 +562,7 @@ function BlogPostForm(props: BlogPostFormProps) {
                   <div className="flex gap-2">
                     <Input readOnly value={uploadedMarkdown} />
                     <Button
-                      size="icon"
+                      size="icon-sm"
                       title="Copy image markdown"
                       type="button"
                       variant="outline"
@@ -578,19 +583,19 @@ function BlogPostForm(props: BlogPostFormProps) {
                     return (
                       <div
                         key={item._id}
-                        className="flex items-center gap-2 rounded-md border bg-background/60 p-2"
+                        className="flex items-center gap-2 rounded-md border border-border bg-card p-2"
                       >
                         <div className="min-w-0 flex-1">
-                          <p className="truncate font-medium text-sm">
+                          <p className="truncate text-sm font-medium">
                             {item.name}
                           </p>
-                          <p className="truncate text-muted-foreground text-xs">
+                          <p className="truncate text-xs text-muted-foreground">
                             {item.url}
                           </p>
                         </div>
                         <Button
                           disabled={!markdown}
-                          size="icon"
+                          size="icon-sm"
                           title="Copy image markdown"
                           type="button"
                           variant="ghost"
@@ -606,7 +611,7 @@ function BlogPostForm(props: BlogPostFormProps) {
                 </div>
               </div>
 
-              <div className="prose prose-neutral min-h-64 max-w-none rounded-md border p-4">
+              <div className="prose prose-neutral min-h-64 max-w-none rounded-lg border border-border bg-background p-4">
                 <Markdown>
                   {markdownPreview ??
                     "No bundled markdown file found for this path yet."}

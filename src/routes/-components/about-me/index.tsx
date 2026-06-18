@@ -1,29 +1,28 @@
-import { Badge } from "@/components/ui/badge";
 import { Lead } from "@/components/ui/typography";
+
+const chips = [
+  { emoji: "🚀", label: "indie hacker" },
+  { emoji: "🏸", label: "badminton player" },
+];
 
 export function AboutMe() {
   return (
     <>
-      <Lead className="max-w-2xl text-balance text-center text-foreground/76">
+      <Lead className="max-w-xl text-balance text-center text-foreground/70">
         Software Engineer with experience at high-growth startups. Building
         things that matter.
       </Lead>
 
-      <div className="flex flex-wrap items-center justify-center gap-3">
-        <Badge
-          className="h-auto min-w-[10.75rem] justify-center gap-2 border-border/70 bg-background/78 px-4 py-2 text-[0.72rem] text-foreground normal-case tracking-normal"
-          variant="secondary"
-        >
-          <span className="text-base">🚀</span>
-          indie hacker
-        </Badge>
-        <Badge
-          className="h-auto min-w-[10.75rem] justify-center gap-2 border-border/70 bg-background/78 px-4 py-2 text-[0.72rem] text-foreground normal-case tracking-normal"
-          variant="secondary"
-        >
-          <span className="text-base">🏸</span>
-          badminton player
-        </Badge>
+      <div className="flex items-center justify-center gap-2">
+        {chips.map((chip) => (
+          <span
+            key={chip.label}
+            className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-[0.72rem] font-medium tracking-wide text-foreground/80 whitespace-nowrap"
+          >
+            <span className="text-sm">{chip.emoji}</span>
+            {chip.label}
+          </span>
+        ))}
       </div>
     </>
   );

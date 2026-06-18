@@ -348,8 +348,13 @@ function GolfRAdmin() {
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold text-2xl">Golf R</h1>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-serif text-3xl tracking-[-0.02em]">Golf R</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Track mods, maintenance, and costs for the build.
+          </p>
+        </div>
         <Dialog
           open={open}
           onOpenChange={async (nextOpen) => {
@@ -358,7 +363,7 @@ function GolfRAdmin() {
         >
           <DialogTrigger asChild>
             <Button size="sm" onClick={openCreate}>
-              <Plus className="mr-1 size-4" />
+              <Plus className="size-4" />
               Add Item
             </Button>
           </DialogTrigger>
@@ -640,69 +645,75 @@ function GolfRAdmin() {
         </Dialog>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead className="text-right">Price</TableHead>
-            <TableHead className="text-right">Disc/CB</TableHead>
-            <TableHead className="text-right">Miles</TableHead>
-            <TableHead className="text-right">Files</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="w-24" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.map((item) => (
-            <TableRow key={item._id}>
-              <TableCell className="font-medium">{item.name}</TableCell>
-              <TableCell className="text-sm">
-                {categories.find((c) => c.value === item.category)?.label ??
-                  item.category}
-              </TableCell>
-              <TableCell className="text-right font-mono text-sm">
-                {formatUsd(item.price)}
-              </TableCell>
-              <TableCell className="text-right font-mono text-sm text-emerald-600">
-                {(item.discount ?? 0) > 0 &&
-                  `-${formatUsd(item.discount ?? 0)}`}
-                {(item.cashback ?? 0) > 0 &&
-                  `${(item.discount ?? 0) > 0 ? " / " : ""}-${formatUsd(item.cashback ?? 0)}`}
-              </TableCell>
-              <TableCell className="text-right font-mono text-sm">
-                {item.mileage?.toLocaleString("en-US") ?? "—"}
-              </TableCell>
-              <TableCell className="text-right text-sm">
-                <Badge variant="outline">{item.attachments?.length ?? 0}</Badge>
-              </TableCell>
-              <TableCell className="text-sm">{item.date}</TableCell>
-              <TableCell>
-                <div className="flex gap-1">
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={async () => {
-                      await openEdit(item);
-                    }}
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={async () => {
-                      await deleteItem({ id: item._id });
-                    }}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              </TableCell>
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead className="text-right">Price</TableHead>
+              <TableHead className="text-right">Disc/CB</TableHead>
+              <TableHead className="text-right">Miles</TableHead>
+              <TableHead className="text-right">Files</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead className="w-24" />
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {items.map((item) => (
+              <TableRow key={item._id}>
+                <TableCell className="font-medium">{item.name}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">
+                  {categories.find((c) => c.value === item.category)?.label ??
+                    item.category}
+                </TableCell>
+                <TableCell className="text-right font-mono text-sm">
+                  {formatUsd(item.price)}
+                </TableCell>
+                <TableCell className="text-right font-mono text-sm text-emerald-600">
+                  {(item.discount ?? 0) > 0 &&
+                    `-${formatUsd(item.discount ?? 0)}`}
+                  {(item.cashback ?? 0) > 0 &&
+                    `${(item.discount ?? 0) > 0 ? " / " : ""}-${formatUsd(item.cashback ?? 0)}`}
+                </TableCell>
+                <TableCell className="text-right font-mono text-sm">
+                  {item.mileage?.toLocaleString("en-US") ?? "—"}
+                </TableCell>
+                <TableCell className="text-right text-sm">
+                  <Badge variant="outline">
+                    {item.attachments?.length ?? 0}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-sm text-muted-foreground">
+                  {item.date}
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-1">
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={async () => {
+                        await openEdit(item);
+                      }}
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={async () => {
+                        await deleteItem({ id: item._id });
+                      }}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

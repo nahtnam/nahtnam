@@ -1,6 +1,4 @@
-import { Folder } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { H2, Muted, Small } from "@/components/ui/typography";
+import { ArrowUpRight } from "lucide-react";
 
 type Project = {
   _id: string;
@@ -16,38 +14,38 @@ type ProjectsSectionProps = {
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
-    <section>
-      <div className="mb-5 flex items-center gap-2 print:mb-2">
-        <Folder className="size-5" />
-        <H2 className="border-0 py-0 text-2xl">Projects</H2>
+    <section className="print:break-inside-avoid">
+      <div className="mb-8 flex items-baseline gap-4 print:mb-4">
+        <span className="font-mono text-[0.7rem] font-semibold tracking-[0.2em] text-primary">
+          02
+        </span>
+        <h2 className="font-serif text-3xl tracking-[-0.02em]">Projects</h2>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 print:grid-cols-2 print:gap-2">
         {projects.map((project) => (
           <a
             key={project._id}
-            className="flex flex-col rounded-[2rem] border border-border/75 bg-background/72 p-4 shadow-[0_20px_50px_-42px_color-mix(in_srgb,var(--color-foreground)_36%,transparent)] transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_28px_56px_-40px_color-mix(in_srgb,var(--color-primary)_28%,transparent)] print:border-0 print:p-0 print:shadow-none"
+            className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 print:border print:p-3"
             href={project.link}
             rel="noopener noreferrer"
             target="_blank"
           >
-            <div className="mb-1 flex items-center justify-between">
-              <Small className="font-medium text-foreground">
-                {project.name}
-              </Small>
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="font-semibold tracking-tight">{project.name}</h3>
+              <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
             </div>
-            <Muted className="mb-2 text-sm leading-relaxed print:mb-1">
+            <p className="mt-2 flex-1 text-sm leading-6 text-muted-foreground">
               {project.description}
-            </Muted>
-            <div className="mt-auto flex flex-wrap gap-1 pt-2">
+            </p>
+            <div className="mt-4 flex flex-wrap gap-1.5">
               {project.tags.map((tag) => (
-                <Badge
+                <span
                   key={tag}
-                  className="bg-secondary/80 text-foreground text-[0.68rem]"
-                  variant="secondary"
+                  className="rounded-md border border-border bg-background px-2 py-0.5 font-mono text-[0.64rem] tracking-wide text-muted-foreground"
                 >
                   {tag}
-                </Badge>
+                </span>
               ))}
             </div>
           </a>

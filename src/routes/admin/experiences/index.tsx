@@ -150,12 +150,19 @@ function ExperiencesAdmin() {
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold text-2xl">Experiences</h1>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-serif text-3xl tracking-[-0.02em]">
+            Experiences
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Work history shown on your experience page.
+          </p>
+        </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button size="sm" onClick={openCreate}>
-              <Plus className="mr-1 size-4" />
+              <Plus className="size-4" />
               Add
             </Button>
           </DialogTrigger>
@@ -271,57 +278,63 @@ function ExperiencesAdmin() {
         </Dialog>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Company</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead>Start</TableHead>
-            <TableHead>End</TableHead>
-            <TableHead className="w-24" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {experiences.map((exp) => (
-            <TableRow key={exp._id}>
-              <TableCell className="font-medium">{exp.title}</TableCell>
-              <TableCell>{exp.company.name}</TableCell>
-              <TableCell>{exp.location}</TableCell>
-              <TableCell>
-                {new Date(exp.startDate).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                {exp.endDate
-                  ? new Date(exp.endDate).toLocaleDateString()
-                  : "Present"}
-              </TableCell>
-              <TableCell>
-                <div className="flex gap-1">
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => {
-                      openEdit(exp);
-                    }}
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={async () => {
-                      await deleteExperience({ id: exp._id });
-                    }}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              </TableCell>
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Company</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead>Start</TableHead>
+              <TableHead>End</TableHead>
+              <TableHead className="w-24" />
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {experiences.map((exp) => (
+              <TableRow key={exp._id}>
+                <TableCell className="font-medium">{exp.title}</TableCell>
+                <TableCell className="text-muted-foreground">
+                  {exp.company.name}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {exp.location}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {new Date(exp.startDate).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {exp.endDate
+                    ? new Date(exp.endDate).toLocaleDateString()
+                    : "Present"}
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-1">
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={() => {
+                        openEdit(exp);
+                      }}
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={async () => {
+                        await deleteExperience({ id: exp._id });
+                      }}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
