@@ -409,10 +409,9 @@ export const deleteCategory = mutation({
   },
 });
 
-export const removeLegacyBlogContent = mutation({
+export const removeLegacyBlogContent = internalMutation({
   args: {},
   async handler(ctx) {
-    await requireAdmin(ctx);
     const posts = await ctx.db.query("blogPosts").collect();
 
     await Promise.all(
