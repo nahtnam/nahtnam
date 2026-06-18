@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  ArrowUpRight,
   Briefcase,
   Building2,
   Car,
@@ -9,12 +10,6 @@ import {
   Plane,
   Tags,
 } from "lucide-react";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 const sections = [
   {
@@ -74,23 +69,38 @@ export const Route = createFileRoute("/admin/")({
 function AdminDashboard() {
   return (
     <div>
-      <h1 className="mb-6 font-semibold text-2xl">Admin Dashboard</h1>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {sections.map((section) => (
-          <Link key={section.href} to={section.href}>
-            <Card className="transition-colors hover:border-foreground/20">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <section.icon className="size-5 text-muted-foreground" />
-                  <div>
-                    <CardTitle className="text-base">{section.title}</CardTitle>
-                    <CardDescription>{section.description}</CardDescription>
-                  </div>
+      <div className="mb-8">
+        <h1 className="font-serif text-4xl tracking-[-0.03em]">Dashboard</h1>
+        <p className="mt-1 text-muted-foreground">
+          Manage the content across your site.
+        </p>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {sections.map((section) => {
+          const Icon = section.icon;
+          return (
+            <Link
+              key={section.href}
+              className="group flex items-start gap-4 rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
+              to={section.href}
+            >
+              <div className="rounded-lg border border-border bg-background p-2.5 text-muted-foreground transition-colors group-hover:text-primary">
+                <Icon className="size-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <h2 className="font-semibold tracking-tight">
+                    {section.title}
+                  </h2>
+                  <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
                 </div>
-              </CardHeader>
-            </Card>
-          </Link>
-        ))}
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {section.description}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

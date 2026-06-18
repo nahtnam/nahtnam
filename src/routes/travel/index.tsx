@@ -53,7 +53,7 @@ function TravelPage() {
 
   return (
     <div className="page-shell page-shell-wide max-w-5xl">
-      <div className="page-intro mb-8">
+      <div className="page-intro">
         <span className="eyebrow mb-4">Flight Log</span>
         <H1>Travel</H1>
         <Lead className="mt-4 max-w-2xl text-base">
@@ -62,13 +62,11 @@ function TravelPage() {
         </Lead>
       </div>
 
-      <div className="section-card mb-10 flex justify-center overflow-hidden">
+      <div className="mb-10 flex justify-center overflow-hidden rounded-xl border border-border bg-card p-4">
         <FlightGlobe arcs={data.arcs} />
       </div>
 
-      <div className="section-card">
-        <FlightStats stats={data.stats} />
-      </div>
+      <FlightStats stats={data.stats} />
     </div>
   );
 }

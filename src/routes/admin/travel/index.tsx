@@ -133,9 +133,16 @@ function TravelAdmin() {
 
   return (
     <div>
-      <h1 className="mb-4 font-semibold text-2xl">Travel Import</h1>
+      <div className="mb-6">
+        <h1 className="font-serif text-3xl tracking-[-0.02em]">
+          Travel Import
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Import flights from a Flighty export to populate your travel page.
+        </p>
+      </div>
 
-      <Card className="max-w-lg">
+      <Card className="max-w-lg rounded-xl shadow-sm">
         <CardHeader>
           <CardTitle>Import Flighty CSV</CardTitle>
           <CardDescription>
@@ -155,13 +162,14 @@ function TravelAdmin() {
           </div>
 
           {parsed.length > 0 && status === "idle" && (
-            <p className="text-muted-foreground text-sm">
-              Found {parsed.length} flights ready to import.
-            </p>
+            <div className="rounded-md border border-primary/30 bg-primary/5 px-4 py-3 text-sm">
+              Found <span className="font-semibold">{parsed.length}</span>{" "}
+              flights ready to import.
+            </div>
           )}
 
           {status === "done" && result ? (
-            <div className="flex items-center gap-2 text-green-600 text-sm">
+            <div className="flex items-center gap-2 rounded-md border border-green-500/30 bg-green-500/5 px-4 py-3 text-sm text-green-700">
               <CheckCircle2 className="size-4" />
               Created {result.created}, updated {result.updated} flights.
             </div>
@@ -172,9 +180,9 @@ function TravelAdmin() {
             onClick={handleImport}
           >
             {status === "uploading" ? (
-              <Loader2 className="mr-1 size-4 animate-spin" />
+              <Loader2 className="size-4 animate-spin" />
             ) : (
-              <Upload className="mr-1 size-4" />
+              <Upload className="size-4" />
             )}
             {status === "uploading" ? "Importing..." : "Import Flights"}
           </Button>

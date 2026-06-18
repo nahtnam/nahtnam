@@ -15,6 +15,75 @@ export const categoryLabels: Record<string, string> = {
   wheels: "Wheels & Tires",
 };
 
+export type CategoryAccent = {
+  readonly badge: string;
+  readonly bar: string;
+  readonly dot: string;
+};
+
+export const categoryAccent: Record<string, CategoryAccent> = {
+  audio: {
+    badge: "border-violet-300 bg-violet-50 text-violet-700",
+    bar: "bg-violet-500",
+    dot: "bg-violet-500",
+  },
+  equipment: {
+    badge: "border-orange-300 bg-orange-50 text-orange-700",
+    bar: "bg-orange-500",
+    dot: "bg-orange-500",
+  },
+  exterior: {
+    badge: "border-cyan-300 bg-cyan-50 text-cyan-700",
+    bar: "bg-cyan-500",
+    dot: "bg-cyan-500",
+  },
+  fee: {
+    badge: "border-zinc-300 bg-zinc-50 text-zinc-700",
+    bar: "bg-zinc-500",
+    dot: "bg-zinc-500",
+  },
+  interior: {
+    badge: "border-amber-300 bg-amber-50 text-amber-700",
+    bar: "bg-amber-500",
+    dot: "bg-amber-500",
+  },
+  maintenance: {
+    badge: "border-sky-300 bg-sky-50 text-sky-700",
+    bar: "bg-sky-500",
+    dot: "bg-sky-500",
+  },
+  performance: {
+    badge: "border-rose-300 bg-rose-50 text-rose-700",
+    bar: "bg-rose-500",
+    dot: "bg-rose-500",
+  },
+  purchase: {
+    badge: "border-blue-300 bg-blue-50 text-blue-700",
+    bar: "bg-blue-500",
+    dot: "bg-blue-500",
+  },
+  tax: {
+    badge: "border-slate-300 bg-slate-50 text-slate-700",
+    bar: "bg-slate-500",
+    dot: "bg-slate-500",
+  },
+  wheels: {
+    badge: "border-emerald-300 bg-emerald-50 text-emerald-700",
+    bar: "bg-emerald-500",
+    dot: "bg-emerald-500",
+  },
+};
+
+const defaultAccent: CategoryAccent = {
+  badge: "border-border bg-muted text-foreground",
+  bar: "bg-primary",
+  dot: "bg-primary",
+};
+
+export function getCategoryAccent(category: string): CategoryAccent {
+  return categoryAccent[category] ?? defaultAccent;
+}
+
 export const categoryThemes: Record<
   string,
   { chip: string; dot: string; panel: string; track: string }

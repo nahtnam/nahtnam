@@ -51,7 +51,7 @@ export function VehicleLedger({ items }: VehicleLedgerProps) {
   ].filter((section) => section.items.length > 0);
 
   return (
-    <Card>
+    <Card className="rounded-xl shadow-sm">
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -64,21 +64,21 @@ export function VehicleLedger({ items }: VehicleLedgerProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {sections.map((section, index) => (
           <motion.div
             key={section.label}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-lg border"
+            className="overflow-hidden rounded-lg border border-border"
             initial={{ opacity: 0, y: 8 }}
             transition={{ delay: index * 0.04, duration: 0.25 }}
           >
-            <div className="bg-muted/30 flex items-center justify-between rounded-t-lg border-b px-4 py-3">
+            <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2.5">
               <p className="text-sm font-medium">{section.label}</p>
               <p className="font-mono text-sm">{formatUsd(section.total)}</p>
             </div>
 
-            <div className="divide-y">
+            <div className="divide-y divide-border">
               {section.items.map((item) => (
                 <div
                   key={item._id}
@@ -87,7 +87,7 @@ export function VehicleLedger({ items }: VehicleLedgerProps) {
                   <div className="space-y-1">
                     <p className="text-sm font-medium">{item.name}</p>
                     {item.description ? (
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-sm text-muted-foreground">
                         {item.description}
                       </p>
                     ) : null}

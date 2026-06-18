@@ -9,13 +9,7 @@ import {
   isModItem,
   netCost,
 } from "../lib";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { cn } from "@/lib/shadcn/utils";
 
 type BuildStatsProps = {
   readonly items: Array<Doc<"golfRItems">>;
@@ -74,6 +68,13 @@ function AnimatedCounter(props: {
   );
 }
 
+const cellBorders = [
+  "",
+  "border-t border-border md:border-t-0 md:border-l",
+  "border-t border-border xl:border-t-0 xl:border-l",
+  "border-t border-border md:border-l xl:border-t-0",
+];
+
 export function BuildStats({ items }: BuildStatsProps) {
   const totalSpent = items.reduce((sum, item) => sum + netCost(item), 0);
   const mods = items.filter((item) => isModItem(item));
@@ -128,41 +129,39 @@ export function BuildStats({ items }: BuildStatsProps) {
   ];
 
   return (
-    <section className="grid auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-4">
-      {cards.map((card, index) => {
-        const Icon = card.icon;
-
-        return (
-          <motion.div
-            key={card.title}
-            animate={{ opacity: 1, y: 0 }}
-            className="h-full"
-            initial={{ opacity: 0, y: 10 }}
-            transition={{ delay: index * 0.04, duration: 0.3 }}
-          >
-            <Card className="h-full min-h-56 justify-between gap-4">
-              <CardHeader className="gap-3">
-                <div className="flex items-center justify-between gap-3">
-                  <CardTitle className="text-sm font-medium">
-                    {card.title}
-                  </CardTitle>
-                  <div className="text-muted-foreground rounded-md border p-2">
-                    <Icon className="size-4" />
-                  </div>
-                </div>
-                <CardDescription className="min-h-12">
-                  {card.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="font-mono text-3xl font-semibold tracking-tight">
-                  {card.value}
+    <motion.section
+      animate={{ opacity: 1, y: 0 }}
+      className="overflow-hidden rounded-xl border border-border bg-card"
+      initial={{ opacity: 0, y: 10 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className="grid md:grid-cols-2 xl:grid-cols-4">
+        {cards.map((card, index) => {
+          const Icon = card.icon;
+          return (
+            <div
+              key={card.title}
+              className={cn(
+                "flex min-h-40 flex-col justify-between gap-3 p-5",
+                cellBorders[index],
+              )}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                  {card.title}
                 </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        );
-      })}
-    </section>
+                <Icon className="size-4 text-muted-foreground" />
+              </div>
+              <p className="font-mono text-2xl font-semibold tracking-tight">
+                {card.value}
+              </p>
+              <p className="text-xs leading-5 text-muted-foreground">
+                {card.description}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </motion.section>
   );
 }

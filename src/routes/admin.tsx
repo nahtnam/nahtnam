@@ -5,7 +5,6 @@ import {
   redirect,
   useRouter,
 } from "@tanstack/react-router";
-import { useAuth } from "@workos/authkit-tanstack-react-start/client";
 import {
   Briefcase,
   Building2,
@@ -19,10 +18,14 @@ import {
 } from "lucide-react";
 import { api } from "convex/_generated/api";
 import { createConvexRouteQuery } from "convex-route-query";
-import { Button } from "@/components/ui/button";
-import { appUrl } from "@/lib/config";
 
-const adminNav = [
+type NavItem = {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+};
+
+const adminNav: NavItem[] = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/admin/experiences", icon: Briefcase, label: "Experiences" },
   { href: "/admin/companies", icon: Building2, label: "Companies" },
@@ -52,49 +55,72 @@ export const Route = createFileRoute("/admin")({
 });
 
 function AdminLayout() {
-  const { signOut } = useAuth();
   const router = useRouter();
   const { pathname } = router.state.location;
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)]">
-      <aside className="w-56 shrink-0 border-r">
-        <nav className="flex flex-col gap-1 p-3">
-          {adminNav.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/admin" && pathname.startsWith(item.href));
-            return (
-              <Button
-                key={item.href}
-                asChild
-                className="justify-start"
-                size="sm"
-                variant={isActive ? "secondary" : "ghost"}
-              >
-                <Link to={item.href}>
-                  <item.icon className="mr-2 size-4" />
+    <div className="mx-auto w-full max-w-7xl md:px-2">
+      <div className="flex gap-0 md:gap-8">
+        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-56 shrink-0 md:block">
+          <AdminNav pathname={pathname} />
+        </aside>
+
+        <div className="min-w-0 flex-1 py-6 md:py-8">
+          <div className="-mx-6 mb-4 flex gap-1 overflow-x-auto px-6 md:hidden">
+            {adminNav.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/admin" && pathname.startsWith(item.href));
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  className={`inline-flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors ${
+                    isActive
+                      ? "bg-primary/10 font-medium text-primary"
+                      : "text-foreground/70 hover:bg-accent"
+                  }`}
+                  to={item.href}
+                >
+                  <Icon className="size-4" />
                   {item.label}
                 </Link>
-              </Button>
-            );
-          })}
-          <Button
-            className="justify-start"
-            size="sm"
-            type="button"
-            variant="ghost"
-            onClick={() => {
-              void signOut({ returnTo: appUrl });
-            }}
-          >
-            Sign Out
-          </Button>
-        </nav>
-      </aside>
-      <div className="flex-1 p-6">
-        <Outlet />
+              );
+            })}
+          </div>
+          <Outlet />
+        </div>
       </div>
     </div>
+  );
+}
+
+function AdminNav({ pathname }: { readonly pathname: string }) {
+  return (
+    <nav className="flex flex-col gap-1 py-6">
+      <p className="mb-3 px-3 font-mono text-[0.62rem] font-semibold tracking-[0.2em] text-muted-foreground uppercase">
+        Manage
+      </p>
+      {adminNav.map((item) => {
+        const isActive =
+          pathname === item.href ||
+          (item.href !== "/admin" && pathname.startsWith(item.href));
+        const Icon = item.icon;
+        return (
+          <Link
+            key={item.href}
+            className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors ${
+              isActive
+                ? "bg-primary/10 font-medium text-primary"
+                : "text-foreground/70 hover:bg-accent hover:text-foreground"
+            }`}
+            to={item.href}
+          >
+            <Icon className="size-4 shrink-0" />
+            {item.label}
+          </Link>
+        );
+      })}
+    </nav>
   );
 }

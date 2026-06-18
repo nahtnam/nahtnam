@@ -51,13 +51,13 @@ export function ContactForm() {
 
   if (isSubmitted) {
     return (
-      <div className="section-card">
+      <div className="rounded-xl border border-border bg-card p-6">
         <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
-          <CheckCircle2 className="size-12 text-green-500" />
+          <CheckCircle2 className="size-10 text-green-500" />
           <h3 className="font-serif text-3xl tracking-[-0.02em]">
             Message sent!
           </h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             Thanks for reaching out. I&apos;ll get back to you soon.
           </p>
         </div>
@@ -66,7 +66,7 @@ export function ContactForm() {
   }
 
   return (
-    <div className="section-card">
+    <div className="rounded-xl border border-border bg-card p-6 md:p-8">
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label
