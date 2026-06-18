@@ -1,11 +1,28 @@
-/* eslint-disable unicorn/throw-new-error */
-import { Define } from "within-ts";
+export class NotFoundError extends Error {
+  constructor(message = "Not found") {
+    super(message);
+    this.name = "NotFoundError";
+  }
+}
 
-export class NotFoundError extends Define.Error("NotFound")() {}
+export class UnauthorizedError extends Error {
+  constructor(message = "Unauthorized") {
+    super(message);
+    this.name = "UnauthorizedError";
+  }
+}
 
-export class UnauthorizedError extends Define.Error("Unauthorized")() {}
-
-export class ValidationError extends Define.Error("Validation")<{
+type ValidationErrorOptions = {
   readonly field: string;
   readonly message: string;
-}>() {}
+};
+
+export class ValidationError extends Error {
+  readonly field: string;
+
+  constructor(options: ValidationErrorOptions) {
+    super(options.message);
+    this.name = "ValidationError";
+    this.field = options.field;
+  }
+}

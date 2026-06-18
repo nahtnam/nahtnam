@@ -65,12 +65,12 @@
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.2",
     "react-markdown": "^10.1.0",
+    "react-tweet": "^3.3.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.1.18",
     "three": "^0.183.1",
     "three-globe": "^2.45.0",
-    "within-ts": "https://pkg.pr.new/ludicroushq/within-ts@c934643",
     "zod": "^4.3.6"
   },
   "devDependencies": {

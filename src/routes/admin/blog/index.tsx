@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useConvexMutation } from "@convex-dev/react-query";
+import { useAction } from "convex/react";
 import { Pencil, Plus, RefreshCcw } from "lucide-react";
 import { api } from "convex/_generated/api";
 import { createConvexRouteQuery } from "convex-route-query";
@@ -29,6 +30,14 @@ function BlogAdmin() {
   const { mutateAsync: backfillPublishedFlags } = useMutation({
     mutationFn: useConvexMutation(api.admin.blog.backfillPublishedFlags),
   });
+  const { mutateAsync: backfillContent } = useMutation({
+    mutationFn: useConvexMutation(api.admin.blog.backfillContent),
+  });
+  const refreshXPost = useAction(api.admin.blog.refreshXPost);
+  const { mutateAsync: refreshXPostMutation, isPending: refreshing } =
+    useMutation({
+      mutationFn: refreshXPost,
+    });
 
   return (
     <div>
@@ -42,6 +51,14 @@ function BlogAdmin() {
           >
             <RefreshCcw className="mr-1 size-4" />
             Backfill Published
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={async () => backfillContent({})}
+          >
+            <RefreshCcw className="mr-1 size-4" />
+            Backfill Content
           </Button>
           <Button asChild size="sm">
             <Link to="/admin/blog/$id" params={{ id: "new" }}>
@@ -57,6 +74,7 @@ function BlogAdmin() {
           <TableRow>
             <TableHead>Title</TableHead>
             <TableHead>Category</TableHead>
+            <TableHead>Type</TableHead>
             <TableHead>Slug</TableHead>
             <TableHead>Published</TableHead>
             <TableHead className="w-16" />
@@ -69,6 +87,15 @@ function BlogAdmin() {
               <TableCell>
                 <Badge variant="secondary">{post.category.name}</Badge>
               </TableCell>
+              <TableCell>
+                <Badge
+                  variant={
+                    (post.kind ?? "markdown") === "x" ? "default" : "outline"
+                  }
+                >
+                  {(post.kind ?? "markdown") === "x" ? "X" : "Markdown"}
+                </Badge>
+              </TableCell>
               <TableCell className="text-muted-foreground">
                 {post.slug}
               </TableCell>
@@ -77,8 +104,19 @@ function BlogAdmin() {
                   {post.published ? "Published" : "Draft"}
                 </Badge>
               </TableCell>
-              <TableCell>
-                <Button asChild size="icon" variant="ghost">
+              <TableCell className="flex justify-end gap-1">
+                {(post.kind ?? "markdown") === "x" ? (
+                  <Button
+                    disabled={refreshing}
+                    size="icon"
+                    title="Refresh tweets"
+                    variant="ghost"
+                    onClick={async () => refreshXPostMutation({ id: post._id })}
+                  >
+                    <RefreshCcw className="size-4" />
+                  </Button>
+                ) : null}
+                <Button asChild size="icon" title="Edit" variant="ghost">
                   <Link to="/admin/blog/$id" params={{ id: post._id }}>
                     <Pencil className="size-4" />
                   </Link>

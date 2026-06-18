@@ -3,9 +3,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useConvexMutation } from "@convex-dev/react-query";
+import { useAction } from "convex/react";
 import { useForm } from "react-hook-form";
-import { useCallback, useRef, useState } from "react";
-import { ArrowLeft, ImagePlus, Loader2, Trash2 } from "lucide-react";
+import { useCallback, useState } from "react";
+import type { FunctionReturnType } from "convex/server";
+import {
+  ArrowLeft,
+  Copy,
+  ImagePlus,
+  Loader2,
+  RefreshCcw,
+  Trash2,
+} from "lucide-react";
 import Markdown from "react-markdown";
 import { z } from "zod";
 import { api } from "convex/_generated/api";
@@ -29,20 +38,73 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  availableBlogContentPaths,
+  getBlogMarkdownContent,
+} from "@/lib/blog/markdown";
 
-const schema = z.object({
-  title: z.string().min(1, "Required"),
-  slug: z.string().min(1, "Required"),
-  excerpt: z.string().min(1, "Required"),
-  content: z.string().min(1, "Required"),
-  categoryId: z.string().min(1, "Required"),
-  published: z.boolean(),
-  publishedAt: z.string().min(1, "Required"),
-});
+const schema = z
+  .object({
+    categoryId: z.string().min(1, "Required"),
+    contentPath: z.string(),
+    excerpt: z.string(),
+    kind: z.enum(["markdown", "x"]),
+    published: z.boolean(),
+    publishedAt: z.string().min(1, "Required"),
+    slug: z.string(),
+    title: z.string(),
+    tweetInput: z.string(),
+  })
+  .superRefine((values, ctx) => {
+    if (values.kind === "markdown") {
+      for (const field of [
+        "title",
+        "slug",
+        "excerpt",
+        "contentPath",
+      ] as const) {
+        if (!values[field].trim()) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Required",
+            path: [field],
+          });
+        }
+      }
+
+      return;
+    }
+
+    if (!values.tweetInput.trim()) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Required",
+        path: ["tweetInput"],
+      });
+    }
+  });
 
 type FormValues = z.infer<typeof schema>;
+type BlogPost = NonNullable<
+  FunctionReturnType<typeof api.admin.blog.getPostById>
+>;
+type BlogCategory = FunctionReturnType<
+  typeof api.admin.blog.listCategories
+>[number];
+type BlogMedia = FunctionReturnType<typeof api.admin.blog.listMedia>[number];
+
+type BlogPostFormProps = {
+  readonly categories: BlogCategory[];
+  readonly media: BlogMedia[];
+  readonly post?: BlogPost;
+};
+
+type EditBlogPostFormProps = {
+  readonly categories: BlogCategory[];
+  readonly id: Id<"blogPosts">;
+  readonly media: BlogMedia[];
+};
 
 function toLocalDateTime(date: Date): string {
   const y = date.getFullYear();
@@ -58,6 +120,7 @@ export const Route = createFileRoute("/admin/blog/$id/")({
   async loader({ context, params }) {
     await Promise.all([
       listCategories.prefetchQuery(context.queryClient),
+      listMedia.prefetchQuery(context.queryClient),
       params.id === "new"
         ? Promise.resolve()
         : getPostById.prefetchQuery(context.queryClient, {
@@ -69,20 +132,45 @@ export const Route = createFileRoute("/admin/blog/$id/")({
 
 const getPostById = createConvexRouteQuery(api.admin.blog.getPostById);
 const listCategories = createConvexRouteQuery(api.admin.blog.listCategories);
+const listMedia = createConvexRouteQuery(api.admin.blog.listMedia);
 
 function BlogEditor() {
   const { id } = Route.useParams();
-  const navigate = useNavigate();
-  const isNew = id === "new";
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [uploading, setUploading] = useState(false);
-
-  const { data: existingPost } = getPostById.useQuery(
-    { id: id as Id<"blogPosts"> },
-    { enabled: !isNew },
-  );
-
   const { data: categories } = listCategories.useSuspenseQuery();
+  const { data: media } = listMedia.useSuspenseQuery();
+
+  if (id === "new") {
+    return <BlogPostForm categories={categories} media={media} />;
+  }
+
+  return (
+    <EditBlogPostForm
+      categories={categories}
+      id={id as Id<"blogPosts">}
+      media={media}
+    />
+  );
+}
+
+function EditBlogPostForm(props: EditBlogPostFormProps) {
+  const { categories, id, media } = props;
+  const { data: post } = getPostById.useSuspenseQuery({ id });
+
+  return (
+    <BlogPostForm
+      categories={categories}
+      media={media}
+      post={post ?? undefined}
+    />
+  );
+}
+
+function BlogPostForm(props: BlogPostFormProps) {
+  const { categories, media, post } = props;
+  const navigate = useNavigate();
+  const isNew = !post;
+  const [uploading, setUploading] = useState(false);
+  const [uploadedMarkdown, setUploadedMarkdown] = useState("");
 
   const { mutateAsync: createPost } = useMutation({
     mutationFn: useConvexMutation(api.admin.blog.createPost),
@@ -93,11 +181,20 @@ function BlogEditor() {
   const { mutateAsync: deletePost } = useMutation({
     mutationFn: useConvexMutation(api.admin.blog.deletePost),
   });
+  const saveImportedXPost = useAction(api.admin.blog.saveImportedXPost);
+  const { mutateAsync: saveImportedXPostMutation } = useMutation({
+    mutationFn: saveImportedXPost,
+  });
+  const refreshXPost = useAction(api.admin.blog.refreshXPost);
+  const { mutateAsync: refreshXPostMutation, isPending: refreshing } =
+    useMutation({
+      mutationFn: refreshXPost,
+    });
   const { mutateAsync: generateUploadUrl } = useMutation({
     mutationFn: useConvexMutation(api.admin.blog.generateUploadUrl),
   });
-  const { mutateAsync: getImageUrl } = useMutation({
-    mutationFn: useConvexMutation(api.admin.blog.getImageUrl),
+  const { mutateAsync: createMedia } = useMutation({
+    mutationFn: useConvexMutation(api.admin.blog.createMedia),
   });
 
   const form = useForm<FormValues>({
@@ -106,48 +203,68 @@ function BlogEditor() {
       title: "",
       slug: "",
       excerpt: "",
-      content: "",
+      contentPath: "",
       categoryId: "",
+      kind: "markdown",
       published: true,
       publishedAt: toLocalDateTime(new Date()),
+      tweetInput: "",
     },
-    values:
-      !isNew && existingPost
-        ? {
-            title: existingPost.title,
-            slug: existingPost.slug,
-            excerpt: existingPost.excerpt,
-            content: existingPost.content,
-            categoryId: existingPost.categoryId,
-            published: existingPost.published ?? true,
-            publishedAt: toLocalDateTime(new Date(existingPost.publishedAt)),
-          }
-        : undefined,
+    values: post
+      ? {
+          title: post.title,
+          slug: post.slug,
+          excerpt: post.excerpt,
+          contentPath: post.contentPath ?? `content/blog/${post.slug}.md`,
+          categoryId: post.categoryId,
+          kind: post.kind ?? "markdown",
+          published: post.published ?? true,
+          publishedAt: toLocalDateTime(new Date(post.publishedAt)),
+          tweetInput:
+            post.tweets?.map(({ sourceUrl }) => sourceUrl).join("\n") ?? "",
+        }
+      : undefined,
   });
 
-  const contentValue = form.watch("content");
+  const kind = form.watch("kind");
+  const contentPath = form.watch("contentPath");
+  const markdownPreview = getBlogMarkdownContent(contentPath);
 
   async function onSubmit(values: FormValues) {
+    if (values.kind === "x") {
+      await saveImportedXPostMutation({
+        categoryId: values.categoryId as Id<"blogCategories">,
+        excerpt: values.excerpt || undefined,
+        id: post?._id,
+        published: values.published,
+        publishedAt: new Date(values.publishedAt).getTime(),
+        slug: values.slug || undefined,
+        title: values.title || undefined,
+        tweetInput: values.tweetInput,
+      });
+
+      await navigate({ to: "/admin/blog" });
+      return;
+    }
+
     const data = {
       title: values.title,
       slug: values.slug,
       excerpt: values.excerpt,
-      content: values.content,
+      contentPath: values.contentPath,
       categoryId: values.categoryId as Id<"blogCategories">,
       published: values.published,
       publishedAt: new Date(values.publishedAt).getTime(),
     };
 
-    await (isNew
-      ? createPost(data)
-      : updatePost({ id: id as Id<"blogPosts">, ...data }));
+    await (isNew ? createPost(data) : updatePost({ id: post._id, ...data }));
 
     await navigate({ to: "/admin/blog" });
   }
 
   async function handleDelete() {
-    if (!isNew) {
-      await deletePost({ id: id as Id<"blogPosts"> });
+    if (post) {
+      await deletePost({ id: post._id });
       await navigate({ to: "/admin/blog" });
     }
   }
@@ -171,25 +288,16 @@ function BlogEditor() {
           body: file,
         });
         const { storageId } = (await result.json()) as { storageId: string };
-        const url = await getImageUrl({
+        const media = await createMedia({
+          contentType: file.type || undefined,
+          name: file.name,
+          postId: post?._id,
           storageId: storageId as Id<"_storage">,
         });
 
-        if (url) {
-          const markdown = `![${file.name}](${url})`;
-          const textarea = textareaRef.current;
-          if (textarea) {
-            const start = textarea.selectionStart;
-            const currentContent = form.getValues("content");
-            const newContent =
-              currentContent.slice(0, start) +
-              markdown +
-              currentContent.slice(textarea.selectionEnd);
-            form.setValue("content", newContent);
-          } else {
-            const currentContent = form.getValues("content");
-            form.setValue("content", `${currentContent}\n${markdown}`);
-          }
+        if (media.markdown) {
+          setUploadedMarkdown(media.markdown);
+          await navigator.clipboard.writeText(media.markdown);
         }
       } finally {
         setUploading(false);
@@ -197,7 +305,7 @@ function BlogEditor() {
     });
 
     input.click();
-  }, [form, generateUploadUrl, getImageUrl]);
+  }, [createMedia, generateUploadUrl, post?._id]);
 
   function generateSlug() {
     const title = form.getValues("title");
@@ -208,6 +316,12 @@ function BlogEditor() {
       .replaceAll(/-+/g, "-")
       .trim();
     form.setValue("slug", slug);
+  }
+
+  async function handleRefreshTweets() {
+    if (post) {
+      await refreshXPostMutation({ id: post._id });
+    }
   }
 
   return (
@@ -233,7 +347,28 @@ function BlogEditor() {
 
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
+            <FormField
+              control={form.control}
+              name="kind"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="markdown">Markdown</SelectItem>
+                      <SelectItem value="x">X Thread</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="title"
@@ -340,13 +475,69 @@ function BlogEditor() {
             />
           </div>
 
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center justify-between">
-                  <FormLabel>Content</FormLabel>
+          {kind === "x" ? (
+            <FormField
+              control={form.control}
+              name="tweetInput"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Tweet URL or URLs</FormLabel>
+                    {isNew ? null : (
+                      <Button
+                        disabled={refreshing}
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                        onClick={handleRefreshTweets}
+                      >
+                        {refreshing ? (
+                          <Loader2 className="mr-1 size-4 animate-spin" />
+                        ) : (
+                          <RefreshCcw className="mr-1 size-4" />
+                        )}
+                        Refresh Tweets
+                      </Button>
+                    )}
+                  </div>
+                  <FormControl>
+                    <Textarea
+                      className="min-h-32 font-mono text-sm"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          ) : (
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="contentPath"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Markdown File</FormLabel>
+                    <FormControl>
+                      <Input
+                        list="blog-content-paths"
+                        placeholder="content/blog/example.md"
+                        {...field}
+                      />
+                    </FormControl>
+                    <datalist id="blog-content-paths">
+                      {availableBlogContentPaths.map((path) => (
+                        <option key={path} value={path} />
+                      ))}
+                    </datalist>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="space-y-3 rounded-md border p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <FormLabel>Media</FormLabel>
                   <Button
                     disabled={uploading}
                     size="sm"
@@ -362,35 +553,67 @@ function BlogEditor() {
                     Upload Image
                   </Button>
                 </div>
-                <Tabs defaultValue="write">
-                  <TabsList>
-                    <TabsTrigger value="write">Write</TabsTrigger>
-                    <TabsTrigger value="preview">Preview</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="write">
-                    <FormControl>
-                      <Textarea
-                        ref={(element) => {
-                          field.ref(element);
-                          textareaRef.current = element;
-                        }}
-                        className="min-h-96 font-mono text-sm"
-                        value={field.value}
-                        onBlur={field.onBlur}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                  </TabsContent>
-                  <TabsContent value="preview">
-                    <div className="prose prose-neutral min-h-96 max-w-none rounded-md border p-4">
-                      <Markdown>{contentValue}</Markdown>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                {uploadedMarkdown ? (
+                  <div className="flex gap-2">
+                    <Input readOnly value={uploadedMarkdown} />
+                    <Button
+                      size="icon"
+                      title="Copy image markdown"
+                      type="button"
+                      variant="outline"
+                      onClick={async () =>
+                        navigator.clipboard.writeText(uploadedMarkdown)
+                      }
+                    >
+                      <Copy className="size-4" />
+                    </Button>
+                  </div>
+                ) : null}
+                <div className="grid gap-2">
+                  {media.map((item) => {
+                    const markdown = item.url
+                      ? `![${item.name}](${item.url})`
+                      : "";
+
+                    return (
+                      <div
+                        key={item._id}
+                        className="flex items-center gap-2 rounded-md border bg-background/60 p-2"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-sm">
+                            {item.name}
+                          </p>
+                          <p className="truncate text-muted-foreground text-xs">
+                            {item.url}
+                          </p>
+                        </div>
+                        <Button
+                          disabled={!markdown}
+                          size="icon"
+                          title="Copy image markdown"
+                          type="button"
+                          variant="ghost"
+                          onClick={async () =>
+                            navigator.clipboard.writeText(markdown)
+                          }
+                        >
+                          <Copy className="size-4" />
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="prose prose-neutral min-h-64 max-w-none rounded-md border p-4">
+                <Markdown>
+                  {markdownPreview ??
+                    "No bundled markdown file found for this path yet."}
+                </Markdown>
+              </div>
+            </div>
+          )}
 
           <Button type="submit">{isNew ? "Create Post" : "Update Post"}</Button>
         </form>

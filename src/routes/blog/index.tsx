@@ -92,12 +92,14 @@ function BlogIndexPage() {
               <h2 className="font-serif text-2xl leading-snug tracking-[-0.02em] transition-colors group-hover:text-primary">
                 {post.title}
               </h2>
-              <Badge
-                className="shrink-0 px-2 py-1 text-[0.68rem]"
-                variant="secondary"
-              >
-                {post.category.name}
-              </Badge>
+              <div className="flex shrink-0 flex-wrap justify-end gap-2">
+                {(post.kind ?? "markdown") === "x" ? (
+                  <Badge className="px-2 py-1 text-[0.68rem]">X thread</Badge>
+                ) : null}
+                <Badge className="px-2 py-1 text-[0.68rem]" variant="secondary">
+                  {post.category.name}
+                </Badge>
+              </div>
             </div>
 
             <div className="flex items-end justify-between gap-4">

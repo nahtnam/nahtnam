@@ -18,6 +18,7 @@ import {
   useAuth,
 } from "@workos/authkit-tanstack-react-start/client";
 import { useCallback, useMemo } from "react";
+import reactTweetCss from "react-tweet/theme.css?url";
 import appCss from "../styles.css?url";
 import { Footer } from "./-components/footer";
 import { Navbar } from "./-components/navbar";
@@ -54,6 +55,10 @@ export const Route = createRootRouteWithContext<{
   component: RootComponent,
   head: () => ({
     links: [
+      {
+        href: reactTweetCss,
+        rel: "stylesheet",
+      },
       {
         href: appCss,
         rel: "stylesheet",

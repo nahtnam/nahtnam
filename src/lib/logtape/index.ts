@@ -1,5 +1,4 @@
 import { configureSync, getConsoleSink, getLogger } from "@logtape/logtape";
-import { Define } from "within-ts";
 import { isDevelopment } from "../config";
 
 configureSync({
@@ -24,17 +23,25 @@ configureSync({
 
 const logtape = getLogger();
 
-export class Logger extends Define.Logger({
-  debug(entry) {
+type LogEntry = {
+  readonly [key: string]: unknown;
+  readonly message: string;
+};
+
+export const Logger = {
+  debug(entry: LogEntry) {
     logtape.debug(entry.message, entry);
   },
-  error(entry) {
+
+  error(entry: LogEntry) {
     logtape.error(entry.message, entry);
   },
-  info(entry) {
+
+  info(entry: LogEntry) {
     logtape.info(entry.message, entry);
   },
-  warn(entry) {
+
+  warn(entry: LogEntry) {
     logtape.warn(entry.message, entry);
   },
-}) {}
+};

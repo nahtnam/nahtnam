@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import { devtools } from "@tanstack/devtools-vite";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -19,6 +20,19 @@ const config = defineConfig({
     tanstackStart(),
     viteReact(),
   ],
+  resolve: {
+    alias: [
+      {
+        find: /^react-tweet$/,
+        replacement: fileURLToPath(
+          new URL("node_modules/react-tweet/dist/index.js", import.meta.url),
+        ),
+      },
+    ],
+  },
+  ssr: {
+    noExternal: ["react-tweet"],
+  },
 });
 
 export default config;

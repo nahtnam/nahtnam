@@ -5,6 +5,8 @@ import { api } from "convex/_generated/api";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowLeft } from "lucide-react";
 import Markdown from "react-markdown";
+import { EmbeddedTweet } from "react-tweet";
+import type { Tweet } from "react-tweet/api";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +14,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getBlogMarkdownContent } from "@/lib/blog/markdown";
 import { H1, Muted } from "@/components/ui/typography";
 import { appUrl } from "@/lib/config";
 
@@ -126,6 +129,10 @@ function BlogPostPage() {
     },
   };
 
+  const kind = post.kind ?? "markdown";
+  const markdownContent =
+    getBlogMarkdownContent(post.contentPath) ?? post.content;
+
   return (
     <div className="page-shell page-shell-article">
       {/* eslint-disable react/no-danger */}
@@ -166,8 +173,55 @@ function BlogPostPage() {
       </div>
 
       <article className="prose-editorial">
-        <Markdown>{post.content}</Markdown>
+        {kind === "x" ? <TweetThread tweets={post.tweets ?? []} /> : null}
+        {kind === "markdown" ? <Markdown>{markdownContent}</Markdown> : null}
       </article>
     </div>
+  );
+}
+
+type TweetThreadProps = {
+  readonly tweets: ReadonlyArray<{
+    readonly id: string;
+    readonly sourceUrl: string;
+    readonly tweet: unknown;
+  }>;
+};
+
+function TweetThread(props: TweetThreadProps) {
+  const { tweets } = props;
+
+  return (
+    <ol
+      className="tweet-thread not-prose mx-auto flex max-w-[660px] flex-col"
+      data-theme="light"
+    >
+      {tweets.map(({ id, sourceUrl, tweet }, index) => (
+        <li
+          key={id}
+          className="relative grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2 pb-8 last:pb-0 sm:grid-cols-[2.5rem_minmax(0,1fr)] sm:gap-4"
+        >
+          <div className="relative flex justify-center">
+            {index < tweets.length - 1 ? (
+              <span className="absolute top-6 bottom-[-0.5rem] w-px bg-gradient-to-b from-primary/38 via-border to-border sm:top-10" />
+            ) : null}
+            <span className="relative z-10 flex size-6 items-center justify-center rounded-full border border-primary/20 bg-background font-mono font-semibold text-[0.56rem] text-primary shadow-[0_12px_30px_-24px_color-mix(in_srgb,var(--color-primary)_65%,transparent)] sm:size-10 sm:text-[0.68rem]">
+              {index + 1}
+            </span>
+          </div>
+          <div className="min-w-0">
+            <a
+              className="sr-only"
+              href={sourceUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              View tweet on X
+            </a>
+            <EmbeddedTweet tweet={tweet as Tweet} />
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }

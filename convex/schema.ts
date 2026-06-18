@@ -6,14 +6,38 @@ export default defineSchema({
     name: v.string(),
   }).index("by_name", ["name"]),
 
+  blogMedia: defineTable({
+    contentType: v.optional(v.string()),
+    createdAt: v.number(),
+    name: v.string(),
+    postId: v.optional(v.id("blogPosts")),
+    storageId: v.id("_storage"),
+  })
+    .index("by_createdAt", ["createdAt"])
+    .index("by_postId", ["postId"]),
+
   blogPosts: defineTable({
     categoryId: v.id("blogCategories"),
     content: v.string(),
+    contentPath: v.optional(v.string()),
     excerpt: v.string(),
+    kind: v.optional(v.union(v.literal("markdown"), v.literal("x"))),
     published: v.optional(v.boolean()),
     publishedAt: v.number(),
     slug: v.string(),
     title: v.string(),
+    tweetIds: v.optional(v.array(v.string())),
+    tweets: v.optional(
+      v.array(
+        v.object({
+          fetchedAt: v.number(),
+          id: v.string(),
+          sourceUrl: v.string(),
+          tweet: v.any(),
+        }),
+      ),
+    ),
+    tweetsFetchedAt: v.optional(v.number()),
   })
     .index("by_slug", ["slug"])
     .index("by_published", ["published"])
