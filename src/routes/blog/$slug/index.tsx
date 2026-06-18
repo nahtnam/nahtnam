@@ -130,8 +130,7 @@ function BlogPostPage() {
   };
 
   const kind = post.kind ?? "markdown";
-  const markdownContent =
-    getBlogMarkdownContent(post.contentPath) ?? post.content;
+  const markdownContent = getBlogMarkdownContent(post.contentPath) ?? "";
 
   return (
     <div className="page-shell page-shell-article">

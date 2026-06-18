@@ -90,12 +90,6 @@ function valueOrFallback(value: string | undefined, fallback: string) {
   return fallback;
 }
 
-function contentFromTweets(tweets: CachedTweet[]) {
-  return tweets
-    .map(({ tweet }, index) => `${index + 1}. ${tweet.text}`)
-    .join("\n\n");
-}
-
 async function fetchTweetById(id: string) {
   const tweet = await getTweet(id);
   if (tweet?.__typename !== "Tweet") {
@@ -221,7 +215,6 @@ export const getPostForTweetRefresh = internalQuery({
 export const saveXPost = internalMutation({
   args: {
     categoryId: v.id("blogCategories"),
-    content: v.string(),
     excerpt: v.string(),
     id: v.optional(v.id("blogPosts")),
     published: v.boolean(),
@@ -298,7 +291,6 @@ export const saveImportedXPost = action({
 
     return ctx.runMutation(internal.admin.blog.saveXPost, {
       categoryId: args.categoryId,
-      content: contentFromTweets(tweets),
       excerpt,
       id: args.id,
       published: args.published,
@@ -333,10 +325,9 @@ export const refreshXPost = action({
 
     return ctx.runMutation(internal.admin.blog.saveXPost, {
       categoryId: post.categoryId,
-      content: contentFromTweets(tweets),
       excerpt: post.excerpt,
       id,
-      published: post.published ?? true,
+      published: post.published,
       publishedAt: post.publishedAt,
       slug: post.slug,
       title: post.title,
@@ -361,7 +352,6 @@ export const createPost = mutation({
     await requireAdmin(ctx);
     return ctx.db.insert("blogPosts", {
       ...args,
-      content: "",
       kind: "markdown",
     });
   },
@@ -416,68 +406,6 @@ export const deleteCategory = mutation({
   async handler(ctx, { id }) {
     await requireAdmin(ctx);
     await ctx.db.delete("blogCategories", id);
-  },
-});
-
-export const backfillPublishedFlags = mutation({
-  args: {},
-  async handler(ctx) {
-    await requireAdmin(ctx);
-    const now = Date.now();
-    const posts = await ctx.db.query("blogPosts").collect();
-
-    await Promise.all(
-      posts.map(async (post) => {
-        if (post.published !== undefined) {
-          return;
-        }
-
-        await ctx.db.patch("blogPosts", post._id, {
-          published: post.publishedAt <= now,
-        });
-      }),
-    );
-  },
-});
-
-export const backfillContentPaths = mutation({
-  args: {},
-  async handler(ctx) {
-    await requireAdmin(ctx);
-    const posts = await ctx.db.query("blogPosts").collect();
-
-    await Promise.all(
-      posts.map(async (post) => {
-        if ((post.kind ?? "markdown") !== "markdown" || post.contentPath) {
-          return;
-        }
-
-        await ctx.db.patch("blogPosts", post._id, {
-          contentPath: `content/blog/${post.slug}.md`,
-        });
-      }),
-    );
-  },
-});
-
-export const backfillContent = mutation({
-  args: {},
-  async handler(ctx) {
-    await requireAdmin(ctx);
-    const posts = await ctx.db.query("blogPosts").collect();
-
-    await Promise.all(
-      posts.map(async (post) => {
-        if ((post.kind ?? "markdown") !== "markdown") {
-          return;
-        }
-
-        await ctx.db.patch("blogPosts", post._id, {
-          content: "",
-          contentPath: `content/blog/${post.slug}.md`,
-        });
-      }),
-    );
   },
 });
 

@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useConvexMutation } from "@convex-dev/react-query";
 import { useAction } from "convex/react";
 import { Pencil, Plus, RefreshCcw } from "lucide-react";
 import { api } from "convex/_generated/api";
@@ -27,12 +26,6 @@ export const Route = createFileRoute("/admin/blog/")({
 
 function BlogAdmin() {
   const { data: posts } = listAllPosts.useSuspenseQuery();
-  const { mutateAsync: backfillPublishedFlags } = useMutation({
-    mutationFn: useConvexMutation(api.admin.blog.backfillPublishedFlags),
-  });
-  const { mutateAsync: backfillContent } = useMutation({
-    mutationFn: useConvexMutation(api.admin.blog.backfillContent),
-  });
   const refreshXPost = useAction(api.admin.blog.refreshXPost);
   const { mutateAsync: refreshXPostMutation, isPending: refreshing } =
     useMutation({
@@ -44,22 +37,6 @@ function BlogAdmin() {
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold text-2xl">Blog Posts</h1>
         <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={async () => backfillPublishedFlags({})}
-          >
-            <RefreshCcw className="mr-1 size-4" />
-            Backfill Published
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={async () => backfillContent({})}
-          >
-            <RefreshCcw className="mr-1 size-4" />
-            Backfill Content
-          </Button>
           <Button asChild size="sm">
             <Link to="/admin/blog/$id" params={{ id: "new" }}>
               <Plus className="mr-1 size-4" />

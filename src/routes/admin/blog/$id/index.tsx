@@ -218,7 +218,7 @@ function BlogPostForm(props: BlogPostFormProps) {
           contentPath: post.contentPath ?? `content/blog/${post.slug}.md`,
           categoryId: post.categoryId,
           kind: post.kind ?? "markdown",
-          published: post.published ?? true,
+          published: post.published,
           publishedAt: toLocalDateTime(new Date(post.publishedAt)),
           tweetInput:
             post.tweets?.map(({ sourceUrl }) => sourceUrl).join("\n") ?? "",
