@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { H1, Lead, Small } from "@/components/ui/typography";
-import { appUrl } from "@/lib/config";
+import { createSeo, pageSeo } from "@/lib/seo";
 
 const listPosts = createConvexRouteQuery(api.blog.queries.listPosts);
 
@@ -30,38 +30,7 @@ export const Route = createFileRoute("/blog/")({
   async loader({ context }) {
     await listPosts.prefetchQuery(context.queryClient);
   },
-  head: () => ({
-    links: [
-      {
-        href: `${appUrl}/blog`,
-        rel: "canonical",
-      },
-    ],
-    meta: [
-      {
-        content: "Blog | Manthan (@nahtnam)",
-        title: "Blog | Manthan (@nahtnam)",
-      },
-      {
-        content:
-          "Writing about software engineering, startups, personal finance, and product reviews.",
-        name: "description",
-      },
-      {
-        content: `${appUrl}/blog`,
-        property: "og:url",
-      },
-      {
-        content: "Blog | Manthan (@nahtnam)",
-        property: "og:title",
-      },
-      {
-        content:
-          "Writing about software engineering, startups, personal finance, and product reviews.",
-        property: "og:description",
-      },
-    ],
-  }),
+  head: () => createSeo(pageSeo.blog),
 });
 
 function BlogIndexPage() {

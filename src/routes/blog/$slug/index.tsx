@@ -16,6 +16,13 @@ import {
 import { getBlogMarkdownContent } from "@/lib/blog/markdown";
 import { H1, Muted } from "@/components/ui/typography";
 import { appUrl } from "@/lib/config";
+import {
+  canonicalUrl,
+  createSeo,
+  ogImageUrl,
+  siteImage,
+  siteTitle,
+} from "@/lib/seo";
 
 const getPost = createConvexRouteQuery(api.blog.queries.getPost);
 
@@ -45,59 +52,20 @@ export const Route = createFileRoute("/blog/$slug/")({
   },
   head({ loaderData, params }) {
     const post = loaderData?.post;
-    const postUrl = `${appUrl}/blog/${params.slug}`;
-    return {
-      links: [
-        {
-          href: postUrl,
-          rel: "canonical",
-        },
-      ],
-      meta: [
-        {
-          content: post
-            ? `${post.title} | Manthan (@nahtnam)`
-            : "Blog Post | Manthan (@nahtnam)",
-          title: post
-            ? `${post.title} | Manthan (@nahtnam)`
-            : "Blog Post | Manthan (@nahtnam)",
-        },
-        {
-          content: post?.excerpt ?? "",
-          name: "description",
-        },
-        {
-          content: postUrl,
-          property: "og:url",
-        },
-        {
-          content: post?.title ?? "Blog Post",
-          property: "og:title",
-        },
-        {
-          content: post?.excerpt ?? "",
-          property: "og:description",
-        },
-        {
-          content: "article",
-          property: "og:type",
-        },
-        {
-          content: post?.publishedAt
-            ? new Date(post.publishedAt).toISOString()
-            : "",
-          property: "article:published_time",
-        },
-        {
-          content: post?.category?.name ?? "",
-          property: "article:section",
-        },
-        {
-          content: "@nahtnam",
-          property: "article:author",
-        },
-      ],
-    };
+    const title = post
+      ? `${post.title} | ${siteTitle}`
+      : `Blog Post | ${siteTitle}`;
+
+    return createSeo({
+      description: post?.excerpt ?? "A blog post by Manthan (@nahtnam).",
+      imageLabel: post?.category.name ?? "Writing",
+      path: `/blog/${params.slug}`,
+      publishedAt: post?.publishedAt,
+      section: post?.category.name,
+      socialTitle: post?.title ?? "Blog Post",
+      title,
+      type: "article",
+    });
   },
 });
 
@@ -114,17 +82,27 @@ function BlogPostPage() {
     headline: post.title,
     description: post.excerpt,
     datePublished: new Date(post.publishedAt).toISOString(),
+    dateModified: new Date(post.publishedAt).toISOString(),
     articleSection: post.category.name,
-    url: `${appUrl}/blog/${post.slug}`,
+    url: canonicalUrl(`/blog/${post.slug}`),
+    image: ogImageUrl({
+      description: post.excerpt,
+      label: post.category.name,
+      path: `/blog/${post.slug}`,
+      title: post.title,
+    }),
+    mainEntityOfPage: canonicalUrl(`/blog/${post.slug}`),
     author: {
       "@type": "Person",
       name: "Manthan",
       url: appUrl,
+      image: siteImage,
     },
     publisher: {
       "@type": "Person",
       name: "Manthan",
       url: appUrl,
+      image: siteImage,
     },
   };
 

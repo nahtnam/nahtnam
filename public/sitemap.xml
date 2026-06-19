@@ -11,6 +11,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.nahtnam.com/blog/announcing-nextjs-route-jumper</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.nahtnam.com/blog/announcing-tanstack-route-jumper</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.nahtnam.com/blog/claude-bought-me-a-car</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.nahtnam.com/blog/how-i-set-up-a-new-mac</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.nahtnam.com/blog/ynab-for-the-middle-class</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.nahtnam.com/experience</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -24,5 +49,15 @@
     <loc>https://www.nahtnam.com/travel</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.nahtnam.com/golf-r</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.nahtnam.com/pomodoro</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>

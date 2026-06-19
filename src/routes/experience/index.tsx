@@ -3,10 +3,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import { H1, Lead } from "@/components/ui/typography";
-import { appUrl } from "@/lib/config";
 import { EducationSection } from "@/routes/-components/education-section";
 import { ExperienceSection } from "@/routes/-components/experience-section";
 import { ProjectsSection } from "@/routes/-components/projects-section";
+import { createSeo, pageSeo } from "@/lib/seo";
 
 const listEducation = createConvexRouteQuery(api.resume.queries.listEducation);
 const listExperiences = createConvexRouteQuery(
@@ -23,38 +23,7 @@ export const Route = createFileRoute("/experience/")({
       listProjects.prefetchQuery(context.queryClient),
     ]);
   },
-  head: () => ({
-    links: [
-      {
-        href: `${appUrl}/experience`,
-        rel: "canonical",
-      },
-    ],
-    meta: [
-      {
-        content: "Experience | Manthan (@nahtnam)",
-        title: "Experience | Manthan (@nahtnam)",
-      },
-      {
-        content:
-          "Professional experience, projects, and education history of Manthan (@nahtnam) - Principal Software Engineer at Mercury.",
-        name: "description",
-      },
-      {
-        content: `${appUrl}/experience`,
-        property: "og:url",
-      },
-      {
-        content: "Experience | Manthan (@nahtnam)",
-        property: "og:title",
-      },
-      {
-        content:
-          "Professional experience, projects, and education history of Manthan (@nahtnam) - Principal Software Engineer at Mercury.",
-        property: "og:description",
-      },
-    ],
-  }),
+  head: () => createSeo(pageSeo.experience),
 });
 
 function ExperiencePage() {

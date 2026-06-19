@@ -8,7 +8,7 @@ import { CostBreakdown } from "./-components/cost-breakdown";
 import { sortGolfRItems } from "./-components/lib";
 import { ModTimeline } from "./-components/mod-timeline";
 import { VehicleLedger } from "./-components/vehicle-ledger";
-import { appUrl } from "@/lib/config";
+import { createSeo, pageSeo } from "@/lib/seo";
 
 const listItems = createConvexRouteQuery(api.golf_r.queries.listItems);
 
@@ -17,38 +17,7 @@ export const Route = createFileRoute("/golf-r/")({
   async loader({ context }) {
     await listItems.prefetchQuery(context.queryClient);
   },
-  head: () => ({
-    links: [
-      {
-        href: `${appUrl}/golf-r`,
-        rel: "canonical",
-      },
-    ],
-    meta: [
-      {
-        content: "Golf R Build | Manthan (@nahtnam)",
-        title: "Golf R Build | Manthan (@nahtnam)",
-      },
-      {
-        content:
-          "Tracking every mod, upgrade, and dollar spent on my 2026 Volkswagen Golf R in Pure White.",
-        name: "description",
-      },
-      {
-        content: `${appUrl}/golf-r`,
-        property: "og:url",
-      },
-      {
-        content: "Golf R Build | Manthan (@nahtnam)",
-        property: "og:title",
-      },
-      {
-        content:
-          "Tracking every mod, upgrade, and dollar spent on my 2026 Volkswagen Golf R in Pure White.",
-        property: "og:description",
-      },
-    ],
-  }),
+  head: () => createSeo(pageSeo.golfR),
 });
 
 function GolfRPage() {

@@ -31,7 +31,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { appUrl } from "@/lib/config";
+import { createSeo, pageSeo } from "@/lib/seo";
 
 type Phase = "focus" | "longBreak" | "shortBreak";
 type Theme = "dark" | "light";
@@ -109,79 +109,24 @@ const phaseLabels: Record<Phase, string> = {
 const historyStorageKey = "pomodoro.completedSessions.v1";
 const settingsStorageKey = "pomodoro.settings.v1";
 
-const pageTitle = "Pomodoro Flip Clock | Manthan (@nahtnam)";
-const pageDescription =
-  "A clean Pomodoro flip clock with configurable focus sessions, short breaks, long breaks, cycle length, browser title alerts, and an alarm.";
+const pageTitle = pageSeo.pomodoro.title;
 
 export const Route = createFileRoute("/pomodoro/")({
   component: PomodoroPage,
-  head: () => ({
-    links: [
-      {
-        href: `${appUrl}/pomodoro`,
-        rel: "canonical",
-      },
-    ],
-    meta: [
-      {
-        content: pageTitle,
-        title: pageTitle,
-      },
-      {
-        content: pageDescription,
-        name: "description",
-      },
-      {
-        content:
-          "pomodoro timer, flip clock, focus timer, productivity timer, work timer",
-        name: "keywords",
-      },
-      {
-        content: "index, follow",
-        name: "robots",
-      },
-      {
-        content: "light dark",
-        name: "color-scheme",
-      },
-      {
-        content: `${appUrl}/pomodoro`,
-        property: "og:url",
-      },
-      {
-        content: "website",
-        property: "og:type",
-      },
-      {
-        content: pageTitle,
-        property: "og:title",
-      },
-      {
-        content: pageDescription,
-        property: "og:description",
-      },
-      {
-        content: `${appUrl}/assets/images/me.avif`,
-        property: "og:image",
-      },
-      {
-        content: "summary_large_image",
-        name: "twitter:card",
-      },
-      {
-        content: pageTitle,
-        name: "twitter:title",
-      },
-      {
-        content: pageDescription,
-        name: "twitter:description",
-      },
-      {
-        content: `${appUrl}/assets/images/me.avif`,
-        name: "twitter:image",
-      },
-    ],
-  }),
+  head() {
+    const seo = createSeo(pageSeo.pomodoro);
+
+    return {
+      ...seo,
+      meta: [
+        ...seo.meta,
+        {
+          content: "light dark",
+          name: "color-scheme",
+        },
+      ],
+    };
+  },
 });
 
 function PomodoroPage() {

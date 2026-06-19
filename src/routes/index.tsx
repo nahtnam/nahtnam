@@ -11,6 +11,7 @@ import { LatestPost } from "@/routes/-components/latest-post";
 import { NameAnimation } from "@/routes/-components/name-animation";
 import { PreviousCompanies } from "@/routes/-components/previous-companies";
 import { SocialLinks } from "@/routes/-components/social-links";
+import { createSeo, pageSeo, siteDescription, siteImage } from "@/lib/seo";
 
 const listExperiences = createConvexRouteQuery(
   api.resume.queries.listExperiences,
@@ -25,38 +26,7 @@ export const Route = createFileRoute("/")({
       listPosts.prefetchQuery(context.queryClient),
     ]);
   },
-  head: () => ({
-    links: [
-      {
-        href: appUrl,
-        rel: "canonical",
-      },
-    ],
-    meta: [
-      {
-        content: "Manthan (@nahtnam) - Principal Software Engineer at Mercury",
-        title: "Manthan (@nahtnam) - Principal Software Engineer at Mercury",
-      },
-      {
-        content:
-          "Personal website of Manthan (@nahtnam) - Principal Software Engineer at Mercury. Writing about software, startups, personal finance, and product reviews.",
-        name: "description",
-      },
-      {
-        content: appUrl,
-        property: "og:url",
-      },
-      {
-        content: "Manthan (@nahtnam) - Principal Software Engineer at Mercury",
-        property: "og:title",
-      },
-      {
-        content:
-          "Personal website of Manthan (@nahtnam) - Principal Software Engineer at Mercury. Writing about software, startups, personal finance, and product reviews.",
-        property: "og:description",
-      },
-    ],
-  }),
+  head: () => createSeo(pageSeo.home),
 });
 
 function RouteComponent() {
@@ -76,7 +46,8 @@ function RouteComponent() {
     name: "Manthan",
     alternateName: "nahtnam",
     url: appUrl,
-    image: `${appUrl}/assets/images/me.avif`,
+    image: siteImage,
+    description: siteDescription,
     jobTitle: currentExperience?.title,
     worksFor: currentExperience
       ? {
