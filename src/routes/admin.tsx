@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { api } from "convex/_generated/api";
 import { createConvexRouteQuery } from "convex-route-query";
+import { siteTitle } from "@/lib/seo";
 
 type NavItem = {
   href: string;
@@ -52,6 +53,17 @@ export const Route = createFileRoute("/admin")({
     }
   },
   component: AdminLayout,
+  head: () => ({
+    meta: [
+      {
+        title: `Admin | ${siteTitle}`,
+      },
+      {
+        content: "noindex, nofollow",
+        name: "robots",
+      },
+    ],
+  }),
 });
 
 function AdminLayout() {

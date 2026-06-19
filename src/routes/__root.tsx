@@ -25,12 +25,9 @@ import { Navbar } from "./-components/navbar";
 import { NotFound } from "./-components/not-found";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { appName, appUrl } from "@/lib/config";
 import { PostHogIdentity } from "@/lib/posthog/identity";
 import { PostHogAppProvider } from "@/lib/posthog/provider";
-
-const defaultDescription =
-  "Manthan (@nahtnam) - Principal Software Engineer at Mercury. Writing about software, startups, and personal finance.";
+import { createSeo, pageSeo } from "@/lib/seo";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -53,92 +50,50 @@ export const Route = createRootRouteWithContext<{
     };
   },
   component: RootComponent,
-  head: () => ({
-    links: [
-      {
-        href: reactTweetCss,
-        rel: "stylesheet",
-      },
-      {
-        href: appCss,
-        rel: "stylesheet",
-      },
-      {
-        href: "/assets/images/me.avif",
-        rel: "icon",
-        type: "image/avif",
-      },
-      {
-        href: "/assets/images/me.avif",
-        rel: "apple-touch-icon",
-      },
-    ],
-    meta: [
-      {
-        charSet: "utf8",
-      },
-      {
-        content: "width=device-width, initial-scale=1",
-        name: "viewport",
-      },
-      {
-        content: appName,
-        title: appName,
-      },
-      {
-        content: defaultDescription,
-        name: "description",
-      },
-      {
-        content: appName,
-        property: "og:site_name",
-      },
-      {
-        content: appUrl,
-        property: "og:url",
-      },
-      {
-        content: "website",
-        property: "og:type",
-      },
-      {
-        content: appName,
-        property: "og:title",
-      },
-      {
-        content: defaultDescription,
-        property: "og:description",
-      },
-      {
-        content: `${appUrl}/assets/images/me.avif`,
-        property: "og:image",
-      },
-      {
-        content: "summary_large_image",
-        name: "twitter:card",
-      },
-      {
-        content: "@nahtnam",
-        name: "twitter:creator",
-      },
-      {
-        content: "@nahtnam",
-        name: "twitter:site",
-      },
-      {
-        content: `${appUrl}/assets/images/me.avif`,
-        name: "twitter:image",
-      },
-      {
-        content: "light",
-        name: "color-scheme",
-      },
-      {
-        content: "light",
-        name: "supported-color-schemes",
-      },
-    ],
-  }),
+  head() {
+    const seo = createSeo(pageSeo.home);
+
+    return {
+      links: [
+        {
+          href: reactTweetCss,
+          rel: "stylesheet",
+        },
+        {
+          href: appCss,
+          rel: "stylesheet",
+        },
+        {
+          href: "/assets/images/me.avif",
+          rel: "icon",
+          type: "image/avif",
+        },
+        {
+          href: "/assets/images/me.avif",
+          rel: "apple-touch-icon",
+        },
+        ...seo.links,
+      ],
+      meta: [
+        {
+          charSet: "utf8",
+        },
+        {
+          content: "width=device-width, initial-scale=1",
+          name: "viewport",
+        },
+        ...seo.meta,
+        {
+          content: "light",
+          name: "color-scheme",
+        },
+        {
+          content: "light",
+          name: "supported-color-schemes",
+        },
+      ],
+    };
+  },
   notFoundComponent: NotFound,
   shellComponent: RootDocument,
 });

@@ -6,7 +6,7 @@ import { CheckCircle2, Clock, Loader2, Plus, Sofa, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "convex/_generated/api";
 import { checkBnbAuth, getBnbPassword, setBnbCookie } from "@/lib/bnb-auth";
-import { appUrl } from "@/lib/config";
+import { createSeo, pageSeo } from "@/lib/seo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,24 +41,7 @@ export const Route = createFileRoute("/bnb/")({
       await listBookings.prefetchQuery(context.queryClient);
     }
   },
-  head: () => ({
-    links: [
-      {
-        href: `${appUrl}/bnb`,
-        rel: "canonical",
-      },
-    ],
-    meta: [
-      {
-        content: "Couch BnB | Manthan (@nahtnam)",
-        title: "Couch BnB | Manthan (@nahtnam)",
-      },
-      {
-        content: "Book Manthan's couch for your next stay.",
-        name: "description",
-      },
-    ],
-  }),
+  head: () => createSeo(pageSeo.bnb),
 });
 
 function BnbPage() {

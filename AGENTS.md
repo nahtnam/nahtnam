@@ -18,6 +18,8 @@ DO NOT run the dev server or any database altering CLIs. Do as much as you can, 
 - **No within-ts**: Do not add `within-ts` to this project. It pulls Node-only APIs into bundles and can break Convex functions that run outside the Node runtime.
 - **Portfolio branding**: On personal-facing portfolio surfaces, prefer the real avatar/image for identity treatments like the navbar brand mark instead of abstract monograms.
 - **Portfolio palette**: Default to indigo as the primary accent color for the portfolio unless the user explicitly asks for a different color direction.
+- **OG image design**: Before finalizing generic generated OG cards, compare current high-quality references for the same content type. Keep portfolio OG images minimal, typographic, and aligned with the site instead of layered or decorative.
+- **OG footer design**: Keep generated OG footers minimal and aligned to clear baselines; when stacking identity text, align the handle with the right-side site URL and place the name above. Avoid secondary avatars or long URL/path strings unless explicitly requested.
 - **Site backgrounds**: Do not use site-wide grid or dotted-grid background patterns; prefer soft continuous color fields or simple surfaces.
 - **Hero lockups**: Decorative glyphs in hero name treatments should not reserve layout space or push the main name off alignment; keep the visible text aligned and let the ornament live outside the flow.
 - **Hero layouts**: In homepage hero sections, avoid reserving empty grid columns or oversized side tracks when companion content is missing; it makes the avatar and status elements feel stranded.

@@ -14,7 +14,7 @@ const config = defineConfig({
         enabled: false,
       },
     }),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+    nitro({ rollupConfig: { external: [/^@resvg\/resvg-js/, /^@sentry\//] } }),
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
     tanstackStart(),

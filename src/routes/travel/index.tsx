@@ -5,7 +5,7 @@ import { createConvexRouteQuery } from "convex-route-query";
 import { FlightGlobe } from "./-components/flight-globe";
 import { FlightStats } from "./-components/flight-stats";
 import { H1, Lead } from "@/components/ui/typography";
-import { appUrl } from "@/lib/config";
+import { createSeo, pageSeo } from "@/lib/seo";
 
 const getStats = createConvexRouteQuery(api.travel.queries.getStats);
 
@@ -14,38 +14,7 @@ export const Route = createFileRoute("/travel/")({
   async loader({ context }) {
     await getStats.prefetchQuery(context.queryClient);
   },
-  head: () => ({
-    links: [
-      {
-        href: `${appUrl}/travel`,
-        rel: "canonical",
-      },
-    ],
-    meta: [
-      {
-        content: "Travel | Manthan (@nahtnam)",
-        title: "Travel | Manthan (@nahtnam)",
-      },
-      {
-        content:
-          "Flight history and travel stats of Manthan (@nahtnam) — airports visited, routes flown, and more.",
-        name: "description",
-      },
-      {
-        content: `${appUrl}/travel`,
-        property: "og:url",
-      },
-      {
-        content: "Travel | Manthan (@nahtnam)",
-        property: "og:title",
-      },
-      {
-        content:
-          "Flight history and travel stats of Manthan (@nahtnam) — airports visited, routes flown, and more.",
-        property: "og:description",
-      },
-    ],
-  }),
+  head: () => createSeo(pageSeo.travel),
 });
 
 function TravelPage() {
