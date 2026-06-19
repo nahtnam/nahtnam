@@ -126,12 +126,17 @@ function EducationAdmin() {
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold text-2xl">Education</h1>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-serif text-3xl tracking-[-0.02em]">Education</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Schools and degrees listed on your experience page.
+          </p>
+        </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button size="sm" onClick={openCreate}>
-              <Plus className="mr-1 size-4" />
+              <Plus className="size-4" />
               Add
             </Button>
           </DialogTrigger>
@@ -220,49 +225,53 @@ function EducationAdmin() {
         </Dialog>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>School</TableHead>
-            <TableHead>Degree</TableHead>
-            <TableHead>Years</TableHead>
-            <TableHead className="w-24" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {education.map((edu) => (
-            <TableRow key={edu._id}>
-              <TableCell className="font-medium">{edu.school}</TableCell>
-              <TableCell>{edu.degree}</TableCell>
-              <TableCell>
-                {edu.startYear} - {edu.endYear}
-              </TableCell>
-              <TableCell>
-                <div className="flex gap-1">
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => {
-                      openEdit(edu);
-                    }}
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={async () => {
-                      await deleteEducation({ id: edu._id });
-                    }}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              </TableCell>
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>School</TableHead>
+              <TableHead>Degree</TableHead>
+              <TableHead>Years</TableHead>
+              <TableHead className="w-24" />
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {education.map((edu) => (
+              <TableRow key={edu._id}>
+                <TableCell className="font-medium">{edu.school}</TableCell>
+                <TableCell className="text-muted-foreground">
+                  {edu.degree}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {edu.startYear} - {edu.endYear}
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-1">
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={() => {
+                        openEdit(edu);
+                      }}
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={async () => {
+                        await deleteEducation({ id: edu._id });
+                      }}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

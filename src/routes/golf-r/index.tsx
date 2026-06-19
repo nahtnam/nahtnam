@@ -59,7 +59,7 @@ function GolfRPage() {
     <div className="page-shell page-shell-wide">
       <CarHero />
 
-      <div className="mt-10 space-y-8">
+      <div className="mt-8 space-y-8">
         <BuildStats items={items} />
 
         <div className="grid gap-8 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,0.9fr)]">

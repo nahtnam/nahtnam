@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import type { Doc } from "convex/_generated/dataModel";
-import { categoryLabels, formatUsd, netCost } from "../lib";
+import { categoryLabels, formatUsd, getCategoryAccent, netCost } from "../lib";
+import { cn } from "@/lib/shadcn/utils";
 import {
   Card,
   CardContent,
@@ -37,7 +38,7 @@ export function CostBreakdown({ items }: CostBreakdownProps) {
   }
 
   return (
-    <Card>
+    <Card className="rounded-xl shadow-sm">
       <CardHeader>
         <CardTitle>Cost Breakdown</CardTitle>
         <CardDescription>
@@ -48,6 +49,7 @@ export function CostBreakdown({ items }: CostBreakdownProps) {
       <CardContent className="space-y-4">
         {categories.map(({ category, count, total }, index) => {
           const percentage = grandTotal === 0 ? 0 : (total / grandTotal) * 100;
+          const accent = getCategoryAccent(category);
 
           return (
             <motion.div
@@ -58,26 +60,30 @@ export function CostBreakdown({ items }: CostBreakdownProps) {
               transition={{ delay: index * 0.04, duration: 0.25 }}
             >
               <div className="flex items-center justify-between gap-3">
-                <div>
+                <div className="flex items-center gap-2">
+                  <span className={cn("size-2 rounded-full", accent.dot)} />
                   <p className="text-sm font-medium">
                     {categoryLabels[category] ?? category}
                   </p>
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     {count} item{count === 1 ? "" : "s"}
                   </p>
                 </div>
 
                 <div className="text-right">
                   <p className="font-mono text-sm">{formatUsd(total)}</p>
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     {percentage.toFixed(1)}%
                   </p>
                 </div>
               </div>
 
-              <div className="bg-muted h-2 rounded-full">
+              <div className="h-1.5 overflow-hidden rounded-full bg-muted">
                 <div
-                  className="bg-primary h-2 rounded-full transition-[width]"
+                  className={cn(
+                    "h-full rounded-full transition-[width]",
+                    accent.bar,
+                  )}
                   style={{ width: `${percentage}%` }}
                 />
               </div>

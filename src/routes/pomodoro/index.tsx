@@ -670,46 +670,46 @@ function PomodoroPage() {
               onTick={handleClockTick}
             />
 
-            <div className="mx-auto mt-5 h-1.5 max-w-7xl overflow-hidden rounded-full bg-current/10">
+            <div className="mx-auto mt-5 h-1 max-w-7xl overflow-hidden rounded-full bg-current/10">
               <div
                 className="h-full rounded-full bg-primary transition-[width] duration-500"
                 style={{ width: `${progress * 100}%` }}
               />
             </div>
 
-            <div className="mx-auto mt-5 flex w-full max-w-7xl flex-col gap-3 sm:flex-row sm:justify-center">
+            <div className="mx-auto mt-6 flex w-full max-w-7xl flex-col gap-3 sm:flex-row sm:justify-center">
               <Button
-                className="h-12 min-w-40 text-base"
+                className="h-11 min-w-36 text-sm"
                 type="button"
                 onClick={handleTimerToggle}
               >
-                <PrimaryActionIcon className="size-5" />
+                <PrimaryActionIcon className="size-4" />
                 {primaryActionLabel}
               </Button>
               <Button
                 className={
                   theme === "dark"
-                    ? "h-12 border-zinc-700 bg-zinc-950/40 text-zinc-100 hover:bg-zinc-800"
-                    : "h-12"
+                    ? "h-11 border-zinc-700 bg-zinc-950/40 text-zinc-100 hover:bg-zinc-800"
+                    : "h-11"
                 }
                 type="button"
                 variant="outline"
                 onClick={resetTimer}
               >
-                <RotateCcw className="size-5" />
+                <RotateCcw className="size-4" />
                 Reset
               </Button>
               <Button
                 className={
                   theme === "dark"
-                    ? "h-12 border-zinc-700 bg-zinc-950/40 text-zinc-100 hover:bg-zinc-800"
-                    : "h-12"
+                    ? "h-11 border-zinc-700 bg-zinc-950/40 text-zinc-100 hover:bg-zinc-800"
+                    : "h-11"
                 }
                 type="button"
                 variant="outline"
                 onClick={skipPhase}
               >
-                <SkipForward className="size-5" />
+                <SkipForward className="size-4" />
                 Skip
               </Button>
             </div>
@@ -805,9 +805,9 @@ function StatePill(props: { readonly label: string; readonly phase: Phase }) {
   const Icon = phase === "focus" ? TimerReset : Coffee;
 
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-current/15 bg-current/[0.04] px-3 py-1.5 font-mono text-xs uppercase tracking-[0.2em]">
-      <span className="opacity-55">{label}</span>
-      <Icon className="size-4" />
+    <div className="inline-flex items-center gap-2 rounded-md border border-current/15 bg-current/[0.04] px-3 py-1.5 font-mono text-[0.66rem] tracking-[0.18em] uppercase">
+      <span className="opacity-50">{label}</span>
+      <Icon className="size-3.5" />
       {phaseLabels[phase]}
     </div>
   );

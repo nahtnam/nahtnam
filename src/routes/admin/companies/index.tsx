@@ -104,12 +104,17 @@ function CompaniesAdmin() {
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold text-2xl">Companies</h1>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-serif text-3xl tracking-[-0.02em]">Companies</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Companies referenced by your work experience entries.
+          </p>
+        </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button size="sm" onClick={openCreate}>
-              <Plus className="mr-1 size-4" />
+              <Plus className="size-4" />
               Add
             </Button>
           </DialogTrigger>
@@ -168,51 +173,53 @@ function CompaniesAdmin() {
         </Dialog>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Website</TableHead>
-            <TableHead>Logo</TableHead>
-            <TableHead className="w-24" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {companies.map((company) => (
-            <TableRow key={company._id}>
-              <TableCell className="font-medium">{company.name}</TableCell>
-              <TableCell className="max-w-48 truncate">
-                {company.websiteUrl}
-              </TableCell>
-              <TableCell className="max-w-48 truncate">
-                {company.logoUrl}
-              </TableCell>
-              <TableCell>
-                <div className="flex gap-1">
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => {
-                      openEdit(company);
-                    }}
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={async () => {
-                      await deleteCompany({ id: company._id });
-                    }}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              </TableCell>
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Website</TableHead>
+              <TableHead>Logo</TableHead>
+              <TableHead className="w-24" />
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {companies.map((company) => (
+              <TableRow key={company._id}>
+                <TableCell className="font-medium">{company.name}</TableCell>
+                <TableCell className="max-w-48 truncate text-muted-foreground">
+                  {company.websiteUrl}
+                </TableCell>
+                <TableCell className="max-w-48 truncate text-muted-foreground">
+                  {company.logoUrl}
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-1">
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={() => {
+                        openEdit(company);
+                      }}
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      onClick={async () => {
+                        await deleteCompany({ id: company._id });
+                      }}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

@@ -95,30 +95,33 @@ function RouteComponent() {
         type="application/ld+json"
       />
       {/* eslint-enable react/no-danger */}
-      <main className="page-shell page-shell-wide flex flex-1 items-center">
-        <div className="page-intro mx-auto w-full">
-          <div className="flex w-full flex-col items-center gap-7 pt-18 text-center md:pt-22">
-            <HeroAvatar />
+      <main className="page-shell page-shell-wide flex flex-1 flex-col items-center !py-20 md:!py-28">
+        <div className="flex w-full flex-col items-center gap-7 text-center">
+          <HeroAvatar />
 
-            <h1 className="text-center">
+          <div className="flex flex-col items-center gap-3">
+            <p className="font-mono text-[0.7rem] tracking-[0.28em] text-muted-foreground uppercase">
+              Hey there, I&apos;m
+            </p>
+            <h1>
               <NameAnimation />
             </h1>
-
-            {currentExperience ? (
-              <CurrentCompany
-                companyName={currentExperience.company.name}
-                title={currentExperience.title}
-              />
-            ) : null}
-
-            <AboutMe />
-
-            <SocialLinks />
-
-            <PreviousCompanies companies={previousCompanies} />
-
-            {latestPost ? <LatestPost post={latestPost} /> : null}
           </div>
+
+          {currentExperience ? (
+            <CurrentCompany
+              companyName={currentExperience.company.name}
+              title={currentExperience.title}
+            />
+          ) : null}
+
+          <AboutMe />
+
+          <SocialLinks />
+
+          <PreviousCompanies companies={previousCompanies} />
+
+          {latestPost ? <LatestPost post={latestPost} /> : null}
         </div>
       </main>
     </div>

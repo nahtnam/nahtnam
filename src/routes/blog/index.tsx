@@ -3,7 +3,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { createConvexRouteQuery } from "convex-route-query";
 import { api } from "convex/_generated/api";
 import { formatDistanceToNow } from "date-fns";
-import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
@@ -70,7 +69,7 @@ function BlogIndexPage() {
 
   return (
     <div className="page-shell page-shell-narrow">
-      <div className="page-intro mb-10">
+      <div className="page-intro mb-12">
         <span className="eyebrow mb-4">Writing</span>
         <H1>Blog</H1>
         <Lead className="mt-4 max-w-2xl text-base">
@@ -79,36 +78,34 @@ function BlogIndexPage() {
         </Lead>
       </div>
 
-      <div className="grid gap-4">
+      <div className="divide-y divide-border">
         {posts.map((post) => (
           <Link
             key={post.slug}
-            className="group relative flex flex-col gap-3 overflow-hidden rounded-[2rem] border border-border/80 bg-card/92 p-5 shadow-[0_22px_50px_-40px_color-mix(in_srgb,var(--color-foreground)_36%,transparent)] transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_30px_60px_-38px_color-mix(in_srgb,var(--color-primary)_30%,transparent)]"
+            className="group block rounded-lg px-4 py-7 transition-colors hover:bg-accent/40"
             params={{ slug: post.slug }}
             to="/blog/$slug"
           >
-            <div className="absolute inset-y-5 left-0 w-1 rounded-full bg-primary/70 opacity-0 transition-opacity group-hover:opacity-100" />
-            <div className="flex items-start justify-between gap-4">
-              <h2 className="font-serif text-2xl leading-snug tracking-[-0.02em] transition-colors group-hover:text-primary">
-                {post.title}
-              </h2>
-              <div className="flex shrink-0 flex-wrap justify-end gap-2">
-                {(post.kind ?? "markdown") === "x" ? (
-                  <Badge className="px-2 py-1 text-[0.68rem]">X thread</Badge>
-                ) : null}
-                <Badge className="px-2 py-1 text-[0.68rem]" variant="secondary">
-                  {post.category.name}
-                </Badge>
-              </div>
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[0.64rem] font-medium tracking-[0.18em] text-primary uppercase">
+                {post.category.name}
+              </span>
+              {(post.kind ?? "markdown") === "x" ? (
+                <span className="rounded border border-border px-1.5 py-0.5 font-mono text-[0.58rem] tracking-wide text-muted-foreground uppercase">
+                  X thread
+                </span>
+              ) : null}
             </div>
-
-            <div className="flex items-end justify-between gap-4">
-              <p className="line-clamp-2 text-muted-foreground text-sm leading-6">
+            <h2 className="mt-2 font-serif text-3xl leading-tight tracking-[-0.02em] text-foreground transition-colors group-hover:text-primary">
+              {post.title}
+            </h2>
+            <div className="mt-2 flex items-center justify-between gap-4">
+              <p className="line-clamp-1 flex-1 text-sm text-muted-foreground">
                 {post.excerpt}
               </p>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Small className="shrink-0 cursor-default font-mono font-medium text-[0.68rem] text-muted-foreground uppercase">
+                  <Small className="shrink-0 cursor-default font-mono text-[0.64rem] tracking-wide text-muted-foreground uppercase">
                     {formatRelativeDate(new Date(post.publishedAt))}
                   </Small>
                 </TooltipTrigger>
