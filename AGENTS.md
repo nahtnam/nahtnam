@@ -24,6 +24,7 @@ DO NOT run the dev server or any database altering CLIs. Do as much as you can, 
 - **Hero portraits**: On desktop portfolio heroes, keep the avatar visually tied to the name and intro block rather than isolating it in a distant side lane.
 - **Hero motion**: Keep hero name animation stable at rest; avoid autoplay states that can leave the primary lockup looking broken in screenshots or on first load.
 - **Matched chips**: When presenting a small pair of personal tags or badges, make them feel intentionally matched in scale and width rather than leaving one visibly smaller.
+- **Inline chip text**: When a compact chip mixes text sizes or font families on one row, align the text runs by baseline and tighten their line-height so they do not look vertically mismatched.
 - **UI fit**: When updating existing product pages, prefer flatter shadcn-style cards and layout patterns over glossy or highly custom visual treatments unless the user explicitly asks for something more expressive.
 - **Utility pages**: For focused tools like timers or calculators, keep the surface minimal, honor browser color-scheme preference with an explicit override, use the site theme tokens by default, and hide advanced configuration behind an icon-triggered settings surface.
 - **Clock utilities**: For timer or clock-focused pages, make the clock the dominant viewport element and keep surrounding labels, progress, and controls visually secondary.

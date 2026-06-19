@@ -19,15 +19,17 @@ export function CurrentCompany({ companyName, title }: CurrentCompanyProps) {
         className="inline-flex max-w-full items-center justify-center gap-2 whitespace-nowrap text-center"
         to="/experience"
       >
-        <span className="relative flex size-2.5">
+        <span className="relative flex size-2.5 shrink-0">
           <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500 opacity-75" />
           <span className="relative inline-flex size-2.5 rounded-full bg-green-500" />
         </span>
-        <Muted className="font-mono text-[0.62rem] tracking-[0.08em] uppercase sm:text-[0.66rem] sm:tracking-[0.1em]">
-          {title}
-        </Muted>
-        <span className="shrink-0 font-medium tracking-normal normal-case">
-          @ {companyName}
+        <span className="inline-flex max-w-full items-baseline gap-2 leading-none">
+          <Muted className="font-mono text-[0.62rem] leading-none tracking-[0.08em] uppercase sm:text-[0.66rem] sm:tracking-[0.1em]">
+            {title}
+          </Muted>
+          <span className="shrink-0 font-medium leading-none tracking-normal normal-case">
+            @ {companyName}
+          </span>
         </span>
       </Link>
     </Badge>
