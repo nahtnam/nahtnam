@@ -21,6 +21,7 @@ import { Route as ContactIndexRouteImport } from './routes/contact/index'
 import { Route as BnbIndexRouteImport } from './routes/bnb/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as ApiPrintRouteImport } from './routes/api/print'
 import { Route as BlogSlugIndexRouteImport } from './routes/blog/$slug/index'
 import { Route as AdminTravelIndexRouteImport } from './routes/admin/travel/index'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/index'
@@ -93,6 +94,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiPrintRoute = ApiPrintRouteImport.update({
+  id: '/api/print',
+  path: '/api/print',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugIndexRoute = BlogSlugIndexRouteImport.update({
   id: '/blog/$slug/',
   path: '/blog/$slug/',
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/og': typeof OgRoute
   '/sign-in': typeof SignInRoute
+  '/api/print': typeof ApiPrintRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/bnb/': typeof BnbIndexRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/og': typeof OgRoute
   '/sign-in': typeof SignInRoute
+  '/api/print': typeof ApiPrintRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/bnb': typeof BnbIndexRoute
@@ -205,6 +213,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/og': typeof OgRoute
   '/sign-in': typeof SignInRoute
+  '/api/print': typeof ApiPrintRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/bnb/': typeof BnbIndexRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/og'
     | '/sign-in'
+    | '/api/print'
     | '/admin/'
     | '/blog/'
     | '/bnb/'
@@ -256,6 +266,7 @@ export interface FileRouteTypes {
     | '/'
     | '/og'
     | '/sign-in'
+    | '/api/print'
     | '/admin'
     | '/blog'
     | '/bnb'
@@ -281,6 +292,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/og'
     | '/sign-in'
+    | '/api/print'
     | '/admin/'
     | '/blog/'
     | '/bnb/'
@@ -307,6 +319,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   OgRoute: typeof OgRoute
   SignInRoute: typeof SignInRoute
+  ApiPrintRoute: typeof ApiPrintRoute
   BlogIndexRoute: typeof BlogIndexRoute
   BnbIndexRoute: typeof BnbIndexRoute
   ContactIndexRoute: typeof ContactIndexRoute
@@ -403,6 +416,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/api/print': {
+      id: '/api/print'
+      path: '/api/print'
+      fullPath: '/api/print'
+      preLoaderRoute: typeof ApiPrintRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/blog/$slug/': {
       id: '/blog/$slug/'
@@ -517,6 +537,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   OgRoute: OgRoute,
   SignInRoute: SignInRoute,
+  ApiPrintRoute: ApiPrintRoute,
   BlogIndexRoute: BlogIndexRoute,
   BnbIndexRoute: BnbIndexRoute,
   ContactIndexRoute: ContactIndexRoute,

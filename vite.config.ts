@@ -8,6 +8,9 @@ import tailwindcss from "@tailwindcss/vite";
 import { nitro } from "nitro/vite";
 
 const config = defineConfig({
+  optimizeDeps: {
+    exclude: ["@resvg/resvg-js", "@resvg/resvg-js-darwin-arm64"],
+  },
   plugins: [
     devtools({
       injectSource: {
@@ -31,6 +34,7 @@ const config = defineConfig({
     ],
   },
   ssr: {
+    external: ["@resvg/resvg-js", "@resvg/resvg-js-darwin-arm64"],
     noExternal: ["react-tweet"],
   },
 });

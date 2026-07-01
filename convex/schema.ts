@@ -82,6 +82,41 @@ export default defineSchema({
     .index("by_date", ["date"])
     .index("by_category", ["category"]),
 
+  printJobs: defineTable({
+    availableAt: v.number(),
+    idempotencyKey: v.optional(v.string()),
+    payload: v.union(
+      v.object({
+        _type: v.literal("message"),
+        body: v.string(),
+        title: v.optional(v.string()),
+      }),
+      v.object({
+        _type: v.literal("alert"),
+        body: v.string(),
+        title: v.string(),
+      }),
+    ),
+    printState: v.object({
+      attempts: v.number(),
+      claimedAt: v.optional(v.number()),
+      claimedBy: v.optional(v.string()),
+      failedAt: v.optional(v.number()),
+      lastError: v.optional(v.string()),
+      leaseExpiresAt: v.optional(v.number()),
+      printedAt: v.optional(v.number()),
+    }),
+    source: v.string(),
+    status: v.union(
+      v.literal("queued"),
+      v.literal("printing"),
+      v.literal("printed"),
+      v.literal("failed"),
+    ),
+  })
+    .index("by_idempotencyKey", ["idempotencyKey"])
+    .index("by_status_availableAt", ["status", "availableAt"]),
+
   resumeCompanies: defineTable({
     logoUrl: v.string(),
     name: v.string(),

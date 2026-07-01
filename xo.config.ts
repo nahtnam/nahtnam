@@ -23,6 +23,18 @@ const xoConfig: FlatXoConfig = [
     },
   },
   {
+    files: ["convex/print_jobs.ts"],
+    rules: {
+      "unicorn/filename-case": "off",
+    },
+  },
+  {
+    files: ["scripts/print-worker/index.ts"],
+    rules: {
+      "no-await-in-loop": "off",
+    },
+  },
+  {
     ignores: [
       "src/components/ui/**/*",
       "src/lib/shadcn/*",

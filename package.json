@@ -12,6 +12,7 @@
     "dev": "run-p dev:*",
     "dev:convex": "convex dev",
     "dev:vite": "bun run portless nahtnam vite dev",
+    "print:worker": "bun run scripts/print-worker/index.ts",
     "seo:preview-og": "bun run scripts/preview-og-images.ts",
     "serve:vite": "bun run vite preview",
     "start": "run-p *:start",
@@ -67,12 +68,14 @@
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.2",
     "react-markdown": "^10.1.0",
+    "react-thermal-printer": "^0.22.0",
     "react-tweet": "^3.3.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.1.18",
     "three": "^0.183.1",
     "three-globe": "^2.45.0",
+    "ts-pattern": "^5.9.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

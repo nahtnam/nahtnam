@@ -24,6 +24,7 @@ import type * as http from "../http.js";
 import type * as lib_builder from "../lib/builder.js";
 import type * as lib_config_env from "../lib/config/env.js";
 import type * as posthog from "../posthog.js";
+import type * as print_jobs from "../print_jobs.js";
 import type * as resume_queries from "../resume/queries.js";
 import type * as travel_airlines from "../travel/airlines.js";
 import type * as travel_airports from "../travel/airports.js";
@@ -53,6 +54,7 @@ declare const fullApi: ApiFromModules<{
   "lib/builder": typeof lib_builder;
   "lib/config/env": typeof lib_config_env;
   posthog: typeof posthog;
+  print_jobs: typeof print_jobs;
   "resume/queries": typeof resume_queries;
   "travel/airlines": typeof travel_airlines;
   "travel/airports": typeof travel_airports;
