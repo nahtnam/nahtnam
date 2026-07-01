@@ -1,5 +1,5 @@
 import { createEnv } from "@t3-oss/env-core";
-import { REQUIRED_STRING } from "./utils";
+import { OPTIONAL_STRING, REQUIRED_STRING } from "./utils";
 
 export const convexEnv = createEnv({
   emptyStringAsUndefined: true,
@@ -7,6 +7,7 @@ export const convexEnv = createEnv({
   server: {
     ADMIN_EMAILS: REQUIRED_STRING,
     BNB_PASSWORD: REQUIRED_STRING,
+    PRINT_SECRET: OPTIONAL_STRING,
     TELEGRAM_BOT_TOKEN: REQUIRED_STRING,
     TELEGRAM_CHAT_ID: REQUIRED_STRING,
     TURNSTILE_SECRET_KEY: REQUIRED_STRING,
