@@ -1,0 +1,8 @@
+{
+  "version": "0.1.3",
+  "template": {
+    "repository": "https://github.com/ludicroushq/ray",
+    "branch": "main"
+  },
+  "commit": "ab43372e29c8d592887268f7982a414487f03c2d"
+}
