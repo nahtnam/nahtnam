@@ -1,0 +1,9 @@
+name: setup
+description: Install the toolchain and dependencies
+
+runs:
+  using: composite
+  steps:
+    - uses: jdx/mise-action@v4
+    - run: bun ci
+      shell: bash
