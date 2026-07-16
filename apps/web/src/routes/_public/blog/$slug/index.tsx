@@ -5,6 +5,7 @@ import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { createConvexRouteQuery } from "convex-route-query";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowLeftIcon } from "lucide-react";
+import { useSyncExternalStore } from "react";
 import Markdown from "react-markdown";
 import { EmbeddedTweet } from "react-tweet";
 import type { Tweet } from "react-tweet/api";
@@ -173,6 +174,11 @@ type TweetThreadProps = {
 
 function TweetThread(props: TweetThreadProps) {
   const { tweets } = props;
+  const isHydrated = useSyncExternalStore(
+    subscribeToHydration,
+    getClientHydrationSnapshot,
+    getServerHydrationSnapshot
+  );
 
   return (
     <ol
@@ -196,12 +202,33 @@ function TweetThread(props: TweetThreadProps) {
             <span className="sr-only">
               Tweet {index + 1} of {tweets.length}.{" "}
             </span>
-            <EmbeddedTweet tweet={item.tweet as Tweet} />
+            {isHydrated ? (
+              <EmbeddedTweet tweet={item.tweet as Tweet} />
+            ) : (
+              <a
+                className="link link-hover inline-block py-6 font-mono text-sm text-base-content/60"
+                href={item.sourceUrl}
+              >
+                View tweet {index + 1} on X
+              </a>
+            )}
           </div>
         </li>
       ))}
     </ol>
   );
+}
+
+function subscribeToHydration() {
+  return () => null;
+}
+
+function getClientHydrationSnapshot() {
+  return true;
+}
+
+function getServerHydrationSnapshot() {
+  return false;
 }
 
 type FormatFullDateOptions = {
