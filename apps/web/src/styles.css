@@ -265,6 +265,10 @@
 }
 
 @layer utilities {
+  .site-navigation:not(:popover-open) {
+    display: none;
+  }
+
   .public-contact input,
   .public-contact textarea,
   .public-contact select,
