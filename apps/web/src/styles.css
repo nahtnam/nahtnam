@@ -141,7 +141,7 @@
   html {
     @apply bg-base-100 font-sans antialiased;
     font-optical-sizing: auto;
-    overscroll-behavior: none;
+    overscroll-behavior-y: none;
     scrollbar-gutter: stable;
     text-rendering: optimizeLegibility;
   }
