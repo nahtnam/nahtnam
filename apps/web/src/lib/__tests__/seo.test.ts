@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { buildOgImageSvg, generateOgImagePng } from "../og-image";
-import { createSeo, pageSeo } from "../seo";
+import { createSeo, ogImageUrl, pageSeo } from "../seo";
 
 describe("SEO metadata", () => {
   test("includes accessible social image metadata", () => {
@@ -15,6 +15,17 @@ describe("SEO metadata", () => {
       content: "Manthan (@nahtnam) — Portfolio",
       name: "twitter:image:alt",
     });
+  });
+
+  test("versions generated images to invalidate social preview caches", () => {
+    const image = ogImageUrl({
+      description: pageSeo.home.description,
+      label: pageSeo.home.imageLabel,
+      path: pageSeo.home.path,
+      title: pageSeo.home.socialTitle,
+    });
+
+    expect(new URL(image).searchParams.get("v")).toBe("2");
   });
 
   test("keeps generated social images indigo-only", () => {

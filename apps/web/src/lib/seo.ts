@@ -5,6 +5,7 @@ export const siteDescription =
   "Personal site of Manthan (@nahtnam), Principal Software Engineer at Mercury, with writing about software, startups, personal finance, travel, and developer tools.";
 export const siteImage = `${appUrl}/assets/images/me.avif`;
 export const twitterHandle = "@nahtnam";
+const ogImageVersion = "2";
 
 export type SeoOptions = {
   readonly description: string;
@@ -114,6 +115,7 @@ export function ogImageUrl(options: OgImageOptions) {
   imageUrl.searchParams.set("title", title);
   imageUrl.searchParams.set("description", description);
   imageUrl.searchParams.set("path", path);
+  imageUrl.searchParams.set("v", ogImageVersion);
 
   if (label) {
     imageUrl.searchParams.set("label", label);
