@@ -31,7 +31,6 @@ type Env = {
   readonly TELEGRAM_BOT_TOKEN: string;
   readonly TELEGRAM_CHAT_ID: string;
   readonly TURNSTILE_SECRET_KEY: string;
-  readonly WORKOS_API_KEY: string;
   readonly WORKOS_CLIENT_ID: string;
 };
 

@@ -8,6 +8,5 @@ export const convexEnv = {
   TELEGRAM_BOT_TOKEN: v.string(),
   TELEGRAM_CHAT_ID: v.string(),
   TURNSTILE_SECRET_KEY: v.string(),
-  WORKOS_API_KEY: v.string(),
   WORKOS_CLIENT_ID: v.string(),
 } satisfies EnvDefinition;
