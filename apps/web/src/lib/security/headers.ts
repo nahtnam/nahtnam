@@ -3,6 +3,9 @@ import { clientEnv } from "@repo/config/env/client";
 const POSTHOG_ASSET_ORIGIN = "https://us-assets.i.posthog.com";
 const POSTHOG_INGEST_ORIGIN = "https://us.i.posthog.com";
 const LUDIC_FONT_ORIGIN = "https://font.ldcr.us";
+const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
+const CARTO_ORIGIN = "https://basemaps.cartocdn.com";
+const CARTO_TILE_ORIGIN = "https://*.basemaps.cartocdn.com";
 
 export function applySecurityHeaders(
   response: Response,
@@ -56,15 +59,27 @@ function contentSecurityPolicy(): string {
     "'self'",
     convexUrl.origin,
     convexWebSocketUrl.origin,
+    CARTO_ORIGIN,
+    CARTO_TILE_ORIGIN,
+    TURNSTILE_ORIGIN,
   ];
   const imageSources = [
     "'self'",
     "data:",
     "blob:",
+    // Blog Markdown and admin-managed company logos intentionally support
+    // arbitrary public HTTPS image origins.
+    "https:",
     "https://workoscdn.com",
+    "https://*.convex.cloud",
+    "https://abs.twimg.com",
+    "https://pbs.twimg.com",
+    "https://video.twimg.com",
+    CARTO_ORIGIN,
+    CARTO_TILE_ORIGIN,
     convexUrl.origin,
   ];
-  const scriptSources = ["'self'", "'unsafe-inline'"];
+  const scriptSources = ["'self'", "'unsafe-inline'", TURNSTILE_ORIGIN];
 
   if (clientEnv.VITE_POSTHOG_KEY) {
     connectSources.push(POSTHOG_INGEST_ORIGIN, POSTHOG_ASSET_ORIGIN);
@@ -78,6 +93,7 @@ function contentSecurityPolicy(): string {
     `connect-src ${connectSources.join(" ")}`,
     `font-src 'self' data: ${LUDIC_FONT_ORIGIN}`,
     "form-action 'self'",
+    `frame-src 'self' ${TURNSTILE_ORIGIN}`,
     "frame-ancestors 'none'",
     `img-src ${imageSources.join(" ")}`,
     "object-src 'none'",

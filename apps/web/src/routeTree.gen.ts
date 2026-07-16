@@ -11,11 +11,44 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WithoutUserRouteImport } from './routes/_without-user'
 import { Route as WithUserRouteImport } from './routes/_with-user'
-import { Route as WithoutUserIndexRouteImport } from './routes/_without-user/index'
+import { Route as PublicRouteImport } from './routes/_public'
+import { Route as TravelIndexRouteImport } from './routes/travel/index'
+import { Route as TextMeIndexRouteImport } from './routes/text-me/index'
+import { Route as PomodoroIndexRouteImport } from './routes/pomodoro/index'
+import { Route as GolfRIndexRouteImport } from './routes/golf-r/index'
+import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as ApiPrintRouteImport } from './routes/api/print'
+import { Route as ApiContactRouteImport } from './routes/api/contact'
+import { Route as WithoutUserSignInRouteImport } from './routes/_without-user/sign-in'
+import { Route as WithUserAdminRouteImport } from './routes/_with-user/admin'
+import { Route as PublicOgRouteImport } from './routes/_public/og'
 import { Route as WithUserAppIndexRouteImport } from './routes/_with-user/app/index'
+import { Route as WithUserAdminIndexRouteImport } from './routes/_with-user/admin/index'
+import { Route as PublicResumeIndexRouteImport } from './routes/_public/resume/index'
+import { Route as PublicExperienceIndexRouteImport } from './routes/_public/experience/index'
+import { Route as PublicContactIndexRouteImport } from './routes/_public/contact/index'
+import { Route as PublicBnbIndexRouteImport } from './routes/_public/bnb/index'
+import { Route as PublicBlogIndexRouteImport } from './routes/_public/blog/index'
+import { Route as ApiBnbSessionRouteImport } from './routes/api/bnb/session'
+import { Route as ApiBnbBookingsRouteImport } from './routes/api/bnb/bookings'
 import { Route as ApiAuthSignUpRouteImport } from './routes/api/auth/sign-up'
 import { Route as ApiAuthSignInRouteImport } from './routes/api/auth/sign-in'
 import { Route as ApiAuthCallbackRouteImport } from './routes/api/auth/callback'
+import { Route as ApiAuthAdminRouteImport } from './routes/api/auth/admin'
+import { Route as PublicResumeVariantRouteImport } from './routes/_public/resume/$variant'
+import { Route as WithUserAdminWritingIndexRouteImport } from './routes/_with-user/admin/writing/index'
+import { Route as WithUserAdminTravelIndexRouteImport } from './routes/_with-user/admin/travel/index'
+import { Route as WithUserAdminResumeIndexRouteImport } from './routes/_with-user/admin/resume/index'
+import { Route as WithUserAdminProjectsIndexRouteImport } from './routes/_with-user/admin/projects/index'
+import { Route as WithUserAdminGolfRIndexRouteImport } from './routes/_with-user/admin/golf-r/index'
+import { Route as WithUserAdminExperiencesIndexRouteImport } from './routes/_with-user/admin/experiences/index'
+import { Route as WithUserAdminEducationIndexRouteImport } from './routes/_with-user/admin/education/index'
+import { Route as WithUserAdminCompaniesIndexRouteImport } from './routes/_with-user/admin/companies/index'
+import { Route as WithUserAdminBookingsIndexRouteImport } from './routes/_with-user/admin/bookings/index'
+import { Route as WithUserAdminBlogIndexRouteImport } from './routes/_with-user/admin/blog/index'
+import { Route as PublicBlogSlugIndexRouteImport } from './routes/_public/blog/$slug/index'
+import { Route as WithUserAdminBlogCategoriesIndexRouteImport } from './routes/_with-user/admin/blog/categories/index'
+import { Route as WithUserAdminBlogIdIndexRouteImport } from './routes/_with-user/admin/blog/$id/index'
 
 const WithoutUserRoute = WithoutUserRouteImport.update({
   id: '/_without-user',
@@ -25,15 +58,104 @@ const WithUserRoute = WithUserRouteImport.update({
   id: '/_with-user',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WithoutUserIndexRoute = WithoutUserIndexRouteImport.update({
+const PublicRoute = PublicRouteImport.update({
+  id: '/_public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TravelIndexRoute = TravelIndexRouteImport.update({
+  id: '/travel/',
+  path: '/travel/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TextMeIndexRoute = TextMeIndexRouteImport.update({
+  id: '/text-me/',
+  path: '/text-me/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PomodoroIndexRoute = PomodoroIndexRouteImport.update({
+  id: '/pomodoro/',
+  path: '/pomodoro/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GolfRIndexRoute = GolfRIndexRouteImport.update({
+  id: '/golf-r/',
+  path: '/golf-r/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const ApiPrintRoute = ApiPrintRouteImport.update({
+  id: '/api/print',
+  path: '/api/print',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiContactRoute = ApiContactRouteImport.update({
+  id: '/api/contact',
+  path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WithoutUserSignInRoute = WithoutUserSignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
   getParentRoute: () => WithoutUserRoute,
+} as any)
+const WithUserAdminRoute = WithUserAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => WithUserRoute,
+} as any)
+const PublicOgRoute = PublicOgRouteImport.update({
+  id: '/og',
+  path: '/og',
+  getParentRoute: () => PublicRoute,
 } as any)
 const WithUserAppIndexRoute = WithUserAppIndexRouteImport.update({
   id: '/app/',
   path: '/app/',
   getParentRoute: () => WithUserRoute,
+} as any)
+const WithUserAdminIndexRoute = WithUserAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WithUserAdminRoute,
+} as any)
+const PublicResumeIndexRoute = PublicResumeIndexRouteImport.update({
+  id: '/resume/',
+  path: '/resume/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicExperienceIndexRoute = PublicExperienceIndexRouteImport.update({
+  id: '/experience/',
+  path: '/experience/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicContactIndexRoute = PublicContactIndexRouteImport.update({
+  id: '/contact/',
+  path: '/contact/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicBnbIndexRoute = PublicBnbIndexRouteImport.update({
+  id: '/bnb/',
+  path: '/bnb/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicBlogIndexRoute = PublicBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const ApiBnbSessionRoute = ApiBnbSessionRouteImport.update({
+  id: '/api/bnb/session',
+  path: '/api/bnb/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBnbBookingsRoute = ApiBnbBookingsRouteImport.update({
+  id: '/api/bnb/bookings',
+  path: '/api/bnb/bookings',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSignUpRoute = ApiAuthSignUpRouteImport.update({
   id: '/api/auth/sign-up',
@@ -50,63 +172,350 @@ const ApiAuthCallbackRoute = ApiAuthCallbackRouteImport.update({
   path: '/api/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAuthAdminRoute = ApiAuthAdminRouteImport.update({
+  id: '/api/auth/admin',
+  path: '/api/auth/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicResumeVariantRoute = PublicResumeVariantRouteImport.update({
+  id: '/resume/$variant',
+  path: '/resume/$variant',
+  getParentRoute: () => PublicRoute,
+} as any)
+const WithUserAdminWritingIndexRoute =
+  WithUserAdminWritingIndexRouteImport.update({
+    id: '/writing/',
+    path: '/writing/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminTravelIndexRoute =
+  WithUserAdminTravelIndexRouteImport.update({
+    id: '/travel/',
+    path: '/travel/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminResumeIndexRoute =
+  WithUserAdminResumeIndexRouteImport.update({
+    id: '/resume/',
+    path: '/resume/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminProjectsIndexRoute =
+  WithUserAdminProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminGolfRIndexRoute = WithUserAdminGolfRIndexRouteImport.update({
+  id: '/golf-r/',
+  path: '/golf-r/',
+  getParentRoute: () => WithUserAdminRoute,
+} as any)
+const WithUserAdminExperiencesIndexRoute =
+  WithUserAdminExperiencesIndexRouteImport.update({
+    id: '/experiences/',
+    path: '/experiences/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminEducationIndexRoute =
+  WithUserAdminEducationIndexRouteImport.update({
+    id: '/education/',
+    path: '/education/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminCompaniesIndexRoute =
+  WithUserAdminCompaniesIndexRouteImport.update({
+    id: '/companies/',
+    path: '/companies/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminBookingsIndexRoute =
+  WithUserAdminBookingsIndexRouteImport.update({
+    id: '/bookings/',
+    path: '/bookings/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminBlogIndexRoute = WithUserAdminBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => WithUserAdminRoute,
+} as any)
+const PublicBlogSlugIndexRoute = PublicBlogSlugIndexRouteImport.update({
+  id: '/blog/$slug/',
+  path: '/blog/$slug/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const WithUserAdminBlogCategoriesIndexRoute =
+  WithUserAdminBlogCategoriesIndexRouteImport.update({
+    id: '/blog/categories/',
+    path: '/blog/categories/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
+const WithUserAdminBlogIdIndexRoute =
+  WithUserAdminBlogIdIndexRouteImport.update({
+    id: '/blog/$id/',
+    path: '/blog/$id/',
+    getParentRoute: () => WithUserAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof WithoutUserIndexRoute
+  '/': typeof PublicIndexRoute
+  '/og': typeof PublicOgRoute
+  '/admin': typeof WithUserAdminRouteWithChildren
+  '/sign-in': typeof WithoutUserSignInRoute
+  '/api/contact': typeof ApiContactRoute
+  '/api/print': typeof ApiPrintRoute
+  '/golf-r/': typeof GolfRIndexRoute
+  '/pomodoro/': typeof PomodoroIndexRoute
+  '/text-me/': typeof TextMeIndexRoute
+  '/travel/': typeof TravelIndexRoute
+  '/resume/$variant': typeof PublicResumeVariantRoute
+  '/api/auth/admin': typeof ApiAuthAdminRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/sign-in': typeof ApiAuthSignInRoute
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
+  '/api/bnb/bookings': typeof ApiBnbBookingsRoute
+  '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/blog/': typeof PublicBlogIndexRoute
+  '/bnb/': typeof PublicBnbIndexRoute
+  '/contact/': typeof PublicContactIndexRoute
+  '/experience/': typeof PublicExperienceIndexRoute
+  '/resume/': typeof PublicResumeIndexRoute
+  '/admin/': typeof WithUserAdminIndexRoute
   '/app/': typeof WithUserAppIndexRoute
+  '/blog/$slug/': typeof PublicBlogSlugIndexRoute
+  '/admin/blog/': typeof WithUserAdminBlogIndexRoute
+  '/admin/bookings/': typeof WithUserAdminBookingsIndexRoute
+  '/admin/companies/': typeof WithUserAdminCompaniesIndexRoute
+  '/admin/education/': typeof WithUserAdminEducationIndexRoute
+  '/admin/experiences/': typeof WithUserAdminExperiencesIndexRoute
+  '/admin/golf-r/': typeof WithUserAdminGolfRIndexRoute
+  '/admin/projects/': typeof WithUserAdminProjectsIndexRoute
+  '/admin/resume/': typeof WithUserAdminResumeIndexRoute
+  '/admin/travel/': typeof WithUserAdminTravelIndexRoute
+  '/admin/writing/': typeof WithUserAdminWritingIndexRoute
+  '/admin/blog/$id/': typeof WithUserAdminBlogIdIndexRoute
+  '/admin/blog/categories/': typeof WithUserAdminBlogCategoriesIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof WithoutUserIndexRoute
+  '/': typeof PublicIndexRoute
+  '/og': typeof PublicOgRoute
+  '/sign-in': typeof WithoutUserSignInRoute
+  '/api/contact': typeof ApiContactRoute
+  '/api/print': typeof ApiPrintRoute
+  '/golf-r': typeof GolfRIndexRoute
+  '/pomodoro': typeof PomodoroIndexRoute
+  '/text-me': typeof TextMeIndexRoute
+  '/travel': typeof TravelIndexRoute
+  '/resume/$variant': typeof PublicResumeVariantRoute
+  '/api/auth/admin': typeof ApiAuthAdminRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/sign-in': typeof ApiAuthSignInRoute
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
+  '/api/bnb/bookings': typeof ApiBnbBookingsRoute
+  '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/blog': typeof PublicBlogIndexRoute
+  '/bnb': typeof PublicBnbIndexRoute
+  '/contact': typeof PublicContactIndexRoute
+  '/experience': typeof PublicExperienceIndexRoute
+  '/resume': typeof PublicResumeIndexRoute
+  '/admin': typeof WithUserAdminIndexRoute
   '/app': typeof WithUserAppIndexRoute
+  '/blog/$slug': typeof PublicBlogSlugIndexRoute
+  '/admin/blog': typeof WithUserAdminBlogIndexRoute
+  '/admin/bookings': typeof WithUserAdminBookingsIndexRoute
+  '/admin/companies': typeof WithUserAdminCompaniesIndexRoute
+  '/admin/education': typeof WithUserAdminEducationIndexRoute
+  '/admin/experiences': typeof WithUserAdminExperiencesIndexRoute
+  '/admin/golf-r': typeof WithUserAdminGolfRIndexRoute
+  '/admin/projects': typeof WithUserAdminProjectsIndexRoute
+  '/admin/resume': typeof WithUserAdminResumeIndexRoute
+  '/admin/travel': typeof WithUserAdminTravelIndexRoute
+  '/admin/writing': typeof WithUserAdminWritingIndexRoute
+  '/admin/blog/$id': typeof WithUserAdminBlogIdIndexRoute
+  '/admin/blog/categories': typeof WithUserAdminBlogCategoriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_public': typeof PublicRouteWithChildren
   '/_with-user': typeof WithUserRouteWithChildren
   '/_without-user': typeof WithoutUserRouteWithChildren
-  '/_without-user/': typeof WithoutUserIndexRoute
+  '/_public/og': typeof PublicOgRoute
+  '/_with-user/admin': typeof WithUserAdminRouteWithChildren
+  '/_without-user/sign-in': typeof WithoutUserSignInRoute
+  '/api/contact': typeof ApiContactRoute
+  '/api/print': typeof ApiPrintRoute
+  '/_public/': typeof PublicIndexRoute
+  '/golf-r/': typeof GolfRIndexRoute
+  '/pomodoro/': typeof PomodoroIndexRoute
+  '/text-me/': typeof TextMeIndexRoute
+  '/travel/': typeof TravelIndexRoute
+  '/_public/resume/$variant': typeof PublicResumeVariantRoute
+  '/api/auth/admin': typeof ApiAuthAdminRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
   '/api/auth/sign-in': typeof ApiAuthSignInRoute
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
+  '/api/bnb/bookings': typeof ApiBnbBookingsRoute
+  '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/_public/blog/': typeof PublicBlogIndexRoute
+  '/_public/bnb/': typeof PublicBnbIndexRoute
+  '/_public/contact/': typeof PublicContactIndexRoute
+  '/_public/experience/': typeof PublicExperienceIndexRoute
+  '/_public/resume/': typeof PublicResumeIndexRoute
+  '/_with-user/admin/': typeof WithUserAdminIndexRoute
   '/_with-user/app/': typeof WithUserAppIndexRoute
+  '/_public/blog/$slug/': typeof PublicBlogSlugIndexRoute
+  '/_with-user/admin/blog/': typeof WithUserAdminBlogIndexRoute
+  '/_with-user/admin/bookings/': typeof WithUserAdminBookingsIndexRoute
+  '/_with-user/admin/companies/': typeof WithUserAdminCompaniesIndexRoute
+  '/_with-user/admin/education/': typeof WithUserAdminEducationIndexRoute
+  '/_with-user/admin/experiences/': typeof WithUserAdminExperiencesIndexRoute
+  '/_with-user/admin/golf-r/': typeof WithUserAdminGolfRIndexRoute
+  '/_with-user/admin/projects/': typeof WithUserAdminProjectsIndexRoute
+  '/_with-user/admin/resume/': typeof WithUserAdminResumeIndexRoute
+  '/_with-user/admin/travel/': typeof WithUserAdminTravelIndexRoute
+  '/_with-user/admin/writing/': typeof WithUserAdminWritingIndexRoute
+  '/_with-user/admin/blog/$id/': typeof WithUserAdminBlogIdIndexRoute
+  '/_with-user/admin/blog/categories/': typeof WithUserAdminBlogCategoriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/og'
+    | '/admin'
+    | '/sign-in'
+    | '/api/contact'
+    | '/api/print'
+    | '/golf-r/'
+    | '/pomodoro/'
+    | '/text-me/'
+    | '/travel/'
+    | '/resume/$variant'
+    | '/api/auth/admin'
     | '/api/auth/callback'
     | '/api/auth/sign-in'
     | '/api/auth/sign-up'
+    | '/api/bnb/bookings'
+    | '/api/bnb/session'
+    | '/blog/'
+    | '/bnb/'
+    | '/contact/'
+    | '/experience/'
+    | '/resume/'
+    | '/admin/'
     | '/app/'
+    | '/blog/$slug/'
+    | '/admin/blog/'
+    | '/admin/bookings/'
+    | '/admin/companies/'
+    | '/admin/education/'
+    | '/admin/experiences/'
+    | '/admin/golf-r/'
+    | '/admin/projects/'
+    | '/admin/resume/'
+    | '/admin/travel/'
+    | '/admin/writing/'
+    | '/admin/blog/$id/'
+    | '/admin/blog/categories/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/og'
+    | '/sign-in'
+    | '/api/contact'
+    | '/api/print'
+    | '/golf-r'
+    | '/pomodoro'
+    | '/text-me'
+    | '/travel'
+    | '/resume/$variant'
+    | '/api/auth/admin'
     | '/api/auth/callback'
     | '/api/auth/sign-in'
     | '/api/auth/sign-up'
+    | '/api/bnb/bookings'
+    | '/api/bnb/session'
+    | '/blog'
+    | '/bnb'
+    | '/contact'
+    | '/experience'
+    | '/resume'
+    | '/admin'
     | '/app'
+    | '/blog/$slug'
+    | '/admin/blog'
+    | '/admin/bookings'
+    | '/admin/companies'
+    | '/admin/education'
+    | '/admin/experiences'
+    | '/admin/golf-r'
+    | '/admin/projects'
+    | '/admin/resume'
+    | '/admin/travel'
+    | '/admin/writing'
+    | '/admin/blog/$id'
+    | '/admin/blog/categories'
   id:
     | '__root__'
+    | '/_public'
     | '/_with-user'
     | '/_without-user'
-    | '/_without-user/'
+    | '/_public/og'
+    | '/_with-user/admin'
+    | '/_without-user/sign-in'
+    | '/api/contact'
+    | '/api/print'
+    | '/_public/'
+    | '/golf-r/'
+    | '/pomodoro/'
+    | '/text-me/'
+    | '/travel/'
+    | '/_public/resume/$variant'
+    | '/api/auth/admin'
     | '/api/auth/callback'
     | '/api/auth/sign-in'
     | '/api/auth/sign-up'
+    | '/api/bnb/bookings'
+    | '/api/bnb/session'
+    | '/_public/blog/'
+    | '/_public/bnb/'
+    | '/_public/contact/'
+    | '/_public/experience/'
+    | '/_public/resume/'
+    | '/_with-user/admin/'
     | '/_with-user/app/'
+    | '/_public/blog/$slug/'
+    | '/_with-user/admin/blog/'
+    | '/_with-user/admin/bookings/'
+    | '/_with-user/admin/companies/'
+    | '/_with-user/admin/education/'
+    | '/_with-user/admin/experiences/'
+    | '/_with-user/admin/golf-r/'
+    | '/_with-user/admin/projects/'
+    | '/_with-user/admin/resume/'
+    | '/_with-user/admin/travel/'
+    | '/_with-user/admin/writing/'
+    | '/_with-user/admin/blog/$id/'
+    | '/_with-user/admin/blog/categories/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  PublicRoute: typeof PublicRouteWithChildren
   WithUserRoute: typeof WithUserRouteWithChildren
   WithoutUserRoute: typeof WithoutUserRouteWithChildren
+  ApiContactRoute: typeof ApiContactRoute
+  ApiPrintRoute: typeof ApiPrintRoute
+  GolfRIndexRoute: typeof GolfRIndexRoute
+  PomodoroIndexRoute: typeof PomodoroIndexRoute
+  TextMeIndexRoute: typeof TextMeIndexRoute
+  TravelIndexRoute: typeof TravelIndexRoute
+  ApiAuthAdminRoute: typeof ApiAuthAdminRoute
   ApiAuthCallbackRoute: typeof ApiAuthCallbackRoute
   ApiAuthSignInRoute: typeof ApiAuthSignInRoute
   ApiAuthSignUpRoute: typeof ApiAuthSignUpRoute
+  ApiBnbBookingsRoute: typeof ApiBnbBookingsRoute
+  ApiBnbSessionRoute: typeof ApiBnbSessionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -125,12 +534,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WithUserRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_without-user/': {
-      id: '/_without-user/'
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/travel/': {
+      id: '/travel/'
+      path: '/travel'
+      fullPath: '/travel/'
+      preLoaderRoute: typeof TravelIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-me/': {
+      id: '/text-me/'
+      path: '/text-me'
+      fullPath: '/text-me/'
+      preLoaderRoute: typeof TextMeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pomodoro/': {
+      id: '/pomodoro/'
+      path: '/pomodoro'
+      fullPath: '/pomodoro/'
+      preLoaderRoute: typeof PomodoroIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/golf-r/': {
+      id: '/golf-r/'
+      path: '/golf-r'
+      fullPath: '/golf-r/'
+      preLoaderRoute: typeof GolfRIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public/': {
+      id: '/_public/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof WithoutUserIndexRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/api/print': {
+      id: '/api/print'
+      path: '/api/print'
+      fullPath: '/api/print'
+      preLoaderRoute: typeof ApiPrintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/contact': {
+      id: '/api/contact'
+      path: '/api/contact'
+      fullPath: '/api/contact'
+      preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_without-user/sign-in': {
+      id: '/_without-user/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof WithoutUserSignInRouteImport
       parentRoute: typeof WithoutUserRoute
+    }
+    '/_with-user/admin': {
+      id: '/_with-user/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof WithUserAdminRouteImport
+      parentRoute: typeof WithUserRoute
+    }
+    '/_public/og': {
+      id: '/_public/og'
+      path: '/og'
+      fullPath: '/og'
+      preLoaderRoute: typeof PublicOgRouteImport
+      parentRoute: typeof PublicRoute
     }
     '/_with-user/app/': {
       id: '/_with-user/app/'
@@ -138,6 +617,62 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof WithUserAppIndexRouteImport
       parentRoute: typeof WithUserRoute
+    }
+    '/_with-user/admin/': {
+      id: '/_with-user/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof WithUserAdminIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_public/resume/': {
+      id: '/_public/resume/'
+      path: '/resume'
+      fullPath: '/resume/'
+      preLoaderRoute: typeof PublicResumeIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/experience/': {
+      id: '/_public/experience/'
+      path: '/experience'
+      fullPath: '/experience/'
+      preLoaderRoute: typeof PublicExperienceIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/contact/': {
+      id: '/_public/contact/'
+      path: '/contact'
+      fullPath: '/contact/'
+      preLoaderRoute: typeof PublicContactIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/bnb/': {
+      id: '/_public/bnb/'
+      path: '/bnb'
+      fullPath: '/bnb/'
+      preLoaderRoute: typeof PublicBnbIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/blog/': {
+      id: '/_public/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof PublicBlogIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/api/bnb/session': {
+      id: '/api/bnb/session'
+      path: '/api/bnb/session'
+      fullPath: '/api/bnb/session'
+      preLoaderRoute: typeof ApiBnbSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bnb/bookings': {
+      id: '/api/bnb/bookings'
+      path: '/api/bnb/bookings'
+      fullPath: '/api/bnb/bookings'
+      preLoaderRoute: typeof ApiBnbBookingsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/auth/sign-up': {
       id: '/api/auth/sign-up'
@@ -160,14 +695,184 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/admin': {
+      id: '/api/auth/admin'
+      path: '/api/auth/admin'
+      fullPath: '/api/auth/admin'
+      preLoaderRoute: typeof ApiAuthAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public/resume/$variant': {
+      id: '/_public/resume/$variant'
+      path: '/resume/$variant'
+      fullPath: '/resume/$variant'
+      preLoaderRoute: typeof PublicResumeVariantRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_with-user/admin/writing/': {
+      id: '/_with-user/admin/writing/'
+      path: '/writing'
+      fullPath: '/admin/writing/'
+      preLoaderRoute: typeof WithUserAdminWritingIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/travel/': {
+      id: '/_with-user/admin/travel/'
+      path: '/travel'
+      fullPath: '/admin/travel/'
+      preLoaderRoute: typeof WithUserAdminTravelIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/resume/': {
+      id: '/_with-user/admin/resume/'
+      path: '/resume'
+      fullPath: '/admin/resume/'
+      preLoaderRoute: typeof WithUserAdminResumeIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/projects/': {
+      id: '/_with-user/admin/projects/'
+      path: '/projects'
+      fullPath: '/admin/projects/'
+      preLoaderRoute: typeof WithUserAdminProjectsIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/golf-r/': {
+      id: '/_with-user/admin/golf-r/'
+      path: '/golf-r'
+      fullPath: '/admin/golf-r/'
+      preLoaderRoute: typeof WithUserAdminGolfRIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/experiences/': {
+      id: '/_with-user/admin/experiences/'
+      path: '/experiences'
+      fullPath: '/admin/experiences/'
+      preLoaderRoute: typeof WithUserAdminExperiencesIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/education/': {
+      id: '/_with-user/admin/education/'
+      path: '/education'
+      fullPath: '/admin/education/'
+      preLoaderRoute: typeof WithUserAdminEducationIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/companies/': {
+      id: '/_with-user/admin/companies/'
+      path: '/companies'
+      fullPath: '/admin/companies/'
+      preLoaderRoute: typeof WithUserAdminCompaniesIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/bookings/': {
+      id: '/_with-user/admin/bookings/'
+      path: '/bookings'
+      fullPath: '/admin/bookings/'
+      preLoaderRoute: typeof WithUserAdminBookingsIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/blog/': {
+      id: '/_with-user/admin/blog/'
+      path: '/blog'
+      fullPath: '/admin/blog/'
+      preLoaderRoute: typeof WithUserAdminBlogIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_public/blog/$slug/': {
+      id: '/_public/blog/$slug/'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug/'
+      preLoaderRoute: typeof PublicBlogSlugIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_with-user/admin/blog/categories/': {
+      id: '/_with-user/admin/blog/categories/'
+      path: '/blog/categories'
+      fullPath: '/admin/blog/categories/'
+      preLoaderRoute: typeof WithUserAdminBlogCategoriesIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
+    '/_with-user/admin/blog/$id/': {
+      id: '/_with-user/admin/blog/$id/'
+      path: '/blog/$id'
+      fullPath: '/admin/blog/$id/'
+      preLoaderRoute: typeof WithUserAdminBlogIdIndexRouteImport
+      parentRoute: typeof WithUserAdminRoute
+    }
   }
 }
 
+interface PublicRouteChildren {
+  PublicOgRoute: typeof PublicOgRoute
+  PublicIndexRoute: typeof PublicIndexRoute
+  PublicResumeVariantRoute: typeof PublicResumeVariantRoute
+  PublicBlogIndexRoute: typeof PublicBlogIndexRoute
+  PublicBnbIndexRoute: typeof PublicBnbIndexRoute
+  PublicContactIndexRoute: typeof PublicContactIndexRoute
+  PublicExperienceIndexRoute: typeof PublicExperienceIndexRoute
+  PublicResumeIndexRoute: typeof PublicResumeIndexRoute
+  PublicBlogSlugIndexRoute: typeof PublicBlogSlugIndexRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicOgRoute: PublicOgRoute,
+  PublicIndexRoute: PublicIndexRoute,
+  PublicResumeVariantRoute: PublicResumeVariantRoute,
+  PublicBlogIndexRoute: PublicBlogIndexRoute,
+  PublicBnbIndexRoute: PublicBnbIndexRoute,
+  PublicContactIndexRoute: PublicContactIndexRoute,
+  PublicExperienceIndexRoute: PublicExperienceIndexRoute,
+  PublicResumeIndexRoute: PublicResumeIndexRoute,
+  PublicBlogSlugIndexRoute: PublicBlogSlugIndexRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
+
+interface WithUserAdminRouteChildren {
+  WithUserAdminIndexRoute: typeof WithUserAdminIndexRoute
+  WithUserAdminBlogIndexRoute: typeof WithUserAdminBlogIndexRoute
+  WithUserAdminBookingsIndexRoute: typeof WithUserAdminBookingsIndexRoute
+  WithUserAdminCompaniesIndexRoute: typeof WithUserAdminCompaniesIndexRoute
+  WithUserAdminEducationIndexRoute: typeof WithUserAdminEducationIndexRoute
+  WithUserAdminExperiencesIndexRoute: typeof WithUserAdminExperiencesIndexRoute
+  WithUserAdminGolfRIndexRoute: typeof WithUserAdminGolfRIndexRoute
+  WithUserAdminProjectsIndexRoute: typeof WithUserAdminProjectsIndexRoute
+  WithUserAdminResumeIndexRoute: typeof WithUserAdminResumeIndexRoute
+  WithUserAdminTravelIndexRoute: typeof WithUserAdminTravelIndexRoute
+  WithUserAdminWritingIndexRoute: typeof WithUserAdminWritingIndexRoute
+  WithUserAdminBlogIdIndexRoute: typeof WithUserAdminBlogIdIndexRoute
+  WithUserAdminBlogCategoriesIndexRoute: typeof WithUserAdminBlogCategoriesIndexRoute
+}
+
+const WithUserAdminRouteChildren: WithUserAdminRouteChildren = {
+  WithUserAdminIndexRoute: WithUserAdminIndexRoute,
+  WithUserAdminBlogIndexRoute: WithUserAdminBlogIndexRoute,
+  WithUserAdminBookingsIndexRoute: WithUserAdminBookingsIndexRoute,
+  WithUserAdminCompaniesIndexRoute: WithUserAdminCompaniesIndexRoute,
+  WithUserAdminEducationIndexRoute: WithUserAdminEducationIndexRoute,
+  WithUserAdminExperiencesIndexRoute: WithUserAdminExperiencesIndexRoute,
+  WithUserAdminGolfRIndexRoute: WithUserAdminGolfRIndexRoute,
+  WithUserAdminProjectsIndexRoute: WithUserAdminProjectsIndexRoute,
+  WithUserAdminResumeIndexRoute: WithUserAdminResumeIndexRoute,
+  WithUserAdminTravelIndexRoute: WithUserAdminTravelIndexRoute,
+  WithUserAdminWritingIndexRoute: WithUserAdminWritingIndexRoute,
+  WithUserAdminBlogIdIndexRoute: WithUserAdminBlogIdIndexRoute,
+  WithUserAdminBlogCategoriesIndexRoute: WithUserAdminBlogCategoriesIndexRoute,
+}
+
+const WithUserAdminRouteWithChildren = WithUserAdminRoute._addFileChildren(
+  WithUserAdminRouteChildren,
+)
+
 interface WithUserRouteChildren {
+  WithUserAdminRoute: typeof WithUserAdminRouteWithChildren
   WithUserAppIndexRoute: typeof WithUserAppIndexRoute
 }
 
 const WithUserRouteChildren: WithUserRouteChildren = {
+  WithUserAdminRoute: WithUserAdminRouteWithChildren,
   WithUserAppIndexRoute: WithUserAppIndexRoute,
 }
 
@@ -176,11 +881,11 @@ const WithUserRouteWithChildren = WithUserRoute._addFileChildren(
 )
 
 interface WithoutUserRouteChildren {
-  WithoutUserIndexRoute: typeof WithoutUserIndexRoute
+  WithoutUserSignInRoute: typeof WithoutUserSignInRoute
 }
 
 const WithoutUserRouteChildren: WithoutUserRouteChildren = {
-  WithoutUserIndexRoute: WithoutUserIndexRoute,
+  WithoutUserSignInRoute: WithoutUserSignInRoute,
 }
 
 const WithoutUserRouteWithChildren = WithoutUserRoute._addFileChildren(
@@ -188,11 +893,21 @@ const WithoutUserRouteWithChildren = WithoutUserRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  PublicRoute: PublicRouteWithChildren,
   WithUserRoute: WithUserRouteWithChildren,
   WithoutUserRoute: WithoutUserRouteWithChildren,
+  ApiContactRoute: ApiContactRoute,
+  ApiPrintRoute: ApiPrintRoute,
+  GolfRIndexRoute: GolfRIndexRoute,
+  PomodoroIndexRoute: PomodoroIndexRoute,
+  TextMeIndexRoute: TextMeIndexRoute,
+  TravelIndexRoute: TravelIndexRoute,
+  ApiAuthAdminRoute: ApiAuthAdminRoute,
   ApiAuthCallbackRoute: ApiAuthCallbackRoute,
   ApiAuthSignInRoute: ApiAuthSignInRoute,
   ApiAuthSignUpRoute: ApiAuthSignUpRoute,
+  ApiBnbBookingsRoute: ApiBnbBookingsRoute,
+  ApiBnbSessionRoute: ApiBnbSessionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

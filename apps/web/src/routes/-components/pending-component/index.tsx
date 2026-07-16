@@ -6,7 +6,7 @@ export function PendingComponent() {
     >
       <span
         aria-hidden="true"
-        className="loading loading-spinner loading-lg text-primary"
+        className="loading loading-spinner loading-lg text-base-content/50"
       />
     </output>
   );

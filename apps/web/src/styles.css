@@ -2,20 +2,81 @@
 
 @source "../node_modules/@formadapter/daisyui/dist";
 
+@plugin "@tailwindcss/typography";
 @plugin "daisyui" {
-  themes: light --default;
+  themes:
+    route --default,
+    route-night;
 }
 
-@utility container {
-  @apply px-8;
+@plugin "daisyui/theme" {
+  name: "route";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+  --color-base-100: #fbfbfc;
+  --color-base-200: #f1f2f4;
+  --color-base-300: #dcdfe4;
+  --color-base-content: #181a1f;
+  --color-primary: #4f46e5;
+  --color-primary-content: #ffffff;
+  --color-secondary: #606775;
+  --color-secondary-content: #ffffff;
+  --color-accent: #4f46e5;
+  --color-accent-content: #ffffff;
+  --color-neutral: #1d2025;
+  --color-neutral-content: #f8f8fa;
+  --color-info: #4b7bec;
+  --color-info-content: #ffffff;
+  --color-success: #23845f;
+  --color-success-content: #ffffff;
+  --color-warning: #d99b29;
+  --color-warning-content: #261a05;
+  --color-error: #c94646;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
-@utility heading {
-  @apply text-balance font-semibold tracking-normal text-base-content;
-}
-
-@utility muted {
-  @apply text-pretty text-base-content/60;
+@plugin "daisyui/theme" {
+  name: "route-night";
+  default: false;
+  prefersdark: false;
+  color-scheme: dark;
+  --color-base-100: #15171a;
+  --color-base-200: #1d2025;
+  --color-base-300: #32363d;
+  --color-base-content: #f4f5f7;
+  --color-primary: #818cf8;
+  --color-primary-content: #111522;
+  --color-secondary: #b8bec8;
+  --color-secondary-content: #17191d;
+  --color-accent: #818cf8;
+  --color-accent-content: #111522;
+  --color-neutral: #eceef2;
+  --color-neutral-content: #191b20;
+  --color-info: #8eb2ff;
+  --color-info-content: #111827;
+  --color-success: #65c89d;
+  --color-success-content: #0e2119;
+  --color-warning: #efc36b;
+  --color-warning-content: #241b08;
+  --color-error: #f08484;
+  --color-error-content: #281010;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
 @theme inline {
@@ -32,17 +93,167 @@
   );
 }
 
+@utility container {
+  @apply mx-auto w-full max-w-[72rem] px-5 sm:px-8;
+}
+
+@utility page-shell {
+  @apply container py-14 sm:py-20 lg:py-24;
+}
+
+@utility page-shell-narrow {
+  @apply max-w-3xl;
+}
+
+@utility page-shell-article {
+  @apply max-w-4xl;
+}
+
+@utility page-shell-wide {
+  @apply max-w-[72rem];
+}
+
+@utility page-intro {
+  @apply mb-12 sm:mb-16;
+}
+
+@utility heading {
+  @apply text-balance font-semibold tracking-[-0.045em] text-base-content;
+}
+
+@utility muted {
+  @apply text-pretty text-base-content/65;
+}
+
+@utility route-kicker {
+  @apply inline-flex font-sans text-[0.72rem] font-semibold tracking-[0.14em] text-base-content/60 uppercase;
+}
+
+@utility route-line {
+  @apply pl-0;
+}
+
+@utility article-prose {
+  @apply prose prose-lg max-w-none prose-headings:heading prose-headings:scroll-mt-24 prose-h2:mt-16 prose-h2:text-3xl prose-h3:text-2xl prose-p:text-[1.05rem] prose-p:leading-8 prose-p:text-base-content/85 prose-a:text-primary prose-a:decoration-primary/30 prose-a:underline-offset-4 prose-strong:text-base-content prose-code:rounded-sm prose-code:bg-base-200 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:text-[0.9em] prose-code:text-base-content prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-base-300 prose-pre:bg-neutral prose-pre:text-neutral-content prose-blockquote:border-accent prose-blockquote:text-base-content/75 prose-li:text-base-content/85 prose-hr:border-base-300;
+}
+
 @layer base {
   html {
-    @apply font-sans antialiased;
-    color-scheme: light;
+    @apply bg-base-100 font-sans antialiased;
     font-optical-sizing: auto;
     overscroll-behavior: none;
     scrollbar-gutter: stable;
     text-rendering: optimizeLegibility;
   }
 
+  body {
+    @apply min-h-screen text-base-content;
+    background: var(--color-base-100);
+  }
+
   :where(code, kbd, pre, samp) {
     @apply font-mono;
+  }
+
+  :where(button:not(:disabled), [role="button"]:not([aria-disabled="true"])) {
+    cursor: pointer;
+  }
+
+  :where(a, button, input, select, textarea):focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-primary) 22%, transparent);
+  }
+}
+
+@layer components {
+  .route-node {
+    position: relative;
+  }
+
+  .site-navigation::backdrop {
+    background: color-mix(in oklab, var(--color-neutral) 18%, transparent);
+    backdrop-filter: blur(2px);
+  }
+
+  .public-contact :where(input) {
+    min-height: 3rem;
+  }
+
+  .maplibregl-popup-content {
+    @apply rounded-box bg-base-100 p-0 text-base-content shadow-lg;
+  }
+
+  .maplibregl-popup-tip {
+    @apply hidden;
+  }
+
+  .pomodoro-flip-clock {
+    font-family: var(--font-mono);
+  }
+
+  .pomodoro-flip-clock .fcc__unit_time {
+    align-items: center;
+  }
+
+  .pomodoro-flip-clock .fcc__digit_block {
+    border: 1px solid color-mix(in oklab, currentColor 14%, transparent);
+    font-variant-numeric: tabular-nums;
+    overflow: hidden;
+  }
+
+  .pomodoro-flip-clock .fcc__label {
+    opacity: 0.58;
+  }
+
+  .tweet-thread {
+    --tweet-container-margin: 0;
+  }
+
+  .tweet-thread :where(.react-tweet-theme) {
+    --tweet-bg-color: var(--color-base-100);
+    --tweet-bg-color-hover: var(--color-base-200);
+    --tweet-border: 1px solid var(--color-base-300);
+    color-scheme: light;
+  }
+
+  .tweet-thread :where(.react-tweet-theme > div) {
+    border-radius: 1rem;
+    box-shadow: 0 18px 40px -36px
+      color-mix(in oklab, var(--color-base-content) 38%, transparent);
+  }
+}
+
+@layer utilities {
+  .public-contact input,
+  .public-contact textarea,
+  .public-contact select,
+  .public-bnb input,
+  .public-bnb textarea,
+  .public-bnb select {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  body::before {
+    display: none;
   }
 }

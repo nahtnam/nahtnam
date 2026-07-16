@@ -4,6 +4,7 @@
   "type": "module",
   "exports": {
     "./app": "./src/app.ts",
+    "./auth": "./src/auth.ts",
     "./env/client": "./src/env/client.ts",
     "./env/convex": "./src/env/convex.ts",
     "./env/server": "./src/env/server.ts"

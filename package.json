@@ -1,5 +1,5 @@
 {
-  "name": "TODO",
+  "name": "nahtnam",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -7,11 +7,14 @@
   ],
   "type": "module",
   "scripts": {
-    "build": "turbo run build --env-mode=loose",
+    "build": "bun run build:web",
+    "build:resume": "bun run scripts/build-resume.ts",
+    "build:web": "bun run build:resume && bun run --cwd apps/web build:app",
     "convex": "bun --cwd packages/backend convex",
     "dev": "turbo run dev --env-mode=loose",
-    "prepare": "lefthook install",
+    "print:worker": "bun --env-file=.env.local run --cwd apps/print-worker start",
     "preview": "turbo run preview --env-mode=loose",
+    "seo:preview-og": "bun run scripts/preview-og-images.ts",
     "start": "turbo run start --env-mode=loose",
     "test": "ultracite check && turbo run typecheck test"
   },

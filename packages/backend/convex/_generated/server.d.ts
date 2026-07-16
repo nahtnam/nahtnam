@@ -25,7 +25,12 @@ import type { DataModel } from "./dataModel.js";
  * Typesafe environment variables declared in `convex.config.ts`.
  */
 type Env = {
+  readonly BNB_PASSWORD: string;
   readonly POSTHOG_API_KEY: string | undefined;
+  readonly PRINT_SECRET: string | undefined;
+  readonly TELEGRAM_BOT_TOKEN: string;
+  readonly TELEGRAM_CHAT_ID: string;
+  readonly TURNSTILE_SECRET_KEY: string;
   readonly WORKOS_API_KEY: string;
   readonly WORKOS_CLIENT_ID: string;
 };

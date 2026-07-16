@@ -1,6 +1,6 @@
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import { DaisyUIProvider } from "@formadapter/daisyui";
-import { appName } from "@repo/config/app";
+import { siteDescription, siteTitle } from "@repo/config/app";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import {
@@ -8,6 +8,7 @@ import {
   Outlet,
   Scripts,
   createRootRouteWithContext,
+  useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { getAuth } from "@workos/authkit-tanstack-react-start";
@@ -26,6 +27,7 @@ import { useCallback, useMemo } from "react";
 import { PostHogIdentity } from "@/lib/posthog/identity";
 import { PostHogAppProvider } from "@/lib/posthog/provider";
 
+import { AnimatedIdentityProvider } from "./-components/animated-identity";
 import { Footer } from "./-components/footer";
 import { Navbar } from "./-components/navbar";
 import { NotFound } from "./-components/not-found";
@@ -83,6 +85,15 @@ export const Route = createRootRouteWithContext<{
         href: appCss,
         rel: "stylesheet",
       },
+      {
+        href: "/assets/images/me.avif",
+        rel: "icon",
+        type: "image/avif",
+      },
+      {
+        href: "/assets/images/me.avif",
+        rel: "apple-touch-icon",
+      },
     ],
     meta: [
       {
@@ -93,7 +104,15 @@ export const Route = createRootRouteWithContext<{
         name: "viewport",
       },
       {
-        title: appName,
+        content: siteDescription,
+        name: "description",
+      },
+      {
+        content: "#fbfbfc",
+        name: "theme-color",
+      },
+      {
+        title: siteTitle,
       },
     ],
   }),
@@ -109,7 +128,7 @@ function RootDocument(props: RootDocumentProps) {
   const { children } = props;
 
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full" data-theme="route">
       <head>
         <HeadContent />
       </head>
@@ -139,6 +158,9 @@ function RootDocument(props: RootDocumentProps) {
 function RootComponent() {
   const { auth } = Route.useLoaderData();
   const { convexQueryClient } = Route.useRouteContext();
+  const isChromeless = useRouterState({
+    select: (state) => state.location.pathname.startsWith("/pomodoro"),
+  });
 
   return (
     <AuthKitProvider initialAuth={auth}>
@@ -147,18 +169,20 @@ function RootComponent() {
         // oxlint-disable-next-line react/react-compiler
         useAuth={useAuthFromAuthKit}
       >
-        <PostHogIdentity />
-        <a
-          className="btn btn-primary fixed top-4 left-4 z-50 -translate-y-24 opacity-0 transition focus:translate-y-0 focus:opacity-100"
-          href="#main-content"
-        >
-          Skip to content
-        </a>
-        <Navbar />
-        <main className="grow" id="main-content">
-          <Outlet />
-        </main>
-        <Footer />
+        <AnimatedIdentityProvider>
+          <PostHogIdentity />
+          <a
+            className="btn btn-primary fixed top-4 left-4 z-50 -translate-y-24 opacity-0 transition focus:translate-y-0 focus:opacity-100"
+            href="#main-content"
+          >
+            Skip to content
+          </a>
+          {isChromeless ? null : <Navbar />}
+          <main className="min-w-0 grow" id="main-content">
+            <Outlet />
+          </main>
+          {isChromeless ? null : <Footer />}
+        </AnimatedIdentityProvider>
       </ConvexProviderWithAuth>
     </AuthKitProvider>
   );

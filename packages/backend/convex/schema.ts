@@ -1,3 +1,163 @@
-import { defineSchema } from "convex/server";
+import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
 
-export default defineSchema({});
+export default defineSchema({
+  blogCategories: defineTable({
+    name: v.string(),
+  }).index("by_name", ["name"]),
+
+  blogMedia: defineTable({
+    contentType: v.optional(v.string()),
+    createdAt: v.number(),
+    name: v.string(),
+    postId: v.optional(v.id("blogPosts")),
+    storageId: v.id("_storage"),
+  })
+    .index("by_createdAt", ["createdAt"])
+    .index("by_postId", ["postId"]),
+
+  blogPosts: defineTable({
+    categoryId: v.id("blogCategories"),
+    contentPath: v.optional(v.string()),
+    excerpt: v.string(),
+    kind: v.optional(v.union(v.literal("markdown"), v.literal("x"))),
+    published: v.boolean(),
+    publishedAt: v.number(),
+    slug: v.string(),
+    title: v.string(),
+    tweetIds: v.optional(v.array(v.string())),
+    tweets: v.optional(
+      v.array(
+        v.object({
+          fetchedAt: v.number(),
+          id: v.string(),
+          sourceUrl: v.string(),
+          tweet: v.any(),
+        })
+      )
+    ),
+    tweetsFetchedAt: v.optional(v.number()),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_published", ["published"])
+    .index("by_published_slug", ["published", "slug"])
+    .index("by_published_publishedAt", ["published", "publishedAt"])
+    .index("by_publishedAt", ["publishedAt"])
+    .index("by_categoryId", ["categoryId"]),
+
+  bnbBookings: defineTable({
+    checkIn: v.string(),
+    checkOut: v.string(),
+    guests: v.array(v.string()),
+    notes: v.optional(v.string()),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("accepted"),
+      v.literal("rejected")
+    ),
+  }).index("by_status", ["status"]),
+
+  golfRItems: defineTable({
+    attachments: v.optional(
+      v.array(
+        v.object({
+          contentType: v.optional(v.string()),
+          name: v.string(),
+          storageId: v.id("_storage"),
+        })
+      )
+    ),
+    cashback: v.optional(v.number()),
+    category: v.string(),
+    date: v.string(),
+    description: v.optional(v.string()),
+    discount: v.optional(v.number()),
+    installed: v.optional(v.boolean()),
+    mileage: v.optional(v.number()),
+    modification: v.optional(v.boolean()),
+    name: v.string(),
+    price: v.number(),
+    url: v.optional(v.string()),
+  })
+    .index("by_date", ["date"])
+    .index("by_category", ["category"]),
+
+  printJobs: defineTable({
+    availableAt: v.number(),
+    idempotencyKey: v.optional(v.string()),
+    payload: v.union(
+      v.object({
+        _type: v.literal("message"),
+        body: v.string(),
+        title: v.optional(v.string()),
+      }),
+      v.object({
+        _type: v.literal("alert"),
+        body: v.string(),
+        title: v.string(),
+      })
+    ),
+    printState: v.object({
+      attempts: v.number(),
+      claimedAt: v.optional(v.number()),
+      claimedBy: v.optional(v.string()),
+      failedAt: v.optional(v.number()),
+      lastError: v.optional(v.string()),
+      leaseExpiresAt: v.optional(v.number()),
+      printedAt: v.optional(v.number()),
+    }),
+    source: v.string(),
+    status: v.union(
+      v.literal("queued"),
+      v.literal("printing"),
+      v.literal("printed"),
+      v.literal("failed")
+    ),
+  })
+    .index("by_idempotencyKey", ["idempotencyKey"])
+    .index("by_status_availableAt", ["status", "availableAt"]),
+
+  resumeCompanies: defineTable({
+    logoUrl: v.string(),
+    name: v.string(),
+    websiteUrl: v.string(),
+  }),
+
+  resumeEducation: defineTable({
+    degree: v.string(),
+    details: v.optional(v.string()),
+    endYear: v.string(),
+    school: v.string(),
+    startYear: v.string(),
+  }),
+
+  resumeProjects: defineTable({
+    description: v.string(),
+    link: v.string(),
+    name: v.string(),
+    tags: v.array(v.string()),
+  }),
+
+  resumeWorkExperiences: defineTable({
+    companyId: v.id("resumeCompanies"),
+    description: v.optional(v.string()),
+    endDate: v.optional(v.number()),
+    location: v.string(),
+    startDate: v.number(),
+    title: v.string(),
+  })
+    .index("by_startDate", ["startDate"])
+    .index("by_companyId", ["companyId"]),
+
+  travelFlights: defineTable({
+    aircraftType: v.string(),
+    airline: v.string(),
+    date: v.string(),
+    flightNumber: v.string(),
+    flightyId: v.optional(v.string()),
+    from: v.string(),
+    to: v.string(),
+  })
+    .index("by_date", ["date"])
+    .index("by_flightyId", ["flightyId"]),
+});

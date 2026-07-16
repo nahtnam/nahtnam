@@ -15,6 +15,17 @@ export default defineConfig({
         "sort-keys": "off",
       },
     },
+    {
+      files: [
+        "packages/backend/convex/admin/golf_r.ts",
+        "packages/backend/convex/admin/seed_golf_r.ts",
+        "packages/backend/convex/print_jobs.ts",
+        "packages/backend/convex/travel/computeStats.ts",
+      ],
+      rules: {
+        "unicorn/filename-case": "off",
+      },
+    },
   ],
   rules: {
     "func-style": "off",

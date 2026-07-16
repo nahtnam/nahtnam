@@ -7,7 +7,8 @@
       "types": "./convex/_generated/api.d.ts",
       "default": "./convex/_generated/api.js"
     },
-    "./data-model": "./convex/_generated/dataModel.d.ts"
+    "./data-model": "./convex/_generated/dataModel.d.ts",
+    "./print": "./src/print.ts"
   },
   "scripts": {
     "dev": "convex dev",
@@ -22,7 +23,8 @@
     "@repo/config": "workspace:*",
     "convex": "^1.42.1",
     "convex-helpers": "^0.1.120",
-    "fluent-convex": "^0.13.0"
+    "fluent-convex": "^0.13.0",
+    "react-tweet": "^3.3.1"
   },
   "devDependencies": {
     "@edge-runtime/vm": "^5.0.0",

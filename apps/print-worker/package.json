@@ -1,0 +1,23 @@
+{
+  "name": "print-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/backend": "workspace:*",
+    "convex": "^1.42.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-thermal-printer": "^0.22.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.17",
+    "typescript": "^5.9.3"
+  }
+}

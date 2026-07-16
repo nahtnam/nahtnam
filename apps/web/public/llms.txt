@@ -1,0 +1,35 @@
+# nahtnam
+
+Manthan (@nahtnam) is a Principal Software Engineer at Mercury. This personal site includes a portfolio, work history, writing, travel stats, a Golf R build ledger, and small public tools.
+
+## Key pages
+
+- Home: https://www.nahtnam.com/
+- Experience: https://www.nahtnam.com/experience
+- Blog: https://www.nahtnam.com/blog
+- Contact: https://www.nahtnam.com/contact
+- Travel: https://www.nahtnam.com/travel
+- Golf R Build: https://www.nahtnam.com/golf-r
+- Pomodoro Flip Clock: https://www.nahtnam.com/pomodoro
+
+## Writing
+
+- What Mattered While Building Mercury Command: https://www.nahtnam.com/blog/what-mattered-while-building-mercury-command
+- Announcing Next.js Route Jumper: https://www.nahtnam.com/blog/announcing-nextjs-route-jumper
+- Announcing TanStack Route Jumper: https://www.nahtnam.com/blog/announcing-tanstack-route-jumper
+- Claude Bought Me a Car: https://www.nahtnam.com/blog/claude-bought-me-a-car
+- How I Set Up a New Mac: https://www.nahtnam.com/blog/how-i-set-up-a-new-mac
+- YNAB for the Middle Class: https://www.nahtnam.com/blog/ynab-for-the-middle-class
+
+## Entity facts
+
+- Person: Manthan
+- Handle: @nahtnam
+- Role: Principal Software Engineer at Mercury
+- Topics: software engineering, startups, developer tools, personal finance, travel, cars, productivity
+- GitHub: https://github.com/nahtnam
+- X: https://twitter.com/nahtnam
+
+## Access notes
+
+Public pages are intended to be crawlable and citable. Admin, sign-in, API, and password-gated private pages are not part of the public knowledge surface.

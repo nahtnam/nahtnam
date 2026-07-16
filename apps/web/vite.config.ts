@@ -20,7 +20,11 @@ const config = defineConfig(() => {
       },
     }),
     tanstackStart(),
-    nitro(),
+    nitro({
+      rollupConfig: {
+        external: [/^@resvg\/resvg-js/u],
+      },
+    }),
     viteReact(),
     tailwindcss(),
   ];
@@ -40,9 +44,24 @@ const config = defineConfig(() => {
 
   return {
     envDir,
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js", "@resvg/resvg-js-darwin-arm64"],
+    },
     plugins,
     resolve: {
+      alias: [
+        {
+          find: /^react-tweet$/u,
+          replacement: fileURLToPath(
+            new URL("node_modules/react-tweet/dist/index.js", import.meta.url)
+          ),
+        },
+      ],
       tsconfigPaths: true,
+    },
+    ssr: {
+      external: ["@resvg/resvg-js", "@resvg/resvg-js-darwin-arm64"],
+      noExternal: ["react-tweet"],
     },
   };
 });

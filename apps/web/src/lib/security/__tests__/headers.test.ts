@@ -5,6 +5,7 @@ import { applySecurityHeaders } from "../headers";
 vi.mock(import("@repo/config/env/client"), () => ({
   clientEnv: {
     VITE_CONVEX_URL: "https://example.convex.cloud",
+    VITE_TURNSTILE_SITE_KEY: "test-site-key",
   },
 }));
 
@@ -25,9 +26,14 @@ describe(applySecurityHeaders, () => {
       "Content-Security-Policy"
     );
     const expectedDirectives = [
+      "connect-src 'self' https://example.convex.cloud wss://example.convex.cloud",
       "frame-ancestors 'none'",
+      "frame-src 'self' https://challenges.cloudflare.com",
       "font-src 'self' data: https://font.ldcr.us",
-      "img-src 'self' data: blob: https://workoscdn.com https://example.convex.cloud",
+      "img-src 'self' data: blob: https:",
+      "https://*.basemaps.cartocdn.com",
+      "https://*.convex.cloud",
+      "https://pbs.twimg.com",
       "style-src 'self' 'unsafe-inline' https://font.ldcr.us",
     ];
 

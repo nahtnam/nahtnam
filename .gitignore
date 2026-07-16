@@ -13,6 +13,10 @@ dist-ssr
 .vercel
 .wrangler
 .output
+.tmp
 .vinxi
 __unconfig*
 todos.json
+.cache/typst
+apps/web/public/resume/*.pdf
+resume/**/output
