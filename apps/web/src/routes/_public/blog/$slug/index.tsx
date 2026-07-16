@@ -101,7 +101,7 @@ function BlogPostPage() {
   };
 
   return (
-    <div className="page-shell page-shell-article">
+    <div className="page-shell page-shell-wide">
       <script
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
         type="application/ld+json"
