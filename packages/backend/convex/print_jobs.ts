@@ -7,6 +7,15 @@ import { requirePrintSecret } from "./lib/secrets";
 const DEFAULT_MAX_ATTEMPTS = 3;
 const LEASE_MS = 60_000;
 const RETRY_DELAY_MS = 30_000;
+const TEXT_MESSAGE_CHANNEL = "twilio-sms";
+const TEXT_MESSAGE_DAILY_LIMIT = 50;
+const TEXT_MESSAGE_GLOBAL_DAILY_LIMIT = 150;
+const TEXT_MESSAGE_HOURLY_LIMIT = 30;
+const TEXT_MESSAGE_PENDING_LIMIT = 25;
+const TEXT_MESSAGE_BURST_LIMIT = 12;
+const TEXT_MESSAGE_BURST_WINDOW_MS = 5 * 60_000;
+const TEXT_MESSAGE_HOURLY_WINDOW_MS = 60 * 60_000;
+const TEXT_MESSAGE_DAILY_WINDOW_MS = 24 * 60 * 60_000;
 
 const payloadValidator = v.union(
   v.object({
@@ -63,6 +72,110 @@ export const create = convex
         attempts: 0,
       },
       source: args.source,
+      status: "queued",
+    });
+
+    return { id, status: "queued" as const };
+  })
+  .public();
+
+export const createTextMessage = convex
+  .mutation()
+  .input({
+    body: v.string(),
+    from: v.string(),
+    messageSid: v.string(),
+    secret: v.string(),
+  })
+  .handler(async (ctx, args) => {
+    requirePrintSecret(args.secret);
+
+    const existing = await ctx.db
+      .query("printJobs")
+      .withIndex("by_idempotencyKey", (query) =>
+        query.eq("idempotencyKey", args.messageSid)
+      )
+      .first();
+
+    if (existing) {
+      return { status: "duplicate" as const };
+    }
+
+    const now = Date.now();
+    const source = `${TEXT_MESSAGE_CHANNEL}:${args.from}`;
+    const [recentFromSender, recentGlobally, queued, printing] =
+      await Promise.all([
+        ctx.db
+          .query("printJobs")
+          .withIndex("by_source", (query) => query.eq("source", source))
+          .order("desc")
+          .take(TEXT_MESSAGE_DAILY_LIMIT),
+        ctx.db
+          .query("printJobs")
+          .withIndex("by_channel", (query) =>
+            query.eq("channel", TEXT_MESSAGE_CHANNEL)
+          )
+          .order("desc")
+          .take(TEXT_MESSAGE_GLOBAL_DAILY_LIMIT),
+        ctx.db
+          .query("printJobs")
+          .withIndex("by_status_availableAt", (query) =>
+            query.eq("status", "queued")
+          )
+          .take(TEXT_MESSAGE_PENDING_LIMIT),
+        ctx.db
+          .query("printJobs")
+          .withIndex("by_status_availableAt", (query) =>
+            query.eq("status", "printing")
+          )
+          .take(TEXT_MESSAGE_PENDING_LIMIT),
+      ]);
+
+    const isSenderLimited = [
+      {
+        limit: TEXT_MESSAGE_BURST_LIMIT,
+        windowMs: TEXT_MESSAGE_BURST_WINDOW_MS,
+      },
+      {
+        limit: TEXT_MESSAGE_HOURLY_LIMIT,
+        windowMs: TEXT_MESSAGE_HOURLY_WINDOW_MS,
+      },
+      {
+        limit: TEXT_MESSAGE_DAILY_LIMIT,
+        windowMs: TEXT_MESSAGE_DAILY_WINDOW_MS,
+      },
+    ].some(({ limit, windowMs }) => {
+      const recentCount = recentFromSender.filter(
+        (job) => job._creationTime >= now - windowMs
+      ).length;
+
+      return recentCount >= limit;
+    });
+    const recentGlobalCount = recentGlobally.filter(
+      (job) => job._creationTime >= now - TEXT_MESSAGE_DAILY_WINDOW_MS
+    ).length;
+    const isGloballyLimited =
+      recentGlobalCount >= TEXT_MESSAGE_GLOBAL_DAILY_LIMIT;
+    const isBacklogged =
+      queued.length + printing.length >= TEXT_MESSAGE_PENDING_LIMIT;
+
+    if (isSenderLimited || isGloballyLimited || isBacklogged) {
+      return { status: "rate-limited" as const };
+    }
+
+    const id = await ctx.db.insert("printJobs", {
+      availableAt: now,
+      channel: TEXT_MESSAGE_CHANNEL,
+      idempotencyKey: args.messageSid,
+      payload: {
+        _type: "text-message",
+        body: args.body,
+        from: args.from,
+      },
+      printState: {
+        attempts: 0,
+      },
+      source,
       status: "queued",
     });
 

@@ -29,6 +29,7 @@ import { Route as PublicExperienceIndexRouteImport } from './routes/_public/expe
 import { Route as PublicContactIndexRouteImport } from './routes/_public/contact/index'
 import { Route as PublicBnbIndexRouteImport } from './routes/_public/bnb/index'
 import { Route as PublicBlogIndexRouteImport } from './routes/_public/blog/index'
+import { Route as ApiTwilioSmsRouteImport } from './routes/api/twilio/sms'
 import { Route as ApiBnbSessionRouteImport } from './routes/api/bnb/session'
 import { Route as ApiBnbBookingsRouteImport } from './routes/api/bnb/bookings'
 import { Route as ApiAuthSignUpRouteImport } from './routes/api/auth/sign-up'
@@ -146,6 +147,11 @@ const PublicBlogIndexRoute = PublicBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
   getParentRoute: () => PublicRoute,
+} as any)
+const ApiTwilioSmsRoute = ApiTwilioSmsRouteImport.update({
+  id: '/api/twilio/sms',
+  path: '/api/twilio/sms',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiBnbSessionRoute = ApiBnbSessionRouteImport.update({
   id: '/api/bnb/session',
@@ -276,6 +282,7 @@ export interface FileRoutesByFullPath {
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
   '/api/bnb/bookings': typeof ApiBnbBookingsRoute
   '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/api/twilio/sms': typeof ApiTwilioSmsRoute
   '/blog/': typeof PublicBlogIndexRoute
   '/bnb/': typeof PublicBnbIndexRoute
   '/contact/': typeof PublicContactIndexRoute
@@ -314,6 +321,7 @@ export interface FileRoutesByTo {
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
   '/api/bnb/bookings': typeof ApiBnbBookingsRoute
   '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/api/twilio/sms': typeof ApiTwilioSmsRoute
   '/blog': typeof PublicBlogIndexRoute
   '/bnb': typeof PublicBnbIndexRoute
   '/contact': typeof PublicContactIndexRoute
@@ -357,6 +365,7 @@ export interface FileRoutesById {
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
   '/api/bnb/bookings': typeof ApiBnbBookingsRoute
   '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/api/twilio/sms': typeof ApiTwilioSmsRoute
   '/_public/blog/': typeof PublicBlogIndexRoute
   '/_public/bnb/': typeof PublicBnbIndexRoute
   '/_public/contact/': typeof PublicContactIndexRoute
@@ -398,6 +407,7 @@ export interface FileRouteTypes {
     | '/api/auth/sign-up'
     | '/api/bnb/bookings'
     | '/api/bnb/session'
+    | '/api/twilio/sms'
     | '/blog/'
     | '/bnb/'
     | '/contact/'
@@ -436,6 +446,7 @@ export interface FileRouteTypes {
     | '/api/auth/sign-up'
     | '/api/bnb/bookings'
     | '/api/bnb/session'
+    | '/api/twilio/sms'
     | '/blog'
     | '/bnb'
     | '/contact'
@@ -478,6 +489,7 @@ export interface FileRouteTypes {
     | '/api/auth/sign-up'
     | '/api/bnb/bookings'
     | '/api/bnb/session'
+    | '/api/twilio/sms'
     | '/_public/blog/'
     | '/_public/bnb/'
     | '/_public/contact/'
@@ -516,6 +528,7 @@ export interface RootRouteChildren {
   ApiAuthSignUpRoute: typeof ApiAuthSignUpRoute
   ApiBnbBookingsRoute: typeof ApiBnbBookingsRoute
   ApiBnbSessionRoute: typeof ApiBnbSessionRoute
+  ApiTwilioSmsRoute: typeof ApiTwilioSmsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -659,6 +672,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/'
       preLoaderRoute: typeof PublicBlogIndexRouteImport
       parentRoute: typeof PublicRoute
+    }
+    '/api/twilio/sms': {
+      id: '/api/twilio/sms'
+      path: '/api/twilio/sms'
+      fullPath: '/api/twilio/sms'
+      preLoaderRoute: typeof ApiTwilioSmsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/bnb/session': {
       id: '/api/bnb/session'
@@ -908,6 +928,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSignUpRoute: ApiAuthSignUpRoute,
   ApiBnbBookingsRoute: ApiBnbBookingsRoute,
   ApiBnbSessionRoute: ApiBnbSessionRoute,
+  ApiTwilioSmsRoute: ApiTwilioSmsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

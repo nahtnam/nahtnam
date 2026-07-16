@@ -77,6 +77,17 @@ const createPrintJob = makeFunctionReference<
   },
   { id: Id<"printJobs">; status: Doc<"printJobs">["status"] }
 >("print_jobs:create");
+const createTextMessage = makeFunctionReference<
+  "mutation",
+  {
+    body: string;
+    from: string;
+    messageSid: string;
+    secret: string;
+  },
+  | { id: Id<"printJobs">; status: "queued" }
+  | { status: "duplicate" | "rate-limited" }
+>("print_jobs:createTextMessage");
 const claimNextPrintJob = makeFunctionReference<
   "mutation",
   { now: number; secret: string; workerId: string },
@@ -350,5 +361,74 @@ describe("preserved print worker contract", () => {
         workerId: "worker-1",
       })
     ).resolves.toStrictEqual({ ok: true });
+  });
+
+  test("queues Twilio messages once per message SID", async () => {
+    const t = convexTest(schema, modules);
+    const input = {
+      body: "Hello printer",
+      from: "+14155550123",
+      messageSid: "SM123",
+      secret: "print-secret",
+    };
+
+    const first = await t.mutation(createTextMessage, input);
+    const duplicate = await t.mutation(createTextMessage, input);
+
+    expect(first).toMatchObject({ status: "queued" });
+    expect(duplicate).toStrictEqual({ status: "duplicate" });
+    await expect(
+      t.run((ctx) =>
+        ctx.db
+          .query("printJobs")
+          .withIndex("by_idempotencyKey", (query) =>
+            query.eq("idempotencyKey", input.messageSid)
+          )
+          .unique()
+      )
+    ).resolves.toMatchObject({
+      channel: "twilio-sms",
+      payload: {
+        _type: "text-message",
+        body: input.body,
+        from: input.from,
+      },
+      source: `twilio-sms:${input.from}`,
+      status: "queued",
+    });
+  });
+
+  test("rate limits burst traffic from one sender", async () => {
+    const t = convexTest(schema, modules);
+    const from = "+14155550123";
+
+    await t.run(async (ctx) => {
+      await Promise.all(
+        Array.from({ length: 12 }, (_, index) =>
+          ctx.db.insert("printJobs", {
+            availableAt: Date.now(),
+            channel: "twilio-sms",
+            idempotencyKey: `existing-${index}`,
+            payload: {
+              _type: "text-message",
+              body: `Message ${index}`,
+              from,
+            },
+            printState: { attempts: 1, printedAt: Date.now() },
+            source: `twilio-sms:${from}`,
+            status: "printed",
+          })
+        )
+      );
+    });
+
+    await expect(
+      t.mutation(createTextMessage, {
+        body: "One too many",
+        from,
+        messageSid: "SM-rate-limited",
+        secret: "print-secret",
+      })
+    ).resolves.toStrictEqual({ status: "rate-limited" });
   });
 });

@@ -48,6 +48,17 @@ export type CreatePrintJobResult = {
   status: PrintJobStatus;
 };
 
+export type CreateTextMessageArgs = {
+  body: string;
+  from: string;
+  messageSid: string;
+  secret: string;
+};
+
+export type CreateTextMessageResult =
+  | { id: string; status: "queued" }
+  | { status: "duplicate" | "rate-limited" };
+
 export type WatchPrintQueueArgs = {
   now: number;
   secret: string;
@@ -100,6 +111,14 @@ export const printJobFunctions = {
     "public",
     CreatePrintJobArgs,
     CreatePrintJobResult
+  >,
+  createTextMessage: makeFunctionReference(
+    "print_jobs:createTextMessage"
+  ) as FunctionReference<
+    "mutation",
+    "public",
+    CreateTextMessageArgs,
+    CreateTextMessageResult
   >,
   markFailed: makeFunctionReference(
     "print_jobs:markFailed"
