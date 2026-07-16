@@ -51,7 +51,11 @@ function HomePage() {
     image: siteImage,
     jobTitle: currentExperience?.title,
     name: "Manthan",
-    sameAs: ["https://github.com/nahtnam", "https://twitter.com/nahtnam"],
+    sameAs: [
+      "https://github.com/nahtnam",
+      "https://linkedin.com/in/nahtnam",
+      "https://twitter.com/nahtnam",
+    ],
     url: appUrl,
     worksFor: currentExperience
       ? {

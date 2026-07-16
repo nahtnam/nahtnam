@@ -125,6 +125,9 @@ export function ogImageUrl(options: OgImageOptions) {
 export function createSeo(options: SeoOptions) {
   const canonical = canonicalUrl(options.path);
   const socialTitle = options.socialTitle ?? options.title;
+  const imageAlt = options.imageLabel
+    ? `${socialTitle} — ${options.imageLabel}`
+    : socialTitle;
   const image =
     options.image ??
     ogImageUrl({
@@ -151,6 +154,7 @@ export function createSeo(options: SeoOptions) {
       { content: socialTitle, property: "og:title" },
       { content: options.description, property: "og:description" },
       { content: image, property: "og:image" },
+      { content: imageAlt, property: "og:image:alt" },
       { content: "1200", property: "og:image:width" },
       { content: "630", property: "og:image:height" },
       { content: "image/png", property: "og:image:type" },
@@ -169,6 +173,7 @@ export function createSeo(options: SeoOptions) {
       { content: socialTitle, name: "twitter:title" },
       { content: options.description, name: "twitter:description" },
       { content: image, name: "twitter:image" },
+      { content: imageAlt, name: "twitter:image:alt" },
     ],
   };
 }

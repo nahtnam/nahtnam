@@ -21,6 +21,9 @@ export const Route = createFileRoute("/_with-user")({
     return { user };
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [{ content: "noindex, nofollow", name: "robots" }],
+  }),
 });
 
 function RouteComponent() {

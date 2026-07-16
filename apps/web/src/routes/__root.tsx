@@ -1,6 +1,5 @@
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import { DaisyUIProvider } from "@formadapter/daisyui";
-import { siteDescription, siteTitle } from "@repo/config/app";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import {
@@ -104,15 +103,8 @@ export const Route = createRootRouteWithContext<{
         name: "viewport",
       },
       {
-        content: siteDescription,
-        name: "description",
-      },
-      {
         content: "#fbfbfc",
         name: "theme-color",
-      },
-      {
-        title: siteTitle,
       },
     ],
   }),

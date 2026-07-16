@@ -21,9 +21,7 @@ const config = defineConfig(() => {
     }),
     tanstackStart(),
     nitro({
-      rollupConfig: {
-        external: [/^@resvg\/resvg-js/u],
-      },
+      traceDeps: ["@resvg/resvg-js*"],
     }),
     viteReact(),
     tailwindcss(),

@@ -47,12 +47,12 @@ export function buildOgImageSvg(input: OgImageInput) {
 
   <rect width="${IMAGE_WIDTH}" height="${IMAGE_HEIGHT}" fill="#fbfbfc"/>
   <text class="sans" x="76" y="72" fill="#181a1f" font-size="25" font-weight="720">manthan</text>
-  <text class="mono" x="190" y="71" fill="#e75b3b" font-size="19">↔</text>
+  <text class="mono" x="190" y="71" fill="#4f46e5" font-size="19">↔</text>
   <text class="mono" x="225" y="71" fill="#858b95" font-size="18">@nahtnam</text>
   <text class="mono" x="1124" y="71" fill="#858b95" font-size="17" text-anchor="end">nahtnam.com</text>
   <path d="M76 108 H1124" stroke="#dcdfe4" stroke-width="2"/>
 
-  <text class="mono" x="76" y="171" fill="#2f5ae5" font-size="18" font-weight="700" letter-spacing="3">${escapeXml(input.label.toUpperCase())}</text>
+  <text class="mono" x="76" y="171" fill="#4f46e5" font-size="18" font-weight="700" letter-spacing="3">${escapeXml(input.label.toUpperCase())}</text>
   ${renderTextLines({
     className: "sans",
     fill: "#181a1f",
@@ -75,10 +75,10 @@ export function buildOgImageSvg(input: OgImageInput) {
   })}
 
   ${renderAvatar()}
-  <circle cx="1048" cy="402" r="42" fill="none" stroke="#e75b3b" stroke-width="2"/>
-  <text class="mono" x="1048" y="411" fill="#e75b3b" font-size="28" text-anchor="middle">↔</text>
+  <circle cx="1048" cy="402" r="42" fill="none" stroke="#4f46e5" stroke-width="2"/>
+  <text class="mono" x="1048" y="411" fill="#4f46e5" font-size="28" text-anchor="middle">↔</text>
 
-  <rect x="76" y="546" width="48" height="4" fill="#2f5ae5"/>
+  <rect x="76" y="546" width="48" height="4" fill="#4f46e5"/>
   <path d="M76 562 H1124" stroke="#dcdfe4" stroke-width="2"/>
   <text class="mono" x="76" y="600" fill="#727782" font-size="18">${escapeXml(input.path)}</text>
   <text class="sans" x="1124" y="600" fill="#181a1f" font-size="19" font-weight="650" text-anchor="end">Software engineer · indie hacker · writer</text>

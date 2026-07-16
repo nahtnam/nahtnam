@@ -1,20 +1,16 @@
 /* oxlint-disable react/no-unknown-property */
-import {
-  Environment,
-  MeshReflectorMaterial,
-  OrbitControls,
-  useGLTF,
-} from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { MeshReflectorMaterial, OrbitControls } from "@react-three/drei";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { Color } from "three";
 import type { Group, MeshStandardMaterial } from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const MODEL_PATH = "/assets/models/golf-r/scene.gltf";
 
 function GolfRModel() {
   const groupRef = useRef<Group>(null);
-  const { scene } = useGLTF(MODEL_PATH);
+  const { scene } = useLoader(GLTFLoader, MODEL_PATH);
 
   useEffect(() => {
     scene.traverse((child) => {
@@ -101,10 +97,9 @@ export function CarSceneInner() {
           maxPolarAngle={Math.PI / 2.2}
           minPolarAngle={Math.PI / 4}
         />
-        <Environment preset="studio" />
       </Canvas>
     </div>
   );
 }
 
-useGLTF.preload(MODEL_PATH);
+useLoader.preload(GLTFLoader, MODEL_PATH);
