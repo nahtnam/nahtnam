@@ -5,7 +5,7 @@ export const siteDescription =
   "Personal site of Manthan (@nahtnam), Principal Software Engineer at Mercury, with writing about software, startups, personal finance, travel, and developer tools.";
 export const siteImage = `${appUrl}/assets/images/me.avif`;
 export const twitterHandle = "@nahtnam";
-const ogImageVersion = "2";
+const ogImageVersion = "3";
 
 export type SeoOptions = {
   readonly description: string;

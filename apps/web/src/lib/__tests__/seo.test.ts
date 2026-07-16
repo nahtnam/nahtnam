@@ -25,7 +25,7 @@ describe("SEO metadata", () => {
       title: pageSeo.home.socialTitle,
     });
 
-    expect(new URL(image).searchParams.get("v")).toBe("2");
+    expect(new URL(image).searchParams.get("v")).toBe("3");
   });
 
   test("keeps generated social images indigo-only", () => {

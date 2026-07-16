@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "virtual:og-image-assets": ["./src/og-image-assets.node.ts"]
     }
   },
   "include": [
