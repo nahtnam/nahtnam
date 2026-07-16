@@ -84,6 +84,7 @@ export default defineSchema({
 
   printJobs: defineTable({
     availableAt: v.number(),
+    channel: v.optional(v.string()),
     idempotencyKey: v.optional(v.string()),
     payload: v.union(
       v.object({
@@ -95,6 +96,11 @@ export default defineSchema({
         _type: v.literal("alert"),
         body: v.string(),
         title: v.string(),
+      }),
+      v.object({
+        _type: v.literal("text-message"),
+        body: v.string(),
+        from: v.string(),
       })
     ),
     printState: v.object({
@@ -114,7 +120,9 @@ export default defineSchema({
       v.literal("failed")
     ),
   })
+    .index("by_channel", ["channel"])
     .index("by_idempotencyKey", ["idempotencyKey"])
+    .index("by_source", ["source"])
     .index("by_status_availableAt", ["status", "availableAt"]),
 
   resumeCompanies: defineTable({

@@ -18,6 +18,11 @@ const payloadValidator = v.union(
     _type: v.literal("alert"),
     body: v.string(),
     title: v.string(),
+  }),
+  v.object({
+    _type: v.literal("text-message"),
+    body: v.string(),
+    from: v.string(),
   })
 );
 

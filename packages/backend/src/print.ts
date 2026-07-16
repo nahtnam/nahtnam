@@ -13,7 +13,16 @@ export type PrintAlertPayload = {
   title: string;
 };
 
-export type PrintJobPayload = PrintAlertPayload | PrintMessagePayload;
+export type PrintTextMessagePayload = {
+  _type: "text-message";
+  body: string;
+  from: string;
+};
+
+export type PrintJobPayload =
+  | PrintAlertPayload
+  | PrintMessagePayload
+  | PrintTextMessagePayload;
 export type PrintJobStatus = "failed" | "printed" | "printing" | "queued";
 
 export type PrintState = {
@@ -55,6 +64,7 @@ export type ClaimedPrintJob = {
   _creationTime: number;
   _id: string;
   availableAt: number;
+  channel?: string;
   idempotencyKey?: string;
   payload: PrintJobPayload;
   printState: PrintState;

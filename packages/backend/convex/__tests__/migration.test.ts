@@ -287,6 +287,31 @@ describe("migrated admin safeguards", () => {
 });
 
 describe("preserved print worker contract", () => {
+  test("accepts legacy text-message jobs from the existing database", async () => {
+    const t = convexTest(schema, modules);
+    const jobId = await t.run((ctx) =>
+      ctx.db.insert("printJobs", {
+        availableAt: 100,
+        channel: "twilio-sms",
+        payload: {
+          _type: "text-message",
+          body: "Legacy message",
+          from: "+15555550123",
+        },
+        printState: { attempts: 0 },
+        source: "twilio-sms:+15555550123",
+        status: "queued",
+      })
+    );
+
+    await expect(
+      t.run((ctx) => ctx.db.get("printJobs", jobId))
+    ).resolves.toMatchObject({
+      channel: "twilio-sms",
+      payload: { _type: "text-message" },
+    });
+  });
+
   test("deduplicates jobs and enforces claim ownership", async () => {
     const t = convexTest(schema, modules);
     const input = {

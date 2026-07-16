@@ -5,10 +5,29 @@ import { renderAlertReceipt } from "./alert";
 import { renderMessageReceipt } from "./message";
 
 export function renderPrintJob(job: ClaimedPrintJob) {
-  const receipt =
-    job.payload._type === "alert"
-      ? renderAlertReceipt({ ...job, payload: job.payload })
-      : renderMessageReceipt({ ...job, payload: job.payload });
+  const { payload } = job;
+  let receipt;
+
+  switch (payload._type) {
+    case "alert": {
+      receipt = renderAlertReceipt({ ...job, payload });
+      break;
+    }
+    case "text-message": {
+      receipt = renderMessageReceipt({
+        ...job,
+        payload: {
+          _type: "message",
+          body: payload.body,
+          title: `TEXT FROM ${payload.from}`,
+        },
+      });
+      break;
+    }
+    default: {
+      receipt = renderMessageReceipt({ ...job, payload });
+    }
+  }
 
   return render(receipt);
 }
