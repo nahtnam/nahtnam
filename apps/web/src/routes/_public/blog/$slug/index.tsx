@@ -131,7 +131,7 @@ function BlogPostPage() {
             /
           </span>
           <div
-            className="tooltip tooltip-right"
+            className="tooltip tooltip-bottom"
             data-tip={formatFullDate({ date: publishedAt })}
           >
             <time

@@ -132,7 +132,7 @@ export function Navbar() {
             )}
           </button>
           <ul
-            className="site-navigation dropdown menu fixed inset-x-3 top-20 bottom-auto m-0 max-h-[calc(100dvh-6rem)] w-auto max-w-none overflow-y-auto overscroll-contain rounded-box border border-base-300 bg-base-100 p-2 shadow-xl sm:right-4 sm:left-auto sm:w-80 md:hidden"
+            className="site-navigation menu fixed inset-x-3 top-20 bottom-auto m-0 max-h-[calc(100dvh-6rem)] w-auto max-w-none overflow-y-auto overscroll-contain rounded-box border border-base-300 bg-base-100 p-2 shadow-xl sm:right-4 sm:left-auto sm:w-80 md:hidden"
             id="site-navigation"
             onToggle={(event) => {
               setIsMenuOpen(event.currentTarget.matches(":popover-open"));
