@@ -1,13 +1,8 @@
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
-import process from "node:process";
-
 const IMAGE_WIDTH = 1200;
 const IMAGE_HEIGHT = 630;
-const AVATAR_FILE = "assets/images/me-og.jpg";
-let cachedAvatarDataUri: string | undefined;
 
 export type OgImageInput = {
+  readonly avatarDataUri?: string;
   readonly description: string;
   readonly label: string;
   readonly path: string;
@@ -41,8 +36,8 @@ export function buildOgImageSvg(input: OgImageInput) {
     <clipPath id="avatar-clip"><rect x="996" y="132" width="104" height="104" rx="26"/></clipPath>
   </defs>
   <style>
-    .sans { font-family: "Ludic Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    .sans { font-family: Inter, sans-serif; }
+    .mono { font-family: Inter, sans-serif; }
   </style>
 
   <rect width="${IMAGE_WIDTH}" height="${IMAGE_HEIGHT}" fill="#fbfbfc"/>
@@ -74,7 +69,7 @@ export function buildOgImageSvg(input: OgImageInput) {
     y: descriptionY,
   })}
 
-  ${renderAvatar()}
+  ${renderAvatar({ avatarDataUri: input.avatarDataUri })}
   <circle cx="1048" cy="402" r="42" fill="none" stroke="#4f46e5" stroke-width="2"/>
   <text class="mono" x="1048" y="411" fill="#4f46e5" font-size="28" text-anchor="middle">↔</text>
 
@@ -86,17 +81,13 @@ export function buildOgImageSvg(input: OgImageInput) {
 }
 
 export async function generateOgImagePng(input: OgImageInput) {
-  const { Resvg } = await import("@resvg/resvg-js");
-  const image = new Resvg(buildOgImageSvg(input), {
-    fitTo: { mode: "width", value: IMAGE_WIDTH },
-    font: { loadSystemFonts: true },
-  });
+  const { renderOgImagePng } = await import("./og-image-renderer");
 
-  return image.render().asPng();
+  return renderOgImagePng({ input });
 }
 
-function renderAvatar() {
-  const avatarDataUri = getAvatarDataUri();
+function renderAvatar(options: { readonly avatarDataUri?: string }) {
+  const { avatarDataUri } = options;
 
   if (!avatarDataUri) {
     return `<rect x="996" y="132" width="104" height="104" rx="26" fill="#f1f2f4"/>
@@ -105,30 +96,6 @@ function renderAvatar() {
 
   return `<rect x="996" y="132" width="104" height="104" rx="26" fill="#f1f2f4"/>
     <image href="${escapeXml(avatarDataUri)}" x="996" y="132" width="104" height="104" preserveAspectRatio="xMidYMid slice" clip-path="url(#avatar-clip)"/>`;
-}
-
-function getAvatarDataUri() {
-  if (cachedAvatarDataUri) {
-    return cachedAvatarDataUri;
-  }
-
-  const currentDirectory = import.meta.dirname;
-  const cwd = process.cwd();
-  const candidates = [
-    path.join(cwd, "apps", "web", "public", AVATAR_FILE),
-    path.join(cwd, "public", AVATAR_FILE),
-    path.join(cwd, "apps", "web", ".output", "public", AVATAR_FILE),
-    path.join(cwd, ".output", "public", AVATAR_FILE),
-    path.join(currentDirectory, "../../public", AVATAR_FILE),
-  ];
-  const avatarPath = candidates.find((candidate) => existsSync(candidate));
-
-  if (!avatarPath) {
-    return;
-  }
-
-  cachedAvatarDataUri = `data:image/jpeg;base64,${readFileSync(avatarPath).toString("base64")}`;
-  return cachedAvatarDataUri;
 }
 
 function renderTextLines(options: {

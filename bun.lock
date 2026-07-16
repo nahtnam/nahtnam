@@ -38,6 +38,7 @@
       "name": "web",
       "dependencies": {
         "@convex-dev/react-query": "^0.1.0",
+        "@expo-google-fonts/inter": "^0.4.2",
         "@formadapter/daisyui": "^0.0.1",
         "@formadapter/react": "^0.0.1",
         "@leenguyen/react-flip-clock-countdown": "^1.7.2",
@@ -298,6 +299,8 @@
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.4.1", "", { "dependencies": { "@eslint/core": "^0.17.0", "levn": "^0.4.1" } }, "sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA=="],
 
     "@exodus/bytes": ["@exodus/bytes@1.15.1", "", { "peerDependencies": { "@noble/hashes": "^1.8.0 || ^2.0.0" }, "optionalPeers": ["@noble/hashes"] }, "sha512-S6mL0yNB/Abt9Ei4tq8gDhcczc4S3+vQ4ra7vxnAf+YHC02srtqxKKZghx2Dq6p0e66THKwR6r8N6P95wEty7Q=="],
+
+    "@expo-google-fonts/inter": ["@expo-google-fonts/inter@0.4.2", "", {}, "sha512-syfiImMaDmq7cFi0of+waE2M4uSCyd16zgyWxdPOY7fN2VBmSLKEzkfbZgeOjJq61kSqPBNNtXjggiQiSD6gMQ=="],
 
     "@formadapter/core": ["@formadapter/core@0.0.1", "", {}, "sha512-mIQLJaQpwAVwi+4D4qrlve6SdMGNqr1FaVayGMjEQlI0LIgZHejUcxHWdtXRc/1EWacKUcFJrqOpCs2YVO1O7w=="],
 

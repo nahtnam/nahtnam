@@ -1,8 +1,10 @@
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
+import { ogImageAssetsPlugin } from "./og-image-assets-plugin";
+
 export default defineConfig({
-  plugins: [viteReact()],
+  plugins: [ogImageAssetsPlugin, viteReact()],
   resolve: {
     tsconfigPaths: true,
   },

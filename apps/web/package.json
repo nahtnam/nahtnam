@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@convex-dev/react-query": "^0.1.0",
+    "@expo-google-fonts/inter": "^0.4.2",
     "@formadapter/daisyui": "^0.0.1",
     "@formadapter/react": "^0.0.1",
     "@leenguyen/react-flip-clock-countdown": "^1.7.2",

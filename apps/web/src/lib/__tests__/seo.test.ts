@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { buildOgImageSvg } from "../og-image";
+import { buildOgImageSvg, generateOgImagePng } from "../og-image";
 import { createSeo, pageSeo } from "../seo";
 
 describe("SEO metadata", () => {
@@ -28,5 +28,19 @@ describe("SEO metadata", () => {
     expect(svg).toContain("#4f46e5");
     expect(svg).not.toContain("#e75b3b");
     expect(svg).not.toContain("#2f5ae5");
+  });
+
+  test("renders bundled text and avatar assets into a PNG", async () => {
+    const png = await generateOgImagePng({
+      description: pageSeo.home.description,
+      label: pageSeo.home.imageLabel,
+      path: pageSeo.home.path,
+      title: pageSeo.home.socialTitle,
+    });
+
+    expect(png.byteLength).toBeGreaterThan(30_000);
+    expect([...png.subarray(0, 8)]).toStrictEqual([
+      137, 80, 78, 71, 13, 10, 26, 10,
+    ]);
   });
 });

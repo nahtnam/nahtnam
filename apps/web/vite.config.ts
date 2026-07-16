@@ -9,6 +9,8 @@ import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 import type { PluginOption } from "vite";
 
+import { ogImageAssetsPlugin } from "./og-image-assets-plugin";
+
 const envDir = fileURLToPath(new URL("../..", import.meta.url));
 
 const config = defineConfig(() => {
@@ -23,6 +25,7 @@ const config = defineConfig(() => {
     nitro({
       traceDeps: ["@resvg/resvg-js*"],
     }),
+    ogImageAssetsPlugin,
     viteReact(),
     tailwindcss(),
   ];
