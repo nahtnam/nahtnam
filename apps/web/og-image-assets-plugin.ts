@@ -12,15 +12,6 @@ export const ogImageAssetsPlugin: Plugin = {
       return;
     }
 
-    const avatarBase64 = readAssetBase64({
-      url: new URL("public/assets/images/me-og.jpg", import.meta.url),
-    });
-    const interRegularBase64 = readAssetBase64({
-      url: new URL(
-        "node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf",
-        import.meta.url
-      ),
-    });
     const interBoldBase64 = readAssetBase64({
       url: new URL(
         "node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf",
@@ -31,8 +22,6 @@ export const ogImageAssetsPlugin: Plugin = {
     return `
       import { Buffer } from "node:buffer";
       const decode = (value) => new Uint8Array(Buffer.from(value, "base64"));
-      export const avatarBase64 = ${JSON.stringify(avatarBase64)};
-      export const interRegular = decode(${JSON.stringify(interRegularBase64)});
       export const interBold = decode(${JSON.stringify(interBoldBase64)});
     `;
   },

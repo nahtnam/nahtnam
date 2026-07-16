@@ -4,8 +4,8 @@ import { clientEnv } from "@repo/config/env/client";
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "@workos/authkit-tanstack-react-start/client";
 import { MenuIcon, XIcon } from "lucide-react";
-import { useState } from "react";
-import type { CSSProperties, ReactNode } from "react";
+import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 import { AnimatedIdentity } from "../animated-identity";
 
@@ -46,7 +46,25 @@ export function Navbar() {
   const posthog = usePostHog();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  useEffect(() => {
+    const desktopViewport = window.matchMedia("(min-width: 48rem)");
+
+    function handleViewportChange(event: MediaQueryListEvent) {
+      if (event.matches) {
+        handleMenuNavigate();
+      }
+    }
+
+    desktopViewport.addEventListener("change", handleViewportChange);
+
+    return () => {
+      desktopViewport.removeEventListener("change", handleViewportChange);
+    };
+  }, []);
+
   function handleSignOut() {
+    handleMenuNavigate();
+
     if (clientEnv.VITE_POSTHOG_KEY) {
       posthog.reset();
     }
@@ -98,14 +116,13 @@ export function Navbar() {
           ) : null}
         </div>
 
-        <div className="navbar-end md:hidden">
+        <div className="navbar-end shrink-0 md:hidden">
           <button
             aria-controls="site-navigation"
             aria-expanded={isMenuOpen}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="btn btn-ghost btn-square min-h-11 min-w-11"
+            className="btn btn-ghost btn-square size-12 touch-manipulation"
             popoverTarget="site-navigation"
-            style={{ anchorName: "--site-navigation" } as CSSProperties}
             type="button"
           >
             {isMenuOpen ? (
@@ -115,13 +132,12 @@ export function Navbar() {
             )}
           </button>
           <ul
-            className="site-navigation dropdown dropdown-end menu mt-3 w-[min(18rem,calc(100vw-2rem))] rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
+            className="site-navigation dropdown menu fixed inset-x-3 top-20 bottom-auto m-0 max-h-[calc(100dvh-6rem)] w-auto max-w-none overflow-y-auto overscroll-contain rounded-box border border-base-300 bg-base-100 p-2 shadow-xl sm:right-4 sm:left-auto sm:w-80 md:hidden"
             id="site-navigation"
             onToggle={(event) => {
               setIsMenuOpen(event.currentTarget.matches(":popover-open"));
             }}
             popover="auto"
-            style={{ positionAnchor: "--site-navigation" } as CSSProperties}
           >
             <li className="menu-title px-3 py-2 text-xs font-semibold tracking-[0.12em] text-base-content/60 uppercase">
               Navigate
@@ -143,7 +159,11 @@ export function Navbar() {
                   Admin
                 </MobileMenuItem>
                 <li>
-                  <button onClick={handleSignOut} type="button">
+                  <button
+                    className="min-h-12 touch-manipulation px-4 text-base"
+                    onClick={handleSignOut}
+                    type="button"
+                  >
                     Sign Out
                   </button>
                 </li>
@@ -181,7 +201,7 @@ function MobileMenuItem(props: MenuItemProps) {
       <Link
         activeOptions={{ exact: isExact, includeSearch: false }}
         activeProps={{ className: "menu-active" }}
-        className="min-h-11"
+        className="min-h-12 touch-manipulation px-4 text-base"
         onClick={onNavigate}
         to={to}
       >

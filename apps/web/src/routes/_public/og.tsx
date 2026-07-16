@@ -9,25 +9,9 @@ export const Route = createFileRoute("/_public/og")({
         const { generateOgImagePng } = await import("@/lib/og-image");
         const url = new URL(request.url);
         const png = await generateOgImagePng({
-          description: cleanSearchValue({
-            fallback:
-              "Software, startups, personal finance, travel, and developer tools.",
-            maxLength: 220,
-            value: url.searchParams.get("description") ?? undefined,
-          }),
-          label: cleanSearchValue({
-            fallback: "nahtnam",
-            maxLength: 40,
-            value: url.searchParams.get("label") ?? undefined,
-          }),
-          path: cleanSearchValue({
-            fallback: "nahtnam.com",
-            maxLength: 80,
-            value: url.searchParams.get("path") ?? undefined,
-          }),
           title: cleanSearchValue({
             fallback: "Manthan (@nahtnam)",
-            maxLength: 100,
+            maxLength: 120,
             value: url.searchParams.get("title") ?? undefined,
           }),
         });
@@ -48,7 +32,8 @@ function cleanSearchValue(options: {
   readonly maxLength: number;
   readonly value: string | undefined;
 }) {
-  const normalized = options.value?.replaceAll(/\s+/gu, " ").trim();
+  const { fallback, maxLength, value } = options;
+  const normalized = value?.replaceAll(/\s+/gu, " ").trim();
 
-  return normalized ? normalized.slice(0, options.maxLength) : options.fallback;
+  return normalized ? normalized.slice(0, maxLength) : fallback;
 }

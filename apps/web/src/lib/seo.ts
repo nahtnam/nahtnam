@@ -5,12 +5,11 @@ export const siteDescription =
   "Personal site of Manthan (@nahtnam), Principal Software Engineer at Mercury, with writing about software, startups, personal finance, travel, and developer tools.";
 export const siteImage = `${appUrl}/assets/images/me.avif`;
 export const twitterHandle = "@nahtnam";
-const ogImageVersion = "3";
+const ogImageVersion = "4";
 
 export type SeoOptions = {
   readonly description: string;
   readonly image?: string;
-  readonly imageLabel?: string;
   readonly keywords?: string;
   readonly path: string;
   readonly publishedAt?: Date | number | string;
@@ -25,7 +24,6 @@ export const pageSeo = {
   blog: {
     description:
       "Essays by Manthan (@nahtnam) about software engineering, startups, personal finance, product building, developer tools, and everyday systems.",
-    imageLabel: "Writing",
     path: "/blog",
     socialTitle: "Blog",
     title: `Blog | ${siteTitle}`,
@@ -33,7 +31,6 @@ export const pageSeo = {
   bnb: {
     description:
       "A private couch booking page for friends visiting Manthan in San Francisco.",
-    imageLabel: "Novelty",
     path: "/bnb",
     robots: "noindex, nofollow",
     socialTitle: "Couch BnB",
@@ -42,7 +39,6 @@ export const pageSeo = {
   contact: {
     description:
       "Get in touch with Manthan (@nahtnam) about software engineering, startups, product work, writing, and collaboration opportunities.",
-    imageLabel: "Contact",
     path: "/contact",
     socialTitle: "Contact Manthan",
     title: `Contact | ${siteTitle}`,
@@ -50,7 +46,6 @@ export const pageSeo = {
   experience: {
     description:
       "Professional experience, projects, and education for Manthan (@nahtnam), Principal Software Engineer at Mercury.",
-    imageLabel: "Career",
     path: "/experience",
     socialTitle: "Experience",
     title: `Experience | ${siteTitle}`,
@@ -58,14 +53,12 @@ export const pageSeo = {
   golfR: {
     description:
       "A running ledger of mods, upgrades, maintenance, and costs for Manthan's 2026 Volkswagen Golf R in Pure White.",
-    imageLabel: "Golf R Build",
     path: "/golf-r",
     socialTitle: "Golf R Build",
     title: `Golf R Build | ${siteTitle}`,
   },
   home: {
     description: siteDescription,
-    imageLabel: "Portfolio",
     path: "/",
     socialTitle: siteTitle,
     title: `${siteTitle} - Principal Software Engineer at Mercury`,
@@ -73,7 +66,6 @@ export const pageSeo = {
   pomodoro: {
     description:
       "A clean Pomodoro flip clock with configurable focus sessions, short breaks, long breaks, cycle length, browser title alerts, and an alarm.",
-    imageLabel: "Focus Tool",
     keywords:
       "pomodoro timer, flip clock, focus timer, productivity timer, work timer",
     path: "/pomodoro",
@@ -83,7 +75,6 @@ export const pageSeo = {
   textMe: {
     description:
       "Text Manthan's toll-free number to print your message on a receipt printer on his desk.",
-    imageLabel: "Receipt Printer",
     path: "/text-me",
     socialTitle: "Text Me",
     title: `Text Me | ${siteTitle}`,
@@ -91,7 +82,6 @@ export const pageSeo = {
   travel: {
     description:
       "Flight history and travel stats for Manthan (@nahtnam), including airports visited, routes flown, and airline patterns.",
-    imageLabel: "Flight Log",
     path: "/travel",
     socialTitle: "Travel",
     title: `Travel | ${siteTitle}`,
@@ -99,9 +89,6 @@ export const pageSeo = {
 } satisfies Record<string, SeoOptions>;
 
 type OgImageOptions = {
-  readonly description: string;
-  readonly label?: string;
-  readonly path: string;
   readonly title: string;
 };
 
@@ -110,16 +97,10 @@ export function canonicalUrl(path: string) {
 }
 
 export function ogImageUrl(options: OgImageOptions) {
-  const { description, label, path, title } = options;
+  const { title } = options;
   const imageUrl = new URL("/og", appUrl);
   imageUrl.searchParams.set("title", title);
-  imageUrl.searchParams.set("description", description);
-  imageUrl.searchParams.set("path", path);
   imageUrl.searchParams.set("v", ogImageVersion);
-
-  if (label) {
-    imageUrl.searchParams.set("label", label);
-  }
 
   return imageUrl.toString();
 }
@@ -127,15 +108,10 @@ export function ogImageUrl(options: OgImageOptions) {
 export function createSeo(options: SeoOptions) {
   const canonical = canonicalUrl(options.path);
   const socialTitle = options.socialTitle ?? options.title;
-  const imageAlt = options.imageLabel
-    ? `${socialTitle} — ${options.imageLabel}`
-    : socialTitle;
+  const imageAlt = `Social preview reading “${socialTitle}” for @nahtnam`;
   const image =
     options.image ??
     ogImageUrl({
-      description: options.description,
-      label: options.imageLabel,
-      path: options.path,
       title: socialTitle,
     });
   const type = options.type ?? "website";

@@ -48,7 +48,6 @@ export const Route = createFileRoute("/_public/blog/$slug/")({
     const post = loaderData?.seoPost;
     const seo = createSeo({
       description: post?.excerpt ?? "A blog post by Manthan (@nahtnam).",
-      imageLabel: post?.categoryName ?? "Writing",
       path: `/blog/${params.slug}`,
       publishedAt: post?.publishedAt,
       section: post?.categoryName,
@@ -89,9 +88,6 @@ function BlogPostPage() {
     description: post.excerpt,
     headline: post.title,
     image: ogImageUrl({
-      description: post.excerpt,
-      label: post.category.name,
-      path: `/blog/${post.slug}`,
       title: post.title,
     }),
     mainEntityOfPage: canonicalUrl(`/blog/${post.slug}`),
@@ -154,8 +150,8 @@ function BlogPostPage() {
         </p>
       </header>
 
-      <div className="mx-auto mt-12 max-w-[44rem] sm:mt-16">
-        <article className="article-prose prose-headings:text-pretty prose-p:text-[1.0625rem]">
+      <div className="mx-auto mt-12 min-w-0 max-w-[44rem] sm:mt-16">
+        <article className="article-prose min-w-0 max-w-full prose-headings:text-pretty prose-p:text-[1.0625rem]">
           {kind === "x" ? <TweetThread tweets={post.tweets ?? []} /> : null}
           {kind === "markdown" ? <Markdown>{markdownContent}</Markdown> : null}
         </article>
@@ -188,13 +184,13 @@ function TweetThread(props: TweetThreadProps) {
       {tweets.map((item, index) => (
         <li
           key={item.id}
-          className="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-3 pb-8 last:pb-0 sm:grid-cols-[2.75rem_minmax(0,1fr)] sm:gap-4 sm:pb-10"
+          className="relative grid min-w-0 grid-cols-[1.5rem_minmax(0,1fr)] gap-1 pb-8 last:pb-0 sm:grid-cols-[2.75rem_minmax(0,1fr)] sm:gap-4 sm:pb-10"
         >
           <div aria-hidden="true" className="relative flex justify-center">
             {index < tweets.length - 1 ? (
-              <span className="absolute top-8 bottom-[-0.5rem] w-px bg-gradient-to-b from-primary/45 via-base-300 to-base-300 sm:top-10 sm:bottom-[-0.75rem]" />
+              <span className="absolute top-6 bottom-[-0.5rem] w-px bg-gradient-to-b from-primary/45 via-base-300 to-base-300 sm:top-10 sm:bottom-[-0.75rem]" />
             ) : null}
-            <span className="relative z-10 flex size-8 items-center justify-center rounded-full border border-primary/25 bg-base-100 font-mono text-[0.625rem] font-semibold text-primary sm:size-10 sm:text-xs">
+            <span className="relative z-10 flex size-6 items-center justify-center rounded-full border border-primary/25 bg-base-100 font-mono text-[0.55rem] font-semibold text-primary sm:size-10 sm:text-xs">
               {index + 1}
             </span>
           </div>

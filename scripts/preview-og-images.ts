@@ -1,54 +1,52 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 
 import { generateOgImagePng } from "../apps/web/src/lib/og-image";
 import { pageSeo } from "../apps/web/src/lib/seo";
 
 type Preview = {
-  description: string;
-  label?: string;
-  name: string;
-  path: string;
-  title: string;
+  readonly name: string;
+  readonly title: string;
 };
 
-const previews: Preview[] = [
+const pagePreviews: Preview[] = Object.entries(pageSeo).map(([name, seo]) => ({
+  name,
+  title: seo.socialTitle ?? seo.title,
+}));
+const blogPreviews: Preview[] = [
   {
-    description: pageSeo.home.description,
-    label: pageSeo.home.imageLabel,
-    name: "home",
-    path: pageSeo.home.path,
-    title: pageSeo.home.socialTitle,
+    name: "blog-what-mattered-while-building-mercury-command",
+    title: "What Mattered While Building Mercury Command",
   },
   {
-    description:
-      "Large Next.js projects with deeply nested route groups, parallel routes, and dynamic segments make it surprisingly annoying to find the source file for a given URL.",
-    label: "Writing",
-    name: "blog-nextjs-route-jumper",
-    path: "/blog/announcing-nextjs-route-jumper",
-    title: "Announcing Next.js Route Jumper",
+    name: "blog-announcing-nextjs-route-jumper",
+    title: "Next.js Route Jumper — A VS Code Extension I Built",
   },
   {
-    description: pageSeo.golfR.description,
-    label: pageSeo.golfR.imageLabel,
-    name: "golf-r",
-    path: pageSeo.golfR.path,
-    title: pageSeo.golfR.socialTitle,
+    name: "blog-announcing-tanstack-route-jumper",
+    title: "TanStack Route Jumper — A VS Code Extension I Built",
   },
   {
-    description: pageSeo.pomodoro.description,
-    label: pageSeo.pomodoro.imageLabel,
-    name: "pomodoro",
-    path: pageSeo.pomodoro.path,
-    title: pageSeo.pomodoro.socialTitle,
+    name: "blog-claude-bought-me-a-car",
+    title: "Claude Bought Me a Car",
+  },
+  {
+    name: "blog-how-i-set-up-a-new-mac",
+    title: "How I Set Up a New Mac",
+  },
+  {
+    name: "blog-ynab-for-the-middle-class",
+    title: "YNAB for the Middle Class",
   },
 ];
-
+const previews = [...pagePreviews, ...blogPreviews];
 const outputDirectory = ".tmp/og-previews";
+
+await rm(outputDirectory, { force: true, recursive: true });
 await mkdir(outputDirectory, { recursive: true });
 
 await Promise.all(
   previews.map(async (preview) => {
-    const png = await generateOgImagePng(preview);
+    const png = await generateOgImagePng({ title: preview.title });
     await writeFile(`${outputDirectory}/${preview.name}.png`, png);
   })
 );

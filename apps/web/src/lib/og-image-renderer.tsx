@@ -2,7 +2,7 @@ import { Buffer } from "node:buffer";
 
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
-import { avatarBase64, interBold, interRegular } from "virtual:og-image-assets";
+import { interBold } from "virtual:og-image-assets";
 
 import type { OgImageInput } from "./og-image";
 
@@ -15,199 +15,49 @@ type RenderOgImageOptions = {
 
 export async function renderOgImagePng(options: RenderOgImageOptions) {
   const { input } = options;
-  const avatarDataUri = `data:image/jpeg;base64,${avatarBase64}`;
-  const titleFontSize = getTitleFontSize({ title: input.title });
+  const titleFontSize = getOgTitleFontSize({ title: input.title });
   const svg = await satori(
     <div
       style={{
-        background: "#fbfbfc",
-        color: "#181a1f",
+        background: "#4f46e5",
+        color: "#fbfbfc",
         display: "flex",
+        flexDirection: "column",
         fontFamily: "Inter",
         height: IMAGE_HEIGHT,
-        position: "relative",
+        padding: "58px 72px 64px",
         width: IMAGE_WIDTH,
       }}
     >
       <div
         style={{
-          alignItems: "center",
+          color: "rgba(251, 251, 252, 0.78)",
           display: "flex",
-          left: 76,
-          position: "absolute",
-          top: 49,
-        }}
-      >
-        <span style={{ fontSize: 25, fontWeight: 700 }}>manthan</span>
-        <span style={{ color: "#4f46e5", fontSize: 19, marginLeft: 17 }}>
-          ↔
-        </span>
-        <span style={{ color: "#858b95", fontSize: 18, marginLeft: 17 }}>
-          @nahtnam
-        </span>
-      </div>
-      <div
-        style={{
-          color: "#858b95",
-          fontSize: 17,
-          position: "absolute",
-          right: 76,
-          top: 53,
-        }}
-      >
-        nahtnam.com
-      </div>
-      <div
-        style={{
-          background: "#dcdfe4",
-          height: 2,
-          left: 76,
-          position: "absolute",
-          top: 107,
-          width: 1048,
-        }}
-      />
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          height: 340,
-          left: 76,
-          overflow: "hidden",
-          position: "absolute",
-          top: 153,
-          width: 820,
-        }}
-      >
-        <div
-          style={{
-            color: "#4f46e5",
-            fontSize: 18,
-            fontWeight: 700,
-            letterSpacing: 3,
-            textTransform: "uppercase",
-          }}
-        >
-          {input.label}
-        </div>
-        <div
-          style={{
-            fontSize: titleFontSize,
-            fontWeight: 700,
-            letterSpacing: -2.5,
-            lineHeight: 1.08,
-            marginTop: 18,
-          }}
-        >
-          {input.title}
-        </div>
-        <div
-          style={{
-            color: "#60656f",
-            fontSize: 26,
-            fontWeight: 400,
-            lineHeight: 1.45,
-            marginTop: 14,
-            maxHeight: 76,
-            overflow: "hidden",
-          }}
-        >
-          {input.description}
-        </div>
-      </div>
-
-      <div
-        style={{
-          background: "#f1f2f4",
-          borderRadius: 26,
-          display: "flex",
-          height: 104,
-          overflow: "hidden",
-          position: "absolute",
-          right: 100,
-          top: 132,
-          width: 104,
-        }}
-      >
-        <img
-          alt=""
-          height={104}
-          src={avatarDataUri}
-          style={{ objectFit: "cover" }}
-          width={104}
-        />
-      </div>
-      <div
-        style={{
-          alignItems: "center",
-          border: "2px solid #4f46e5",
-          borderRadius: 999,
-          color: "#4f46e5",
-          display: "flex",
-          fontSize: 28,
-          height: 84,
-          justifyContent: "center",
-          position: "absolute",
-          right: 110,
-          top: 360,
-          width: 84,
-        }}
-      >
-        ↔
-      </div>
-
-      <div
-        style={{
-          background: "#4f46e5",
-          height: 4,
-          left: 76,
-          position: "absolute",
-          top: 546,
-          width: 48,
-        }}
-      />
-      <div
-        style={{
-          background: "#dcdfe4",
-          height: 2,
-          left: 76,
-          position: "absolute",
-          top: 561,
-          width: 1048,
-        }}
-      />
-      <div
-        style={{
-          color: "#727782",
-          fontSize: 18,
-          left: 76,
-          position: "absolute",
-          top: 584,
-        }}
-      >
-        {input.path}
-      </div>
-      <div
-        style={{
-          fontSize: 19,
+          fontSize: 34,
           fontWeight: 700,
-          position: "absolute",
-          right: 76,
-          top: 583,
+          letterSpacing: -1,
         }}
       >
-        Software engineer · indie hacker · writer
+        @nahtnam
+      </div>
+      <div
+        style={{
+          alignItems: "center",
+          display: "flex",
+          flex: 1,
+          fontSize: titleFontSize,
+          fontWeight: 700,
+          letterSpacing: -5,
+          lineHeight: 0.98,
+          maxWidth: 1056,
+          overflow: "hidden",
+        }}
+      >
+        {input.title}
       </div>
     </div>,
     {
       fonts: [
-        {
-          data: Buffer.from(interRegular),
-          name: "Inter",
-          style: "normal",
-          weight: 400,
-        },
         {
           data: Buffer.from(interBold),
           name: "Inter",
@@ -226,16 +76,28 @@ export async function renderOgImagePng(options: RenderOgImageOptions) {
   return image.render().asPng();
 }
 
-function getTitleFontSize(options: { readonly title: string }) {
+export function getOgTitleFontSize(options: { readonly title: string }) {
   const { title } = options;
 
-  if (title.length > 72) {
-    return 54;
+  if (title.length > 88) {
+    return 72;
   }
 
-  if (title.length > 48) {
-    return 62;
+  if (title.length > 64) {
+    return 82;
   }
 
-  return 72;
+  if (title.length > 46) {
+    return 94;
+  }
+
+  if (title.length > 28) {
+    return 112;
+  }
+
+  if (title.length > 15) {
+    return 144;
+  }
+
+  return 184;
 }
