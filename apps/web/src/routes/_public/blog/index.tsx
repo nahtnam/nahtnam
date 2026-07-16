@@ -23,7 +23,7 @@ function BlogIndexPage() {
   const hasSinglePost = posts.length === 1;
 
   return (
-    <div className="page-shell page-shell-article">
+    <div className="page-shell page-shell-wide">
       <header className="grid gap-8 border-b border-base-content/15 pb-10 sm:pb-14 md:grid-cols-[minmax(0,0.8fr)_minmax(20rem,1.2fr)] md:items-end md:gap-12">
         <div>
           <p className="font-mono text-xs font-semibold tracking-[0.18em] text-base-content/60 uppercase">
