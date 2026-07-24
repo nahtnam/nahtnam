@@ -1,0 +1,9 @@
+diff a/apps/web/src/styles.css b/apps/web/src/styles.css	(rejected hunks)
+@@ -37,7 +37,6 @@
+     @apply font-sans antialiased;
+     color-scheme: light;
+     font-optical-sizing: auto;
+-    overscroll-behavior: none;
+     scrollbar-gutter: stable;
+     text-rendering: optimizeLegibility;
+   }
