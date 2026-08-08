@@ -80,7 +80,7 @@
     ],
   )
 
-  set par(justify: true)
+  set par(justify: false)
 
   body
 }
@@ -129,9 +129,13 @@
 }
 
 #let work(title: "", dates: "", company: "", location: "") = {
-  let title-company = if company == "" { title } else { title + " - " + company }
+  let heading = if company == "" {
+    strong(title)
+  } else {
+    [#strong(company) #sym.dash.en #title]
+  }
   generic-one-by-two(
-    left: strong(title-company),
+    left: heading,
     right: {
       if location == "" {
         dates
