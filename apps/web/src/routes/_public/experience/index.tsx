@@ -4,6 +4,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createConvexRouteQueries } from "convex-route-query";
 import { ArrowUpRightIcon } from "lucide-react";
 
+import {
+  differenceInUtcMonths,
+  formatUtcMonthYear,
+  getUtcYear,
+} from "@/lib/resume-date";
 import { createSeo, pageSeo } from "@/lib/seo";
 
 const { listEducation, listExperiences, listProjects } =
@@ -127,11 +132,11 @@ function CompanyEntry(props: CompanyEntryProps) {
   const endDates = sortedRoles
     .map((role) => role.endDate)
     .filter((value): value is number => typeof value === "number");
-  const startYear = new Date(earliestStart).getFullYear();
+  const startYear = getUtcYear(earliestStart);
   let endLabel: number | string = isCurrent ? "Present" : "—";
 
   if (!(isCurrent || endDates.length === 0)) {
-    endLabel = new Date(Math.max(...endDates)).getFullYear();
+    endLabel = getUtcYear(Math.max(...endDates));
   }
 
   return (
@@ -191,8 +196,8 @@ function CompanyEntry(props: CompanyEntryProps) {
             </div>
             <div className="text-sm leading-6 text-base-content/70">
               <p className="font-mono">
-                {formatDate({ date: role.startDate })} –{" "}
-                {role.endDate ? formatDate({ date: role.endDate }) : "Present"}
+                {formatUtcMonthYear(role.startDate)} –{" "}
+                {role.endDate ? formatUtcMonthYear(role.endDate) : "Present"}
               </p>
               <p className="mt-1">{role.location}</p>
             </div>
@@ -335,7 +340,7 @@ function calculateTotalExperience(options: CalculateTotalExperienceOptions) {
 
   for (const experience of experiences) {
     const end = experience.endDate ? new Date(experience.endDate) : new Date();
-    totalMonths += differenceInMonths({
+    totalMonths += differenceInUtcMonths({
       end,
       start: new Date(experience.startDate),
     });
@@ -370,19 +375,6 @@ function groupByCompany(options: GroupByCompanyOptions) {
   return [...groups.values()];
 }
 
-type FormatDateOptions = {
-  readonly date: number;
-};
-
-function formatDate(options: FormatDateOptions) {
-  const { date } = options;
-
-  return new Date(date).toLocaleDateString("en-US", {
-    month: "short",
-    year: "numeric",
-  });
-}
-
 type FormatDurationOptions = {
   readonly endDate: number | undefined;
   readonly startDate: number;
@@ -391,31 +383,12 @@ type FormatDurationOptions = {
 function formatDuration(options: FormatDurationOptions) {
   const { endDate, startDate } = options;
   const totalMonths =
-    differenceInMonths({
+    differenceInUtcMonths({
       end: endDate ? new Date(endDate) : new Date(),
       start: new Date(startDate),
     }) + 1;
 
   return formatMonthCount({ totalMonths });
-}
-
-type DifferenceInMonthsOptions = {
-  readonly end: Date;
-  readonly start: Date;
-};
-
-function differenceInMonths(options: DifferenceInMonthsOptions) {
-  const { end, start } = options;
-  let months =
-    (end.getFullYear() - start.getFullYear()) * 12 +
-    end.getMonth() -
-    start.getMonth();
-
-  if (end.getDate() < start.getDate()) {
-    months -= 1;
-  }
-
-  return Math.max(0, months);
 }
 
 type FormatMonthCountOptions = {

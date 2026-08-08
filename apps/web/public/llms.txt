@@ -1,6 +1,6 @@
 # nahtnam
 
-Manthan (@nahtnam) is a Principal Software Engineer at Mercury. This personal site includes a portfolio, work history, writing, travel stats, a Golf R build ledger, and small public tools.
+Manthan Mallikarjun (@nahtnam) is a Principal Software Engineer at Mercury working on applied AI, product systems, and developer infrastructure. This personal site includes work history, writing, travel stats, a Golf R build ledger, and small public tools.
 
 ## Key pages
 
@@ -24,12 +24,12 @@ Manthan (@nahtnam) is a Principal Software Engineer at Mercury. This personal si
 
 ## Entity facts
 
-- Person: Manthan
+- Person: Manthan Mallikarjun
 - Handle: @nahtnam
 - Role: Principal Software Engineer at Mercury
-- Topics: software engineering, startups, developer tools, personal finance, travel, cars, productivity
+- Topics: applied AI, product engineering, developer infrastructure, TypeScript, startups, personal finance, travel, cars, productivity
 - GitHub: https://github.com/nahtnam
-- X: https://twitter.com/nahtnam
+- X: https://x.com/nahtnam
 
 ## Access notes
 

@@ -1,8 +1,8 @@
 import { appName, appUrl } from "@repo/config/app";
 
-export const siteTitle = "Manthan (@nahtnam)";
+export const siteTitle = "Manthan Mallikarjun (@nahtnam)";
 export const siteDescription =
-  "Personal site of Manthan (@nahtnam), Principal Software Engineer at Mercury, with writing about software, startups, personal finance, travel, and developer tools.";
+  "Manthan Mallikarjun is a Principal Software Engineer at Mercury working on applied AI, product systems, and developer infrastructure.";
 export const siteImage = `${appUrl}/assets/images/me.avif`;
 export const twitterHandle = "@nahtnam";
 const ogImageVersion = "4";
@@ -45,7 +45,7 @@ export const pageSeo = {
   },
   experience: {
     description:
-      "Professional experience, projects, and education for Manthan (@nahtnam), Principal Software Engineer at Mercury.",
+      "Engineering experience for Manthan (@nahtnam), spanning applied AI and fintech at Mercury, zero-trust security at Twingate, and connected mobility at Lime.",
     path: "/experience",
     socialTitle: "Experience",
     title: `Experience | ${siteTitle}`,
@@ -61,7 +61,7 @@ export const pageSeo = {
     description: siteDescription,
     path: "/",
     socialTitle: siteTitle,
-    title: `${siteTitle} - Principal Software Engineer at Mercury`,
+    title: `${siteTitle} | Principal Software Engineer at Mercury`,
   },
   pomodoro: {
     description:

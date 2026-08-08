@@ -2,13 +2,13 @@ import { describe, expect, test } from "vitest";
 
 import { generateOgImagePng } from "../og-image";
 import { getOgTitleFontSize } from "../og-image-renderer";
-import { createSeo, ogImageUrl, pageSeo } from "../seo";
+import { canonicalUrl, createSeo, ogImageUrl, pageSeo } from "../seo";
 
 describe("SEO metadata", () => {
   test("includes accessible social image metadata", () => {
     const seo = createSeo(pageSeo.home);
     const expectedAlt =
-      "Social preview reading “Manthan (@nahtnam)” for @nahtnam";
+      "Social preview reading “Manthan Mallikarjun (@nahtnam)” for @nahtnam";
 
     expect(seo.meta).toContainEqual({
       content: expectedAlt,
@@ -18,6 +18,24 @@ describe("SEO metadata", () => {
       content: expectedAlt,
       name: "twitter:image:alt",
     });
+  });
+
+  test("describes the public experience page without exposing a resume URL", () => {
+    const seo = createSeo(pageSeo.experience);
+
+    expect(seo.links).toContainEqual({
+      href: canonicalUrl("/experience"),
+      rel: "canonical",
+    });
+    expect(seo.meta).toContainEqual({
+      content: pageSeo.experience.description,
+      name: "description",
+    });
+    expect(seo.meta).toContainEqual({
+      content: "index, follow",
+      name: "robots",
+    });
+    expect(JSON.stringify(seo)).not.toContain("/resume");
   });
 
   test("versions minimal generated image URLs to invalidate preview caches", () => {

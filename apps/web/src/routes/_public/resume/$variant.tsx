@@ -34,6 +34,7 @@ export const Route = createFileRoute("/_public/resume/$variant")({
             "Cache-Control": "public, max-age=3600",
             "Content-Disposition": `inline; filename="manthan-mallikarjun-${variant}.pdf"`,
             "Content-Type": "application/pdf",
+            "X-Robots-Tag": "noindex, nofollow, noarchive",
           },
         });
       },
