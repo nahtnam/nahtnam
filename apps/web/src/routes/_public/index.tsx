@@ -16,7 +16,7 @@ const { listExperiences, listPosts } = createConvexRouteQueries({
 const socialLinks = [
   { label: "GitHub", url: "https://github.com/nahtnam" },
   { label: "LinkedIn", url: "https://linkedin.com/in/nahtnam" },
-  { label: "Twitter", url: "https://twitter.com/nahtnam" },
+  { label: "X", url: "https://x.com/nahtnam" },
 ];
 export const Route = createFileRoute("/_public/")({
   component: HomePage,
@@ -46,15 +46,25 @@ function HomePage() {
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    alternateName: "nahtnam",
+    alternateName: "@nahtnam",
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "University of California, Santa Cruz",
+    },
     description: siteDescription,
     image: siteImage,
     jobTitle: currentExperience?.title,
-    name: "Manthan",
+    knowsAbout: [
+      "Applied AI",
+      "Developer infrastructure",
+      "Product engineering",
+      "TypeScript",
+    ],
+    name: "Manthan Mallikarjun",
     sameAs: [
       "https://github.com/nahtnam",
       "https://linkedin.com/in/nahtnam",
-      "https://twitter.com/nahtnam",
+      "https://x.com/nahtnam",
     ],
     url: appUrl,
     worksFor: currentExperience
@@ -112,8 +122,7 @@ function HomePage() {
           ) : null}
 
           <p className="mt-6 text-pretty text-xl leading-8 text-base-content/75">
-            Software Engineer with experience at high-growth startups. Building
-            things that matter.
+            I work on applied AI, product systems, and developer infrastructure.
           </p>
 
           <p className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-base-content/60">

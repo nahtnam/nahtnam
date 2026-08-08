@@ -3,8 +3,8 @@ export const isProduction = process.env.NODE_ENV === "production";
 
 export const appName = "nahtnam";
 export const siteDescription =
-  "Personal site of Manthan (@nahtnam), Principal Software Engineer at Mercury, with writing about software, startups, personal finance, travel, and developer tools.";
-export const siteTitle = "Manthan (@nahtnam)";
+  "Manthan Mallikarjun is a Principal Software Engineer at Mercury working on applied AI, product systems, and developer infrastructure.";
+export const siteTitle = "Manthan Mallikarjun (@nahtnam)";
 export const appUrl = isDevelopment
   ? "https://nahtnam.localhost"
   : "https://www.nahtnam.com";

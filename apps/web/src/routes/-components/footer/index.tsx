@@ -13,7 +13,7 @@ const pageLinks = [
 const socialLinks = [
   { label: "GitHub", url: "https://github.com/nahtnam" },
   { label: "LinkedIn", url: "https://linkedin.com/in/nahtnam" },
-  { label: "Twitter", url: "https://twitter.com/nahtnam" },
+  { label: "X", url: "https://x.com/nahtnam" },
 ];
 
 export function Footer() {
@@ -31,8 +31,8 @@ export function Footer() {
             />
           </p>
           <p className="mt-2 max-w-md text-sm leading-6 text-base-content/60">
-            Software engineer, indie hacker, and occasional writer building
-            things that matter.
+            Principal software engineer working on applied AI, product systems,
+            and developer infrastructure.
           </p>
           <p className="mt-3 font-mono text-[0.7rem] tracking-[0.12em] text-base-content/55 uppercase">
             &copy; {year} {appName}
