@@ -13,6 +13,6 @@ jobs:
   patchworks:
     runs-on: ubuntu-latest
     steps:
-      - uses: ludicroushq/patchworks@v0
+      - uses: ludicroushq/patchworks@e68b50045d9c0f5370cada65b962d7ee05b39f10 # v0.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
