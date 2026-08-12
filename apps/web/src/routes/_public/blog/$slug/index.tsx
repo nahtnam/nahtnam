@@ -15,6 +15,7 @@ import {
   canonicalUrl,
   createSeo,
   ogImageUrl,
+  serializeJsonLd,
   siteImage,
   siteTitle,
 } from "@/lib/seo";
@@ -103,7 +104,7 @@ function BlogPostPage() {
   return (
     <div className="page-shell page-shell-wide">
       <script
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleJsonLd) }}
         type="application/ld+json"
       />
 

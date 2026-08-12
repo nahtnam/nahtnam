@@ -105,6 +105,10 @@ export function ogImageUrl(options: OgImageOptions) {
   return imageUrl.toString();
 }
 
+export function serializeJsonLd(value: unknown) {
+  return JSON.stringify(value).replaceAll("<", "\\u003c");
+}
+
 export function createSeo(options: SeoOptions) {
   const canonical = canonicalUrl(options.path);
   const socialTitle = options.socialTitle ?? options.title;
