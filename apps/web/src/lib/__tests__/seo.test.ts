@@ -2,7 +2,13 @@ import { describe, expect, test } from "vitest";
 
 import { generateOgImagePng } from "../og-image";
 import { getOgTitleFontSize } from "../og-image-renderer";
-import { canonicalUrl, createSeo, ogImageUrl, pageSeo } from "../seo";
+import {
+  canonicalUrl,
+  createSeo,
+  ogImageUrl,
+  pageSeo,
+  serializeJsonLd,
+} from "../seo";
 
 describe("SEO metadata", () => {
   test("includes accessible social image metadata", () => {
@@ -44,6 +50,15 @@ describe("SEO metadata", () => {
 
     expect(imageUrl.searchParams.get("v")).toBe("4");
     expect([...imageUrl.searchParams.keys()]).toStrictEqual(["title", "v"]);
+  });
+
+  test("keeps JSON-LD data from closing its script element", () => {
+    const payload = "</script><script>alert('xss')</script>";
+    const serialized = serializeJsonLd({ description: payload });
+
+    expect(serialized).toContain("\\u003c/script>");
+    expect(serialized).not.toContain("<");
+    expect(JSON.parse(serialized)).toStrictEqual({ description: payload });
   });
 
   test("gives every public page a large-card image with matching Twitter metadata", () => {

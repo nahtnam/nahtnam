@@ -5,7 +5,13 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { createConvexRouteQueries } from "convex-route-query";
 import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react";
 
-import { createSeo, pageSeo, siteDescription, siteImage } from "@/lib/seo";
+import {
+  createSeo,
+  pageSeo,
+  serializeJsonLd,
+  siteDescription,
+  siteImage,
+} from "@/lib/seo";
 import { AnimatedIdentity } from "@/routes/-components/animated-identity";
 
 const { listExperiences, listPosts } = createConvexRouteQueries({
@@ -78,7 +84,7 @@ function HomePage() {
   return (
     <div className="container page-shell-wide pt-10 pb-14 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-24">
       <script
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd) }}
         type="application/ld+json"
       />
 
