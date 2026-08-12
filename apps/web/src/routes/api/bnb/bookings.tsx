@@ -6,9 +6,11 @@ import { ConvexHttpClient } from "convex/browser";
 import { z } from "zod";
 
 import {
-  getBnbSessionPassword,
+  clearBnbSessionCookie,
+  getBnbSessionToken,
   isSameOriginRequest,
 } from "@/lib/bnb/session.server";
+import { isConvexErrorCode } from "@/lib/convex-error";
 
 const bookingSchema = z
   .object({
@@ -26,21 +28,31 @@ export const Route = createFileRoute("/api/bnb/bookings")({
   server: {
     handlers: {
       async GET({ request }) {
-        const password = getBnbSessionPassword(request);
-        if (!password) {
+        const sessionToken = getBnbSessionToken(request);
+        if (!sessionToken) {
           return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         try {
           const convex = new ConvexHttpClient(clientEnv.VITE_CONVEX_URL);
-          const bookings = await convex.query(api.bnb.queries.listBookings, {
-            password,
+          const bookings = await convex.action(api.bnb.queries.listBookings, {
+            sessionToken,
           });
 
           return Response.json(bookings, {
             headers: { "Cache-Control": "private, no-store" },
           });
-        } catch {
+        } catch (error) {
+          if (isConvexErrorCode({ code: "UNAUTHORIZED", error })) {
+            return Response.json(
+              { error: "Unauthorized" },
+              {
+                headers: { "Set-Cookie": clearBnbSessionCookie() },
+                status: 401,
+              }
+            );
+          }
+
           return Response.json(
             { error: "Couch BnB is not configured." },
             { status: 503 }
@@ -52,8 +64,8 @@ export const Route = createFileRoute("/api/bnb/bookings")({
           return Response.json({ error: "Forbidden" }, { status: 403 });
         }
 
-        const password = getBnbSessionPassword(request);
-        if (!password) {
+        const sessionToken = getBnbSessionToken(request);
+        if (!sessionToken) {
           return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
 
@@ -79,11 +91,21 @@ export const Route = createFileRoute("/api/bnb/bookings")({
           const result = await convex.action(api.bnb.actions.requestBooking, {
             ...parsed.data,
             notes,
-            password,
+            sessionToken,
           });
 
           return Response.json(result, { status: 201 });
-        } catch {
+        } catch (error) {
+          if (isConvexErrorCode({ code: "UNAUTHORIZED", error })) {
+            return Response.json(
+              { error: "Unauthorized" },
+              {
+                headers: { "Set-Cookie": clearBnbSessionCookie() },
+                status: 401,
+              }
+            );
+          }
+
           return Response.json(
             { error: "Something went wrong. Try again." },
             { status: 500 }

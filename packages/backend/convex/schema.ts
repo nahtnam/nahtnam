@@ -45,6 +45,12 @@ export default defineSchema({
     .index("by_publishedAt", ["publishedAt"])
     .index("by_categoryId", ["categoryId"]),
 
+  bnbAuthAttempts: defineTable({
+    failedAttempts: v.number(),
+    scope: v.literal("global"),
+    windowStartedAt: v.number(),
+  }).index("by_scope", ["scope"]),
+
   bnbBookings: defineTable({
     checkIn: v.string(),
     checkOut: v.string(),
@@ -56,6 +62,11 @@ export default defineSchema({
       v.literal("rejected")
     ),
   }).index("by_status", ["status"]),
+
+  bnbSessions: defineTable({
+    expiresAt: v.number(),
+    tokenHash: v.string(),
+  }).index("by_tokenHash", ["tokenHash"]),
 
   golfRItems: defineTable({
     attachments: v.optional(

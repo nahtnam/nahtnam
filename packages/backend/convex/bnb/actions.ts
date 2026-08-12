@@ -4,14 +4,24 @@ import { ConvexError, v } from "convex/values";
 
 import type { Id } from "../_generated/dataModel";
 import { convex } from "../fluent";
-import { requireBnbPassword } from "../lib/secrets";
 import { escapeTelegramHtml, sendTelegramMessage } from "../lib/telegram";
+import {
+  assertValidBnbSessionToken,
+  BNB_SESSION_TTL_MS,
+  createBnbSessionToken,
+  hashBnbSessionToken,
+} from "./auth";
 
-type CreateBookingArgs = {
+type BookingInput = {
   checkIn: string;
   checkOut: string;
   guests: string[];
   notes?: string;
+};
+
+type CreateBookingArgs = BookingInput & {
+  now: number;
+  sessionTokenHash: string;
 };
 
 const createBookingReference = makeFunctionReference(
@@ -23,7 +33,21 @@ const createBookingReference = makeFunctionReference(
   Id<"bnbBookings">
 >;
 
-function assertBookingInput(args: CreateBookingArgs) {
+type PasswordVerificationResult =
+  | { status: "rate_limited" }
+  | { status: "valid" }
+  | { status: "wrong" };
+
+const authorizeSessionReference = makeFunctionReference(
+  "bnb/auth:authorizeBnbSession"
+) as unknown as FunctionReference<
+  "mutation",
+  "internal",
+  { expiresAt: number; password: string; tokenHash: string },
+  PasswordVerificationResult
+>;
+
+function assertBookingInput(args: BookingInput) {
   const datePattern = /^\d{4}-\d{2}-\d{2}$/u;
 
   if (!(datePattern.test(args.checkIn) && datePattern.test(args.checkOut))) {
@@ -65,9 +89,31 @@ function assertBookingInput(args: CreateBookingArgs) {
 export const verifyPassword = convex
   .action()
   .input({ password: v.string() })
-  .handler((_ctx, args) => {
-    requireBnbPassword(args.password);
-    return Promise.resolve({ success: true as const });
+  .handler(async (ctx, args) => {
+    const sessionToken = createBnbSessionToken();
+    const expiresAt = Date.now() + BNB_SESSION_TTL_MS;
+    const tokenHash = await hashBnbSessionToken(sessionToken);
+    const verification = await ctx.runMutation(authorizeSessionReference, {
+      expiresAt,
+      password: args.password,
+      tokenHash,
+    });
+
+    if (verification.status === "rate_limited") {
+      throw new ConvexError({
+        code: "RATE_LIMITED",
+        message: "Too many password attempts",
+      });
+    }
+
+    if (verification.status === "wrong") {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Wrong password",
+      });
+    }
+
+    return { expiresAt, sessionToken, success: true as const };
   })
   .public();
 
@@ -78,10 +124,11 @@ export const requestBooking = convex
     checkOut: v.string(),
     guests: v.array(v.string()),
     notes: v.optional(v.string()),
-    password: v.string(),
+    sessionToken: v.string(),
   })
   .handler(async (ctx, args) => {
-    requireBnbPassword(args.password);
+    assertValidBnbSessionToken(args.sessionToken);
+    const sessionTokenHash = await hashBnbSessionToken(args.sessionToken);
 
     const booking = {
       checkIn: args.checkIn,
@@ -90,7 +137,11 @@ export const requestBooking = convex
       notes: args.notes?.trim() || undefined,
     };
     assertBookingInput(booking);
-    await ctx.runMutation(createBookingReference, booking);
+    await ctx.runMutation(createBookingReference, {
+      ...booking,
+      now: Date.now(),
+      sessionTokenHash,
+    });
 
     const notesMessage = booking.notes
       ? `\n<b>Notes:</b>\n${escapeTelegramHtml(booking.notes)}`

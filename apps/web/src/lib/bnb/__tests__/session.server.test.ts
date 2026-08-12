@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   clearBnbSessionCookie,
   createBnbSessionCookie,
-  getBnbSessionPassword,
+  getBnbSessionToken,
 } from "../session.server";
 
 vi.mock(import("@repo/config/env/server"), () => ({
@@ -17,26 +17,45 @@ vi.mock(import("@repo/config/env/server"), () => ({
 }));
 
 describe("Couch BnB session cookies", () => {
-  it("round-trips the password without storing it as plaintext", () => {
-    const password = "friends-only-secret";
-    const setCookie = createBnbSessionCookie({ password });
+  it("round-trips an opaque capability without exposing it", () => {
+    const sessionToken = "a".repeat(64);
+    const setCookie = createBnbSessionCookie({
+      expiresAt: Date.now() + 60_000,
+      sessionToken,
+    });
     const cookie = setCookie.split(";", 1)[0] ?? "";
     const request = new Request("https://example.com/api/bnb/bookings", {
       headers: { Cookie: cookie },
     });
 
-    expect(cookie).not.toContain(password);
-    expect(getBnbSessionPassword(request)).toBe(password);
+    expect(cookie).not.toContain(sessionToken);
+    expect(getBnbSessionToken(request)).toBe(sessionToken);
   });
 
   it("rejects a tampered session", () => {
-    const setCookie = createBnbSessionCookie({ password: "secret" });
+    const setCookie = createBnbSessionCookie({
+      expiresAt: Date.now() + 60_000,
+      sessionToken: "b".repeat(64),
+    });
     const cookie = setCookie.split(";", 1)[0] ?? "";
     const request = new Request("https://example.com/api/bnb/bookings", {
       headers: { Cookie: `${cookie}tampered` },
     });
 
-    expect(getBnbSessionPassword(request)).toBeUndefined();
+    expect(getBnbSessionToken(request)).toBeUndefined();
+  });
+
+  it("rejects an expired capability", () => {
+    const setCookie = createBnbSessionCookie({
+      expiresAt: Date.now() - 1000,
+      sessionToken: "c".repeat(64),
+    });
+    const cookie = setCookie.split(";", 1)[0] ?? "";
+    const request = new Request("https://example.com/api/bnb/bookings", {
+      headers: { Cookie: cookie },
+    });
+
+    expect(getBnbSessionToken(request)).toBeUndefined();
   });
 
   it("clears the scoped cookie", () => {
