@@ -1,6 +1,7 @@
 # Project Instructions
 
 - Do not run dev servers or database-altering CLIs without explicit user permission. Complete static work first, then tell the user which interactive commands remain.
+- Keep machine-managed worker checkouts clean and fast-forwardable. If a worker needs a code or dependency fix, verify it, commit it, and push it; do not leave uncommitted patches or local-only commits.
 - Treat this repository as a reusable app starter. Keep applications unscoped, reserve `@repo/*` for internal packages, put shared app and environment configuration in `@repo/config`, and keep Convex source in `packages/backend/convex`.
 - Run Convex CLI commands from the repository root with `bun convex`. The backend package owns `convex.json` and the `convex` source directory; the repository root owns the shared environment and AI skills. Read `packages/backend/convex/_generated/ai/guidelines.md` before changing Convex code.
 - For WorkOS AuthKit, keep sign-in and sign-up distinct, redirect login to `/app` and logout to `/`, use the public portless URL for local callbacks, and use the SDK's standard server environment variables. Use the client `signOut()` flow for browser-initiated logout.

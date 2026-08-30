@@ -9,6 +9,7 @@
   "dependencies": {
     "@repo/backend": "workspace:*",
     "convex": "^1.42.1",
+    "iconv-lite": "^0.7.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-thermal-printer": "^0.22.0",
