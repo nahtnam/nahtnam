@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 
 import { convex } from "../fluent";
+import { hasActiveBnbSession, unauthorizedBnbSession } from "./auth";
 
 export const createBooking = convex
   .mutation()
@@ -9,8 +10,26 @@ export const createBooking = convex
     checkOut: v.string(),
     guests: v.array(v.string()),
     notes: v.optional(v.string()),
+    now: v.number(),
+    sessionTokenHash: v.string(),
   })
-  .handler((ctx, args) =>
-    ctx.db.insert("bnbBookings", { ...args, status: "pending" })
-  )
+  .handler(async (ctx, args) => {
+    if (
+      !(await hasActiveBnbSession({
+        ctx,
+        now: args.now,
+        tokenHash: args.sessionTokenHash,
+      }))
+    ) {
+      unauthorizedBnbSession();
+    }
+
+    return ctx.db.insert("bnbBookings", {
+      checkIn: args.checkIn,
+      checkOut: args.checkOut,
+      guests: args.guests,
+      notes: args.notes,
+      status: "pending",
+    });
+  })
   .internal();

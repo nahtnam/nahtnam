@@ -32,13 +32,18 @@ const getPost = makeFunctionReference<
   PublicPost | null
 >("blog/queries:getPost");
 const listBookings = makeFunctionReference<
-  "query",
-  { password: string },
+  "action",
+  { sessionToken: string },
   {
     accepted: Doc<"bnbBookings">[];
     pending: Doc<"bnbBookings">[];
   }
 >("bnb/queries:listBookings");
+const verifyPassword = makeFunctionReference<
+  "action",
+  { password: string },
+  { expiresAt: number; sessionToken: string; success: true }
+>("bnb/actions:verifyPassword");
 const isAuthorized = makeFunctionReference<
   "query",
   Record<string, never>,
@@ -157,7 +162,7 @@ describe("migrated public data contracts", () => {
     });
   });
 
-  test("requires the server-held BnB password before exposing bookings", async () => {
+  test("requires a BnB capability before exposing bookings", async () => {
     const t = convexTest(schema, modules);
 
     await t.run(async (ctx) => {
@@ -181,11 +186,14 @@ describe("migrated public data contracts", () => {
       });
     });
 
-    await expect(t.query(listBookings, { password: "wrong" })).rejects.toThrow(
-      "Wrong password"
-    );
+    await expect(
+      t.action(listBookings, { sessionToken: "a".repeat(64) })
+    ).rejects.toThrow("Unauthorized");
 
-    const bookings = await t.query(listBookings, { password: "bnb-secret" });
+    const session = await t.action(verifyPassword, { password: "bnb-secret" });
+    const bookings = await t.action(listBookings, {
+      sessionToken: session.sessionToken,
+    });
 
     expect(bookings.accepted.map(({ guests }) => guests[0])).toStrictEqual([
       "Ada",

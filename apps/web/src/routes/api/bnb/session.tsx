@@ -10,10 +10,17 @@ import {
   createBnbSessionCookie,
   isSameOriginRequest,
 } from "@/lib/bnb/session.server";
+import { isConvexErrorCode } from "@/lib/convex-error";
 
 const sessionSchema = z.object({
   password: z.string().min(1).max(200),
 });
+
+type BnbSessionCapability = {
+  expiresAt: number;
+  sessionToken: string;
+  success: true;
+};
 
 export const Route = createFileRoute("/api/bnb/session")({
   server: {
@@ -51,19 +58,35 @@ export const Route = createFileRoute("/api/bnb/session")({
 
         const convex = new ConvexHttpClient(clientEnv.VITE_CONVEX_URL);
 
+        let session: BnbSessionCapability;
         try {
-          await convex.action(api.bnb.actions.verifyPassword, parsed.data);
-        } catch {
-          return Response.json({ error: "Wrong password." }, { status: 401 });
+          session = await convex.action(
+            api.bnb.actions.verifyPassword,
+            parsed.data
+          );
+        } catch (error) {
+          if (isConvexErrorCode({ code: "RATE_LIMITED", error })) {
+            return Response.json(
+              { error: "Too many attempts. Try again later." },
+              { status: 429 }
+            );
+          }
+
+          if (isConvexErrorCode({ code: "UNAUTHORIZED", error })) {
+            return Response.json({ error: "Wrong password." }, { status: 401 });
+          }
+
+          return Response.json(
+            { error: "Couch BnB is not configured." },
+            { status: 503 }
+          );
         }
 
         return Response.json(
           { success: true },
           {
             headers: {
-              "Set-Cookie": createBnbSessionCookie({
-                password: parsed.data.password,
-              }),
+              "Set-Cookie": createBnbSessionCookie(session),
             },
           }
         );

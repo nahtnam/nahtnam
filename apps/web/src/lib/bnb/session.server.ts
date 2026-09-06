@@ -8,14 +8,15 @@ import {
 import { serverEnv } from "@repo/config/env/server";
 
 const COOKIE_NAME = "nahtnam_bnb_session";
-const SESSION_SECONDS = 60 * 60 * 24 * 30;
 
-export function createBnbSessionCookie(options: { password: string }) {
-  const expiresAt = Date.now() + SESSION_SECONDS * 1000;
-  const value = encryptSession({ expiresAt, password: options.password });
+export function createBnbSessionCookie(options: {
+  expiresAt: number;
+  sessionToken: string;
+}) {
+  const value = encryptSession(options);
 
   return serializeCookie({
-    maxAge: SESSION_SECONDS,
+    maxAge: Math.max(0, Math.floor((options.expiresAt - Date.now()) / 1000)),
     value,
   });
 }
@@ -24,7 +25,7 @@ export function clearBnbSessionCookie() {
   return serializeCookie({ maxAge: 0, value: "" });
 }
 
-export function getBnbSessionPassword(request: Request) {
+export function getBnbSessionToken(request: Request) {
   const value = readCookie({ cookieHeader: request.headers.get("cookie") });
   if (!value) {
     return;
@@ -35,7 +36,7 @@ export function getBnbSessionPassword(request: Request) {
     return;
   }
 
-  return session.password;
+  return session.sessionToken;
 }
 
 export function isSameOriginRequest(request: Request) {
@@ -46,7 +47,7 @@ export function isSameOriginRequest(request: Request) {
 
 type BnbSession = {
   expiresAt: number;
-  password: string;
+  sessionToken: string;
 };
 
 function encryptionKey() {
@@ -101,8 +102,8 @@ function decryptSession(value: string) {
     if (
       typeof parsed.expiresAt !== "number" ||
       !Number.isFinite(parsed.expiresAt) ||
-      typeof parsed.password !== "string" ||
-      !parsed.password
+      typeof parsed.sessionToken !== "string" ||
+      !/^[\da-f]{64}$/u.test(parsed.sessionToken)
     ) {
       return;
     }
