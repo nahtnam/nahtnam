@@ -3,8 +3,8 @@ import type { Infer } from "convex/values";
 
 import type { Doc, Id } from "./_generated/dataModel";
 import type { MutationCtx } from "./_generated/server";
-import { aiError, DAY_MS, requireItemOwner } from "./ai-helpers";
-import type { decisionAction } from "./ai-tables";
+import { aiError, DAY_MS, requireItemOwner } from "./ai_helpers";
+import type { decisionAction } from "./ai_tables";
 
 export type Decision = Infer<typeof decisionAction>;
 

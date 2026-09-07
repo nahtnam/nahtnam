@@ -70,20 +70,20 @@ describe("urgent SMS delivery", () => {
   test("rejects an invalid machine token before returning personal data", async () => {
     const { t } = await setup();
     await expect(
-      t.mutation(api["ai-delivery"].reserve, { ...sendArgs, secret: "wrong" })
+      t.mutation(api["ai_delivery"].reserve, { ...sendArgs, secret: "wrong" })
     ).rejects.toThrow("Unauthorized");
   });
 
   test("deduplicates the incident milestone even after a new wording/version", async () => {
     const { t, itemId } = await setup();
-    const first = await t.mutation(api["ai-delivery"].reserve, sendArgs);
+    const first = await t.mutation(api["ai_delivery"].reserve, sendArgs);
     await t.run((ctx) =>
       ctx.db.patch("aiItems", itemId, {
         title: "Printer still needs access",
         version: 2,
       })
     );
-    const duplicate = await t.mutation(api["ai-delivery"].reserve, {
+    const duplicate = await t.mutation(api["ai_delivery"].reserve, {
       ...sendArgs,
       expectedVersion: 2,
       idempotencyKey: "other-key",
@@ -94,13 +94,13 @@ describe("urgent SMS delivery", () => {
 
   test("does not resend an uncertain provider request", async () => {
     const { t } = await setup();
-    const first = await t.mutation(api["ai-delivery"].reserve, sendArgs);
-    await t.mutation(api["ai-delivery"].settle, {
+    const first = await t.mutation(api["ai_delivery"].reserve, sendArgs);
+    await t.mutation(api["ai_delivery"].settle, {
       id: first.id,
       secret,
       status: "unknown",
     });
-    const retry = await t.mutation(api["ai-delivery"].reserve, sendArgs);
+    const retry = await t.mutation(api["ai_delivery"].reserve, sendArgs);
     expect(retry).toMatchObject({
       id: first.id,
       send: false,
@@ -117,13 +117,13 @@ describe("urgent SMS delivery", () => {
         nextNotifyAt: now + 86_400_000,
       })
     );
-    const fallback = await t.mutation(api["ai-delivery"].reserve, sendArgs);
+    const fallback = await t.mutation(api["ai_delivery"].reserve, sendArgs);
     expect(fallback.send).toBeTruthy();
     await t.run((ctx) =>
       ctx.db.patch("aiItems", itemId, { status: "snoozed" })
     );
     await expect(
-      t.mutation(api["ai-delivery"].reserve, {
+      t.mutation(api["ai_delivery"].reserve, {
         ...sendArgs,
         idempotencyKey: "new",
       })
@@ -132,7 +132,7 @@ describe("urgent SMS delivery", () => {
       ctx.db.patch("aiItems", itemId, { status: "open", usefulUntil: now - 1 })
     );
     await expect(
-      t.mutation(api["ai-delivery"].reserve, {
+      t.mutation(api["ai_delivery"].reserve, {
         ...sendArgs,
         idempotencyKey: "new",
       })
@@ -141,28 +141,28 @@ describe("urgent SMS delivery", () => {
 
   test("rejects mismatched provider callbacks and never downgrades delivered", async () => {
     const { t } = await setup();
-    const delivery = await t.mutation(api["ai-delivery"].reserve, sendArgs);
-    await t.mutation(api["ai-delivery"].settle, {
+    const delivery = await t.mutation(api["ai_delivery"].reserve, sendArgs);
+    await t.mutation(api["ai_delivery"].settle, {
       id: delivery.id,
       providerId: "SM-one",
       secret,
       status: "sent",
     });
     await expect(
-      t.mutation(api["ai-delivery"].recordStatus, {
+      t.mutation(api["ai_delivery"].recordStatus, {
         id: delivery.id,
         providerId: "SM-other",
         secret,
         status: "delivered",
       })
     ).rejects.toThrow("does not match");
-    await t.mutation(api["ai-delivery"].recordStatus, {
+    await t.mutation(api["ai_delivery"].recordStatus, {
       id: delivery.id,
       providerId: "SM-one",
       secret,
       status: "delivered",
     });
-    const lateFailure = await t.mutation(api["ai-delivery"].recordStatus, {
+    const lateFailure = await t.mutation(api["ai_delivery"].recordStatus, {
       id: delivery.id,
       providerId: "SM-one",
       secret,
@@ -183,7 +183,7 @@ describe("urgent SMS delivery", () => {
       })
     );
     await expect(
-      t.mutation(api["ai-delivery"].reserve, sendArgs)
+      t.mutation(api["ai_delivery"].reserve, sendArgs)
     ).rejects.toThrow("Only a current");
   });
 });

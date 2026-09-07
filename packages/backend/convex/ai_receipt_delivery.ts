@@ -6,7 +6,7 @@ import {
   DAY_MS,
   isEligible,
   requirePrimarySettings,
-} from "./ai-helpers";
+} from "./ai_helpers";
 
 // These helpers run in the same transaction as print-job state changes.
 // Queue acceptance reserves an appearance; worker dispatch consumes it.

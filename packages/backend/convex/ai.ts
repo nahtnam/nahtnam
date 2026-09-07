@@ -1,7 +1,7 @@
 /* oxlint-disable sonarjs/no-undefined-assignment */
 import { v } from "convex/values";
 
-import { decide, undoAction } from "./ai-decisions";
+import { decide, undoAction } from "./ai_decisions";
 import {
   aiError,
   boundedText,
@@ -14,9 +14,9 @@ import {
   requireItemOwner,
   requirePrimarySettings,
   timestamp,
-} from "./ai-helpers";
-import { candidateValidator, ingestItems } from "./ai-ingestion";
-import { publishFields, publishReceipt } from "./ai-publishing";
+} from "./ai_helpers";
+import { candidateValidator, ingestItems } from "./ai_ingestion";
+import { publishFields, publishReceipt } from "./ai_publishing";
 import {
   receiveSms,
   storeReply,
@@ -24,8 +24,8 @@ import {
   acknowledgeStoredReply,
   applyStoredReplyDecision,
   replyFields,
-} from "./ai-replies";
-import { decisionAction } from "./ai-tables";
+} from "./ai_replies";
+import { decisionAction } from "./ai_tables";
 import { adminMutation, adminQuery, convex } from "./fluent";
 import { requireAiSecret } from "./lib/secrets";
 

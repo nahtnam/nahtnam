@@ -4,12 +4,12 @@ import { ConvexError, v } from "convex/values";
 import { isPrintActionPath } from "../src/print-path";
 import type { Doc, Id } from "./_generated/dataModel";
 import type { MutationCtx } from "./_generated/server";
-import { getPrimarySettings, isPending } from "./ai-helpers";
+import { getPrimarySettings, isPending } from "./ai_helpers";
 import {
   recordReceiptDispatched,
   releaseReceiptReservation,
   reserveReceiptForRetry,
-} from "./ai-receipt-delivery";
+} from "./ai_receipt_delivery";
 import { convex } from "./fluent";
 import { requirePrintSecret } from "./lib/secrets";
 

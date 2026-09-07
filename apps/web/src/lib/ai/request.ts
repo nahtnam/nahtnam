@@ -43,7 +43,7 @@ export const aiRequestSchema = z.discriminatedUnion("operation", [
   z.strictObject({
     expiresAt: timestamp.optional(),
     idempotencyKey: z.string().min(1).max(160),
-    mode: z.enum(["actions", "timed"]).optional(),
+    mode: z.enum(["actions", "brief", "timed"]).optional(),
     operation: z.literal("publish"),
     source: z.string().min(1).max(80).optional(),
     title: z.string().min(1).max(48).optional(),

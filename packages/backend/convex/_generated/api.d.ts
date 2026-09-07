@@ -9,15 +9,15 @@
  */
 
 import type * as ai from "../ai.js";
-import type * as ai_decisions from "../ai-decisions.js";
-import type * as ai_ingestion from "../ai-ingestion.js";
-import type * as ai_publishing from "../ai-publishing.js";
-import type * as ai_replies from "../ai-replies.js";
-import type * as ai_helpers from "../ai-helpers.js";
-import type * as ai_tables from "../ai-tables.js";
-import type * as ai_delivery from "../ai-delivery.js";
-import type * as ai_delivery_tables from "../ai-delivery-tables.js";
-import type * as ai_receipt_delivery from "../ai-receipt-delivery.js";
+import type * as ai_decisions from "../ai_decisions.js";
+import type * as ai_ingestion from "../ai_ingestion.js";
+import type * as ai_publishing from "../ai_publishing.js";
+import type * as ai_replies from "../ai_replies.js";
+import type * as ai_helpers from "../ai_helpers.js";
+import type * as ai_tables from "../ai_tables.js";
+import type * as ai_delivery from "../ai_delivery.js";
+import type * as ai_delivery_tables from "../ai_delivery_tables.js";
+import type * as ai_receipt_delivery from "../ai_receipt_delivery.js";
 import type * as admin_auth from "../admin/auth.js";
 import type * as admin_blog from "../admin/blog.js";
 import type * as admin_bnb from "../admin/bnb.js";
@@ -51,15 +51,15 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  "ai-decisions": typeof ai_decisions;
-  "ai-ingestion": typeof ai_ingestion;
-  "ai-publishing": typeof ai_publishing;
-  "ai-replies": typeof ai_replies;
-  "ai-receipt-delivery": typeof ai_receipt_delivery;
-  "ai-delivery-tables": typeof ai_delivery_tables;
-  "ai-delivery": typeof ai_delivery;
-  "ai-tables": typeof ai_tables;
-  "ai-helpers": typeof ai_helpers;
+  "ai_decisions": typeof ai_decisions;
+  "ai_ingestion": typeof ai_ingestion;
+  "ai_publishing": typeof ai_publishing;
+  "ai_replies": typeof ai_replies;
+  "ai_receipt_delivery": typeof ai_receipt_delivery;
+  "ai_delivery_tables": typeof ai_delivery_tables;
+  "ai_delivery": typeof ai_delivery;
+  "ai_tables": typeof ai_tables;
+  "ai_helpers": typeof ai_helpers;
   "ai": typeof ai;
   "admin/auth": typeof admin_auth;
   "admin/blog": typeof admin_blog;

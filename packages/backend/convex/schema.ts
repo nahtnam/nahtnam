@@ -1,8 +1,8 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-import { aiDeliveryTables } from "./ai-delivery-tables";
-import { aiTables } from "./ai-tables";
+import { aiDeliveryTables } from "./ai_delivery_tables";
+import { aiTables } from "./ai_tables";
 
 export default defineSchema({
   ...aiDeliveryTables,

@@ -16,7 +16,7 @@ export async function notifyUrgentItem(options: {
   if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
     throw new Error("Outbound SMS is not configured.");
   }
-  const delivery = await convex.mutation(api["ai-delivery"].reserve, {
+  const delivery = await convex.mutation(api["ai_delivery"].reserve, {
     code,
     expectedVersion,
     idempotencyKey,
@@ -43,14 +43,14 @@ export async function notifyUrgentItem(options: {
   } catch {
     // A timeout can happen after Twilio accepts the message. Keep the reservation
     // and require provider readback instead of risking a duplicate urgent text.
-    await convex.mutation(api["ai-delivery"].settle, {
+    await convex.mutation(api["ai_delivery"].settle, {
       id: delivery.id,
       secret,
       status: "unknown",
     });
     return { id: delivery.id, status: "unknown" };
   }
-  const result = await convex.mutation(api["ai-delivery"].settle, {
+  const result = await convex.mutation(api["ai_delivery"].settle, {
     id: delivery.id,
     providerId,
     secret,
