@@ -6,6 +6,7 @@ import { printJobFunctions } from "@repo/backend/print";
 import { ConvexClient } from "convex/browser";
 
 import { workerEnv } from "./config/env";
+import { assertPrintWindow } from "./expiry";
 import { renderPrintJob } from "./templates";
 
 const printerPort = workerEnv.PRINTER_PORT ?? 9100;
@@ -15,7 +16,8 @@ const client = new ConvexClient(workerEnv.CONVEX_URL);
 let draining = false;
 let wakeTimer: NodeJS.Timeout | undefined;
 
-async function sendToPrinter(data: Uint8Array) {
+async function sendToPrinter(data: Uint8Array, expiresAt?: number) {
+  assertPrintWindow(expiresAt);
   // Node's socket API is callback-based; this promise provides backpressure.
   // oxlint-disable-next-line promise/avoid-new
   await new Promise<void>((resolve, reject) => {
@@ -26,6 +28,10 @@ async function sendToPrinter(data: Uint8Array) {
         timeout: 10_000,
       },
       () => {
+        if (expiresAt !== undefined && expiresAt <= Date.now()) {
+          socket.destroy(new Error("Receipt expired before printer delivery"));
+          return;
+        }
         socket.end(data);
       }
     );
@@ -39,7 +45,8 @@ async function sendToPrinter(data: Uint8Array) {
 }
 
 async function printReceipt(job: ClaimedPrintJob) {
-  await sendToPrinter(await renderPrintJob(job));
+  assertPrintWindow(job.expiresAt);
+  await sendToPrinter(await renderPrintJob(job), job.expiresAt);
 }
 
 function claimNext() {
@@ -84,7 +91,7 @@ async function drainQueue() {
       try {
         await printReceipt(job);
         await markPrinted(job);
-        console.log(`Printed ${job._id}`);
+        console.log(`Sent to printer ${job._id}`);
       } catch (error) {
         await markFailed(job, error);
         console.error(`Failed ${job._id}`, error);

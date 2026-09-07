@@ -2,6 +2,7 @@ import type { EnvDefinition } from "convex/server";
 import { v } from "convex/values";
 
 export const convexEnv = {
+  AI_AUTOMATION_SECRET: v.optional(v.string()),
   BNB_PASSWORD: v.string(),
   POSTHOG_API_KEY: v.optional(v.string()),
   PRINT_SECRET: v.optional(v.string()),

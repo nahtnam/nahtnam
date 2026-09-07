@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./ai-command": "./src/ai-command.ts",
     "./api": {
       "types": "./convex/_generated/api.d.ts",
       "default": "./convex/_generated/api.js"

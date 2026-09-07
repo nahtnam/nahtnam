@@ -1,6 +1,7 @@
 import { env } from "../_generated/server";
 
 type FeatureEnv = {
+  readonly AI_AUTOMATION_SECRET?: string;
   readonly BNB_PASSWORD: string;
   readonly PRINT_SECRET?: string;
   readonly TELEGRAM_BOT_TOKEN: string;

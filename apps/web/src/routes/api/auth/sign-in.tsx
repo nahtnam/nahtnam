@@ -6,7 +6,9 @@ export const Route = createFileRoute("/api/auth/sign-in")({
     handlers: {
       // oxlint-disable-next-line sonarjs/function-name
       async GET() {
-        const signInUrl = await getSignInUrl();
+        const signInUrl = await getSignInUrl({
+          data: { returnPathname: "/app" },
+        });
 
         return new Response(null, {
           headers: {

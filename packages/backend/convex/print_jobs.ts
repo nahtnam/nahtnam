@@ -1,6 +1,15 @@
 /* oxlint-disable sonarjs/no-undefined-assignment */
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 
+import { isPrintActionPath } from "../src/print-path";
+import type { Doc, Id } from "./_generated/dataModel";
+import type { MutationCtx } from "./_generated/server";
+import { getPrimarySettings, isPending } from "./ai-helpers";
+import {
+  recordReceiptDispatched,
+  releaseReceiptReservation,
+  reserveReceiptForRetry,
+} from "./ai-receipt-delivery";
 import { convex } from "./fluent";
 import { requirePrintSecret } from "./lib/secrets";
 
@@ -20,6 +29,7 @@ const TEXT_MESSAGE_DAILY_WINDOW_MS = 24 * 60 * 60_000;
 const payloadValidator = v.union(
   v.object({
     _type: v.literal("message"),
+    actionPath: v.optional(v.string()),
     body: v.string(),
     title: v.optional(v.string()),
   }),
@@ -35,47 +45,305 @@ const payloadValidator = v.union(
   })
 );
 
+type CreatePrintJobInput = {
+  aiReceiptId?: Id<"aiReceipts">;
+  availableAt?: number;
+  expiresAt?: number;
+  idempotencyKey?: string;
+  payload: Doc<"printJobs">["payload"];
+  source: string;
+};
+
+function invalidState(message: string): never {
+  throw new ConvexError({ code: "INVALID_STATE", message });
+}
+
+function isExpired(job: { expiresAt?: number }, now: number) {
+  return job.expiresAt !== undefined && job.expiresAt <= now;
+}
+
+async function expirePrintJob(
+  ctx: MutationCtx,
+  job: Doc<"printJobs">,
+  now: number
+) {
+  if (job.aiReceiptId) {
+    await releaseReceiptReservation(ctx, job.aiReceiptId);
+  }
+  await ctx.db.patch("printJobs", job._id, {
+    printState: {
+      ...job.printState,
+      claimedAt: undefined,
+      claimedBy: undefined,
+      expiredAt: now,
+      leaseExpiresAt: undefined,
+    },
+    status: "expired",
+  });
+  return { id: job._id, status: "expired" as const };
+}
+
+async function cancelQueuedReceipt(
+  ctx: MutationCtx,
+  job: Doc<"printJobs">,
+  reason: string,
+  now: number
+) {
+  if (job.aiReceiptId) {
+    await releaseReceiptReservation(ctx, job.aiReceiptId);
+  }
+  await ctx.db.patch("printJobs", job._id, {
+    printState: {
+      ...job.printState,
+      cancelledAt: now,
+      lastError: `Receipt cancelled: ${reason}`,
+    },
+    status: "cancelled",
+  });
+}
+
+async function staleReceiptReason(
+  ctx: MutationCtx,
+  job: Doc<"printJobs">,
+  now: number
+) {
+  if (!job.aiReceiptId) {
+    return null;
+  }
+  const [receipt, settings] = await Promise.all([
+    ctx.db.get("aiReceipts", job.aiReceiptId),
+    getPrimarySettings(ctx),
+  ]);
+  if (
+    !receipt ||
+    receipt.printJobId !== job._id ||
+    receipt.items.length === 0
+  ) {
+    return "the action receipt is unavailable";
+  }
+  if (
+    !settings ||
+    receipt.ownerTokenIdentifier !== settings.ownerTokenIdentifier
+  ) {
+    return "the action center owner changed";
+  }
+  if (!settings.paperEnabled) {
+    return "paper delivery is paused";
+  }
+  if (receipt.expiresAt <= now) {
+    return "the action receipt expired";
+  }
+  const pausedSources = new Set(settings.pausedSources);
+  const checks = await Promise.all(
+    receipt.items.map(async (snapshot) => {
+      const item = await ctx.db.get("aiItems", snapshot.itemId);
+      if (!item || item.ownerTokenIdentifier !== receipt.ownerTokenIdentifier) {
+        return "an action is unavailable";
+      }
+      if (pausedSources.has(item.source)) {
+        return "an action source is paused";
+      }
+      if (!isPending(item, now)) {
+        return "an action was completed, dismissed or snoozed";
+      }
+      if (item.version !== snapshot.version || item.code !== snapshot.code) {
+        return "an action changed after the receipt was prepared";
+      }
+      if (item.usefulUntil <= now || item.evidenceAt > now) {
+        return "an action is no longer useful now";
+      }
+      if (item.pendingReceiptId !== receipt._id) {
+        return "an action has a different delivery reservation";
+      }
+      return null;
+    })
+  );
+  return checks.find((reason) => reason !== null) ?? null;
+}
+
+async function currentCandidate(
+  ctx: MutationCtx,
+  job: Doc<"printJobs">,
+  now: number
+) {
+  if (isExpired(job, now)) {
+    await expirePrintJob(ctx, job, now);
+    return null;
+  }
+  const reason = await staleReceiptReason(ctx, job, now);
+  if (reason) {
+    await cancelQueuedReceipt(ctx, job, reason, now);
+    return null;
+  }
+  return job;
+}
+
+// Only call these helpers after the caller's machine/admin authorization. They
+// keep receipt publishing and its print job in the same database transaction.
+export async function createPrintJob(
+  ctx: MutationCtx,
+  args: CreatePrintJobInput
+) {
+  if (
+    args.payload._type === "message" &&
+    args.payload.actionPath !== undefined &&
+    !isPrintActionPath(args.payload.actionPath)
+  ) {
+    throw new ConvexError({
+      code: "INVALID_INPUT",
+      message: "Action path must stay within /ai",
+    });
+  }
+  for (const timestamp of [args.availableAt, args.expiresAt]) {
+    if (
+      timestamp !== undefined &&
+      (!Number.isFinite(timestamp) || timestamp < 0)
+    ) {
+      throw new ConvexError({
+        code: "INVALID_INPUT",
+        message: "Print times must be finite epoch milliseconds",
+      });
+    }
+  }
+
+  if (args.idempotencyKey) {
+    const existing = await ctx.db
+      .query("printJobs")
+      .withIndex("by_idempotencyKey", (query) =>
+        query.eq("idempotencyKey", args.idempotencyKey)
+      )
+      .first();
+
+    if (existing) {
+      return { id: existing._id, status: existing.status };
+    }
+  }
+
+  const now = Date.now();
+  const status = isExpired(args, now) ? "expired" : "queued";
+  const id = await ctx.db.insert("printJobs", {
+    aiReceiptId: args.aiReceiptId,
+    availableAt: args.availableAt ?? now,
+    expiresAt: args.expiresAt,
+    idempotencyKey: args.idempotencyKey,
+    payload: args.payload,
+    printState: {
+      attempts: 0,
+      expiredAt: status === "expired" ? now : undefined,
+    },
+    source: args.source,
+    status,
+  });
+  return { id, status };
+}
+
+export async function cancelPrintJob(ctx: MutationCtx, jobId: Id<"printJobs">) {
+  const job = await ctx.db.get("printJobs", jobId);
+  if (!job) {
+    return invalidState("Print job not found");
+  }
+  if (job.status === "cancelled" || job.status === "expired") {
+    return { id: job._id, status: job.status };
+  }
+  if (job.status !== "queued" && job.status !== "failed") {
+    return invalidState("Only queued or failed jobs can be cancelled");
+  }
+  const now = Date.now();
+  if (isExpired(job, now)) {
+    return expirePrintJob(ctx, job, now);
+  }
+  if (job.aiReceiptId) {
+    await releaseReceiptReservation(ctx, job.aiReceiptId);
+  }
+  await ctx.db.patch("printJobs", jobId, {
+    printState: { ...job.printState, cancelledAt: now },
+    status: "cancelled",
+  });
+  return { id: job._id, status: "cancelled" as const };
+}
+
+export async function retryPrintJob(ctx: MutationCtx, jobId: Id<"printJobs">) {
+  const job = await ctx.db.get("printJobs", jobId);
+  if (!job) {
+    return invalidState("Print job not found");
+  }
+  if (job.status !== "failed") {
+    return invalidState("Only failed jobs can be retried");
+  }
+  const now = Date.now();
+  if (isExpired(job, now)) {
+    return expirePrintJob(ctx, job, now);
+  }
+  if (job.aiReceiptId) {
+    await reserveReceiptForRetry(ctx, job.aiReceiptId, now);
+  }
+  await ctx.db.patch("printJobs", jobId, {
+    availableAt: now,
+    printState: {
+      ...job.printState,
+      attempts: 0,
+      claimedAt: undefined,
+      claimedBy: undefined,
+      failedAt: undefined,
+      leaseExpiresAt: undefined,
+      retryCount: (job.printState.retryCount ?? 0) + 1,
+    },
+    status: "queued",
+  });
+  return { id: job._id, status: "queued" as const };
+}
+
 export const create = convex
   .mutation()
   .input({
     availableAt: v.optional(v.number()),
+    expiresAt: v.optional(v.number()),
     idempotencyKey: v.optional(v.string()),
     payload: payloadValidator,
     secret: v.string(),
     source: v.string(),
   })
+  .handler((ctx, args) => {
+    requirePrintSecret(args.secret);
+    return createPrintJob(ctx, args);
+  })
+  .public();
+
+export const cancel = convex
+  .mutation()
+  .input({ jobId: v.id("printJobs"), secret: v.string() })
+  .handler((ctx, args) => {
+    requirePrintSecret(args.secret);
+    return cancelPrintJob(ctx, args.jobId);
+  })
+  .public();
+
+export const retry = convex
+  .mutation()
+  .input({ jobId: v.id("printJobs"), secret: v.string() })
+  .handler((ctx, args) => {
+    requirePrintSecret(args.secret);
+    return retryPrintJob(ctx, args.jobId);
+  })
+  .public();
+
+export const getStatus = convex
+  .query()
+  .input({ jobId: v.id("printJobs"), secret: v.string() })
   .handler(async (ctx, args) => {
     requirePrintSecret(args.secret);
-
-    if (args.idempotencyKey) {
-      const existing = await ctx.db
-        .query("printJobs")
-        .withIndex("by_idempotencyKey", (query) =>
-          query.eq("idempotencyKey", args.idempotencyKey)
-        )
-        .first();
-
-      if (existing) {
-        return {
-          id: existing._id,
-          status: existing.status,
-        };
-      }
+    const job = await ctx.db.get("printJobs", args.jobId);
+    if (!job) {
+      return null;
     }
-
-    const now = Date.now();
-    const id = await ctx.db.insert("printJobs", {
-      availableAt: args.availableAt ?? now,
-      idempotencyKey: args.idempotencyKey,
-      payload: args.payload,
-      printState: {
-        attempts: 0,
-      },
-      source: args.source,
-      status: "queued",
-    });
-
-    return { id, status: "queued" as const };
+    return {
+      availableAt: job.availableAt,
+      expiresAt: job.expiresAt,
+      id: job._id,
+      idempotencyKey: job.idempotencyKey,
+      printState: job.printState,
+      status: job.status,
+    };
   })
   .public();
 
@@ -192,7 +460,7 @@ export const watchQueue = convex
   .handler(async (ctx, args) => {
     requirePrintSecret(args.secret);
 
-    const [queued, printing] = await Promise.all([
+    const [queued, printing, nextExpiring] = await Promise.all([
       ctx.db
         .query("printJobs")
         .withIndex("by_status_availableAt", (query) =>
@@ -206,6 +474,12 @@ export const watchQueue = convex
           query.eq("status", "printing")
         )
         .take(50),
+      ctx.db
+        .query("printJobs")
+        .withIndex("by_status_expiresAt", (query) =>
+          query.eq("status", "queued").gte("expiresAt", 0)
+        )
+        .first(),
     ]);
     const leaseExpirations = printing.flatMap((job) =>
       job.printState.leaseExpiresAt === undefined
@@ -216,9 +490,11 @@ export const watchQueue = convex
       leaseExpirations.length > 0 ? Math.min(...leaseExpirations) : undefined;
     const [nextAvailableJob] = queued;
     const nextAvailableAt = nextAvailableJob?.availableAt;
-    const wakeTimes = [nextAvailableAt, nextLeaseExpiresAt].filter(
-      (timestamp) => timestamp !== undefined
-    );
+    const wakeTimes = [
+      nextAvailableAt,
+      nextLeaseExpiresAt,
+      nextExpiring?.expiresAt,
+    ].filter((timestamp) => timestamp !== undefined);
 
     return {
       nextAvailableAt,
@@ -242,6 +518,23 @@ export const claimNext = convex
   })
   .handler(async (ctx, args) => {
     requirePrintSecret(args.secret);
+    // The server clock decides usefulness; a reconnecting worker may have an
+    // old subscription timestamp or a drifting local clock.
+    const now = Date.now();
+
+    const expiring = await Promise.all(
+      (["queued", "failed"] as const).map((status) =>
+        ctx.db
+          .query("printJobs")
+          .withIndex("by_status_expiresAt", (query) =>
+            query.eq("status", status).gte("expiresAt", 0).lte("expiresAt", now)
+          )
+          .take(100)
+      )
+    );
+    await Promise.all(
+      expiring.flat().map((job) => expirePrintJob(ctx, job, now))
+    );
 
     const printing = await ctx.db
       .query("printJobs")
@@ -253,12 +546,15 @@ export const claimNext = convex
     const staleJobs = printing.filter(
       (job) =>
         job.printState.leaseExpiresAt !== undefined &&
-        job.printState.leaseExpiresAt <= args.now
+        job.printState.leaseExpiresAt <= now
     );
 
     await Promise.all(
-      staleJobs.map((job) =>
-        ctx.db.patch("printJobs", job._id, {
+      staleJobs.map((job) => {
+        if (isExpired(job, now)) {
+          return expirePrintJob(ctx, job, now);
+        }
+        return ctx.db.patch("printJobs", job._id, {
           printState: {
             ...job.printState,
             claimedAt: undefined,
@@ -266,33 +562,40 @@ export const claimNext = convex
             leaseExpiresAt: undefined,
           },
           status: "queued",
-        })
-      )
+        });
+      })
     );
 
     const candidates = await ctx.db
       .query("printJobs")
       .withIndex("by_status_availableAt", (query) =>
-        query.eq("status", "queued").lte("availableAt", args.now)
+        query.eq("status", "queued").lte("availableAt", now)
       )
       .order("asc")
       .take(20);
-    const [job] = candidates.toSorted(
-      (left, right) =>
-        left.availableAt - right.availableAt ||
-        left._creationTime - right._creationTime
+    // Receipt snapshots are checked in the same transaction as claiming, so a
+    // concurrent owner decision or source update cannot authorize stale paper.
+    const currentCandidates = await Promise.all(
+      candidates.map((candidate) => currentCandidate(ctx, candidate, now))
     );
+    const [job] = currentCandidates
+      .filter((candidate) => candidate !== null)
+      .toSorted(
+        (left, right) =>
+          left.availableAt - right.availableAt ||
+          left._creationTime - right._creationTime
+      );
 
     if (!job) {
-      return;
+      return null;
     }
 
     const printState = {
       ...job.printState,
       attempts: job.printState.attempts + 1,
-      claimedAt: args.now,
+      claimedAt: now,
       claimedBy: args.workerId,
-      leaseExpiresAt: args.now + LEASE_MS,
+      leaseExpiresAt: now + LEASE_MS,
     };
 
     await ctx.db.patch("printJobs", job._id, {
@@ -327,11 +630,15 @@ export const markPrinted = convex
       throw new Error("Job is not claimed by this worker");
     }
 
+    const now = Date.now();
+    if (job.aiReceiptId) {
+      await recordReceiptDispatched(ctx, job.aiReceiptId, now);
+    }
     await ctx.db.patch("printJobs", args.jobId, {
       printState: {
         ...job.printState,
         leaseExpiresAt: undefined,
-        printedAt: Date.now(),
+        printedAt: now,
       },
       status: "printed",
     });
@@ -362,6 +669,15 @@ export const markFailed = convex
     }
 
     const retrying = job.printState.attempts < DEFAULT_MAX_ATTEMPTS;
+
+    if (isExpired(job, now)) {
+      await expirePrintJob(ctx, job, now);
+      return { retrying: false };
+    }
+
+    if (!retrying && job.aiReceiptId) {
+      await releaseReceiptReservation(ctx, job.aiReceiptId);
+    }
 
     await ctx.db.patch("printJobs", args.jobId, {
       availableAt: retrying ? now + RETRY_DELAY_MS : job.availableAt,

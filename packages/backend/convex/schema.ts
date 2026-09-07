@@ -1,7 +1,12 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
+import { aiDeliveryTables } from "./ai-delivery-tables";
+import { aiTables } from "./ai-tables";
+
 export default defineSchema({
+  ...aiDeliveryTables,
+  ...aiTables,
   blogCategories: defineTable({
     name: v.string(),
   }).index("by_name", ["name"]),
@@ -83,12 +88,15 @@ export default defineSchema({
     .index("by_category", ["category"]),
 
   printJobs: defineTable({
+    aiReceiptId: v.optional(v.id("aiReceipts")),
     availableAt: v.number(),
     channel: v.optional(v.string()),
+    expiresAt: v.optional(v.number()),
     idempotencyKey: v.optional(v.string()),
     payload: v.union(
       v.object({
         _type: v.literal("message"),
+        actionPath: v.optional(v.string()),
         body: v.string(),
         title: v.optional(v.string()),
       }),
@@ -105,24 +113,30 @@ export default defineSchema({
     ),
     printState: v.object({
       attempts: v.number(),
+      cancelledAt: v.optional(v.number()),
       claimedAt: v.optional(v.number()),
       claimedBy: v.optional(v.string()),
+      expiredAt: v.optional(v.number()),
       failedAt: v.optional(v.number()),
       lastError: v.optional(v.string()),
       leaseExpiresAt: v.optional(v.number()),
       printedAt: v.optional(v.number()),
+      retryCount: v.optional(v.number()),
     }),
     source: v.string(),
     status: v.union(
       v.literal("queued"),
       v.literal("printing"),
       v.literal("printed"),
-      v.literal("failed")
+      v.literal("failed"),
+      v.literal("expired"),
+      v.literal("cancelled")
     ),
   })
     .index("by_channel", ["channel"])
     .index("by_idempotencyKey", ["idempotencyKey"])
     .index("by_source", ["source"])
+    .index("by_status_expiresAt", ["status", "expiresAt"])
     .index("by_status_availableAt", ["status", "availableAt"]),
 
   resumeCompanies: defineTable({

@@ -1,4 +1,5 @@
 /* oxlint-disable sonarjs/function-name -- TanStack names server handlers after HTTP methods. */
+import { api } from "@repo/backend/api";
 import { printJobFunctions } from "@repo/backend/print";
 import { appUrl } from "@repo/config/app";
 import { clientEnv } from "@repo/config/env/client";
@@ -6,6 +7,7 @@ import { serverEnv } from "@repo/config/env/server";
 import { createFileRoute } from "@tanstack/react-router";
 import { ConvexHttpClient } from "convex/browser";
 
+import { routeIncomingText } from "@/lib/ai/sms-router";
 import {
   createMessageResponse,
   validateTwilioRequest,
@@ -54,7 +56,7 @@ export const Route = createFileRoute("/api/twilio/sms")({
         const authToken = serverEnv.TWILIO_AUTH_TOKEN;
         const printSecret = serverEnv.PRINT_SECRET;
 
-        if (!authToken || !printSecret) {
+        if (!authToken) {
           return new Response("Webhook unavailable", { status: 503 });
         }
 
@@ -80,16 +82,33 @@ export const Route = createFileRoute("/api/twilio/sms")({
         }
 
         const convex = new ConvexHttpClient(clientEnv.VITE_CONVEX_URL);
-        const job = await convex.mutation(printJobFunctions.createTextMessage, {
+        const result = await routeIncomingText({
           body,
-          from,
-          messageSid,
-          secret: printSecret,
+          async command() {
+            const secret = serverEnv.AI_AUTOMATION_SECRET;
+            if (!secret) {
+              return { handled: true };
+            }
+            return await convex.mutation(api.ai.sms, {
+              body,
+              from,
+              messageSid,
+              secret,
+            });
+          },
+          async print() {
+            if (!printSecret) {
+              throw new Error("Printer access is not configured.");
+            }
+            return await convex.mutation(printJobFunctions.createTextMessage, {
+              body,
+              from,
+              messageSid,
+              secret: printSecret,
+            });
+          },
         });
-
-        return createMessageResponse({
-          message: job.status === "queued" ? "PRINTED" : undefined,
-        });
+        return createMessageResponse(result);
       },
     },
   },

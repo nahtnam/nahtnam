@@ -6,11 +6,18 @@ import {
   CarIcon,
   HouseIcon,
   PlaneIcon,
+  CheckCheckIcon,
 } from "lucide-react";
 
 import { AdminPageHeader } from "./-components/admin-page-header";
 
 const sections = [
+  {
+    description: "Current decisions, receipts, and source coverage",
+    icon: CheckCheckIcon,
+    title: "Action center",
+    to: "/ai" as const,
+  },
   {
     description: "Companies, roles, projects, and education",
     icon: BriefcaseBusinessIcon,

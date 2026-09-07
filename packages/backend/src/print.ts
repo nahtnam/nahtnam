@@ -1,8 +1,11 @@
 import { makeFunctionReference } from "convex/server";
 import type { FunctionReference } from "convex/server";
 
+export { isPrintActionPath } from "./print-path";
+
 export type PrintMessagePayload = {
   _type: "message";
+  actionPath?: string;
   body: string;
   title?: string;
 };
@@ -23,20 +26,30 @@ export type PrintJobPayload =
   | PrintAlertPayload
   | PrintMessagePayload
   | PrintTextMessagePayload;
-export type PrintJobStatus = "failed" | "printed" | "printing" | "queued";
+export type PrintJobStatus =
+  | "cancelled"
+  | "expired"
+  | "failed"
+  | "printed"
+  | "printing"
+  | "queued";
 
 export type PrintState = {
   attempts: number;
+  cancelledAt?: number;
   claimedAt?: number;
   claimedBy?: string;
+  expiredAt?: number;
   failedAt?: number;
   lastError?: string;
   leaseExpiresAt?: number;
   printedAt?: number;
+  retryCount?: number;
 };
 
 export type CreatePrintJobArgs = {
   availableAt?: number;
+  expiresAt?: number;
   idempotencyKey?: string;
   payload: PrintJobPayload;
   secret: string;
@@ -74,8 +87,10 @@ export type WatchPrintQueueResult = {
 export type ClaimedPrintJob = {
   _creationTime: number;
   _id: string;
+  aiReceiptId?: string;
   availableAt: number;
   channel?: string;
+  expiresAt?: number;
   idempotencyKey?: string;
   payload: PrintJobPayload;
   printState: PrintState;
@@ -99,12 +114,32 @@ export type MarkFailedArgs = MarkPrintedArgs & {
   error: string;
 };
 
+export type ManagePrintJobArgs = {
+  jobId: string;
+  secret: string;
+};
+
+export type PrintJobSnapshot = {
+  availableAt: number;
+  expiresAt?: number;
+  id: string;
+  idempotencyKey?: string;
+  printState: PrintState;
+  status: PrintJobStatus;
+};
+
 export const printJobFunctions = {
+  cancel: makeFunctionReference("print_jobs:cancel") as FunctionReference<
+    "mutation",
+    "public",
+    ManagePrintJobArgs,
+    CreatePrintJobResult
+  >,
   claimNext: makeFunctionReference("print_jobs:claimNext") as FunctionReference<
     "mutation",
     "public",
     ClaimNextPrintJobArgs,
-    ClaimedPrintJob | undefined
+    ClaimedPrintJob | null
   >,
   create: makeFunctionReference("print_jobs:create") as FunctionReference<
     "mutation",
@@ -119,6 +154,12 @@ export const printJobFunctions = {
     "public",
     CreateTextMessageArgs,
     CreateTextMessageResult
+  >,
+  getStatus: makeFunctionReference("print_jobs:getStatus") as FunctionReference<
+    "query",
+    "public",
+    ManagePrintJobArgs,
+    PrintJobSnapshot | null
   >,
   markFailed: makeFunctionReference(
     "print_jobs:markFailed"
@@ -135,6 +176,12 @@ export const printJobFunctions = {
     "public",
     MarkPrintedArgs,
     { ok: boolean }
+  >,
+  retry: makeFunctionReference("print_jobs:retry") as FunctionReference<
+    "mutation",
+    "public",
+    ManagePrintJobArgs,
+    CreatePrintJobResult
   >,
   watchQueue: makeFunctionReference(
     "print_jobs:watchQueue"

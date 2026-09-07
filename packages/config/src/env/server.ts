@@ -8,8 +8,10 @@ export const serverEnv = createEnv({
   emptyStringAsUndefined: true,
   runtimeEnv: process.env,
   server: {
+    AI_AUTOMATION_SECRET: optionalString,
     POSTHOG_API_KEY: optionalString,
     PRINT_SECRET: optionalString,
+    TWILIO_ACCOUNT_SID: optionalString,
     TWILIO_AUTH_TOKEN: optionalString,
     WORKOS_API_KEY: requiredString,
     WORKOS_CLIENT_ID: requiredString,

@@ -13,3 +13,12 @@ export function requirePrintSecret(secret: string) {
     throw new ConvexError({ code: "UNAUTHORIZED", message: "Unauthorized" });
   }
 }
+
+export function requireAiSecret(secret: string) {
+  if (
+    !featureEnv.AI_AUTOMATION_SECRET ||
+    secret !== featureEnv.AI_AUTOMATION_SECRET
+  ) {
+    throw new ConvexError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+  }
+}
