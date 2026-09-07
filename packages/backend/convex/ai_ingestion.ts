@@ -9,8 +9,8 @@ import {
   boundedText,
   requirePrimarySettings,
   timestamp,
-} from "./ai-helpers";
-import { candidateFields } from "./ai-tables";
+} from "./ai_helpers";
+import { candidateFields } from "./ai_tables";
 
 export const candidateValidator = v.object({
   ...candidateFields,

@@ -4,6 +4,7 @@
 - Keep machine-managed worker checkouts clean and fast-forwardable. If a worker needs a code or dependency fix, verify it, commit it, and push it; do not leave uncommitted patches or local-only commits.
 - Treat this repository as a reusable app starter. Keep applications unscoped, reserve `@repo/*` for internal packages, put shared app and environment configuration in `@repo/config`, and keep Convex source in `packages/backend/convex`.
 - Run Convex CLI commands from the repository root with `bun convex`. The backend package owns `convex.json` and the `convex` source directory; the repository root owns the shared environment and AI skills. Read `packages/backend/convex/_generated/ai/guidelines.md` before changing Convex code.
+- Use underscores for multiword Convex module filenames. Convex deployment paths reject hyphens even when local TypeScript and function tests pass.
 - For WorkOS AuthKit, keep sign-in and sign-up distinct, redirect login to `/app` and logout to `/`, use the public portless URL for local callbacks, and use the SDK's standard server environment variables. Use the client `signOut()` flow for browser-initiated logout.
 - Put values shared by browser and server code in `@repo/config/env/client` with a `VITE_` name. Use the canonical `appUrl` unless the browser genuinely needs a runtime environment value.
 - In a custom TanStack Start `src/start.ts`, keep same-origin CSRF validation before authentication middleware. Do not set the router's global `defaultPendingMs` to `0`, which can replace server-rendered HTML during hydration.

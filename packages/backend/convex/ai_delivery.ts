@@ -1,7 +1,7 @@
 import { ConvexError, v } from "convex/values";
 
 import type { Doc } from "./_generated/dataModel";
-import { DAY_MS } from "./ai-helpers";
+import { DAY_MS } from "./ai_helpers";
 import { convex } from "./fluent";
 import { requireAiSecret } from "./lib/secrets";
 

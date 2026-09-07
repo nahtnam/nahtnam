@@ -44,7 +44,7 @@ export const Route = createFileRoute("/api/twilio/ai-status")({
             status === "undelivered")
         ) {
           const convex = new ConvexHttpClient(clientEnv.VITE_CONVEX_URL);
-          await convex.mutation(api["ai-delivery"].recordStatus, {
+          await convex.mutation(api["ai_delivery"].recordStatus, {
             id: deliveryId as Id<"aiSmsDeliveries">,
             providerId,
             secret,

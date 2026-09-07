@@ -1,11 +1,11 @@
 /* oxlint-disable sonarjs/no-undefined-assignment */
 import { v } from "convex/values";
 
-import { decide, undoAction } from "./ai-decisions";
+import { decide, undoAction } from "./ai_decisions";
+import { loadOperationalHealth } from "./ai_health";
 import {
   aiError,
   boundedText,
-  DAY_MS,
   isPending,
   loadActiveItems,
   loadOwnerHistory,
@@ -14,9 +14,9 @@ import {
   requireItemOwner,
   requirePrimarySettings,
   timestamp,
-} from "./ai-helpers";
-import { candidateValidator, ingestItems } from "./ai-ingestion";
-import { publishFields, publishReceipt } from "./ai-publishing";
+} from "./ai_helpers";
+import { candidateValidator, ingestItems } from "./ai_ingestion";
+import { publishFields, publishReceipt } from "./ai_publishing";
 import {
   receiveSms,
   storeReply,
@@ -24,8 +24,8 @@ import {
   acknowledgeStoredReply,
   applyStoredReplyDecision,
   replyFields,
-} from "./ai-replies";
-import { decisionAction } from "./ai-tables";
+} from "./ai_replies";
+import { decisionAction } from "./ai_tables";
 import { adminMutation, adminQuery, convex } from "./fluent";
 import { requireAiSecret } from "./lib/secrets";
 
@@ -185,53 +185,18 @@ export const health = adminQuery
         sources: [],
       };
     }
-    const [sources, receipts, deliveries] = await Promise.all([
-      ctx.db
-        .query("aiHealth")
-        .withIndex("by_ownerTokenIdentifier_and_source", (q) =>
-          q.eq("ownerTokenIdentifier", settings.ownerTokenIdentifier)
-        )
-        .take(50),
-      ctx.db
-        .query("aiReceipts")
-        .withIndex("by_ownerTokenIdentifier_and_createdAt", (q) =>
-          q.eq("ownerTokenIdentifier", settings.ownerTokenIdentifier)
-        )
-        .order("desc")
-        .take(20),
-      ctx.db
-        .query("aiSmsDeliveries")
-        .withIndex("by_ownerTokenIdentifier_and_updatedAt", (q) =>
-          q.eq("ownerTokenIdentifier", settings.ownerTokenIdentifier)
-        )
-        .order("desc")
-        .take(20),
-    ]);
-    const receiptStatuses = await Promise.all(
-      receipts.map(async (receipt) => {
-        const job = receipt.printJobId
-          ? await ctx.db.get("printJobs", receipt.printJobId)
-          : null;
-        return {
-          ...receipt,
-          expired: receipt.expiresAt <= Date.now(),
-          printError: job?.printState.lastError,
-          printStatus: job?.status ?? "missing",
-        };
-      })
-    );
+    const operations = await loadOperationalHealth({
+      ctx,
+      now: Date.now(),
+      owner: settings.ownerTokenIdentifier,
+    });
     return {
+      ...operations,
       configured: true,
-      deliveries,
-      receipts: receiptStatuses,
       settings: {
         paperEnabled: settings.paperEnabled,
         phoneConfigured: Boolean(settings.phone),
       },
-      sources: sources.map((source) => ({
-        ...source,
-        stale: Date.now() - source.checkedAt > DAY_MS,
-      })),
     };
   })
   .public();
@@ -283,12 +248,14 @@ export const machineSnapshot = convex
         truncated: rows.length > 500,
       };
     }
-    const [active, history] = await Promise.all([
+    const [active, history, operations] = await Promise.all([
       loadActiveItems(ctx, settings.ownerTokenIdentifier, now),
       loadOwnerHistory(ctx, settings.ownerTokenIdentifier, 200, now),
+      loadOperationalHealth({ ctx, now, owner: settings.ownerTokenIdentifier }),
     ]);
     return {
       ...feedback,
+      ...operations,
       coverage: "active-and-recent-history" as const,
       items: [...active, ...history],
       settings: settingsView,

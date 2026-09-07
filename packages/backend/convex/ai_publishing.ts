@@ -10,14 +10,16 @@ import {
   loadActiveItems,
   requirePrimarySettings,
   timestamp,
-} from "./ai-helpers";
-import { releaseUnavailableReservations } from "./ai-receipt-delivery";
+} from "./ai_helpers";
+import { releaseUnavailableReservations } from "./ai_receipt_delivery";
 import { createPrintJob } from "./print_jobs";
 
 export const publishFields = {
   expiresAt: v.optional(v.number()),
   idempotencyKey: v.string(),
-  mode: v.optional(v.union(v.literal("actions"), v.literal("timed"))),
+  mode: v.optional(
+    v.union(v.literal("actions"), v.literal("brief"), v.literal("timed"))
+  ),
   source: v.optional(v.string()),
   title: v.optional(v.string()),
 };
@@ -78,19 +80,30 @@ export async function publishReceipt(options: {
     settings.ownerTokenIdentifier,
     now
   );
-  const items = ownerItems
+  const eligibleItems = ownerItems
     .filter((item) => {
       const matchingSource = !args.source || args.source === item.source;
-      const matchingKind =
-        args.mode === "timed" ? item.kind === "info" : item.kind !== "info";
-      return isEligible(item, settings, now) && matchingSource && matchingKind;
+      return isEligible(item, settings, now) && matchingSource;
     })
     .toSorted(
       (a, b) =>
         Number(b.priority === "urgent") - Number(a.priority === "urgent") ||
         (a.dueAt ?? a.usefulUntil) - (b.dueAt ?? b.usefulUntil)
+    );
+  const items = eligibleItems
+    .filter((item) =>
+      args.mode === "timed" ? item.kind === "info" : item.kind !== "info"
     )
     .slice(0, 3);
+  if (args.mode === "brief") {
+    items.push(
+      ...eligibleItems
+        .filter(
+          (item) => item.kind === "info" && item.source === "calendar-agenda"
+        )
+        .slice(0, 5)
+    );
+  }
   if (items.length === 0) {
     return { count: 0, receiptId: null, status: "empty" as const };
   }
@@ -98,8 +111,12 @@ export async function publishReceipt(options: {
     requestedExpiry,
     ...items.map((item) => item.usefulUntil)
   );
-  const title =
-    args.title ?? (args.mode === "timed" ? "UP NEXT" : "TODAY'S ACTIONS");
+  const defaultTitles = {
+    actions: "TODAY'S ACTIONS",
+    brief: "TODAY",
+    timed: "UP NEXT",
+  };
+  const title = args.title ?? defaultTitles[args.mode ?? "actions"];
   const receiptId = await ctx.db.insert("aiReceipts", {
     createdAt: now,
     expiresAt,

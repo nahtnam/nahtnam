@@ -5,7 +5,7 @@ import type { FunctionArgs } from "convex/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { api } from "../_generated/api";
-import { DAY_MS } from "../ai-helpers";
+import { DAY_MS } from "../ai_helpers";
 import schema from "../schema";
 
 const modules = import.meta.glob(["../**/*.*s", "!../__tests__/**/*.*s"]);
@@ -106,6 +106,234 @@ describe("AI lifecycle", () => {
   });
   afterEach(() => {
     vi.useRealTimers();
+  });
+
+  describe("machine operational readback", () => {
+    test("requires the machine secret and excludes other owners and phone numbers", async () => {
+      const { owner, t } = await setup();
+      const item = await add(
+        t,
+        candidate({ priority: "urgent", urgentMilestone: "deadline" })
+      );
+      await t.mutation(api.ai.recordHealth, {
+        checkedAt: Date.now(),
+        secret: SECRET,
+        source: "test-detector",
+        status: "blocked",
+      });
+      await t.mutation(api.ai.publish, {
+        idempotencyKey: "owner-receipt",
+        secret: SECRET,
+      });
+      await t.mutation(api.ai_delivery.reserve, {
+        code: item.code,
+        expectedVersion: item.version,
+        idempotencyKey: "owner-sms",
+        secret: SECRET,
+      });
+      await t.run(async (ctx) => {
+        await ctx.db.insert("aiHealth", {
+          checkedAt: Date.now(),
+          ownerTokenIdentifier: "other-owner",
+          source: "private-other-source",
+          status: "ok",
+        });
+        await ctx.db.insert("aiReceipts", {
+          createdAt: Date.now(),
+          expiresAt: Date.now() + DAY_MS,
+          idempotencyKey: "other-receipt",
+          items: [],
+          ownerTokenIdentifier: "other-owner",
+          title: "Private other receipt",
+        });
+        await ctx.db.insert("aiSmsDeliveries", {
+          code: "OTHER",
+          expiresAt: Date.now() + DAY_MS,
+          idempotencyKey: "other-sms",
+          itemId: item.id,
+          itemVersion: 1,
+          milestone: "deadline",
+          ownerTokenIdentifier: "other-owner",
+          phone: "+15555550999",
+          question: false,
+          status: "sent",
+          updatedAt: Date.now(),
+        });
+      });
+      await expect(
+        t.query(api.ai.machineSnapshot, { secret: "wrong" })
+      ).rejects.toThrow("Unauthorized");
+      const snapshot = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      if (snapshot.coverage !== "active-and-recent-history") {
+        throw new Error("Expected an unscoped operational snapshot");
+      }
+      expect(snapshot).toMatchObject({
+        deliveries: [{ idempotencyKey: "owner-sms" }],
+        operationsTruncated: {
+          deliveries: false,
+          receipts: false,
+          sources: false,
+        },
+        receipts: [{ idempotencyKey: "owner-receipt" }],
+        sources: [{ source: "test-detector" }],
+      });
+      expect(snapshot.deliveries?.[0]).not.toHaveProperty("phone");
+      const health = await owner.query(api.ai.health, {});
+      expect(health).toMatchObject({
+        deliveries: snapshot.deliveries,
+        receipts: snapshot.receipts,
+      });
+      const scoped = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+        source: "test-detector",
+      });
+      expect(scoped).not.toHaveProperty("deliveries");
+    });
+
+    test("reflects source coverage, print progress, and uncertain SMS callback resolution", async () => {
+      const { t } = await setup();
+      const item = await add(
+        t,
+        candidate({ priority: "urgent", urgentMilestone: "deadline" })
+      );
+      await t.mutation(api.ai.recordHealth, {
+        checkedAt: Date.now() - 2 * DAY_MS,
+        secret: SECRET,
+        source: "test-detector",
+        status: "blocked",
+      });
+      await t.mutation(api.ai.publish, {
+        idempotencyKey: "progress",
+        secret: SECRET,
+      });
+      const delivery = await t.mutation(api.ai_delivery.reserve, {
+        code: item.code,
+        expectedVersion: item.version,
+        idempotencyKey: "progress",
+        secret: SECRET,
+      });
+      const queued = await t.query(api.ai.machineSnapshot, { secret: SECRET });
+      expect(queued).toMatchObject({
+        deliveries: [{ status: "reserved" }],
+        receipts: [{ expired: false, printStatus: "queued" }],
+        sources: [{ stale: true, status: "blocked" }],
+      });
+      const job = await t.mutation(api.print_jobs.claimNext, {
+        now: Date.now(),
+        secret: "printer-test-secret",
+        workerId: "test-worker",
+      });
+      if (!job) {
+        throw new Error("Expected a ready print job");
+      }
+      await t.mutation(api.ai_delivery.settle, {
+        id: delivery.id,
+        secret: SECRET,
+        status: "unknown",
+      });
+      const uncertain = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      expect(uncertain).toMatchObject({
+        deliveries: [{ status: "unknown" }],
+        receipts: [{ printStatus: "printing" }],
+      });
+      await t.mutation(api.print_jobs.markPrinted, {
+        jobId: job._id,
+        secret: "printer-test-secret",
+        workerId: "test-worker",
+      });
+      await t.mutation(api.ai_delivery.recordStatus, {
+        id: delivery.id,
+        providerId: "SM-provider-confirmed",
+        secret: SECRET,
+        status: "delivered",
+      });
+      await t.mutation(api.ai.recordHealth, {
+        checkedAt: Date.now(),
+        coverageThrough: Date.now(),
+        secret: SECRET,
+        source: "test-detector",
+        status: "ok",
+      });
+      const completed = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      expect(completed).toMatchObject({
+        deliveries: [
+          { providerId: "SM-provider-confirmed", status: "delivered" },
+        ],
+        receipts: [{ printStatus: "printed" }],
+        sources: [{ coverageThrough: Date.now(), stale: false, status: "ok" }],
+      });
+    });
+
+    test("explicitly flags bounded operational history instead of implying complete coverage", async () => {
+      const { t } = await setup();
+      const item = await add(t);
+      await t.run(async (ctx) => {
+        await Promise.all(
+          Array.from({ length: 51 }, (_, index) =>
+            ctx.db.insert("aiHealth", {
+              checkedAt: Date.now(),
+              ownerTokenIdentifier: OWNER.tokenIdentifier,
+              source: `source-${index}`,
+              status: "ok",
+            })
+          )
+        );
+        await Promise.all(
+          Array.from({ length: 21 }, (_, index) => [
+            ctx.db.insert("aiReceipts", {
+              createdAt: Date.now() - index,
+              expiresAt: Date.now() + DAY_MS,
+              idempotencyKey: `receipt-${index}`,
+              items: [],
+              ownerTokenIdentifier: OWNER.tokenIdentifier,
+              title: "History",
+            }),
+            ctx.db.insert("aiSmsDeliveries", {
+              code: item.code,
+              expiresAt: Date.now() + DAY_MS,
+              idempotencyKey: `sms-${index}`,
+              itemId: item.id,
+              itemVersion: item.version,
+              milestone: `milestone-${index}`,
+              ownerTokenIdentifier: OWNER.tokenIdentifier,
+              phone: PHONE,
+              question: false,
+              status: "unknown",
+              updatedAt: Date.now() - index,
+            }),
+          ]).flat()
+        );
+      });
+      const snapshot = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      if (snapshot.coverage !== "active-and-recent-history") {
+        throw new Error("Expected an unscoped operational snapshot");
+      }
+      expect(snapshot.operationsTruncated).toStrictEqual({
+        deliveries: true,
+        receipts: true,
+        sources: true,
+      });
+      expect([
+        snapshot.sources?.length,
+        snapshot.receipts?.length,
+        snapshot.deliveries?.length,
+      ]).toStrictEqual([50, 20, 20]);
+      expect(snapshot.receipts?.[0]).toMatchObject({
+        idempotencyKey: "receipt-0",
+        printStatus: "missing",
+      });
+      expect(snapshot.deliveries?.[0]).toMatchObject({
+        idempotencyKey: "sms-0",
+      });
+    });
   });
 
   describe("action center authorization", () => {
@@ -524,6 +752,172 @@ describe("AI lifecycle", () => {
         t.run((ctx) => ctx.db.query("aiActions").take(10))
       ).resolves.toHaveLength(0);
     });
+
+    test("a brief caps actions at three and calendar agenda at five within the print body limit", async () => {
+      const { owner, t } = await setup();
+      await t.mutation(api.ai.ingest, {
+        items: [
+          ...Array.from({ length: 4 }, (_, index) =>
+            question({
+              question: {
+                noLabel: "N".repeat(100),
+                noOutcome: "open",
+                yesLabel: "Y".repeat(100),
+                yesOutcome: "done",
+              },
+              sourceKey: `action-${index}`,
+              title: "A".repeat(120),
+              whyNow: "W".repeat(360),
+            })
+          ),
+          ...Array.from({ length: 6 }, (_, index) =>
+            candidate({
+              dueAt: Date.now() + (index + 1) * 60_000,
+              kind: "info",
+              source: "calendar-agenda",
+              sourceKey: `event-${index}`,
+              title: "C".repeat(120),
+              whyNow: "W".repeat(360),
+            })
+          ),
+          candidate({ kind: "info", sourceKey: "unrelated-info" }),
+        ],
+        secret: SECRET,
+      });
+      const result = await t.mutation(api.ai.publish, {
+        idempotencyKey: "brief",
+        mode: "brief",
+        secret: SECRET,
+      });
+      expect(result).toMatchObject({ count: 8, status: "queued" });
+      if (!result.receiptId) {
+        throw new Error("Expected a receipt");
+      }
+      const receipt = await owner.query(api.ai.getReceipt, {
+        id: result.receiptId,
+      });
+      expect(
+        receipt?.items.map(({ current }) => current?.sourceKey)
+      ).toStrictEqual([
+        "action-0",
+        "action-1",
+        "action-2",
+        "event-0",
+        "event-1",
+        "event-2",
+        "event-3",
+        "event-4",
+      ]);
+      const job = await t.run((ctx) => ctx.db.query("printJobs").first());
+      expect(job?.payload.body.length).toBeLessThanOrEqual(4000);
+      expect(job?.payload).toMatchObject({
+        actionPath: `/ai/r/${result.receiptId}`,
+        title: "TODAY",
+      });
+      expect(
+        receipt?.items.every(
+          ({ current }) => current?.pendingReceiptId === result.receiptId
+        )
+      ).toBeTruthy();
+    });
+
+    test("an agenda-only brief is silent for ineligible or reserved items", async () => {
+      const { owner, t } = await setup();
+      await t.mutation(api.ai.ingest, {
+        items: [
+          candidate({ sourceKey: "expired", usefulUntil: Date.now() - 1 }),
+          candidate({ ownership: "unknown", sourceKey: "unknown" }),
+          candidate({ nextNotifyAt: Date.now() + DAY_MS, sourceKey: "later" }),
+          candidate({ kind: "info", sourceKey: "unrelated-info" }),
+        ].map((item) => ({
+          ...item,
+          kind: "info" as const,
+          source:
+            item.sourceKey === "unrelated-info"
+              ? "test-detector"
+              : "calendar-agenda",
+        })),
+        secret: SECRET,
+      });
+      await expect(
+        t.mutation(api.ai.publish, {
+          idempotencyKey: "nothing-due",
+          mode: "brief",
+          secret: SECRET,
+        })
+      ).resolves.toMatchObject({ count: 0, status: "empty" });
+      await add(t, candidate({ kind: "info", source: "calendar-agenda" }));
+      await owner.mutation(api.ai.configure, {
+        pausedSources: ["calendar-agenda"],
+      });
+      await expect(
+        t.mutation(api.ai.publish, {
+          idempotencyKey: "agenda-paused",
+          mode: "brief",
+          secret: SECRET,
+        })
+      ).resolves.toMatchObject({ count: 0, status: "empty" });
+      await owner.mutation(api.ai.configure, { pausedSources: [] });
+      await expect(
+        t.mutation(api.ai.publish, {
+          idempotencyKey: "agenda-only",
+          mode: "brief",
+          secret: SECRET,
+        })
+      ).resolves.toMatchObject({ count: 1, status: "queued" });
+      await expect(
+        t.mutation(api.ai.publish, {
+          idempotencyKey: "agenda-reserved",
+          mode: "brief",
+          secret: SECRET,
+        })
+      ).resolves.toMatchObject({ count: 0, status: "empty" });
+    });
+
+    test.each(["expired", "dismissed", "source-paused"] as const)(
+      "a queued brief honors %s agenda state before printing",
+      async (change) => {
+        const { owner, t } = await setup();
+        const usefulUntil = Date.now() + 60_000;
+        const item = await add(
+          t,
+          candidate({ kind: "info", source: "calendar-agenda", usefulUntil })
+        );
+        await t.mutation(api.ai.publish, {
+          idempotencyKey: "agenda-lifecycle",
+          mode: "brief",
+          secret: SECRET,
+        });
+        if (change === "expired") {
+          vi.setSystemTime(usefulUntil);
+        } else if (change === "dismissed") {
+          await owner.mutation(api.ai.respond, {
+            action: "ignore",
+            code: item.code,
+            expectedVersion: item.version,
+          });
+        } else {
+          await owner.mutation(api.ai.configure, {
+            pausedSources: ["calendar-agenda"],
+          });
+        }
+        await expect(
+          t.mutation(api.print_jobs.claimNext, {
+            now: Date.now(),
+            secret: "printer-test-secret",
+            workerId: "test-worker",
+          })
+        ).resolves.toBeNull();
+        const job = await t.run((ctx) => ctx.db.query("printJobs").first());
+        expect(job).toMatchObject({
+          expiresAt: usefulUntil,
+          status: change === "expired" ? "expired" : "cancelled",
+        });
+        const current = await owner.query(api.ai.getItem, { code: item.code });
+        expect(current?.item.appearances).toBe(0);
+        expect(current?.item.pendingReceiptId).toBeUndefined();
+      }
+    );
 
     test("ordinary unchanged items appear at most twice, even with new publish keys", async () => {
       const { owner, t } = await setup();

@@ -16,12 +16,8 @@ export default defineConfig({
       },
     },
     {
-      files: [
-        "packages/backend/convex/admin/golf_r.ts",
-        "packages/backend/convex/admin/seed_golf_r.ts",
-        "packages/backend/convex/print_jobs.ts",
-        "packages/backend/convex/travel/computeStats.ts",
-      ],
+      // Convex module paths permit underscores but reject hyphens.
+      files: ["packages/backend/convex/**/*.ts"],
       rules: {
         "unicorn/filename-case": "off",
       },

@@ -3,15 +3,15 @@ import type { Infer } from "convex/values";
 
 import type { Id } from "./_generated/dataModel";
 import type { MutationCtx, QueryCtx } from "./_generated/server";
-import { decide } from "./ai-decisions";
-import type { Decision } from "./ai-decisions";
+import { decide } from "./ai_decisions";
+import type { Decision } from "./ai_decisions";
 import {
   aiError,
   boundedText,
   requireItemOwner,
   requirePrimarySettings,
   timestamp,
-} from "./ai-helpers";
+} from "./ai_helpers";
 
 export const replyFields = {
   body: v.string(),

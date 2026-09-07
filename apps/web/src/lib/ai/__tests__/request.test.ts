@@ -3,6 +3,18 @@ import { describe, expect, test } from "vitest";
 import { authorizeAiRequest, readAiRequest } from "../request";
 
 describe("automation API boundary", () => {
+  test.each(["actions", "brief", "timed"])(
+    "accepts the %s receipt mode",
+    async (mode) => {
+      const input = { idempotencyKey: "receipt", mode, operation: "publish" };
+      const request = new Request("https://example.com/api/ai", {
+        body: JSON.stringify(input),
+        method: "POST",
+      });
+      await expect(readAiRequest(request)).resolves.toStrictEqual(input);
+    }
+  );
+
   test("fails closed when configuration or the dedicated bearer token is missing", () => {
     const request = new Request("https://example.com/api/ai");
     expect(authorizeAiRequest({ request })?.status).toBe(503);
