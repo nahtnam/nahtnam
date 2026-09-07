@@ -1,10 +1,9 @@
 import { ConvexError, v } from "convex/values";
 
 import type { Doc } from "./_generated/dataModel";
+import { DAY_MS } from "./ai-helpers";
 import { convex } from "./fluent";
 import { requireAiSecret } from "./lib/secrets";
-
-const DAY_MS = 86_400_000;
 
 // Reserve before calling the SMS provider. An ambiguous send is never retried
 // automatically: provider acceptance can precede a lost HTTP response.
@@ -91,9 +90,7 @@ export const reserve = convex
       status: "reserved",
       updatedAt: now,
     });
-    const responseHint = item.question
-      ? `${item.code} Y: ${item.question.yesLabel}; ${item.code} N: ${item.question.noLabel}`
-      : `${item.code} DONE or ${item.code} SNOOZE 1D`;
+    const responseHint = `Reply in your own words with ${item.code}. Saved for the next automation run.`;
     return {
       body: `Urgent: ${item.title}\n${item.whyNow}\n${responseHint}`,
       code: item.code,

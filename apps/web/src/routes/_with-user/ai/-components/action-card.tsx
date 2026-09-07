@@ -193,21 +193,13 @@ export function ActionCard(props: ActionCardProps) {
                   Reply by text
                 </summary>
                 <div className="mt-2 flex flex-wrap gap-3">
-                  {(item.kind === "question" ? ["Y", "N"] : ["DONE"]).map(
-                    (command) => (
-                      <a
-                        key={command}
-                        className="link font-mono"
-                        href={textReplyHref(`${command} ${item.code}`)}
-                      >
-                        {command} {item.code}
-                      </a>
-                    )
-                  )}
+                  <a className="link" href={textReplyHref(`${item.code} `)}>
+                    Text about {item.code}
+                  </a>
                 </div>
                 <p className="mt-2 text-xs text-base-content/55">
-                  Use your configured personal number. If the message opens
-                  blank, type the code above and press Send.
+                  Use your configured personal number and keep {item.code} in
+                  your message. Write any reply for the next automation run.
                 </p>
               </details>
             )}

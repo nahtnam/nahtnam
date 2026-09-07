@@ -43,4 +43,37 @@ describe("automation API boundary", () => {
     });
     await expect(readAiRequest(request)).rejects.toThrow("Request too large");
   });
+
+  test("requires a reply id and current version before applying an interpreted decision", async () => {
+    const input = {
+      action: "snooze",
+      code: "A7",
+      expectedVersion: 3,
+      operation: "reply-decision",
+      replyId: "reply-id",
+      snoozeUntil: Date.now() + 86_400_000,
+    };
+    const request = new Request("https://example.com/api/ai", {
+      body: JSON.stringify(input),
+      method: "POST",
+    });
+    await expect(readAiRequest(request)).resolves.toStrictEqual(input);
+    const unversioned = new Request("https://example.com/api/ai", {
+      body: JSON.stringify({ ...input, expectedVersion: null }),
+      method: "POST",
+    });
+    await expect(readAiRequest(unversioned)).rejects.toThrow("expectedVersion");
+  });
+
+  test("requires a recorded outcome when acknowledging a processed reply", async () => {
+    const request = new Request("https://example.com/api/ai", {
+      body: JSON.stringify({
+        operation: "acknowledge-reply",
+        replyId: "reply-id",
+        result: "   ",
+      }),
+      method: "POST",
+    });
+    await expect(readAiRequest(request)).rejects.toThrow("result");
+  });
 });

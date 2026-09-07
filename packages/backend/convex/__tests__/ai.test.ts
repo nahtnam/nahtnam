@@ -279,7 +279,7 @@ describe("AI lifecycle", () => {
           messageSid: "old-code",
           secret: SECRET,
         })
-      ).resolves.toMatchObject({ handled: true, status: "stale" });
+      ).resolves.toMatchObject({ handled: true, status: "queued" });
       const readback = await owner.query(api.ai.getReceipt, {
         id: receipt.receiptId,
       });
@@ -794,120 +794,421 @@ describe("AI lifecycle", () => {
     });
   });
 
-  describe("SMS commands and health", () => {
-    test("a bare yes cannot choose between two unexpired sent questions", async () => {
-      const { t } = await setup();
-      const first = await add(t, question());
-      const second = await add(t, question({ sourceKey: "second-question" }));
-      await t.run(async (ctx) => {
-        await Promise.all(
-          [first, second].map((item) =>
-            ctx.db.insert("aiSmsDeliveries", {
-              code: item.code,
-              expiresAt: Date.now() + DAY_MS,
-              idempotencyKey: `outbound-${item.code}`,
-              itemId: item.id,
-              itemVersion: item.version,
-              milestone: "review",
+  describe("current item queries", () => {
+    test("expired history cannot block current views or receipt publication", async () => {
+      const { owner, t } = await setup();
+      await t.run((ctx) =>
+        Promise.all(
+          Array.from({ length: 501 }, (_, index) =>
+            ctx.db.insert("aiItems", {
+              ...candidate({
+                sourceKey: `old-${index}`,
+                usefulUntil: Date.now() - 1,
+              }),
+              appearances: 0,
+              code: `OLD${index}`,
               ownerTokenIdentifier: OWNER.tokenIdentifier,
-              phone: PHONE,
-              question: true,
-              status: "sent",
-              updatedAt: Date.now(),
+              status: index % 2 === 0 ? "open" : "snoozed",
+              version: 1,
             })
           )
-        );
+        )
+      );
+      const current = await add(t);
+      const today = await owner.query(api.ai.list, {
+        now: Date.now(),
+        view: "today",
       });
+      expect(today.map((item) => item.code)).toStrictEqual([current.code]);
       await expect(
-        t.mutation(api.ai.sms, {
-          body: "Y",
-          from: PHONE,
-          messageSid: "ambiguous-yes",
+        owner.query(api.ai.list, { now: Date.now(), view: "upcoming" })
+      ).resolves.toHaveLength(0);
+      await expect(
+        owner.query(api.ai.list, { now: Date.now(), view: "snoozed" })
+      ).resolves.toHaveLength(0);
+      const history = await owner.query(api.ai.list, {
+        now: Date.now(),
+        view: "history",
+      });
+      expect({
+        count: history.length,
+        expired: history.every((item) => item.usefulUntil < Date.now()),
+      }).toStrictEqual({ count: 100, expired: true });
+      await expect(
+        t.mutation(api.ai.publish, {
+          idempotencyKey: "unclogged",
           secret: SECRET,
         })
-      ).resolves.toMatchObject({ status: "clarification" });
-      await expect(
-        t.run((ctx) => ctx.db.query("aiActions").take(10))
-      ).resolves.toHaveLength(0);
+      ).resolves.toMatchObject({ count: 1, status: "queued" });
     });
 
-    test("deduplicates SMS SIDs, rejects unknown senders, and never prints commands", async () => {
+    test("more than 500 genuinely current items still fails closed", async () => {
+      const { owner, t } = await setup();
+      await t.run((ctx) =>
+        Promise.all(
+          Array.from({ length: 501 }, (_, index) =>
+            ctx.db.insert("aiItems", {
+              ...candidate({ sourceKey: `current-${index}` }),
+              appearances: 0,
+              code: `CURRENT${index}`,
+              ownerTokenIdentifier: OWNER.tokenIdentifier,
+              status: "open",
+              version: 1,
+            })
+          )
+        )
+      );
+      await expect(
+        owner.query(api.ai.list, { now: Date.now(), view: "today" })
+      ).rejects.toThrow("more than 500 active items");
+      await expect(
+        t.mutation(api.ai.publish, {
+          idempotencyKey: "over-cap",
+          secret: SECRET,
+        })
+      ).rejects.toThrow("coverage would be incomplete");
+    });
+
+    test("explicit query time moves due and snoozed items without a database write", async () => {
+      const { owner, t } = await setup();
+      const now = Date.now();
+      const item = await add(t);
+      await owner.mutation(api.ai.respond, {
+        action: "snooze",
+        code: item.code,
+        expectedVersion: item.version,
+        snoozeUntil: now + 60_000,
+      });
+      await expect(
+        owner.query(api.ai.list, { now, view: "today" })
+      ).resolves.toHaveLength(0);
+      await expect(
+        owner.query(api.ai.list, { now, view: "snoozed" })
+      ).resolves.toHaveLength(1);
+      await expect(
+        owner.query(api.ai.list, { now: now + 60_000, view: "today" })
+      ).resolves.toHaveLength(1);
+      await expect(
+        owner.query(api.ai.list, { now: now + 60_000, view: "snoozed" })
+      ).resolves.toHaveLength(0);
+    });
+  });
+
+  describe("replies and health", () => {
+    test("stores owner SMS verbatim without interpreting a decision", async () => {
       const { owner, t } = await setup();
       const item = await add(t, question());
-      const command = {
-        body: `Y ${item.code}`,
+      const body = `  No, I already handled ${item.code}.\r\nPlease stop tracking this.  `;
+      const args = {
+        body,
         from: PHONE,
-        messageSid: "SM-question",
+        messageSid: "raw-reply",
         secret: SECRET,
       };
-      await expect(
-        t.mutation(api.ai.sms, { ...command, from: "+15555550999" })
-      ).resolves.toMatchObject({
-        handled: true,
-        reply: "",
-        status: "unauthorized",
-      });
-      await expect(t.mutation(api.ai.sms, command)).resolves.toMatchObject({
-        handled: true,
-        status: "updated",
-      });
-      await expect(t.mutation(api.ai.sms, command)).resolves.toMatchObject({
+      const stored = await t.mutation(api.ai.sms, args);
+      expect(stored).toMatchObject({ handled: true, status: "queued" });
+      await expect(t.mutation(api.ai.sms, args)).resolves.toMatchObject({
         status: "duplicate",
       });
-      const readback6 = await owner.query(api.ai.getItem, { code: item.code });
-      expect(readback6?.actions).toHaveLength(1);
+      await expect(
+        t.mutation(api.ai.sms, { ...args, body: "Changed body" })
+      ).rejects.toThrow("different content");
+      const snapshot = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      const current = await owner.query(api.ai.getItem, { code: item.code });
+      expect({
+        actions: current?.actions.length,
+        replies: snapshot.replies.map((reply) => ({
+          body: reply.body,
+          itemCode: reply.itemCode ?? null,
+          source: reply.source,
+          status: reply.status,
+        })),
+        status: current?.item.status,
+      }).toStrictEqual({
+        actions: 0,
+        replies: [{ body, itemCode: null, source: "sms", status: "pending" }],
+        status: "open",
+      });
       await expect(
         t.run((ctx) => ctx.db.query("printJobs").take(10))
       ).resolves.toHaveLength(0);
     });
 
-    test("ordinary text is not interpreted as a decision", async () => {
+    test("SMS retries retain original context after item and phone changes", async () => {
+      const { owner, t } = await setup();
+      const item = await add(t);
+      const args = {
+        body: `${item.code} Please stop tracking this`,
+        from: PHONE,
+        messageSid: "retry-identity",
+        secret: SECRET,
+      };
+      await t.mutation(api.ai.sms, args);
+      vi.setSystemTime(Date.now() + 120_000);
+      await add(t, candidate({ title: "Changed task" }));
+      await expect(t.mutation(api.ai.sms, args)).resolves.toMatchObject({
+        handled: true,
+        status: "duplicate",
+      });
+      await owner.mutation(api.ai.configure, { phone: "+15555550234" });
+      await expect(t.mutation(api.ai.sms, args)).resolves.toMatchObject({
+        handled: true,
+        status: "duplicate",
+      });
+      await expect(
+        t.mutation(api.ai.sms, { ...args, from: "+15555550234" })
+      ).rejects.toThrow("different content or sender");
+      const snapshot = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      expect(
+        snapshot.replies.map((reply) => ({
+          body: reply.body,
+          itemCode: reply.itemCode,
+          itemVersion: reply.itemVersion,
+        }))
+      ).toStrictEqual([
+        { body: args.body, itemCode: item.code, itemVersion: item.version },
+      ]);
+    });
+
+    test("unconfigured SMS and web feedback fail closed", async () => {
+      const t = convexTest(schema, modules);
+      const args = {
+        body: "Private reply",
+        from: PHONE,
+        messageSid: "unconfigured",
+        secret: SECRET,
+      };
+      await expect(t.mutation(api.ai.sms, args)).rejects.toThrow("Initialize");
+      const owner = t.withIdentity(OWNER);
+      await expect(
+        owner.mutation(api.ai.submitFeedback, {
+          body: "Private",
+          idempotencyKey: "not-initialized",
+        })
+      ).rejects.toThrow("Initialize");
+      await owner.mutation(api.ai.configure, {});
+      await expect(t.mutation(api.ai.sms, args)).rejects.toThrow(
+        "Configure the owner phone"
+      );
+    });
+
+    test("does not capture messages from other senders", async () => {
       const { t } = await setup();
       await expect(
         t.mutation(api.ai.sms, {
-          body: "Grocery list: apples",
-          from: PHONE,
-          messageSid: "normal-text",
+          body: "Y A1",
+          from: "+15555550999",
+          messageSid: "foreign",
           secret: SECRET,
         })
-      ).resolves.toMatchObject({ handled: false });
+      ).resolves.toMatchObject({ handled: false, status: "unauthorized" });
+      await expect(
+        t.run((ctx) => ctx.db.query("aiReplies").take(10))
+      ).resolves.toHaveLength(0);
     });
 
-    test("a bare yes is accepted only for one current unexpired sent question", async () => {
+    test("web feedback requires its owner and rejects conflicting idempotency keys", async () => {
       const { owner, t } = await setup();
-      const item = await add(t, question());
-      const bare = {
-        body: "Y",
-        from: PHONE,
-        messageSid: "bare-no-context",
-        secret: SECRET,
+      const item = await add(t);
+      const args = {
+        body: "Handled this already",
+        code: item.code,
+        idempotencyKey: "web-feedback",
       };
-      await expect(t.mutation(api.ai.sms, bare)).resolves.toMatchObject({
-        status: "clarification",
-      });
-      await t.run((ctx) =>
-        ctx.db.insert("aiSmsDeliveries", {
-          code: item.code,
-          expiresAt: Date.now() + DAY_MS,
-          idempotencyKey: "outbound-context",
-          itemId: item.id,
-          itemVersion: item.version,
-          milestone: "refund-review",
-          ownerTokenIdentifier: OWNER.tokenIdentifier,
-          phone: PHONE,
-          question: true,
-          status: "sent",
-          updatedAt: Date.now(),
-        })
+      await expect(t.mutation(api.ai.submitFeedback, args)).rejects.toThrow(
+        "Authentication required"
       );
       await expect(
-        t.mutation(api.ai.sms, { ...bare, messageSid: "bare-with-context" })
-      ).resolves.toMatchObject({ status: "updated" });
-      const readback7 = await owner.query(api.ai.getItem, { code: item.code });
-      expect(readback7?.item.status).toBe("done");
+        t
+          .withIdentity({ ...OWNER, tokenIdentifier: "other-owner" })
+          .mutation(api.ai.submitFeedback, args)
+      ).rejects.toThrow("owner access required");
+      const first = await owner.mutation(api.ai.submitFeedback, args);
       await expect(
-        t.mutation(api.ai.sms, { ...bare, messageSid: "bare-stale-context" })
-      ).resolves.toMatchObject({ status: "clarification" });
+        owner.mutation(api.ai.submitFeedback, args)
+      ).resolves.toMatchObject({ ...first, duplicate: true });
+      await expect(
+        owner.mutation(api.ai.submitFeedback, { ...args, body: "Never mind" })
+      ).rejects.toThrow("different content");
+      const snapshot = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+        source: "another-source",
+      });
+      expect(snapshot.replies[0]).toMatchObject({
+        body: args.body,
+        itemCode: item.code,
+        itemSource: "test-detector",
+        itemVersion: item.version,
+      });
+    });
+
+    test("agents apply a reply once and acknowledge only after processing", async () => {
+      const { owner, t } = await setup();
+      const item = await add(t);
+      const { replyId } = await owner.mutation(api.ai.submitFeedback, {
+        body: "Done",
+        code: item.code,
+        idempotencyKey: "decision",
+      });
+      const args = {
+        action: "done" as const,
+        code: item.code,
+        expectedVersion: item.version,
+        replyId,
+        secret: SECRET,
+      };
+      await expect(
+        t.mutation(api.ai.applyReplyDecision, { ...args, secret: "wrong" })
+      ).rejects.toThrow("Unauthorized");
+      const applied = await t.mutation(api.ai.applyReplyDecision, args);
+      expect(applied).toMatchObject({ duplicate: false, version: 2 });
+      await expect(
+        t.mutation(api.ai.applyReplyDecision, args)
+      ).resolves.toMatchObject({
+        actionId: applied.actionId,
+        duplicate: true,
+        version: 2,
+      });
+      await expect(
+        t.mutation(api.ai.applyReplyDecision, { ...args, action: "ignore" })
+      ).rejects.toThrow("different decision");
+      const pending = await t.query(api.ai.machineSnapshot, { secret: SECRET });
+      expect(pending.replies).toHaveLength(1);
+    });
+
+    test("acknowledgment preserves the original reply and prevents replay after a later user action", async () => {
+      const { owner, t } = await setup();
+      const item = await add(t);
+      const { replyId } = await owner.mutation(api.ai.submitFeedback, {
+        body: "Done",
+        code: item.code,
+        idempotencyKey: "acknowledged-decision",
+      });
+      const args = {
+        action: "done" as const,
+        code: item.code,
+        expectedVersion: item.version,
+        replyId,
+        secret: SECRET,
+      };
+      const applied = await t.mutation(api.ai.applyReplyDecision, args);
+      const acknowledgment = {
+        replyId,
+        result: "Marked done and verified the current item",
+        secret: SECRET,
+      };
+      await t.mutation(api.ai.acknowledgeReply, acknowledgment);
+      await expect(
+        t.mutation(api.ai.acknowledgeReply, acknowledgment)
+      ).resolves.toMatchObject({ duplicate: true });
+      await owner.mutation(api.ai.undo, { actionId: applied.actionId });
+      await expect(t.mutation(api.ai.applyReplyDecision, args)).rejects.toThrow(
+        "already been processed"
+      );
+      const readback = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      expect(readback.replies).toHaveLength(0);
+      await expect(
+        t.run((ctx) => ctx.db.get("aiReplies", replyId))
+      ).resolves.toMatchObject({
+        body: "Done",
+        result: acknowledgment.result,
+        status: "processed",
+      });
+    });
+
+    test("stale contextual replies cannot apply a decision to a newer item version", async () => {
+      const { owner, t } = await setup();
+      const item = await add(t);
+      const { replyId } = await owner.mutation(api.ai.submitFeedback, {
+        body: "Snooze this",
+        code: item.code,
+        idempotencyKey: "stale",
+      });
+      await owner.mutation(api.ai.respond, {
+        action: "snooze",
+        code: item.code,
+        expectedVersion: item.version,
+        snoozeUntil: Date.now() + DAY_MS,
+      });
+      await expect(
+        t.mutation(api.ai.applyReplyDecision, {
+          action: "done",
+          code: item.code,
+          expectedVersion: item.version,
+          replyId,
+          secret: SECRET,
+        })
+      ).rejects.toThrow("changed");
+      await expect(
+        t.mutation(api.ai.applyReplyDecision, {
+          action: "done",
+          code: item.code,
+          expectedVersion: item.version + 1,
+          replyId,
+          secret: SECRET,
+        })
+      ).rejects.toThrow("different item version");
+    });
+
+    test("reading pending replies is bounded and does not acknowledge; processing drains later pages", async () => {
+      const { t } = await setup();
+      await t.run((ctx) =>
+        Promise.all(
+          Array.from({ length: 101 }, (_, index) =>
+            ctx.db.insert("aiReplies", {
+              body: `Reply ${index}`,
+              createdAt: Date.now() + index,
+              idempotencyKey: `queued-${index}`,
+              ownerTokenIdentifier: OWNER.tokenIdentifier,
+              source: "sms",
+              status: "pending",
+            })
+          )
+        )
+      );
+      const first = await t.query(api.ai.machineSnapshot, { secret: SECRET });
+      expect({
+        count: first.replies.length,
+        truncated: first.repliesTruncated,
+      }).toStrictEqual({ count: 100, truncated: true });
+      if (!first.nextReplyCursor) {
+        throw new Error("Expected a reply cursor");
+      }
+      const secondPage = await t.query(api.ai.machineSnapshot, {
+        replyCursor: first.nextReplyCursor,
+        secret: SECRET,
+      });
+      expect({
+        cursor: secondPage.nextReplyCursor,
+        replies: secondPage.replies.map((reply) => reply.body),
+      }).toStrictEqual({ cursor: null, replies: ["Reply 100"] });
+      const repeated = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+        source: "unknown",
+      });
+      expect(repeated.replies.map((reply) => reply._id)).toStrictEqual(
+        first.replies.map((reply) => reply._id)
+      );
+      const [reply] = first.replies;
+      if (!reply) {
+        throw new Error("Expected a reply");
+      }
+      await t.mutation(api.ai.acknowledgeReply, {
+        replyId: reply._id,
+        result: "Processed",
+        secret: SECRET,
+      });
+      const next = await t.query(api.ai.machineSnapshot, { secret: SECRET });
+      expect({
+        last: next.replies.at(-1)?.body,
+        truncated: next.repliesTruncated,
+      }).toStrictEqual({ last: "Reply 100", truncated: false });
     });
 
     test("health distinguishes stale source checks and expired paper from queue acceptance", async () => {

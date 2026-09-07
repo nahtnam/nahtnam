@@ -1,5 +1,4 @@
 import type { ClaimedPrintJob } from "@repo/backend/print";
-import { appUrl } from "@repo/config/app";
 import { deserialize } from "react-thermal-printer";
 import { describe, expect, test } from "vitest";
 
@@ -22,14 +21,14 @@ const job: ClaimedPrintJob = {
 };
 
 describe("Epson action receipts", () => {
-  test("encodes a canonical local-app QR and human controls without printing internal IDs", async () => {
+  test("encodes a public QR even outside production, without printing internal IDs", async () => {
     const bytes = await renderPrintJob(job);
     const commands = deserialize(bytes);
     expect(commands.map((command) => command.name)).toStrictEqual(
       expect.arrayContaining(["qrcodeStore", "qrcodePrint"])
     );
     expect(new TextDecoder().decode(bytes)).toContain(
-      `${appUrl}/ai/r/receipt1`
+      "https://www.nahtnam.com/ai/r/receipt1"
     );
     const text = commands
       .map((command) =>

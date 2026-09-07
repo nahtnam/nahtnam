@@ -3,9 +3,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createConvexRouteQuery } from "convex-route-query";
 import { useState } from "react";
 
+import { FeedbackComposer } from "./-components/feedback-composer";
 import { HealthView } from "./-components/health-view";
 import { ItemsView } from "./-components/items-view";
 import { ActionSettings } from "./-components/settings-form";
+import { currentMinute, useMinuteClock } from "./-use-minute-clock";
 
 const getSettings = createConvexRouteQuery(api.ai.getSettings);
 const views = [
@@ -18,11 +20,14 @@ const views = [
 export const Route = createFileRoute("/_with-user/ai/")({
   async loader({ context }) {
     await getSettings.prefetchQuery(context.queryClient);
+    return { now: currentMinute() };
   },
   component: ActionCenter,
 });
 
 function ActionCenter() {
+  const { now: initialNow } = Route.useLoaderData();
+  const now = useMinuteClock(initialNow);
   const { data: settings } = getSettings.useSuspenseQuery();
   const [view, setView] = useState<(typeof views)[number]["id"]>("today");
 
@@ -54,21 +59,24 @@ function ActionCenter() {
           </button>
         ))}
       </fieldset>
-      {view === "today" && <ItemsView view="today" />}
-      {view === "history" && <ItemsView view="history" />}
+      {view === "today" && <ItemsView now={now} view="today" />}
+      {view === "history" && <ItemsView now={now} view="history" />}
       {view === "upcoming" && (
         <div className="space-y-7">
           <section>
             <h2 className="heading mb-3 text-xl">Upcoming</h2>
-            <ItemsView view="upcoming" />
+            <ItemsView now={now} view="upcoming" />
           </section>
           <section>
             <h2 className="heading mb-3 text-xl">Snoozed</h2>
-            <ItemsView view="snoozed" />
+            <ItemsView now={now} view="snoozed" />
           </section>
         </div>
       )}
       {view === "health" && <HealthView settings={settings} />}
+      <div className="mt-8">
+        <FeedbackComposer />
+      </div>
     </div>
   );
 }

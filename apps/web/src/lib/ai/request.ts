@@ -62,6 +62,19 @@ export const aiRequestSchema = z.discriminatedUnion("operation", [
     idempotencyKey: z.string().min(1).max(200),
     operation: z.literal("notify"),
   }),
+  z.strictObject({
+    action: z.enum(["done", "snooze", "ignore", "not_mine", "yes", "no"]),
+    code: z.string().min(1).max(40),
+    expectedVersion: z.number().int().positive(),
+    operation: z.literal("reply-decision"),
+    replyId: z.string().min(1).max(100),
+    snoozeUntil: timestamp.optional(),
+  }),
+  z.strictObject({
+    operation: z.literal("acknowledge-reply"),
+    replyId: z.string().min(1).max(100),
+    result: z.string().trim().min(1).max(1000),
+  }),
 ]);
 
 export type AiRequest = z.infer<typeof aiRequestSchema>;

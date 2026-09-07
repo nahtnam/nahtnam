@@ -22,7 +22,7 @@ const SettingsForm = createForm(settingsSchema).configure({
       label: "Your personal SMS number (optional)",
       placeholder: "+14155550123",
       description:
-        "Only this number can send action replies. Leave blank to turn off SMS commands.",
+        "Only this number can send replies. Leave blank to turn off SMS replies.",
     },
   },
 });

@@ -66,10 +66,13 @@ export const aiTables = {
     code: v.string(),
     itemId: v.id("aiItems"),
     previous: previousState,
+    replyId: v.optional(v.id("aiReplies")),
+    replySnoozeUntil: v.optional(v.number()),
     resultVersion: v.number(),
     undoneAt: v.optional(v.number()),
   })
     .index("by_itemId_and_at", ["itemId", "at"])
+    .index("by_replyId_and_itemId", ["replyId", "itemId"])
     .index("by_actorTokenIdentifier_and_at", ["actorTokenIdentifier", "at"]),
 
   aiHealth: defineTable({
@@ -115,6 +118,11 @@ export const aiTables = {
       "status",
       "nextNotifyAt",
     ])
+    .index("by_ownerTokenIdentifier_and_status_and_usefulUntil", [
+      "ownerTokenIdentifier",
+      "status",
+      "usefulUntil",
+    ])
     .index("by_ownerTokenIdentifier_and_checkedAt", [
       "ownerTokenIdentifier",
       "checkedAt",
@@ -147,6 +155,32 @@ export const aiTables = {
       "idempotencyKey",
     ]),
 
+  aiReplies: defineTable({
+    body: v.string(),
+    createdAt: v.number(),
+    idempotencyKey: v.string(),
+    itemCode: v.optional(v.string()),
+    itemSource: v.optional(v.string()),
+    itemVersion: v.optional(v.number()),
+    ownerTokenIdentifier: v.string(),
+    processedAt: v.optional(v.number()),
+    receiptId: v.optional(v.id("aiReceipts")),
+    result: v.optional(v.string()),
+    senderPhone: v.optional(v.string()),
+    source: v.union(v.literal("sms"), v.literal("web")),
+    status: v.union(v.literal("pending"), v.literal("processed")),
+  })
+    .index("by_ownerTokenIdentifier_and_source_and_idempotencyKey", [
+      "ownerTokenIdentifier",
+      "source",
+      "idempotencyKey",
+    ])
+    .index("by_ownerTokenIdentifier_and_status_and_createdAt", [
+      "ownerTokenIdentifier",
+      "status",
+      "createdAt",
+    ]),
+
   aiSettings: defineTable({
     nextCode: v.number(),
     ownerTokenIdentifier: v.string(),
@@ -155,12 +189,4 @@ export const aiTables = {
     phone: v.optional(v.string()),
     singleton: v.literal("primary"),
   }).index("by_singleton", ["singleton"]),
-
-  aiSmsEvents: defineTable({
-    at: v.number(),
-    messageSid: v.string(),
-    ownerTokenIdentifier: v.string(),
-    reply: v.string(),
-    status: v.string(),
-  }).index("by_messageSid", ["messageSid"]),
 };

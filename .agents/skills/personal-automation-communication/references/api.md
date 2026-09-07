@@ -4,6 +4,28 @@ The web and Convex deployments share a dedicated `AI_AUTOMATION_SECRET`. The loc
 
 `GET https://www.nahtnam.com/api/ai?source=<source>` returns bounded central state with `coverage` and `truncated` indicators. Do not infer that a missing item is new or resolved when the result is truncated; keep the same source key and report the coverage gap. The general snapshot separates active items from recent closed history, so accumulated history cannot silently hide an active deadline. `POST` to the same endpoint accepts one JSON operation. All timestamps are epoch milliseconds. HTTP responses are private and not cached. On an uncertain response, read back state and retry only with the same source keys/idempotency key.
 
+## Process user replies first
+
+Every snapshot also returns `replies` (up to 100 pending replies), `repliesTruncated`, and `nextReplyCursor` (a continuation cursor or null). Replies are owner-wide even when `source` filters the action items. Each includes its database `_id`, original `body`, delivery source (`sms` or `web`), and any available item/receipt context. Read them before source scanning and publication. Collectors handle only clearly attributable replies; the coordinator handles general or cross-source replies. Do not acknowledge an unrelated reply to hide it from a source run.
+
+The authenticated website and the allowlisted SMS sender save arbitrary text verbatim, up to 4,000 characters. SMS says the reply was saved for the next automation run; it does not say a task was completed. A bare `Y`, a correction, and a paragraph all use the same inbox. No SMS command parser changes tracking state. Twilio retries use the same message id and do not create duplicate replies. Website submissions use a stable idempotency key.
+
+After interpreting a reply against current state, apply a tracking change:
+
+```json
+{"operation":"reply-decision","replyId":"<reply _id>","code":"A7","expectedVersion":3,"action":"snooze","snoozeUntil":1789459200000}
+```
+
+Actions are done/snooze/ignore/not_mine/yes/no. These are structured tracking outcomes chosen by the agent after interpretation, not a grammar the user must follow. Read the current code/version and compare it with the reply's observed item version or receipt snapshot. If they differ, resolve the changed context before acting; do not substitute a newer version to bypass that check. While the reply is pending, the same reply/target/version/action is idempotent. Once acknowledged, it cannot apply further decisions; retry acknowledgment with the same result instead. Read back the item before acknowledging; use the same operation after an uncertain response. A reply can require several actions or none. External work remains governed by its existing permissions and must be verified separately.
+
+Once all requested work is complete and durable results have been read back:
+
+```json
+{"operation":"acknowledge-reply","replyId":"<reply _id>","result":"Snoozed A7 until Friday and verified the updated reminder."}
+```
+
+`result` is a nonempty summary up to 1,000 characters. Acknowledgment records the outcome and removes the reply from the pending queue; a repeated acknowledgment must preserve the same result. GET never acknowledges. Ambiguous, partially handled or failed work stays pending. Ask one clarification when needed; do not discard the reply. When `nextReplyCursor` is non-null, continue with `GET /api/ai?source=<source>&replyCursor=<URL-encoded cursor>` or `ai-client.py get --source <source> --reply-cursor <cursor>`. Paging does not require acknowledgment. Start fresh without a cursor each run; these are temporary traversal cursors, not durable source state. Never claim complete reply coverage while pages remain.
+
 ## Upsert findings
 
 ```json

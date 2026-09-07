@@ -125,19 +125,26 @@ export function publicSettings(settings: Doc<"aiSettings">) {
 
 export async function loadActiveItems(
   ctx: Pick<QueryCtx, "db">,
-  owner: string
+  owner: string,
+  now: number
 ) {
   const [open, snoozed] = await Promise.all([
     ctx.db
       .query("aiItems")
-      .withIndex("by_ownerTokenIdentifier_and_status_and_nextNotifyAt", (q) =>
-        q.eq("ownerTokenIdentifier", owner).eq("status", "open")
+      .withIndex("by_ownerTokenIdentifier_and_status_and_usefulUntil", (q) =>
+        q
+          .eq("ownerTokenIdentifier", owner)
+          .eq("status", "open")
+          .gt("usefulUntil", now)
       )
       .take(MAX_ITEMS + 1),
     ctx.db
       .query("aiItems")
-      .withIndex("by_ownerTokenIdentifier_and_status_and_nextNotifyAt", (q) =>
-        q.eq("ownerTokenIdentifier", owner).eq("status", "snoozed")
+      .withIndex("by_ownerTokenIdentifier_and_status_and_usefulUntil", (q) =>
+        q
+          .eq("ownerTokenIdentifier", owner)
+          .eq("status", "snoozed")
+          .gt("usefulUntil", now)
       )
       .take(MAX_ITEMS + 1),
   ]);
@@ -153,9 +160,10 @@ export async function loadActiveItems(
 export async function loadOwnerHistory(
   ctx: Pick<QueryCtx, "db">,
   owner: string,
-  limit: number
+  limit: number,
+  now: number
 ) {
-  const [done, dismissed] = await Promise.all([
+  const [done, dismissed, expiredOpen, expiredSnoozed] = await Promise.all([
     ctx.db
       .query("aiItems")
       .withIndex("by_ownerTokenIdentifier_and_status_and_nextNotifyAt", (q) =>
@@ -170,8 +178,28 @@ export async function loadOwnerHistory(
       )
       .order("desc")
       .take(limit),
+    ctx.db
+      .query("aiItems")
+      .withIndex("by_ownerTokenIdentifier_and_status_and_usefulUntil", (q) =>
+        q
+          .eq("ownerTokenIdentifier", owner)
+          .eq("status", "open")
+          .lte("usefulUntil", now)
+      )
+      .order("desc")
+      .take(limit),
+    ctx.db
+      .query("aiItems")
+      .withIndex("by_ownerTokenIdentifier_and_status_and_usefulUntil", (q) =>
+        q
+          .eq("ownerTokenIdentifier", owner)
+          .eq("status", "snoozed")
+          .lte("usefulUntil", now)
+      )
+      .order("desc")
+      .take(limit),
   ]);
-  return [...done, ...dismissed]
+  return [...done, ...dismissed, ...expiredOpen, ...expiredSnoozed]
     .toSorted((a, b) => b._creationTime - a._creationTime)
     .slice(0, limit);
 }

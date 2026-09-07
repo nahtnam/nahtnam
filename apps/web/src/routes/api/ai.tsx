@@ -1,5 +1,6 @@
 /* oxlint-disable sonarjs/function-name -- TanStack names handlers after HTTP methods. */
 import { api } from "@repo/backend/api";
+import type { Id } from "@repo/backend/data-model";
 import { clientEnv } from "@repo/config/env/client";
 import { serverEnv } from "@repo/config/env/server";
 import { createFileRoute } from "@tanstack/react-router";
@@ -48,6 +49,23 @@ async function dispatch(options: { input: AiRequest; secret: string }) {
         secret,
       });
     }
+    case "reply-decision": {
+      return await convex.mutation(api.ai.applyReplyDecision, {
+        action: input.action,
+        code: input.code,
+        expectedVersion: input.expectedVersion,
+        replyId: input.replyId as Id<"aiReplies">,
+        secret,
+        snoozeUntil: input.snoozeUntil,
+      });
+    }
+    case "acknowledge-reply": {
+      return await convex.mutation(api.ai.acknowledgeReply, {
+        replyId: input.replyId as Id<"aiReplies">,
+        result: input.result,
+        secret,
+      });
+    }
     default: {
       const exhaustive: never = input;
       return exhaustive;
@@ -64,14 +82,22 @@ export const Route = createFileRoute("/api/ai")({
         if (denial || !secret) {
           return denial;
         }
-        const source =
-          new URL(request.url).searchParams.get("source") ?? undefined;
+        const parameters = new URL(request.url).searchParams;
+        const source = parameters.get("source") ?? undefined;
+        const replyCursor = parameters.get("replyCursor") ?? undefined;
         if (source && source.length > 80) {
           return aiJson({ error: "Invalid source." }, 400);
         }
+        if (replyCursor && replyCursor.length > 8000) {
+          return aiJson({ error: "Invalid reply cursor." }, 400);
+        }
         const convex = new ConvexHttpClient(clientEnv.VITE_CONVEX_URL);
         return aiJson(
-          await convex.query(api.ai.machineSnapshot, { secret, source })
+          await convex.query(api.ai.machineSnapshot, {
+            replyCursor,
+            secret,
+            source,
+          })
         );
       },
       async POST({ request }) {

@@ -5,6 +5,7 @@ import { createConvexRouteQuery } from "convex-route-query";
 
 import { ActionCard } from "../-components/action-card";
 import { useAiActions } from "../-components/action-feedback";
+import { FeedbackComposer } from "../-components/feedback-composer";
 import { formatTime } from "../-lib";
 
 const getReceipt = createConvexRouteQuery(api.ai.getReceipt);
@@ -74,6 +75,9 @@ function ReceiptPage() {
             </div>
           )
         )}
+      </div>
+      <div className="mt-6">
+        <FeedbackComposer key={data.receipt._id} receiptId={data.receipt._id} />
       </div>
       <Link className="btn btn-ghost mt-6" to="/ai">
         All current actions

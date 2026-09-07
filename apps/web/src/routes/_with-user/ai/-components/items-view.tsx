@@ -1,4 +1,5 @@
 import { api } from "@repo/backend/api";
+import { keepPreviousData } from "@tanstack/react-query";
 import { createConvexRouteQuery } from "convex-route-query";
 
 import { ActionCard } from "./action-card";
@@ -26,9 +27,12 @@ const emptyCopy: Record<ItemView, { body: string; title: string }> = {
   },
 };
 
-export function ItemsView(props: { view: ItemView }) {
-  const { view } = props;
-  const { data, isPending, error } = listItems.useQuery({ limit: 100, view });
+export function ItemsView(props: { now: number; view: ItemView }) {
+  const { now, view } = props;
+  const { data, isPending, error } = listItems.useQuery(
+    { limit: 100, now, view },
+    { gcTime: 0, placeholderData: keepPreviousData }
+  );
   const { respond } = useAiActions();
   if (isPending) {
     return <output className="muted block py-8">Loading your actions…</output>;

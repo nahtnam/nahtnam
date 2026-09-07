@@ -1,5 +1,5 @@
 import { api } from "@repo/backend/api";
-import { appUrl } from "@repo/config/app";
+import { appUrl, receiptPhoneNumber } from "@repo/config/app";
 import { serverEnv } from "@repo/config/env/server";
 import type { ConvexHttpClient } from "convex/browser";
 import twilio from "twilio";
@@ -35,7 +35,7 @@ export async function notifyUrgentItem(options: {
       TWILIO_AUTH_TOKEN
     ).messages.create({
       body: `${delivery.body}\n${itemUrl}`,
-      from: "+18556248626",
+      from: receiptPhoneNumber,
       statusCallback: statusCallback.toString(),
       to: delivery.phone,
     });

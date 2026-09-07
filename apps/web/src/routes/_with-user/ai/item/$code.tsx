@@ -4,6 +4,7 @@ import { createConvexRouteQuery } from "convex-route-query";
 
 import { ActionCard } from "../-components/action-card";
 import { useAiActions } from "../-components/action-feedback";
+import { FeedbackComposer } from "../-components/feedback-composer";
 import { formatTime } from "../-lib";
 
 const getItem = createConvexRouteQuery(api.ai.getItem);
@@ -37,6 +38,11 @@ function ItemPage() {
   return (
     <div className="space-y-6">
       <ActionCard item={data.item} onRespond={respond} />
+      <FeedbackComposer
+        key={code}
+        code={code}
+        expectedVersion={data.item.version}
+      />
       {data.actions.length > 0 && (
         <section aria-labelledby="action-history-heading">
           <h2 className="heading mb-3 text-xl" id="action-history-heading">

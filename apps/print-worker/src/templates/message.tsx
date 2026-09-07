@@ -1,5 +1,5 @@
 import { isPrintActionPath } from "@repo/backend/print";
-import { appUrl } from "@repo/config/app";
+import { publicAppUrl } from "@repo/config/app";
 import {
   Br,
   Cut,
@@ -18,7 +18,7 @@ export function renderMessageReceipt(job: MessagePrintJob): ReceiptElement {
   if (actionPath !== undefined && !isPrintActionPath(actionPath)) {
     throw new Error("Action path must stay within /ai");
   }
-  const actionUrl = actionPath ? `${appUrl}${actionPath}` : undefined;
+  const actionUrl = actionPath ? `${publicAppUrl}${actionPath}` : undefined;
 
   return (
     <Printer type="epson" width={42}>
@@ -39,7 +39,7 @@ export function renderMessageReceipt(job: MessagePrintJob): ReceiptElement {
             content={actionUrl}
             correction="M"
           />
-          <Text align="center">{new URL(appUrl).hostname}/ai</Text>
+          <Text align="center">{new URL(publicAppUrl).hostname}/ai</Text>
           <Text align="center">Done / Snooze / Dismiss</Text>
           <Text align="center">{createdAt}</Text>
         </>

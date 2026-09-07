@@ -1,4 +1,5 @@
 import type { Doc, Id } from "@repo/backend/data-model";
+import { receiptPhoneNumber } from "@repo/config/app";
 
 export type AiItem = Doc<"aiItems">;
 export type AiResponse = {
@@ -41,7 +42,7 @@ export function snoozeDate(days: number, now = new Date()) {
 }
 
 export function textReplyHref(command: string) {
-  return `sms:+18556248626?body=${encodeURIComponent(command)}`;
+  return `sms:${receiptPhoneNumber}?body=${encodeURIComponent(command)}`;
 }
 
 export function actionError(error: unknown) {

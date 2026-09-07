@@ -20,6 +20,7 @@ def main():
     sub = parser.add_subparsers(dest="command", required=True)
     read = sub.add_parser("get", help="Read current action state")
     read.add_argument("--source")
+    read.add_argument("--reply-cursor", help="Continue this run's pending-reply traversal")
     write = sub.add_parser("post", help="Submit one operation from JSON file or stdin")
     write.add_argument("file", help="Path to JSON, or - for stdin")
     args = parser.parse_args()
@@ -29,8 +30,13 @@ def main():
     endpoint = "https://www.nahtnam.com/api/ai"
     data = None
     if args.command == "get":
+        parameters = {}
         if args.source:
-            endpoint += "?" + urllib.parse.urlencode({"source": args.source})
+            parameters["source"] = args.source
+        if args.reply_cursor:
+            parameters["replyCursor"] = args.reply_cursor
+        if parameters:
+            endpoint += "?" + urllib.parse.urlencode(parameters)
     else:
         try:
             if args.file == "-":
