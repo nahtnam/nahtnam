@@ -2,6 +2,7 @@ import { serverEnv } from "@repo/config/env/server";
 import { createFileRoute } from "@tanstack/react-router";
 import { handleCallbackRoute } from "@workos/authkit-tanstack-react-start";
 
+import { callbackReturnPath } from "@/lib/auth/admin-return";
 import { captureServerException } from "@/lib/posthog/posthog.server";
 
 const AUTH_CALLBACK_ROUTE = "/api/auth/callback";
@@ -9,7 +10,6 @@ const authCallbackOrigin = new URL(serverEnv.WORKOS_REDIRECT_URI).origin;
 
 const handleAuthCallback = handleCallbackRoute({
   onError: handleAuthCallbackError,
-  returnPathname: "/app",
 });
 
 type AuthCallbackError = {
@@ -66,7 +66,7 @@ export const Route = createFileRoute("/api/auth/callback")({
 
           const currentUrl = new URL(location, authCallbackOrigin);
           const redirectUrl = new URL(
-            `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`,
+            callbackReturnPath(currentUrl.pathname),
             authCallbackOrigin
           );
           const headers = new Headers(response.headers);

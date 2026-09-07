@@ -8,8 +8,9 @@ import {
   switchToOrganization,
 } from "@workos/authkit-tanstack-react-start";
 
+import { adminReturnPath } from "@/lib/auth/admin-return";
+
 const ADMIN_AUTH_ATTEMPT_COOKIE = "nahtnam-admin-auth-attempt";
-const ADMIN_PATH = "/admin";
 const HOME_PATH = "/";
 
 const workos = new WorkOS(serverEnv.WORKOS_API_KEY);
@@ -60,10 +61,10 @@ function hasAdminAuthAttemptCookie(request: Request) {
     .some((cookie) => cookie.trim() === `${ADMIN_AUTH_ATTEMPT_COOKIE}=1`);
 }
 
-function getAdminSignInUrl() {
+function getAdminSignInUrl(returnPath: string) {
   return getSignInUrl({
     data: {
-      returnPathname: ADMIN_PATH,
+      returnPathname: returnPath,
     },
   });
 }
@@ -91,19 +92,22 @@ export const Route = createFileRoute("/api/auth/admin")({
     handlers: {
       // oxlint-disable-next-line sonarjs/function-name
       async GET({ request }) {
+        const returnPath = adminReturnPath(
+          new URL(request.url).searchParams.get("returnTo")
+        );
         const hasAttemptedAccountSelection =
           hasAdminAuthAttemptCookie(request) === true;
         const auth = await getAuth();
 
         if (!auth.user) {
           return redirectResponse({
-            location: await getAdminSignInUrl(),
+            location: await getAdminSignInUrl(returnPath),
             markAttempt: true,
           });
         }
 
         if (hasAdminRole(auth)) {
-          return redirectResponse({ clearAttempt: true, location: ADMIN_PATH });
+          return redirectResponse({ clearAttempt: true, location: returnPath });
         }
 
         const organizationId = await findAdminOrganizationId(auth.user.id);
@@ -112,7 +116,7 @@ export const Route = createFileRoute("/api/auth/admin")({
           return hasAttemptedAccountSelection
             ? redirectResponse({ clearAttempt: true, location: HOME_PATH })
             : redirectResponse({
-                location: await getAdminSignInUrl(),
+                location: await getAdminSignInUrl(returnPath),
                 markAttempt: true,
               });
         }
@@ -127,7 +131,7 @@ export const Route = createFileRoute("/api/auth/admin")({
           return redirectResponse({ clearAttempt: true, location: HOME_PATH });
         }
 
-        return redirectResponse({ clearAttempt: true, location: ADMIN_PATH });
+        return redirectResponse({ clearAttempt: true, location: returnPath });
       },
     },
   },

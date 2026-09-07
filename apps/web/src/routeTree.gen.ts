@@ -19,10 +19,13 @@ import { Route as GolfRIndexRouteImport } from './routes/golf-r/index'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as ApiPrintRouteImport } from './routes/api/print'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
+import { Route as ApiAiRouteImport } from './routes/api/ai'
 import { Route as WithoutUserSignInRouteImport } from './routes/_without-user/sign-in'
+import { Route as WithUserAiRouteImport } from './routes/_with-user/ai'
 import { Route as WithUserAdminRouteImport } from './routes/_with-user/admin'
 import { Route as PublicOgRouteImport } from './routes/_public/og'
 import { Route as WithUserAppIndexRouteImport } from './routes/_with-user/app/index'
+import { Route as WithUserAiIndexRouteImport } from './routes/_with-user/ai/index'
 import { Route as WithUserAdminIndexRouteImport } from './routes/_with-user/admin/index'
 import { Route as PublicResumeIndexRouteImport } from './routes/_public/resume/index'
 import { Route as PublicExperienceIndexRouteImport } from './routes/_public/experience/index'
@@ -30,6 +33,7 @@ import { Route as PublicContactIndexRouteImport } from './routes/_public/contact
 import { Route as PublicBnbIndexRouteImport } from './routes/_public/bnb/index'
 import { Route as PublicBlogIndexRouteImport } from './routes/_public/blog/index'
 import { Route as ApiTwilioSmsRouteImport } from './routes/api/twilio/sms'
+import { Route as ApiTwilioAiStatusRouteImport } from './routes/api/twilio/ai-status'
 import { Route as ApiBnbSessionRouteImport } from './routes/api/bnb/session'
 import { Route as ApiBnbBookingsRouteImport } from './routes/api/bnb/bookings'
 import { Route as ApiAuthSignUpRouteImport } from './routes/api/auth/sign-up'
@@ -48,6 +52,8 @@ import { Route as WithUserAdminCompaniesIndexRouteImport } from './routes/_with-
 import { Route as WithUserAdminBookingsIndexRouteImport } from './routes/_with-user/admin/bookings/index'
 import { Route as WithUserAdminBlogIndexRouteImport } from './routes/_with-user/admin/blog/index'
 import { Route as PublicBlogSlugIndexRouteImport } from './routes/_public/blog/$slug/index'
+import { Route as WithUserAiRReceiptIdRouteImport } from './routes/_with-user/ai/r/$receiptId'
+import { Route as WithUserAiItemCodeRouteImport } from './routes/_with-user/ai/item/$code'
 import { Route as WithUserAdminBlogCategoriesIndexRouteImport } from './routes/_with-user/admin/blog/categories/index'
 import { Route as WithUserAdminBlogIdIndexRouteImport } from './routes/_with-user/admin/blog/$id/index'
 
@@ -98,10 +104,20 @@ const ApiContactRoute = ApiContactRouteImport.update({
   path: '/api/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAiRoute = ApiAiRouteImport.update({
+  id: '/api/ai',
+  path: '/api/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WithoutUserSignInRoute = WithoutUserSignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
   getParentRoute: () => WithoutUserRoute,
+} as any)
+const WithUserAiRoute = WithUserAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => WithUserRoute,
 } as any)
 const WithUserAdminRoute = WithUserAdminRouteImport.update({
   id: '/admin',
@@ -117,6 +133,11 @@ const WithUserAppIndexRoute = WithUserAppIndexRouteImport.update({
   id: '/app/',
   path: '/app/',
   getParentRoute: () => WithUserRoute,
+} as any)
+const WithUserAiIndexRoute = WithUserAiIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WithUserAiRoute,
 } as any)
 const WithUserAdminIndexRoute = WithUserAdminIndexRouteImport.update({
   id: '/',
@@ -151,6 +172,11 @@ const PublicBlogIndexRoute = PublicBlogIndexRouteImport.update({
 const ApiTwilioSmsRoute = ApiTwilioSmsRouteImport.update({
   id: '/api/twilio/sms',
   path: '/api/twilio/sms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTwilioAiStatusRoute = ApiTwilioAiStatusRouteImport.update({
+  id: '/api/twilio/ai-status',
+  path: '/api/twilio/ai-status',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiBnbSessionRoute = ApiBnbSessionRouteImport.update({
@@ -251,6 +277,16 @@ const PublicBlogSlugIndexRoute = PublicBlogSlugIndexRouteImport.update({
   path: '/blog/$slug/',
   getParentRoute: () => PublicRoute,
 } as any)
+const WithUserAiRReceiptIdRoute = WithUserAiRReceiptIdRouteImport.update({
+  id: '/r/$receiptId',
+  path: '/r/$receiptId',
+  getParentRoute: () => WithUserAiRoute,
+} as any)
+const WithUserAiItemCodeRoute = WithUserAiItemCodeRouteImport.update({
+  id: '/item/$code',
+  path: '/item/$code',
+  getParentRoute: () => WithUserAiRoute,
+} as any)
 const WithUserAdminBlogCategoriesIndexRoute =
   WithUserAdminBlogCategoriesIndexRouteImport.update({
     id: '/blog/categories/',
@@ -268,7 +304,9 @@ export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/og': typeof PublicOgRoute
   '/admin': typeof WithUserAdminRouteWithChildren
+  '/ai': typeof WithUserAiRouteWithChildren
   '/sign-in': typeof WithoutUserSignInRoute
+  '/api/ai': typeof ApiAiRoute
   '/api/contact': typeof ApiContactRoute
   '/api/print': typeof ApiPrintRoute
   '/golf-r/': typeof GolfRIndexRoute
@@ -282,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
   '/api/bnb/bookings': typeof ApiBnbBookingsRoute
   '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/api/twilio/ai-status': typeof ApiTwilioAiStatusRoute
   '/api/twilio/sms': typeof ApiTwilioSmsRoute
   '/blog/': typeof PublicBlogIndexRoute
   '/bnb/': typeof PublicBnbIndexRoute
@@ -289,7 +328,10 @@ export interface FileRoutesByFullPath {
   '/experience/': typeof PublicExperienceIndexRoute
   '/resume/': typeof PublicResumeIndexRoute
   '/admin/': typeof WithUserAdminIndexRoute
+  '/ai/': typeof WithUserAiIndexRoute
   '/app/': typeof WithUserAppIndexRoute
+  '/ai/item/$code': typeof WithUserAiItemCodeRoute
+  '/ai/r/$receiptId': typeof WithUserAiRReceiptIdRoute
   '/blog/$slug/': typeof PublicBlogSlugIndexRoute
   '/admin/blog/': typeof WithUserAdminBlogIndexRoute
   '/admin/bookings/': typeof WithUserAdminBookingsIndexRoute
@@ -308,6 +350,7 @@ export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/og': typeof PublicOgRoute
   '/sign-in': typeof WithoutUserSignInRoute
+  '/api/ai': typeof ApiAiRoute
   '/api/contact': typeof ApiContactRoute
   '/api/print': typeof ApiPrintRoute
   '/golf-r': typeof GolfRIndexRoute
@@ -321,6 +364,7 @@ export interface FileRoutesByTo {
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
   '/api/bnb/bookings': typeof ApiBnbBookingsRoute
   '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/api/twilio/ai-status': typeof ApiTwilioAiStatusRoute
   '/api/twilio/sms': typeof ApiTwilioSmsRoute
   '/blog': typeof PublicBlogIndexRoute
   '/bnb': typeof PublicBnbIndexRoute
@@ -328,7 +372,10 @@ export interface FileRoutesByTo {
   '/experience': typeof PublicExperienceIndexRoute
   '/resume': typeof PublicResumeIndexRoute
   '/admin': typeof WithUserAdminIndexRoute
+  '/ai': typeof WithUserAiIndexRoute
   '/app': typeof WithUserAppIndexRoute
+  '/ai/item/$code': typeof WithUserAiItemCodeRoute
+  '/ai/r/$receiptId': typeof WithUserAiRReceiptIdRoute
   '/blog/$slug': typeof PublicBlogSlugIndexRoute
   '/admin/blog': typeof WithUserAdminBlogIndexRoute
   '/admin/bookings': typeof WithUserAdminBookingsIndexRoute
@@ -350,7 +397,9 @@ export interface FileRoutesById {
   '/_without-user': typeof WithoutUserRouteWithChildren
   '/_public/og': typeof PublicOgRoute
   '/_with-user/admin': typeof WithUserAdminRouteWithChildren
+  '/_with-user/ai': typeof WithUserAiRouteWithChildren
   '/_without-user/sign-in': typeof WithoutUserSignInRoute
+  '/api/ai': typeof ApiAiRoute
   '/api/contact': typeof ApiContactRoute
   '/api/print': typeof ApiPrintRoute
   '/_public/': typeof PublicIndexRoute
@@ -365,6 +414,7 @@ export interface FileRoutesById {
   '/api/auth/sign-up': typeof ApiAuthSignUpRoute
   '/api/bnb/bookings': typeof ApiBnbBookingsRoute
   '/api/bnb/session': typeof ApiBnbSessionRoute
+  '/api/twilio/ai-status': typeof ApiTwilioAiStatusRoute
   '/api/twilio/sms': typeof ApiTwilioSmsRoute
   '/_public/blog/': typeof PublicBlogIndexRoute
   '/_public/bnb/': typeof PublicBnbIndexRoute
@@ -372,7 +422,10 @@ export interface FileRoutesById {
   '/_public/experience/': typeof PublicExperienceIndexRoute
   '/_public/resume/': typeof PublicResumeIndexRoute
   '/_with-user/admin/': typeof WithUserAdminIndexRoute
+  '/_with-user/ai/': typeof WithUserAiIndexRoute
   '/_with-user/app/': typeof WithUserAppIndexRoute
+  '/_with-user/ai/item/$code': typeof WithUserAiItemCodeRoute
+  '/_with-user/ai/r/$receiptId': typeof WithUserAiRReceiptIdRoute
   '/_public/blog/$slug/': typeof PublicBlogSlugIndexRoute
   '/_with-user/admin/blog/': typeof WithUserAdminBlogIndexRoute
   '/_with-user/admin/bookings/': typeof WithUserAdminBookingsIndexRoute
@@ -393,7 +446,9 @@ export interface FileRouteTypes {
     | '/'
     | '/og'
     | '/admin'
+    | '/ai'
     | '/sign-in'
+    | '/api/ai'
     | '/api/contact'
     | '/api/print'
     | '/golf-r/'
@@ -407,6 +462,7 @@ export interface FileRouteTypes {
     | '/api/auth/sign-up'
     | '/api/bnb/bookings'
     | '/api/bnb/session'
+    | '/api/twilio/ai-status'
     | '/api/twilio/sms'
     | '/blog/'
     | '/bnb/'
@@ -414,7 +470,10 @@ export interface FileRouteTypes {
     | '/experience/'
     | '/resume/'
     | '/admin/'
+    | '/ai/'
     | '/app/'
+    | '/ai/item/$code'
+    | '/ai/r/$receiptId'
     | '/blog/$slug/'
     | '/admin/blog/'
     | '/admin/bookings/'
@@ -433,6 +492,7 @@ export interface FileRouteTypes {
     | '/'
     | '/og'
     | '/sign-in'
+    | '/api/ai'
     | '/api/contact'
     | '/api/print'
     | '/golf-r'
@@ -446,6 +506,7 @@ export interface FileRouteTypes {
     | '/api/auth/sign-up'
     | '/api/bnb/bookings'
     | '/api/bnb/session'
+    | '/api/twilio/ai-status'
     | '/api/twilio/sms'
     | '/blog'
     | '/bnb'
@@ -453,7 +514,10 @@ export interface FileRouteTypes {
     | '/experience'
     | '/resume'
     | '/admin'
+    | '/ai'
     | '/app'
+    | '/ai/item/$code'
+    | '/ai/r/$receiptId'
     | '/blog/$slug'
     | '/admin/blog'
     | '/admin/bookings'
@@ -474,7 +538,9 @@ export interface FileRouteTypes {
     | '/_without-user'
     | '/_public/og'
     | '/_with-user/admin'
+    | '/_with-user/ai'
     | '/_without-user/sign-in'
+    | '/api/ai'
     | '/api/contact'
     | '/api/print'
     | '/_public/'
@@ -489,6 +555,7 @@ export interface FileRouteTypes {
     | '/api/auth/sign-up'
     | '/api/bnb/bookings'
     | '/api/bnb/session'
+    | '/api/twilio/ai-status'
     | '/api/twilio/sms'
     | '/_public/blog/'
     | '/_public/bnb/'
@@ -496,7 +563,10 @@ export interface FileRouteTypes {
     | '/_public/experience/'
     | '/_public/resume/'
     | '/_with-user/admin/'
+    | '/_with-user/ai/'
     | '/_with-user/app/'
+    | '/_with-user/ai/item/$code'
+    | '/_with-user/ai/r/$receiptId'
     | '/_public/blog/$slug/'
     | '/_with-user/admin/blog/'
     | '/_with-user/admin/bookings/'
@@ -516,6 +586,7 @@ export interface RootRouteChildren {
   PublicRoute: typeof PublicRouteWithChildren
   WithUserRoute: typeof WithUserRouteWithChildren
   WithoutUserRoute: typeof WithoutUserRouteWithChildren
+  ApiAiRoute: typeof ApiAiRoute
   ApiContactRoute: typeof ApiContactRoute
   ApiPrintRoute: typeof ApiPrintRoute
   GolfRIndexRoute: typeof GolfRIndexRoute
@@ -528,6 +599,7 @@ export interface RootRouteChildren {
   ApiAuthSignUpRoute: typeof ApiAuthSignUpRoute
   ApiBnbBookingsRoute: typeof ApiBnbBookingsRoute
   ApiBnbSessionRoute: typeof ApiBnbSessionRoute
+  ApiTwilioAiStatusRoute: typeof ApiTwilioAiStatusRoute
   ApiTwilioSmsRoute: typeof ApiTwilioSmsRoute
 }
 
@@ -603,12 +675,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ai': {
+      id: '/api/ai'
+      path: '/api/ai'
+      fullPath: '/api/ai'
+      preLoaderRoute: typeof ApiAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_without-user/sign-in': {
       id: '/_without-user/sign-in'
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof WithoutUserSignInRouteImport
       parentRoute: typeof WithoutUserRoute
+    }
+    '/_with-user/ai': {
+      id: '/_with-user/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof WithUserAiRouteImport
+      parentRoute: typeof WithUserRoute
     }
     '/_with-user/admin': {
       id: '/_with-user/admin'
@@ -630,6 +716,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof WithUserAppIndexRouteImport
       parentRoute: typeof WithUserRoute
+    }
+    '/_with-user/ai/': {
+      id: '/_with-user/ai/'
+      path: '/'
+      fullPath: '/ai/'
+      preLoaderRoute: typeof WithUserAiIndexRouteImport
+      parentRoute: typeof WithUserAiRoute
     }
     '/_with-user/admin/': {
       id: '/_with-user/admin/'
@@ -678,6 +771,13 @@ declare module '@tanstack/react-router' {
       path: '/api/twilio/sms'
       fullPath: '/api/twilio/sms'
       preLoaderRoute: typeof ApiTwilioSmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/twilio/ai-status': {
+      id: '/api/twilio/ai-status'
+      path: '/api/twilio/ai-status'
+      fullPath: '/api/twilio/ai-status'
+      preLoaderRoute: typeof ApiTwilioAiStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/bnb/session': {
@@ -806,6 +906,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicBlogSlugIndexRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_with-user/ai/r/$receiptId': {
+      id: '/_with-user/ai/r/$receiptId'
+      path: '/r/$receiptId'
+      fullPath: '/ai/r/$receiptId'
+      preLoaderRoute: typeof WithUserAiRReceiptIdRouteImport
+      parentRoute: typeof WithUserAiRoute
+    }
+    '/_with-user/ai/item/$code': {
+      id: '/_with-user/ai/item/$code'
+      path: '/item/$code'
+      fullPath: '/ai/item/$code'
+      preLoaderRoute: typeof WithUserAiItemCodeRouteImport
+      parentRoute: typeof WithUserAiRoute
+    }
     '/_with-user/admin/blog/categories/': {
       id: '/_with-user/admin/blog/categories/'
       path: '/blog/categories'
@@ -886,13 +1000,31 @@ const WithUserAdminRouteWithChildren = WithUserAdminRoute._addFileChildren(
   WithUserAdminRouteChildren,
 )
 
+interface WithUserAiRouteChildren {
+  WithUserAiIndexRoute: typeof WithUserAiIndexRoute
+  WithUserAiItemCodeRoute: typeof WithUserAiItemCodeRoute
+  WithUserAiRReceiptIdRoute: typeof WithUserAiRReceiptIdRoute
+}
+
+const WithUserAiRouteChildren: WithUserAiRouteChildren = {
+  WithUserAiIndexRoute: WithUserAiIndexRoute,
+  WithUserAiItemCodeRoute: WithUserAiItemCodeRoute,
+  WithUserAiRReceiptIdRoute: WithUserAiRReceiptIdRoute,
+}
+
+const WithUserAiRouteWithChildren = WithUserAiRoute._addFileChildren(
+  WithUserAiRouteChildren,
+)
+
 interface WithUserRouteChildren {
   WithUserAdminRoute: typeof WithUserAdminRouteWithChildren
+  WithUserAiRoute: typeof WithUserAiRouteWithChildren
   WithUserAppIndexRoute: typeof WithUserAppIndexRoute
 }
 
 const WithUserRouteChildren: WithUserRouteChildren = {
   WithUserAdminRoute: WithUserAdminRouteWithChildren,
+  WithUserAiRoute: WithUserAiRouteWithChildren,
   WithUserAppIndexRoute: WithUserAppIndexRoute,
 }
 
@@ -916,6 +1048,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicRoute: PublicRouteWithChildren,
   WithUserRoute: WithUserRouteWithChildren,
   WithoutUserRoute: WithoutUserRouteWithChildren,
+  ApiAiRoute: ApiAiRoute,
   ApiContactRoute: ApiContactRoute,
   ApiPrintRoute: ApiPrintRoute,
   GolfRIndexRoute: GolfRIndexRoute,
@@ -928,6 +1061,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSignUpRoute: ApiAuthSignUpRoute,
   ApiBnbBookingsRoute: ApiBnbBookingsRoute,
   ApiBnbSessionRoute: ApiBnbSessionRoute,
+  ApiTwilioAiStatusRoute: ApiTwilioAiStatusRoute,
   ApiTwilioSmsRoute: ApiTwilioSmsRoute,
 }
 export const routeTree = rootRouteImport

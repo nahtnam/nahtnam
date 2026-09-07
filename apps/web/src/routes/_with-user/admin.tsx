@@ -15,10 +15,12 @@ import {
   LayoutDashboardIcon,
   MenuIcon,
   PlaneIcon,
+  CheckCheckIcon,
 } from "lucide-react";
 import type { ComponentType } from "react";
 
 type AdminPath =
+  | "/ai"
   | "/admin"
   | "/admin/bookings"
   | "/admin/golf-r"
@@ -33,6 +35,7 @@ type AdminNavItem = {
 };
 
 const adminNav: AdminNavItem[] = [
+  { icon: CheckCheckIcon, label: "Action center", to: "/ai" },
   { icon: LayoutDashboardIcon, label: "Overview", to: "/admin" },
   { icon: BriefcaseBusinessIcon, label: "Resume", to: "/admin/resume" },
   { icon: BookOpenIcon, label: "Writing", to: "/admin/writing" },

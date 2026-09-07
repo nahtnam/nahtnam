@@ -16,6 +16,11 @@ export function applySecurityHeaders(
     status: response.status,
     statusText: response.statusText,
   });
+  const requestUrl = new URL(request.url);
+
+  if (requestUrl.pathname === "/ai" || requestUrl.pathname.startsWith("/ai/")) {
+    securedResponse.headers.set("Cache-Control", "no-store, private");
+  }
 
   securedResponse.headers.set(
     "Permissions-Policy",
@@ -32,7 +37,7 @@ export function applySecurityHeaders(
   securedResponse.headers.set("X-XSS-Protection", "0");
   securedResponse.headers.set("Origin-Agent-Cluster", "?1");
 
-  if (new URL(request.url).protocol === "https:") {
+  if (requestUrl.protocol === "https:") {
     securedResponse.headers.set(
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains"

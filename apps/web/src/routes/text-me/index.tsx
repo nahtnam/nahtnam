@@ -1,3 +1,4 @@
+import { receiptPhoneNumber as receiptLineNumber } from "@repo/config/app";
 import { createFileRoute } from "@tanstack/react-router";
 import { MessageSquareTextIcon, PrinterIcon } from "lucide-react";
 
@@ -5,7 +6,7 @@ import { createSeo, pageSeo } from "@/lib/seo";
 
 const displayPhoneNumber = "+1-855-624-8626";
 const phoneword = "855-nahtnam";
-const smsHref = "sms:+18556248626";
+const smsHref = `sms:${receiptLineNumber}`;
 
 export const Route = createFileRoute("/text-me/")({
   component: TextMePage,

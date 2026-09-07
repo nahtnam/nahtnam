@@ -14,6 +14,34 @@ describe(applySecurityHeaders, () => {
     vi.unstubAllEnvs();
   });
 
+  it.each(["/ai", "/ai/", "/ai/r/receipt-id", "/ai/item/A7"])(
+    "prevents private action page caching at %s",
+    (path) => {
+      const response = applySecurityHeaders(
+        new Response("private content", {
+          headers: { "Cache-Control": "public, max-age=3600" },
+        }),
+        new Request(`https://example.com${path}`)
+      );
+      expect(response.headers.get("Cache-Control")).toBe("no-store, private");
+    }
+  );
+
+  it.each(["/airplane", "/ai-other", "/"])(
+    "preserves caching outside the action pages at %s",
+    (path) => {
+      const response = applySecurityHeaders(
+        new Response("public content", {
+          headers: { "Cache-Control": "public, max-age=3600" },
+        }),
+        new Request(`https://example.com${path}`)
+      );
+      expect(response.headers.get("Cache-Control")).toBe(
+        "public, max-age=3600"
+      );
+    }
+  );
+
   it("adds production browser protections to secure responses", async () => {
     vi.stubEnv("NODE_ENV", "production");
 

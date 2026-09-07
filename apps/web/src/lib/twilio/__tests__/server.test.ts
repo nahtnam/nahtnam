@@ -50,13 +50,13 @@ describe("Twilio SMS webhook", () => {
   });
 
   test("returns TwiML confirmation for a queued message", async () => {
-    const response = createMessageResponse({ message: "PRINTED" });
+    const response = createMessageResponse({ message: "QUEUED" });
 
     expect(response.headers.get("content-type")).toBe(
       "text/xml; charset=utf-8"
     );
     await expect(response.text()).resolves.toContain(
-      "<Message>PRINTED</Message>"
+      "<Message>QUEUED</Message>"
     );
   });
 });
