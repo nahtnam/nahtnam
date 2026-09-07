@@ -8,16 +8,6 @@
  * @module
  */
 
-import type * as ai from "../ai.js";
-import type * as ai_decisions from "../ai_decisions.js";
-import type * as ai_ingestion from "../ai_ingestion.js";
-import type * as ai_publishing from "../ai_publishing.js";
-import type * as ai_replies from "../ai_replies.js";
-import type * as ai_helpers from "../ai_helpers.js";
-import type * as ai_tables from "../ai_tables.js";
-import type * as ai_delivery from "../ai_delivery.js";
-import type * as ai_delivery_tables from "../ai_delivery_tables.js";
-import type * as ai_receipt_delivery from "../ai_receipt_delivery.js";
 import type * as admin_auth from "../admin/auth.js";
 import type * as admin_blog from "../admin/blog.js";
 import type * as admin_bnb from "../admin/bnb.js";
@@ -25,6 +15,17 @@ import type * as admin_golf_r from "../admin/golf_r.js";
 import type * as admin_resume from "../admin/resume.js";
 import type * as admin_seed_golf_r from "../admin/seed_golf_r.js";
 import type * as admin_travel from "../admin/travel.js";
+import type * as ai from "../ai.js";
+import type * as ai_decisions from "../ai_decisions.js";
+import type * as ai_delivery from "../ai_delivery.js";
+import type * as ai_delivery_tables from "../ai_delivery_tables.js";
+import type * as ai_health from "../ai_health.js";
+import type * as ai_helpers from "../ai_helpers.js";
+import type * as ai_ingestion from "../ai_ingestion.js";
+import type * as ai_publishing from "../ai_publishing.js";
+import type * as ai_receipt_delivery from "../ai_receipt_delivery.js";
+import type * as ai_replies from "../ai_replies.js";
+import type * as ai_tables from "../ai_tables.js";
 import type * as blog_queries from "../blog/queries.js";
 import type * as bnb_actions from "../bnb/actions.js";
 import type * as bnb_mutations from "../bnb/mutations.js";
@@ -51,16 +52,6 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  "ai_decisions": typeof ai_decisions;
-  "ai_ingestion": typeof ai_ingestion;
-  "ai_publishing": typeof ai_publishing;
-  "ai_replies": typeof ai_replies;
-  "ai_receipt_delivery": typeof ai_receipt_delivery;
-  "ai_delivery_tables": typeof ai_delivery_tables;
-  "ai_delivery": typeof ai_delivery;
-  "ai_tables": typeof ai_tables;
-  "ai_helpers": typeof ai_helpers;
-  "ai": typeof ai;
   "admin/auth": typeof admin_auth;
   "admin/blog": typeof admin_blog;
   "admin/bnb": typeof admin_bnb;
@@ -68,6 +59,17 @@ declare const fullApi: ApiFromModules<{
   "admin/resume": typeof admin_resume;
   "admin/seed_golf_r": typeof admin_seed_golf_r;
   "admin/travel": typeof admin_travel;
+  ai: typeof ai;
+  ai_decisions: typeof ai_decisions;
+  ai_delivery: typeof ai_delivery;
+  ai_delivery_tables: typeof ai_delivery_tables;
+  ai_health: typeof ai_health;
+  ai_helpers: typeof ai_helpers;
+  ai_ingestion: typeof ai_ingestion;
+  ai_publishing: typeof ai_publishing;
+  ai_receipt_delivery: typeof ai_receipt_delivery;
+  ai_replies: typeof ai_replies;
+  ai_tables: typeof ai_tables;
   "blog/queries": typeof blog_queries;
   "bnb/actions": typeof bnb_actions;
   "bnb/mutations": typeof bnb_mutations;

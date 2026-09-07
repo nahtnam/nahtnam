@@ -108,6 +108,234 @@ describe("AI lifecycle", () => {
     vi.useRealTimers();
   });
 
+  describe("machine operational readback", () => {
+    test("requires the machine secret and excludes other owners and phone numbers", async () => {
+      const { owner, t } = await setup();
+      const item = await add(
+        t,
+        candidate({ priority: "urgent", urgentMilestone: "deadline" })
+      );
+      await t.mutation(api.ai.recordHealth, {
+        checkedAt: Date.now(),
+        secret: SECRET,
+        source: "test-detector",
+        status: "blocked",
+      });
+      await t.mutation(api.ai.publish, {
+        idempotencyKey: "owner-receipt",
+        secret: SECRET,
+      });
+      await t.mutation(api.ai_delivery.reserve, {
+        code: item.code,
+        expectedVersion: item.version,
+        idempotencyKey: "owner-sms",
+        secret: SECRET,
+      });
+      await t.run(async (ctx) => {
+        await ctx.db.insert("aiHealth", {
+          checkedAt: Date.now(),
+          ownerTokenIdentifier: "other-owner",
+          source: "private-other-source",
+          status: "ok",
+        });
+        await ctx.db.insert("aiReceipts", {
+          createdAt: Date.now(),
+          expiresAt: Date.now() + DAY_MS,
+          idempotencyKey: "other-receipt",
+          items: [],
+          ownerTokenIdentifier: "other-owner",
+          title: "Private other receipt",
+        });
+        await ctx.db.insert("aiSmsDeliveries", {
+          code: "OTHER",
+          expiresAt: Date.now() + DAY_MS,
+          idempotencyKey: "other-sms",
+          itemId: item.id,
+          itemVersion: 1,
+          milestone: "deadline",
+          ownerTokenIdentifier: "other-owner",
+          phone: "+15555550999",
+          question: false,
+          status: "sent",
+          updatedAt: Date.now(),
+        });
+      });
+      await expect(
+        t.query(api.ai.machineSnapshot, { secret: "wrong" })
+      ).rejects.toThrow("Unauthorized");
+      const snapshot = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      if (snapshot.coverage !== "active-and-recent-history") {
+        throw new Error("Expected an unscoped operational snapshot");
+      }
+      expect(snapshot).toMatchObject({
+        deliveries: [{ idempotencyKey: "owner-sms" }],
+        operationsTruncated: {
+          deliveries: false,
+          receipts: false,
+          sources: false,
+        },
+        receipts: [{ idempotencyKey: "owner-receipt" }],
+        sources: [{ source: "test-detector" }],
+      });
+      expect(snapshot.deliveries?.[0]).not.toHaveProperty("phone");
+      const health = await owner.query(api.ai.health, {});
+      expect(health).toMatchObject({
+        deliveries: snapshot.deliveries,
+        receipts: snapshot.receipts,
+      });
+      const scoped = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+        source: "test-detector",
+      });
+      expect(scoped).not.toHaveProperty("deliveries");
+    });
+
+    test("reflects source coverage, print progress, and uncertain SMS callback resolution", async () => {
+      const { t } = await setup();
+      const item = await add(
+        t,
+        candidate({ priority: "urgent", urgentMilestone: "deadline" })
+      );
+      await t.mutation(api.ai.recordHealth, {
+        checkedAt: Date.now() - 2 * DAY_MS,
+        secret: SECRET,
+        source: "test-detector",
+        status: "blocked",
+      });
+      await t.mutation(api.ai.publish, {
+        idempotencyKey: "progress",
+        secret: SECRET,
+      });
+      const delivery = await t.mutation(api.ai_delivery.reserve, {
+        code: item.code,
+        expectedVersion: item.version,
+        idempotencyKey: "progress",
+        secret: SECRET,
+      });
+      const queued = await t.query(api.ai.machineSnapshot, { secret: SECRET });
+      expect(queued).toMatchObject({
+        deliveries: [{ status: "reserved" }],
+        receipts: [{ expired: false, printStatus: "queued" }],
+        sources: [{ stale: true, status: "blocked" }],
+      });
+      const job = await t.mutation(api.print_jobs.claimNext, {
+        now: Date.now(),
+        secret: "printer-test-secret",
+        workerId: "test-worker",
+      });
+      if (!job) {
+        throw new Error("Expected a ready print job");
+      }
+      await t.mutation(api.ai_delivery.settle, {
+        id: delivery.id,
+        secret: SECRET,
+        status: "unknown",
+      });
+      const uncertain = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      expect(uncertain).toMatchObject({
+        deliveries: [{ status: "unknown" }],
+        receipts: [{ printStatus: "printing" }],
+      });
+      await t.mutation(api.print_jobs.markPrinted, {
+        jobId: job._id,
+        secret: "printer-test-secret",
+        workerId: "test-worker",
+      });
+      await t.mutation(api.ai_delivery.recordStatus, {
+        id: delivery.id,
+        providerId: "SM-provider-confirmed",
+        secret: SECRET,
+        status: "delivered",
+      });
+      await t.mutation(api.ai.recordHealth, {
+        checkedAt: Date.now(),
+        coverageThrough: Date.now(),
+        secret: SECRET,
+        source: "test-detector",
+        status: "ok",
+      });
+      const completed = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      expect(completed).toMatchObject({
+        deliveries: [
+          { providerId: "SM-provider-confirmed", status: "delivered" },
+        ],
+        receipts: [{ printStatus: "printed" }],
+        sources: [{ coverageThrough: Date.now(), stale: false, status: "ok" }],
+      });
+    });
+
+    test("explicitly flags bounded operational history instead of implying complete coverage", async () => {
+      const { t } = await setup();
+      const item = await add(t);
+      await t.run(async (ctx) => {
+        await Promise.all(
+          Array.from({ length: 51 }, (_, index) =>
+            ctx.db.insert("aiHealth", {
+              checkedAt: Date.now(),
+              ownerTokenIdentifier: OWNER.tokenIdentifier,
+              source: `source-${index}`,
+              status: "ok",
+            })
+          )
+        );
+        await Promise.all(
+          Array.from({ length: 21 }, (_, index) => [
+            ctx.db.insert("aiReceipts", {
+              createdAt: Date.now() - index,
+              expiresAt: Date.now() + DAY_MS,
+              idempotencyKey: `receipt-${index}`,
+              items: [],
+              ownerTokenIdentifier: OWNER.tokenIdentifier,
+              title: "History",
+            }),
+            ctx.db.insert("aiSmsDeliveries", {
+              code: item.code,
+              expiresAt: Date.now() + DAY_MS,
+              idempotencyKey: `sms-${index}`,
+              itemId: item.id,
+              itemVersion: item.version,
+              milestone: `milestone-${index}`,
+              ownerTokenIdentifier: OWNER.tokenIdentifier,
+              phone: PHONE,
+              question: false,
+              status: "unknown",
+              updatedAt: Date.now() - index,
+            }),
+          ]).flat()
+        );
+      });
+      const snapshot = await t.query(api.ai.machineSnapshot, {
+        secret: SECRET,
+      });
+      if (snapshot.coverage !== "active-and-recent-history") {
+        throw new Error("Expected an unscoped operational snapshot");
+      }
+      expect(snapshot.operationsTruncated).toStrictEqual({
+        deliveries: true,
+        receipts: true,
+        sources: true,
+      });
+      expect([
+        snapshot.sources?.length,
+        snapshot.receipts?.length,
+        snapshot.deliveries?.length,
+      ]).toStrictEqual([50, 20, 20]);
+      expect(snapshot.receipts?.[0]).toMatchObject({
+        idempotencyKey: "receipt-0",
+        printStatus: "missing",
+      });
+      expect(snapshot.deliveries?.[0]).toMatchObject({
+        idempotencyKey: "sms-0",
+      });
+    });
+  });
+
   describe("action center authorization", () => {
     test("requires admin authentication and binds ownership exactly once", async () => {
       const t = convexTest(schema, modules);
